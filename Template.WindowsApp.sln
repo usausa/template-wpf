@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.WindowsApp", "Template.WindowsApp\Template.WindowsApp.csproj", "{474D5D18-53C2-4487-B9EA-3833D1A9C6EA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B4709796-23CC-471C-BD26-AB520ABE8BCC}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		Analyzers.ruleset = Analyzers.ruleset
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+		README.md = README.md
+		Settings.XamlStyler = Settings.XamlStyler
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{474D5D18-53C2-4487-B9EA-3833D1A9C6EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{474D5D18-53C2-4487-B9EA-3833D1A9C6EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{474D5D18-53C2-4487-B9EA-3833D1A9C6EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{474D5D18-53C2-4487-B9EA-3833D1A9C6EA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {37D9429A-446F-4F22-B97D-645C4BECFFF1}
+	EndGlobalSection
+EndGlobal
