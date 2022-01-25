@@ -5,6 +5,8 @@ using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using Serilog;
+
 using Smart.Resolver;
 using Smart.Windows.Resolver;
 
@@ -15,6 +17,10 @@ public partial class App
     public App()
     {
         host = Host.CreateDefaultBuilder()
+            .UseSerilog((hostingContext, loggerConfiguration) =>
+            {
+                loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration);
+            })
             .UseServiceProviderFactory(new SmartServiceProviderFactory())
             .ConfigureContainer<ResolverConfig>(ConfigureContainer)
             .Build();
