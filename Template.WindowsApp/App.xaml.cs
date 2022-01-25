@@ -1,17 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+namespace Template.WindowsApp;
+
 using System.Windows;
 
-namespace Template.WindowsApp
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
+using Smart.Resolver;
+using Smart.Windows.Resolver;
+
+public partial class App
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
+    private readonly IHost host;
+
+    public App()
     {
+        host = Host.CreateDefaultBuilder()
+            .UseServiceProviderFactory(new SmartServiceProviderFactory())
+            .ConfigureContainer<ResolverConfig>(ConfigureContainer)
+            .Build();
+    }
+
+    private static void ConfigureContainer(HostBuilderContext context, ResolverConfig config)
+    {
+        config
+            .UseAutoBinding()
+            .UseArrayBinding()
+            .UseAssignableBinding();
+
+        //config.BindConfig<Settings>(context.Configuration.GetSection("Setting"));
+    }
+
+    protected override async void OnStartup(StartupEventArgs e)
+    {
+        await host.StartAsync().ConfigureAwait(false);
+
+        ResolveProvider.Default.UseServiceProvider(host.Services);
+
+        MainWindow = (MainWindow)host.Services.GetRequiredService(typeof(MainWindow));
+        MainWindow.Show();
+    }
+
+    protected override async void OnExit(ExitEventArgs e)
+    {
+        await host.StopAsync(TimeSpan.FromSeconds(5)).ConfigureAwait(false);
+        host.Dispose();
     }
 }
