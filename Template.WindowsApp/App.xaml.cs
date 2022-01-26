@@ -10,17 +10,21 @@ using Serilog;
 using Smart.Resolver;
 using Smart.Windows.Resolver;
 
+using Template.WindowsApp.Settings;
+using Template.WindowsApp.Views;
+
 public partial class App
 {
     private readonly IHost host;
 
     public App()
     {
+#if !DEBUG
+        Current.DispatcherUnhandledException += (_, ea) => HandleException(ea.Exception);
+        AppDomain.CurrentDomain.UnhandledException += (_, ea) => HandleException((Exception)ea.ExceptionObject);
+#endif
         host = Host.CreateDefaultBuilder()
-            .UseSerilog((hostingContext, loggerConfiguration) =>
-            {
-                loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration);
-            })
+            .UseSerilog((context, config) => config.ReadFrom.Configuration(context.Configuration))
             .UseServiceProviderFactory(new SmartServiceProviderFactory())
             .ConfigureContainer<ResolverConfig>(ConfigureContainer)
             .Build();
@@ -33,7 +37,10 @@ public partial class App
             .UseArrayBinding()
             .UseAssignableBinding();
 
-        //config.BindConfig<Settings>(context.Configuration.GetSection("Setting"));
+        config.BindConfig<ClientSettings>(context.Configuration.GetSection("Client"));
+
+        config.BindSingleton<IWindowManager, WindowManager>();
+        config.BindSingleton<MainWindow>();
     }
 
     protected override async void OnStartup(StartupEventArgs e)
@@ -42,8 +49,7 @@ public partial class App
 
         ResolveProvider.Default.UseServiceProvider(host.Services);
 
-        MainWindow = (MainWindow)host.Services.GetRequiredService(typeof(MainWindow));
-        MainWindow.Show();
+        MainWindow = host.Services.GetRequiredService<IWindowManager>().Load();
     }
 
     protected override async void OnExit(ExitEventArgs e)
@@ -51,4 +57,12 @@ public partial class App
         await host.StopAsync(TimeSpan.FromSeconds(5)).ConfigureAwait(false);
         host.Dispose();
     }
+
+#if !DEBUG
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "ex", Justification = "Debug only.")]
+    private static void HandleException(Exception ex)
+    {
+        MessageBox.Show(ex.ToString(), "Unknown error.", MessageBoxButton.OK, MessageBoxImage.Error);
+    }
+#endif
 }

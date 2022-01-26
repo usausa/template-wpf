@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="App.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MahApps.Metro" Version="2.4.9" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
@@ -34,6 +38,10 @@
     <PackageReference Include="Usa.Smart.Windows" Version="2.2.3" />
     <PackageReference Include="Usa.Smart.Windows.Reactive" Version="2.2.3" />
     <PackageReference Include="Usa.Smart.Windows.Resolver" Version="2.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="App.ico" />
   </ItemGroup>
 
   <ItemGroup>

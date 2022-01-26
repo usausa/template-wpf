@@ -1,4 +1,4 @@
-namespace Template.WindowsApp;
+namespace Template.WindowsApp.Views;
 
 public partial class MainWindow
 {
