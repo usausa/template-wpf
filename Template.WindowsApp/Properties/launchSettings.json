@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Template.WindowsApp": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
