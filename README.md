@@ -1,1 +1,1 @@
-# Template project for Xamarin.Forms
+# Template project for WPF
