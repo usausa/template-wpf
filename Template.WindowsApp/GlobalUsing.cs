@@ -2,6 +2,7 @@
 #pragma warning disable
 global using System.Collections;
 global using System.Collections.Generic;
+global using System.Collections.ObjectModel;
 global using System.ComponentModel;
 global using System.ComponentModel.DataAnnotations;
 global using System.Data.Common;
@@ -16,4 +17,6 @@ global using Microsoft.Extensions.Logging;
 
 global using Smart.ComponentModel;
 global using Smart.Navigation;
+global using Smart.Windows;
+global using Smart.Windows.Messaging;
 global using Smart.Windows.ViewModels;
