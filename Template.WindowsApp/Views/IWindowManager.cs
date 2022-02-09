@@ -1,10 +1,6 @@
 namespace Template.WindowsApp.Views;
 
-using System.Windows;
-
 using Microsoft.Extensions.DependencyInjection;
-
-using Smart.ComponentModel;
 
 using Template.WindowsApp.Settings;
 

@@ -1,12 +1,5 @@
 namespace Template.WindowsApp.Views;
 
-using System.Windows.Input;
-
-using Microsoft.Extensions.Logging;
-
-using Smart.ComponentModel;
-using Smart.Windows.ViewModels;
-
 public sealed class MainWindowViewModel : ViewModelBase
 {
     private readonly ILogger<MainWindowViewModel> logger;
