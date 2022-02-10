@@ -15,8 +15,11 @@ global using System.Windows.Input;
 
 global using Microsoft.Extensions.Logging;
 
+global using Smart.Collections.Generic;
 global using Smart.ComponentModel;
 global using Smart.Navigation;
-global using Smart.Windows;
+global using Smart.Navigation.Attributes;
+global using Smart.Navigation.Plugins.Parameter;
+global using Smart.Navigation.Plugins.Scope;
 global using Smart.Windows.Messaging;
 global using Smart.Windows.ViewModels;
