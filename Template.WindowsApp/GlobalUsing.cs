@@ -1,5 +1,6 @@
 // ReSharper disable RedundantUsingDirective.Global
 #pragma warning disable
+global using System;
 global using System.Collections;
 global using System.Collections.Generic;
 global using System.Collections.ObjectModel;
@@ -9,6 +10,8 @@ global using System.Data.Common;
 global using System.Diagnostics.CodeAnalysis;
 global using System.Globalization;
 global using System.Linq;
+global using System.Net.Http;
+global using System.IO;
 global using System.Reactive.Disposables;
 global using System.Reactive.Linq;
 global using System.Reactive.Subjects;
