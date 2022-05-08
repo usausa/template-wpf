@@ -11,31 +11,31 @@
   <ItemGroup>
     <PackageReference Include="MahApps.Metro" Version="2.4.9" />
     <PackageReference Include="MahApps.Metro.IconPacks.FontAwesome" Version="4.11.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
-    <PackageReference Include="Rester" Version="2.1.2" />
-    <PackageReference Include="Rester.Serializers.Newtonsoft.Json" Version="2.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
+    <PackageReference Include="Rester" Version="2.2.0" />
+    <PackageReference Include="Rester.Serializers.Newtonsoft.Json" Version="2.2.0" />
     <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
     <PackageReference Include="Serilog.Extensions.Hosting" Version="4.2.0" />
     <PackageReference Include="Serilog.Extensions.Logging.File" Version="2.0.0" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.0" />
     <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-    <PackageReference Include="System.Interactive" Version="5.1.0" />
-    <PackageReference Include="System.Linq.Async" Version="5.1.0" />
+    <PackageReference Include="System.Interactive" Version="6.0.1" />
+    <PackageReference Include="System.Linq.Async" Version="6.0.1" />
     <PackageReference Include="System.Reactive" Version="5.0.0" />
-    <PackageReference Include="Usa.Smart.Core" Version="2.0.13" />
-    <PackageReference Include="Usa.Smart.Mapper" Version="0.3.3" />
-    <PackageReference Include="Usa.Smart.Navigation" Version="2.2.4" />
-    <PackageReference Include="Usa.Smart.Navigation.Resolver" Version="2.2.4" />
-    <PackageReference Include="Usa.Smart.Navigation.Windows" Version="2.2.4" />
-    <PackageReference Include="Usa.Smart.Reactive" Version="2.0.5" />
-    <PackageReference Include="Usa.Smart.Resolver" Version="2.0.6" />
-    <PackageReference Include="Usa.Smart.Resolver.Extensions.Configuration" Version="2.0.6" />
-    <PackageReference Include="Usa.Smart.Resolver.Extensions.DependencyInjection" Version="2.0.6" />
-    <PackageReference Include="Usa.Smart.Windows" Version="2.2.3" />
-    <PackageReference Include="Usa.Smart.Windows.Reactive" Version="2.2.3" />
-    <PackageReference Include="Usa.Smart.Windows.Resolver" Version="2.2.3" />
+    <PackageReference Include="Usa.Smart.Core" Version="2.1.0" />
+    <PackageReference Include="Usa.Smart.Mapper" Version="0.4.0" />
+    <PackageReference Include="Usa.Smart.Navigation" Version="2.3.0" />
+    <PackageReference Include="Usa.Smart.Navigation.Resolver" Version="2.3.0" />
+    <PackageReference Include="Usa.Smart.Navigation.Windows" Version="2.3.0" />
+    <PackageReference Include="Usa.Smart.Reactive" Version="2.1.0" />
+    <PackageReference Include="Usa.Smart.Resolver" Version="2.1.0" />
+    <PackageReference Include="Usa.Smart.Resolver.Extensions.Configuration" Version="2.1.0" />
+    <PackageReference Include="Usa.Smart.Resolver.Extensions.DependencyInjection" Version="2.1.0" />
+    <PackageReference Include="Usa.Smart.Windows" Version="2.3.0" />
+    <PackageReference Include="Usa.Smart.Windows.Reactive" Version="2.3.0" />
+    <PackageReference Include="Usa.Smart.Windows.Resolver" Version="2.3.0" />
   </ItemGroup>
 
   <ItemGroup>
