@@ -1,6 +1,5 @@
-namespace Template.WindowsApp.Settings
+namespace Template.WindowsApp.Settings;
+
+public sealed class ClientSettings
 {
-    public sealed class ClientSettings
-    {
-    }
 }
