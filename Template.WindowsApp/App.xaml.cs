@@ -1,7 +1,13 @@
 namespace Template.WindowsApp;
 
+using System.Text.Encodings.Web;
+using System.Text.Json.Serialization;
+using System.Text.Unicode;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+
+using Rester;
 
 using Serilog;
 
@@ -45,7 +51,14 @@ public partial class App
     {
         await host.StartAsync().ConfigureAwait(false);
 
-        ResolveProvider.Default.UseServiceProvider(host.Services);
+        ResolveProvider.Default.Provider = host.Services;
+
+        RestConfig.Default.UseJsonSerializer(config =>
+        {
+            config.Converters.Add(new Template.WindowsApp.Helpers.DateTimeConverter());
+            config.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
+            config.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+        });
 
         MainWindow = host.Services.GetRequiredService<IWindowManager>().Load();
     }

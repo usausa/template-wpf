@@ -24,17 +24,10 @@ public sealed class MainWindowViewModel : ViewModelBase
     {
         logger.LogInformation("Execute start.");
 
-        Executing.Value = true;
+        using var executing = new ExecuteScope(Executing);
 
-        try
-        {
-            await Task.Delay(3000);
-        }
-        finally
-        {
-            Executing.Value = false;
+        await Task.Delay(3000);
 
-            logger.LogInformation("Execute end.");
-        }
+        logger.LogInformation("Execute end.");
     }
 }
