@@ -44,11 +44,13 @@
   <ItemGroup>
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>True</ExcludeFromSingleFile>
     </Content>
     <Content Include="appsettings.*.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
       <DependentUpon>appsettings.json</DependentUpon>
+      <ExcludeFromSingleFile>True</ExcludeFromSingleFile>
     </Content>
   </ItemGroup>
 
