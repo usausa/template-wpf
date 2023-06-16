@@ -22,12 +22,12 @@ public sealed class MainWindowViewModel : ViewModelBase
 
     private async Task Execute()
     {
-        logger.LogInformation("Execute start.");
+        logger.InfoExecuteStart();
 
         using var executing = new ExecuteScope(Executing);
 
         await Task.Delay(3000);
 
-        logger.LogInformation("Execute end.");
+        logger.InfoExecuteEnd();
     }
 }
