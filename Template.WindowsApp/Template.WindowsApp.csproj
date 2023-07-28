@@ -13,6 +13,7 @@
     <PackageReference Include="MahApps.Metro.IconPacks.FontAwesome" Version="4.11.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
     <PackageReference Include="Rester" Version="2.3.0" />
     <PackageReference Include="Rester.Serializers.System.Text.Json" Version="2.3.0" />
     <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
