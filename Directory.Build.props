@@ -8,10 +8,7 @@
     <NoWarn>$(NoWarn),1573,1591,1712</NoWarn>
     <MSBuildWarningsAsMessages>SA0001;MSB3277;XA4218;XA0122</MSBuildWarningsAsMessages>
     <WarningsAsErrors>nullable</WarningsAsErrors>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <DisableGclm>True</DisableGclm>
+    <SatelliteResourceLanguages>en;ja</SatelliteResourceLanguages>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
