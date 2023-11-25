@@ -70,7 +70,7 @@ public partial class App
     }
 
 #if !DEBUG
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "ex", Justification = "Debug only.")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA1801:ReviewUnusedParameters", MessageId = "ex", Justification = "Debug only.")]
     private static void HandleException(Exception ex)
     {
         MessageBox.Show(ex.ToString(), "Unknown error.", MessageBoxButton.OK, MessageBoxImage.Error);

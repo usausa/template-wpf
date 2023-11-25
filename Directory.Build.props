@@ -5,15 +5,12 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <Deterministic>true</Deterministic>
-    <NoWarn>$(NoWarn),1573,1591,1712</NoWarn>
-    <MSBuildWarningsAsMessages>SA0001;MSB3277;XA4218;XA0122</MSBuildWarningsAsMessages>
+    <MSBuildWarningsAsMessages>SA0001</MSBuildWarningsAsMessages>
     <WarningsAsErrors>nullable</WarningsAsErrors>
-    <SatelliteResourceLanguages>en;ja</SatelliteResourceLanguages>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <AnalysisMode>All</AnalysisMode>
-    <AnalysisLevel>latest</AnalysisLevel>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,7 +18,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Usa.Smart.Analyzers.JapaneseComment" Version="1.1.0">
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)' == 'Release'">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
