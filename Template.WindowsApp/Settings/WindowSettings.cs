@@ -2,7 +2,7 @@ namespace Template.WindowsApp.Settings;
 
 using System.Configuration;
 
-public class MainWindowPlacement
+public sealed class MainWindowPlacement
 {
     public int Left { get; set; }
 
@@ -15,7 +15,7 @@ public class MainWindowPlacement
     public bool Maximized { get; set; }
 }
 
-public class WindowSettings : ApplicationSettingsBase
+public sealed class WindowSettings : ApplicationSettingsBase
 {
     [UserScopedSetting]
     public MainWindowPlacement? MainWindowPlacement

@@ -17,7 +17,7 @@ using Smart.Windows.Resolver;
 using Template.WindowsApp.Settings;
 using Template.WindowsApp.Views;
 
-public partial class App
+public sealed partial class App
 {
     private readonly IHost host;
 
@@ -70,7 +70,6 @@ public partial class App
     }
 
 #if !DEBUG
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA1801:ReviewUnusedParameters", MessageId = "ex", Justification = "Debug only.")]
     private static void HandleException(Exception ex)
     {
         MessageBox.Show(ex.ToString(), "Unknown error.", MessageBoxButton.OK, MessageBoxImage.Error);
