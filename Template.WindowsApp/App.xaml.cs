@@ -64,7 +64,7 @@ public sealed partial class App
 
         ResolveProvider.Default.Provider = host.Services;
 
-        RestConfig.Default.UseJsonSerializer(config =>
+        RestConfig.Default.UseJsonSerializer(static config =>
         {
             config.Converters.Add(new Template.WindowsApp.Helpers.DateTimeConverter());
             config.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
