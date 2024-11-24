@@ -57,6 +57,7 @@ public sealed partial class App
     }
 
 #pragma warning disable IDE0001
+    // ReSharper disable once AsyncVoidMethod
     protected override async void OnStartup(StartupEventArgs e)
     {
         await host.StartAsync().ConfigureAwait(false);
@@ -74,6 +75,7 @@ public sealed partial class App
     }
 #pragma warning restore IDE0001
 
+    // ReSharper disable once AsyncVoidMethod
     protected override async void OnExit(ExitEventArgs e)
     {
         await host.StopAsync(TimeSpan.FromSeconds(5)).ConfigureAwait(false);
