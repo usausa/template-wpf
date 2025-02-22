@@ -26,7 +26,7 @@ public sealed class MainWindowViewModel : ViewModelBase
 
         using var executing = new ExecuteScope(Executing);
 
-        await Task.Delay(3000);
+        await Task.Delay(3000).ConfigureAwait(true);
 
         logger.InfoExecuteEnd();
     }
