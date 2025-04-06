@@ -9,6 +9,7 @@
     <File Path="LICENSE" />
     <File Path="README.md" />
     <File Path="Settings.XamlStyler" />
+    <File Path="Template.WindowsApp.sln.DotSettings" />
   </Folder>
   <Project Path="Template.WindowsApp/Template.WindowsApp.csproj" />
 </Solution>
