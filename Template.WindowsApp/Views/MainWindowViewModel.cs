@@ -1,6 +1,7 @@
 namespace Template.WindowsApp.Views;
 
-public sealed class MainWindowViewModel : ViewModelBase
+// ReSharper disable once ClassNeverInstantiated.Global
+public sealed class MainWindowViewModel : WindowsViewModelBase
 {
     private readonly ILogger<MainWindowViewModel> logger;
 

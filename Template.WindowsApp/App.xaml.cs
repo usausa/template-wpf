@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-using Smart.Windows.Resolver;
+using Smart.Mvvm.Resolver;
 
 using Template.WindowsApp.Views;
 
