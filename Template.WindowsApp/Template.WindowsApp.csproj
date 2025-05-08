@@ -29,7 +29,7 @@
     <PackageReference Include="System.Reactive" Version="6.0.1" />
     <PackageReference Include="Usa.Smart.Core" Version="2.4.1" />
     <PackageReference Include="Usa.Smart.Mapper" Version="0.8.2" />
-    <PackageReference Include="Usa.Smart.Mvvm" Version="1.0.1" />
+    <PackageReference Include="Usa.Smart.Mvvm" Version="1.2.1" />
     <PackageReference Include="Usa.Smart.Navigation" Version="2.11.0" />
     <PackageReference Include="Usa.Smart.Navigation.Resolver" Version="2.11.0" />
     <PackageReference Include="Usa.Smart.Navigation.Windows" Version="2.11.0" />
@@ -37,9 +37,9 @@
     <PackageReference Include="Usa.Smart.Resolver" Version="2.6.1" />
     <PackageReference Include="Usa.Smart.Resolver.Extensions.Configuration" Version="2.6.1" />
     <PackageReference Include="Usa.Smart.Resolver.Extensions.DependencyInjection" Version="2.6.1" />
-    <PackageReference Include="Usa.Smart.Windows" Version="3.0.0-beta2" />
-    <PackageReference Include="Usa.Smart.Windows.Behaviors" Version="3.0.0-beta2" />
-    <PackageReference Include="Usa.Smart.Windows.Extensions" Version="3.0.0-beta2" />
+    <PackageReference Include="Usa.Smart.Windows" Version="3.0.0-beta4" />
+    <PackageReference Include="Usa.Smart.Windows.Behaviors" Version="3.0.0-beta4" />
+    <PackageReference Include="Usa.Smart.Windows.Extensions" Version="3.0.0-beta4" />
   </ItemGroup>
 
   <ItemGroup>

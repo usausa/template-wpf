@@ -21,8 +21,8 @@
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
-            <si:CancelEventAction Cancel="{Binding Executing.Value}" />
-            <i:CallMethodAction IsEnabled="{Binding Executing.Value, Converter={StaticResource ReverseConverter}}"
+            <si:CancelEventAction Cancel="{Binding Executing}" />
+            <i:CallMethodAction IsEnabled="{Binding Executing, Converter={StaticResource ReverseConverter}}"
                                 MethodName="Save"
                                 TargetObject="{Binding WindowManager}" />
         </i:EventTrigger>
@@ -45,7 +45,7 @@
                               Margin="0"
                               VerticalAlignment="Bottom"
                               IsIndeterminate="True"
-                              Visibility="{Binding Executing.Value, Converter={StaticResource BoolToVisibilityConverter}}" />
+                              Visibility="{Binding Executing, Converter={StaticResource BoolToVisibilityConverter}}" />
     </Grid>
 
 </mah:MetroWindow>

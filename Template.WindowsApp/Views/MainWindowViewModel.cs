@@ -1,13 +1,15 @@
 namespace Template.WindowsApp.Views;
 
 // ReSharper disable once ClassNeverInstantiated.Global
-public sealed class MainWindowViewModel : WindowsViewModelBase
+[ObservableGeneratorOption(Reactive = true, ViewModel = true)]
+public sealed partial class MainWindowViewModel : ExtendViewModelBase
 {
     private readonly ILogger<MainWindowViewModel> logger;
 
     public IWindowManager WindowManager { get; }
 
-    public NotificationValue<bool> Executing { get; } = new();
+    [ObservableProperty]
+    public partial bool Executing { get; set; }
 
     public ICommand ExecuteCommand { get; }
 
@@ -18,16 +20,22 @@ public sealed class MainWindowViewModel : WindowsViewModelBase
         this.logger = logger;
         WindowManager = windowManager;
 
-        ExecuteCommand = MakeAsyncCommand(Execute, () => !Executing.Value).Observe(Executing);
+        ExecuteCommand = MakeAsyncCommand(Execute, () => !Executing).Observe(this, nameof(Executing));
     }
 
     private async Task Execute()
     {
         logger.InfoExecuteStart();
 
-        using var executing = new ExecuteScope(Executing);
-
-        await Task.Delay(3000).ConfigureAwait(true);
+        Executing = true;
+        try
+        {
+            await Task.Delay(3000).ConfigureAwait(true);
+        }
+        finally
+        {
+            Executing = false;
+        }
 
         logger.InfoExecuteEnd();
     }

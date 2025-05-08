@@ -32,7 +32,7 @@ global using Microsoft.Extensions.Logging;
 global using Smart;
 global using Smart.Collections.Generic;
 global using Smart.ComponentModel;
-global using Smart.Mvvm.Attributes;
+global using Smart.Mvvm;
 global using Smart.Mvvm.Messaging;
 global using Smart.Navigation;
 global using Smart.Navigation.Attributes;
