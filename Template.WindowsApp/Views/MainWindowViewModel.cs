@@ -8,9 +8,6 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
 
     public IWindowManager WindowManager { get; }
 
-    [ObservableProperty]
-    public partial bool Executing { get; set; }
-
     public ICommand ExecuteCommand { get; }
 
     public MainWindowViewModel(
@@ -20,22 +17,14 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
         this.logger = logger;
         WindowManager = windowManager;
 
-        ExecuteCommand = MakeAsyncCommand(Execute, () => !Executing).Observe(this, nameof(Executing));
+        ExecuteCommand = MakeAsyncCommand(Execute, () => !BusyState.IsBusy);
     }
 
     private async Task Execute()
     {
         logger.InfoExecuteStart();
 
-        Executing = true;
-        try
-        {
-            await Task.Delay(3000).ConfigureAwait(true);
-        }
-        finally
-        {
-            Executing = false;
-        }
+        await Task.Delay(3000).ConfigureAwait(true);
 
         logger.InfoExecuteEnd();
     }

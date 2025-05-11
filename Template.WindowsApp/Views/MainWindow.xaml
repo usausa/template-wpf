@@ -21,8 +21,8 @@
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
-            <si:CancelEventAction Cancel="{Binding Executing}" />
-            <i:CallMethodAction IsEnabled="{Binding Executing, Converter={StaticResource ReverseConverter}}"
+            <si:CancelEventAction Cancel="{Binding BusyState.IsBusy}" />
+            <i:CallMethodAction IsEnabled="{Binding BusyState.IsBusy, Converter={StaticResource ReverseConverter}}"
                                 MethodName="Save"
                                 TargetObject="{Binding WindowManager}" />
         </i:EventTrigger>
@@ -40,12 +40,11 @@
     </mah:MetroWindow.RightWindowCommands>
 
     <Grid>
-
         <mah:MetroProgressBar Height="10"
                               Margin="0"
                               VerticalAlignment="Bottom"
                               IsIndeterminate="True"
-                              Visibility="{Binding Executing, Converter={StaticResource BoolToVisibilityConverter}}" />
+                              Visibility="{Binding BusyState.IsBusy, Converter={StaticResource BoolToVisibilityConverter}}" />
     </Grid>
 
 </mah:MetroWindow>
