@@ -2,7 +2,7 @@ namespace Template.WindowsApp.Views;
 
 // ReSharper disable once ClassNeverInstantiated.Global
 [ObservableGeneratorOption(Reactive = true, ViewModel = true)]
-public sealed partial class MainWindowViewModel : ExtendViewModelBase
+public sealed class MainWindowViewModel : ExtendViewModelBase
 {
     private readonly ILogger<MainWindowViewModel> logger;
 
