@@ -16,14 +16,9 @@
     "xmlns:mc",
 
     "xmlns:i",
-    "xmlns:sd",
-    "xmlns:sdx",
-    "xmlns:si",
-    "xmlns:six",
-    "xmlns:sm",
-    "xmlns:smx",
-    "xmlns:sr",
-    "xmlns:sn",
+
+    "xmlns:s",
+    "xmlns:navigation",
 
     "xmlns:app",
     "xmlns:local",
@@ -52,6 +47,8 @@
     "x:Name, Name",
     "x:Uid, Uid",
 
+    "s:Behavior.Key",
+
     "BasedOn, TargetType",
 
     "Class",
@@ -60,8 +57,9 @@
     "Style",
 
     "x:DataType",
-    "sr:*",
+    "s:DataContextResolver.*",
     "DataContext",
+    "d:DataContext",
 
     "RowDefinitions",
     "ColumnDefinitions",
@@ -91,7 +89,6 @@
     "six:*",
     "input:*",
     "effects:*",
-    "sn:*",
 
     "TextColor, BackgroundColor",
     "Text",

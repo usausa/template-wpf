@@ -3,31 +3,30 @@
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-                 xmlns:si="clr-namespace:Smart.Windows.Interactivity;assembly=Smart.Windows.Behaviors"
-                 xmlns:sr="clr-namespace:Smart.Windows.Resolver;assembly=Smart.Windows.Extensions"
+                 xmlns:s="http://smart/windows"
                  xmlns:views="clr-namespace:Template.WindowsApp.Views"
                  xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                  mc:Ignorable="d"
                  x:Class="Template.WindowsApp.Views.MainWindow"
-                 sr:DataContextResolver.Type="{x:Type views:MainWindowViewModel}"
+                 s:DataContextResolver.Type="{x:Type views:MainWindowViewModel}"
+                 d:DataContext="{d:DesignInstance Type={x:Type views:MainWindowViewModel}}"
                  Width="1024"
                  Height="768"
                  Title="MainWindow"
                  Icon="../App.ico"
                  ResizeMode="CanResizeWithGrip"
                  ShowIconOnTitleBar="True"
-                 WindowTransitionsEnabled="False"
-                 d:DataContext="{d:DesignInstance Type={x:Type views:MainWindowViewModel}}">
+                 WindowTransitionsEnabled="False">
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
-            <si:CancelEventAction Cancel="{Binding BusyState.IsBusy}" />
+            <s:CancelEventAction Cancel="{Binding BusyState.IsBusy}" />
             <i:CallMethodAction IsEnabled="{Binding BusyState.IsBusy, Converter={StaticResource ReverseConverter}}"
                                 MethodName="Save"
                                 TargetObject="{Binding WindowManager}" />
         </i:EventTrigger>
         <i:EventTrigger EventName="Closed">
-            <si:DataContextDisposeAction />
+            <s:DataContextDisposeAction />
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
