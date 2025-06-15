@@ -85,8 +85,7 @@
     "ItemsSource",
 
     "behaviors:*",
-    "si:*",
-    "six:*",
+    "s:*",
     "input:*",
     "effects:*",
 
