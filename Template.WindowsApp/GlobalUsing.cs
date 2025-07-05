@@ -39,6 +39,7 @@ global using Smart.Navigation.Attributes;
 global using Smart.Navigation.Plugins.Parameter;
 global using Smart.Navigation.Plugins.Scope;
 global using Smart.Text;
+global using Smart.Windows.Messaging;
 global using Smart.Windows.ViewModels;
 
 global using Template.WindowsApp.Helpers;

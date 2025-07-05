@@ -64,6 +64,8 @@ public static class ApplicationExtensions
             .UseArrayBinding()
             .UseAssignableBinding();
 
+        config.BindSingleton<IReactiveMessenger>(ReactiveMessenger.Default);
+
         config.BindConfig<ClientSettings>(configuration.GetSection("Client"));
 
         config.BindSingleton<IWindowManager, WindowManager>();
