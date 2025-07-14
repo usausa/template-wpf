@@ -48,6 +48,7 @@
     "x:Uid, Uid",
 
     "s:Behavior.Key",
+    "s:ValidationProperty.*",
 
     "TargetType, BasedOn",
 
@@ -89,7 +90,6 @@
 
     "behaviors:*",
     "s:*",
-    "input:*",
     "effects:*",
 
     "TextColor, BackgroundColor",
