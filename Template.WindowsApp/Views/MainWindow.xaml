@@ -42,8 +42,8 @@
         <mah:MetroProgressBar Height="10"
                               Margin="0"
                               VerticalAlignment="Bottom"
-                              IsIndeterminate="True"
-                              Visibility="{Binding BusyState.IsBusy, Converter={StaticResource BoolToVisibilityConverter}}" />
+                              Visibility="{Binding BusyState.IsBusy, Converter={StaticResource BoolToVisibilityConverter}}"
+                              IsIndeterminate="True" />
     </Grid>
 
 </mah:MetroWindow>
