@@ -63,7 +63,7 @@ public sealed partial class App
     // Lifecycle
     //--------------------------------------------------------------------------------
 
-    // ReSharper disable once AsyncVoidMethod
+    // ReSharper disable once AsyncVoidEventHandlerMethod
     protected override async void OnStartup(StartupEventArgs e)
     {
         MainWindow = windowManager.Load();
@@ -71,7 +71,7 @@ public sealed partial class App
         await host.StartAsync().ConfigureAwait(false);
     }
 
-    // ReSharper disable once AsyncVoidMethod
+    // ReSharper disable once AsyncVoidEventHandlerMethod
     protected override async void OnExit(ExitEventArgs e)
     {
         await host.StopAsync(TimeSpan.FromSeconds(5)).ConfigureAwait(false);
