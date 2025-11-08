@@ -11,5 +11,5 @@
     <File Path="Settings.XamlStyler" />
     <File Path="Template.WindowsApp.sln.DotSettings" />
   </Folder>
-  <Project Path="Template.WindowsApp/Template.WindowsApp.csproj" />
+  <Project Path="Template.WindowsApp/Template.WindowsApp.csproj" DefaultStartup="true" />
 </Solution>
