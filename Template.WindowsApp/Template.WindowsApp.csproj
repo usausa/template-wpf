@@ -17,7 +17,7 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.0" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
-    <PackageReference Include="Rester" Version="2.6.0" />
+    <PackageReference Include="Rester" Version="2.7.0" />
     <PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0" />
     <PackageReference Include="Serilog.Extensions.Hosting" Version="9.0.0" />
     <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.0" />
@@ -27,18 +27,18 @@
     <PackageReference Include="System.Interactive" Version="6.0.3" />
     <PackageReference Include="System.Linq.Async" Version="6.0.3" />
     <PackageReference Include="System.Reactive" Version="6.1.0" />
-    <PackageReference Include="Usa.Smart.Core" Version="2.4.6" />
-    <PackageReference Include="Usa.Smart.Mapper" Version="0.8.2" />
-    <PackageReference Include="Usa.Smart.Mvvm" Version="1.8.0" />
+    <PackageReference Include="Usa.Smart.Core" Version="2.5.0" />
+    <PackageReference Include="Usa.Smart.Mapper" Version="0.9.0" />
+    <PackageReference Include="Usa.Smart.Mvvm" Version="1.9.0" />
     <PackageReference Include="Usa.Smart.Navigation" Version="2.16.0" />
     <PackageReference Include="Usa.Smart.Navigation.Resolver" Version="2.16.0" />
     <PackageReference Include="Usa.Smart.Navigation.Windows" Version="2.16.0" />
-    <PackageReference Include="Usa.Smart.Reactive" Version="2.5.0" />
+    <PackageReference Include="Usa.Smart.Reactive" Version="2.6.0" />
     <PackageReference Include="Usa.Smart.Resolver" Version="2.6.2" />
     <PackageReference Include="Usa.Smart.Resolver.Extensions.Configuration" Version="2.6.2" />
     <PackageReference Include="Usa.Smart.Resolver.Extensions.DependencyInjection" Version="2.6.2" />
-    <PackageReference Include="Usa.Smart.Windows" Version="2.16.3" />
-    <PackageReference Include="Usa.Smart.Windows.Extensions" Version="2.16.3" />
+    <PackageReference Include="Usa.Smart.Windows" Version="2.17.0" />
+    <PackageReference Include="Usa.Smart.Windows.Extensions" Version="2.17.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -56,6 +56,10 @@
       <DependentUpon>appsettings.json</DependentUpon>
       <ExcludeFromSingleFile>True</ExcludeFromSingleFile>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Usa.Smart.Analyzers.JapaneseComment" Version="1.4.0" />
   </ItemGroup>
 
 </Project>
