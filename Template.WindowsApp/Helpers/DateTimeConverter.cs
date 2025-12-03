@@ -7,9 +7,15 @@ public sealed class DateTimeConverter : JsonConverter<DateTime>
 {
     public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
+        var value = reader.GetString();
+        if (String.IsNullOrEmpty(value))
+        {
+            return default;
+        }
+
         try
         {
-            return DateTime.Parse(reader.GetString()!, CultureInfo.InvariantCulture);
+            return DateTime.Parse(value, CultureInfo.InvariantCulture);
         }
         catch
         {
