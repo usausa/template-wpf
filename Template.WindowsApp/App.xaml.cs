@@ -30,7 +30,7 @@ public sealed partial class App
         host = CreateHost();
 
         log = host.Services.GetRequiredService<ILogger<App>>();
-        this.windowManager = host.Services.GetRequiredService<IWindowManager>();
+        windowManager = host.Services.GetRequiredService<IWindowManager>();
         ResolveProvider.Default.Provider = host.Services;
 
         var environment = host.Services.GetRequiredService<IHostEnvironment>();
