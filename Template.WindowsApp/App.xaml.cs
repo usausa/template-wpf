@@ -36,14 +36,12 @@ public sealed partial class App
         var environment = host.Services.GetRequiredService<IHostEnvironment>();
         ThreadPool.GetMinThreads(out var workerThreads, out var completionPortThreads);
 
-#pragma warning disable CA1873
         log.InfoStartup();
         log.InfoStartupSettingsRuntime(RuntimeInformation.OSDescription, RuntimeInformation.FrameworkDescription, RuntimeInformation.RuntimeIdentifier);
         log.InfoStartupSettingsGC(GCSettings.IsServerGC, GCSettings.LatencyMode, GCSettings.LargeObjectHeapCompactionMode);
         log.InfoStartupSettingsThreadPool(workerThreads, completionPortThreads);
         log.InfoStartupApplication(environment.ApplicationName, typeof(App).Assembly.GetName().Version);
         log.InfoStartupEnvironment(environment.EnvironmentName, environment.ContentRootPath);
-#pragma warning restore CA1873
 
         Current.DispatcherUnhandledException += (_, ea) => HandleException(ea.Exception);
         AppDomain.CurrentDomain.UnhandledException += (_, ea) => HandleException((Exception)ea.ExceptionObject);
