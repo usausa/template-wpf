@@ -11,11 +11,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BunnyTail.ServiceRegistration" Version="1.8.4" />
+    <PackageReference Include="BunnyTail.ServiceRegistration" Version="1.8.5" />
     <PackageReference Include="MahApps.Metro" Version="3.0.0-rc0529" />
     <PackageReference Include="MahApps.Metro.IconPacks.FontAwesome" Version="6.2.1" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.5" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.5" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.7" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.7" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.142" />
     <PackageReference Include="Rester" Version="2.7.1" />
     <PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0" />
@@ -27,16 +27,16 @@
     <PackageReference Include="System.Reactive" Version="6.1.0" />
     <PackageReference Include="Usa.Smart.Core" Version="2.5.0" />
     <PackageReference Include="Usa.Smart.Mapper" Version="0.9.0" />
-    <PackageReference Include="Usa.Smart.Mvvm" Version="1.9.3" />
-    <PackageReference Include="Usa.Smart.Navigation" Version="2.17.2" />
-    <PackageReference Include="Usa.Smart.Navigation.Resolver" Version="2.17.2" />
-    <PackageReference Include="Usa.Smart.Navigation.Windows" Version="2.17.2" />
+    <PackageReference Include="Usa.Smart.Mvvm" Version="1.9.4" />
+    <PackageReference Include="Usa.Smart.Navigation" Version="2.18.1" />
+    <PackageReference Include="Usa.Smart.Navigation.Resolver" Version="2.18.1" />
+    <PackageReference Include="Usa.Smart.Navigation.Windows" Version="2.18.1" />
     <PackageReference Include="Usa.Smart.Reactive" Version="2.6.0" />
-    <PackageReference Include="Usa.Smart.Resolver" Version="2.7.1" />
-    <PackageReference Include="Usa.Smart.Resolver.Extensions.Configuration" Version="2.7.1" />
-    <PackageReference Include="Usa.Smart.Resolver.Extensions.DependencyInjection" Version="2.7.1" />
-    <PackageReference Include="Usa.Smart.Windows" Version="2.17.3" />
-    <PackageReference Include="Usa.Smart.Windows.Extensions" Version="2.17.3" />
+    <PackageReference Include="Usa.Smart.Resolver" Version="2.7.2" />
+    <PackageReference Include="Usa.Smart.Resolver.Extensions.Configuration" Version="2.7.2" />
+    <PackageReference Include="Usa.Smart.Resolver.Extensions.DependencyInjection" Version="2.7.2" />
+    <PackageReference Include="Usa.Smart.Windows" Version="2.17.4" />
+    <PackageReference Include="Usa.Smart.Windows.Extensions" Version="2.17.4" />
   </ItemGroup>
 
   <ItemGroup>
