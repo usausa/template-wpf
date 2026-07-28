@@ -36,8 +36,8 @@
     <PackageReference Include="Usa.Smart.Resolver" Version="2.14.0" />
     <PackageReference Include="Usa.Smart.Resolver.Extensions.Configuration" Version="2.14.0" />
     <PackageReference Include="Usa.Smart.Resolver.Extensions.DependencyInjection" Version="2.14.0" />
-    <PackageReference Include="Usa.Smart.Windows" Version="2.24.0" />
-    <PackageReference Include="Usa.Smart.Windows.Extensions" Version="2.24.0" />
+    <PackageReference Include="Usa.Smart.Windows" Version="2.25.0" />
+    <PackageReference Include="Usa.Smart.Windows.Extensions" Version="2.25.0" />
   </ItemGroup>
 
   <ItemGroup>
