@@ -16,6 +16,7 @@
     <PackageReference Include="MahApps.Metro.IconPacks.FontAwesome" Version="6.2.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.11" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.11" />
+    <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="10.0.11" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.142" />
     <PackageReference Include="Rester" Version="2.13.0" />
     <PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0" />
@@ -27,7 +28,6 @@
     <PackageReference Include="System.Reactive" Version="7.0.0" />
     <PackageReference Include="System.Reactive.Wpf" Version="7.0.0" />
     <PackageReference Include="Usa.Smart.Core" Version="2.16.0" />
-    <PackageReference Include="Usa.Smart.Mapper" Version="1.0.0-beta3" />
     <PackageReference Include="Usa.Smart.Mvvm" Version="2.8.0" />
     <PackageReference Include="Usa.Smart.Navigation" Version="3.4.0" />
     <PackageReference Include="Usa.Smart.Navigation.Resolver" Version="3.4.0" />

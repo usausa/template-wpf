@@ -1,0 +1,28 @@
+<mah:MetroWindow xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                 x:Class="Template.WindowsApp.Views.Dialogs.InputDialog"
+                 Width="384"
+                 SizeToContent="Height"
+                 WindowStartupLocation="CenterOwner"
+                 ResizeMode="NoResize"
+                 ShowInTaskbar="False"
+                 Title="Input">
+
+    <StackPanel Margin="16">
+        <TextBox x:Name="ValueText" />
+        <StackPanel Margin="0,16,0,0"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+            <Button Width="96"
+                    Click="OnOkClick"
+                    Content="OK"
+                    IsDefault="True" />
+            <Button Width="96"
+                    Margin="8,0,0,0"
+                    Content="Cancel"
+                    IsCancel="True" />
+        </StackPanel>
+    </StackPanel>
+
+</mah:MetroWindow>

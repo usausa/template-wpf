@@ -4,9 +4,12 @@ using System.Text.Encodings.Web;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
 
+using BunnyTail.ServiceRegistration;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 using Rester;
 
@@ -17,7 +20,7 @@ using Smart.Resolver;
 using Template.WindowsApp.Settings;
 using Template.WindowsApp.Views;
 
-public static class ApplicationExtensions
+public static partial class ApplicationExtensions
 {
     //--------------------------------------------------------------------------------
     // Logging
@@ -40,7 +43,7 @@ public static class ApplicationExtensions
 
     public static IHostApplicationBuilder ConfigureComponents(this IHostApplicationBuilder builder)
     {
-        builder.ConfigureContainer(new SmartServiceProviderFactory(), x => ConfigureContainer(builder.Configuration, x));
+        builder.ConfigureContainer(new SmartServiceProviderFactory(), ConfigureContainer);
 
         RestConfig.Default.UseJsonSerializer(static config =>
         {
@@ -51,24 +54,64 @@ public static class ApplicationExtensions
 
         builder.Services.AddHttpClient();
 
-        // TODO Navigation ?
-        // TODO BunnyTail ?
+        // System
+        builder.Services.AddSingleton(TimeProvider.System);
+
+        // Setting
+        builder.Services.AddOptions<ClientSettings>().BindConfiguration("Client").ValidateDataAnnotations().ValidateOnStart();
+        builder.Services.AddSingleton(static p => p.GetRequiredService<IOptions<ClientSettings>>().Value);
+
+        // Service
+        builder.Services.AddServices();
 
         return builder;
     }
 
-    private static void ConfigureContainer(IConfigurationManager configuration, ResolverConfig config)
+    private static void ConfigureContainer(ResolverConfig config)
     {
         config
             .UseAutoBinding()
             .UseArrayBinding()
             .UseAssignableBinding();
 
+        // Messenger
         config.BindSingleton<IReactiveMessenger>(ReactiveMessenger.Default);
 
-        config.BindConfig<ClientSettings>(configuration.GetSection("Client"));
+        // Navigation
+        config.BindSingleton<Navigator>(static resolver =>
+        {
+            var navigator = new NavigatorConfig()
+                .UseWindowsNavigationProvider()
+                .UseServiceProvider(resolver)
+                .UseIdViewMapper(static m => m.AutoRegister(ViewSource()))
+                .ToNavigator();
+#if DEBUG
+            navigator.Navigated += static (_, args) =>
+            {
+                // for debug
+                System.Diagnostics.Debug.WriteLine($"Navigated: [{args.Context.FromId}]->[{args.Context.ToId}]");
+            };
+#endif
 
+            return navigator;
+        });
+
+        // Window
         config.BindSingleton<IWindowManager, WindowManager>();
         config.BindSingleton<MainWindow>();
     }
+
+    //--------------------------------------------------------------------------------
+    // Navigation
+    //--------------------------------------------------------------------------------
+
+    [ViewSource]
+    public static partial IEnumerable<KeyValuePair<ViewId, Type>> ViewSource();
+
+    //--------------------------------------------------------------------------------
+    // Service
+    //--------------------------------------------------------------------------------
+
+    [ServiceRegistration(Lifetime.Singleton, "Service$")]
+    public static partial IServiceCollection AddServices(this IServiceCollection services);
 }

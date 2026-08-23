@@ -8,14 +8,18 @@ public sealed class MainWindowViewModel : ExtendViewModelBase
 
     public IWindowManager WindowManager { get; }
 
+    public INavigator Navigator { get; }
+
     public ICommand ExecuteCommand { get; }
 
     public MainWindowViewModel(
         ILogger<MainWindowViewModel> logger,
-        IWindowManager windowManager)
+        IWindowManager windowManager,
+        INavigator navigator)
     {
         this.logger = logger;
         WindowManager = windowManager;
+        Navigator = navigator;
 
         ExecuteCommand = MakeAsyncCommand(Execute, () => !BusyState.IsBusy);
     }

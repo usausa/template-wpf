@@ -4,6 +4,7 @@
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                  xmlns:s="http://smart/windows"
+                 xmlns:navigation="http://smart/navigation"
                  xmlns:views="clr-namespace:Template.WindowsApp.Views"
                  xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                  mc:Ignorable="d"
@@ -39,6 +40,7 @@
     </mah:MetroWindow.RightWindowCommands>
 
     <Grid>
+        <Canvas navigation:NavigationContainer.Navigator="{Binding Navigator}" />
         <mah:MetroProgressBar Height="10"
                               Margin="0"
                               VerticalAlignment="Bottom"

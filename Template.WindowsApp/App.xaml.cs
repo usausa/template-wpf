@@ -68,7 +68,9 @@ public sealed partial class App
     {
         MainWindow = windowManager.Load();
 
-        await host.StartAsync().ConfigureAwait(false);
+        await host.StartAsync().ConfigureAwait(true);
+
+        await host.Services.GetRequiredService<INavigator>().ForwardAsync(ViewId.Menu).ConfigureAwait(true);
     }
 
     // ReSharper disable once AsyncVoidEventHandlerMethod

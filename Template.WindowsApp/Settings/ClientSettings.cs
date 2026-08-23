@@ -2,5 +2,6 @@ namespace Template.WindowsApp.Settings;
 
 public sealed class ClientSettings
 {
-    // TODO
+    [Required]
+    public string Greeting { get; set; } = default!;
 }
