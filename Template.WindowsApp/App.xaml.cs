@@ -51,12 +51,25 @@ public sealed partial class App
     {
         var builder = Host.CreateApplicationBuilder(Environment.GetCommandLineArgs());
 
+        // Container
+        builder.ConfigureContainer();
         // Log
         builder.ConfigureLogging();
         // Components
         builder.ConfigureComponents();
 
-        return builder.Build();
+        var host = builder.Build();
+#if DEBUG
+        if (host.Services is BunnyTail.DependencyInjection.GeneratedServiceProvider generatedProvider)
+        {
+            foreach (var line in BunnyTail.DependencyInjection.Diagnostics.ServiceFactoryReportExtensions.DescribeRuntimeFallbacks(generatedProvider).Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries))
+            {
+                System.Diagnostics.Debug.WriteLine(line);
+            }
+        }
+#endif
+
+        return host;
     }
 
     //--------------------------------------------------------------------------------

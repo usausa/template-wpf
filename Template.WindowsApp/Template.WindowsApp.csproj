@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BunnyTail.ServiceRegistration" Version="1.15.0" />
+    <PackageReference Include="BunnyTail.DependencyInjection" Version="0.5.0" />
     <PackageReference Include="MahApps.Metro" Version="3.0.0-rc0529" />
     <PackageReference Include="MahApps.Metro.IconPacks.FontAwesome" Version="6.2.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.11" />
@@ -30,12 +30,8 @@
     <PackageReference Include="Usa.Smart.Core" Version="2.16.0" />
     <PackageReference Include="Usa.Smart.Mvvm" Version="2.8.0" />
     <PackageReference Include="Usa.Smart.Navigation" Version="3.4.0" />
-    <PackageReference Include="Usa.Smart.Navigation.Resolver" Version="3.4.0" />
     <PackageReference Include="Usa.Smart.Navigation.Windows" Version="3.4.0" />
     <PackageReference Include="Usa.Smart.Reactive" Version="2.15.0" />
-    <PackageReference Include="Usa.Smart.Resolver" Version="2.15.0" />
-    <PackageReference Include="Usa.Smart.Resolver.Extensions.Configuration" Version="2.15.0" />
-    <PackageReference Include="Usa.Smart.Resolver.Extensions.DependencyInjection" Version="2.15.0" />
     <PackageReference Include="Usa.Smart.Windows" Version="2.26.0" />
     <PackageReference Include="Usa.Smart.Windows.Extensions" Version="2.26.0" />
   </ItemGroup>

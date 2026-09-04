@@ -4,7 +4,7 @@ using System.Text.Encodings.Web;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
 
-using BunnyTail.ServiceRegistration;
+using BunnyTail.DependencyInjection;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -14,13 +14,22 @@ using Rester;
 
 using Serilog;
 
-using Smart.Resolver;
-
 using Template.WindowsApp.Settings;
 using Template.WindowsApp.Views;
 
 public static partial class ApplicationExtensions
 {
+    //--------------------------------------------------------------------------------
+    // Container
+    //--------------------------------------------------------------------------------
+
+    public static IHostApplicationBuilder ConfigureContainer(this IHostApplicationBuilder builder)
+    {
+        builder.ConfigureContainer(new GeneratedServiceProviderFactory(static options => options.TrackTransientDisposables = false));
+
+        return builder;
+    }
+
     //--------------------------------------------------------------------------------
     // Logging
     //--------------------------------------------------------------------------------
@@ -42,17 +51,6 @@ public static partial class ApplicationExtensions
 
     public static IHostApplicationBuilder ConfigureComponents(this IHostApplicationBuilder builder)
     {
-        builder.ConfigureContainer(new SmartServiceProviderFactory(), ConfigureContainer);
-
-        RestConfig.Default.UseJsonSerializer(static config =>
-        {
-            config.Converters.Add(new Template.WindowsApp.Helpers.DateTimeConverter());
-            config.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
-            config.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-        });
-
-        builder.Services.AddHttpClient();
-
         // System
         builder.Services.AddSingleton(TimeProvider.System);
 
@@ -60,28 +58,15 @@ public static partial class ApplicationExtensions
         builder.Services.AddOptions<ClientSettings>().BindConfiguration("Client").ValidateDataAnnotations().ValidateOnStart();
         builder.Services.AddSingleton(static p => p.GetRequiredService<IOptions<ClientSettings>>().Value);
 
-        // Service
-        builder.Services.AddServices();
-
-        return builder;
-    }
-
-    private static void ConfigureContainer(ResolverConfig config)
-    {
-        config
-            .UseAutoBinding()
-            .UseArrayBinding()
-            .UseAssignableBinding();
-
         // Messenger
-        config.BindSingleton<IReactiveMessenger>(ReactiveMessenger.Default);
+        builder.Services.AddSingleton<IReactiveMessenger>(ReactiveMessenger.Default);
 
         // Navigation
-        config.BindSingleton<Navigator>(static resolver =>
+        builder.Services.AddSingleton<Navigator>(static provider =>
         {
             var navigator = new NavigatorConfig()
                 .UseWindowsNavigationProvider()
-                .UseServiceProvider(resolver)
+                .UseServiceProvider(provider)
                 .UseIdViewMapper(static m => m.AutoRegister(ViewSource()))
                 .ToNavigator();
 #if DEBUG
@@ -94,10 +79,29 @@ public static partial class ApplicationExtensions
 
             return navigator;
         });
+        builder.Services.AddSingleton<INavigator>(static p => p.GetRequiredService<Navigator>());
+
+        // Rest
+        RestConfig.Default.UseJsonSerializer(static config =>
+        {
+            config.Converters.Add(new Template.WindowsApp.Helpers.DateTimeConverter());
+            config.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
+            config.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+        });
+
+        builder.Services.AddHttpClient();
+
+        // Service
+        builder.Services.AddServices();
 
         // Window
-        config.BindSingleton<IWindowManager, WindowManager>();
-        config.BindSingleton<MainWindow>();
+        builder.Services.AddSingleton<IWindowManager, WindowManager>();
+        builder.Services.AddSingleton<MainWindow>();
+        // View & ViewModel
+        builder.Services.AddViews();
+        builder.Services.AddViewModels();
+
+        return builder;
     }
 
     //--------------------------------------------------------------------------------
@@ -111,6 +115,16 @@ public static partial class ApplicationExtensions
     // Service
     //--------------------------------------------------------------------------------
 
-    [ServiceRegistration(Lifetime.Singleton, "Service$")]
+    [ComponentRegistration(Lifetime.Singleton, "Service$")]
     public static partial IServiceCollection AddServices(this IServiceCollection services);
+
+    //--------------------------------------------------------------------------------
+    // View & ViewModel
+    //--------------------------------------------------------------------------------
+
+    [ComponentRegistration(Lifetime.Transient, "View$")]
+    public static partial IServiceCollection AddViews(this IServiceCollection services);
+
+    [ComponentRegistration(Lifetime.Transient, "ViewModel$")]
+    public static partial IServiceCollection AddViewModels(this IServiceCollection services);
 }
