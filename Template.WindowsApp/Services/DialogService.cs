@@ -6,7 +6,7 @@ using Template.WindowsApp.Views.Dialogs;
 public sealed class DialogService : IDialogService
 {
     public bool Confirm(string message) =>
-        MessageBox.Show(Application.Current.MainWindow, message, "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
+        MessageBox.Show(Application.Current.MainWindow!, message, "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
 
     public string? Input(string title, string? initial = null)
     {
@@ -20,5 +20,5 @@ public sealed class DialogService : IDialogService
     }
 
     public void Notify(string message) =>
-        MessageBox.Show(Application.Current.MainWindow, message, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+        MessageBox.Show(Application.Current.MainWindow!, message, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
 }
