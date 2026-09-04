@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -12,13 +12,14 @@
 
   <ItemGroup>
     <PackageReference Include="BunnyTail.DependencyInjection" Version="0.5.0" />
+    <PackageReference Include="BunnyTail.XamlProperty.Wpf" Version="1.1.0" />
     <PackageReference Include="MahApps.Metro" Version="3.0.0-rc0529" />
     <PackageReference Include="MahApps.Metro.IconPacks.FontAwesome" Version="6.2.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.11" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.11" />
     <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="10.0.11" />
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.142" />
-    <PackageReference Include="Rester" Version="2.13.0" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.158" />
+    <PackageReference Include="Rester" Version="2.15.0" />
     <PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0" />
     <PackageReference Include="Serilog.Extensions.Hosting" Version="10.0.0" />
     <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.0" />
@@ -27,13 +28,13 @@
     <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
     <PackageReference Include="System.Reactive" Version="7.0.0" />
     <PackageReference Include="System.Reactive.Wpf" Version="7.0.0" />
-    <PackageReference Include="Usa.Smart.Core" Version="2.16.0" />
-    <PackageReference Include="Usa.Smart.Mvvm" Version="2.8.0" />
-    <PackageReference Include="Usa.Smart.Navigation" Version="3.4.0" />
-    <PackageReference Include="Usa.Smart.Navigation.Windows" Version="3.4.0" />
+    <PackageReference Include="Usa.Smart.Core" Version="2.19.0" />
+    <PackageReference Include="Usa.Smart.Mvvm" Version="2.11.0" />
+    <PackageReference Include="Usa.Smart.Navigation" Version="3.8.0" />
+    <PackageReference Include="Usa.Smart.Navigation.Windows" Version="3.8.0" />
     <PackageReference Include="Usa.Smart.Reactive" Version="2.15.0" />
-    <PackageReference Include="Usa.Smart.Windows" Version="2.26.0" />
-    <PackageReference Include="Usa.Smart.Windows.Extensions" Version="2.26.0" />
+    <PackageReference Include="Usa.Smart.Windows" Version="2.31.0" />
+    <PackageReference Include="Usa.Smart.Windows.Extensions" Version="2.31.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -66,7 +66,7 @@ public static partial class ApplicationExtensions
         {
             var navigator = new NavigatorConfig()
                 .UseWindowsNavigationProvider()
-                .UseServiceProvider(provider)
+                .UseActivator(provider)
                 .UseIdViewMapper(static m => m.AutoRegister(ViewSource()))
                 .ToNavigator();
 #if DEBUG
