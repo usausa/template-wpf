@@ -68,7 +68,6 @@ public sealed partial class App
             }
         }
 #endif
-
         return host;
     }
 
