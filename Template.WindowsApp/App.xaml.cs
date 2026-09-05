@@ -67,6 +67,14 @@ public sealed partial class App
                 System.Diagnostics.Debug.WriteLine(line);
             }
         }
+
+        // Setup navigator
+        var navigator = host.Services.GetRequiredService<INavigator>();
+        navigator.Navigated += static (_, args) =>
+        {
+            // for debug
+            System.Diagnostics.Debug.WriteLine($"Navigated: [{args.Context.FromId}]->[{args.Context.ToId}]");
+        };
 #endif
         return host;
     }

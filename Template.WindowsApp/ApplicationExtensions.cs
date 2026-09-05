@@ -14,6 +14,7 @@ using Rester;
 
 using Serilog;
 
+using Template.WindowsApp.Services;
 using Template.WindowsApp.Settings;
 using Template.WindowsApp.Views;
 
@@ -62,24 +63,11 @@ public static partial class ApplicationExtensions
         builder.Services.AddSingleton<IReactiveMessenger>(ReactiveMessenger.Default);
 
         // Navigation
-        builder.Services.AddSingleton<Navigator>(static provider =>
+        builder.Services.AddNavigator(static (_, config) =>
         {
-            var navigator = new NavigatorConfig()
-                .UseWindowsNavigationProvider()
-                .UseActivator(provider)
-                .UseIdViewMapper(static m => m.AutoRegister(ViewSource()))
-                .ToNavigator();
-#if DEBUG
-            navigator.Navigated += static (_, args) =>
-            {
-                // for debug
-                System.Diagnostics.Debug.WriteLine($"Navigated: [{args.Context.FromId}]->[{args.Context.ToId}]");
-            };
-#endif
-
-            return navigator;
+            config.UseWindowsNavigationProvider();
+            config.UseIdViewMapper(static m => m.AutoRegister(ViewSource()));
         });
-        builder.Services.AddSingleton<INavigator>(static p => p.GetRequiredService<Navigator>());
 
         // Rest
         RestConfig.Default.UseJsonSerializer(static config =>
@@ -93,6 +81,7 @@ public static partial class ApplicationExtensions
 
         // Service
         builder.Services.AddServices();
+        builder.Services.AddSingleton<IDialogService, DialogService>();
 
         // Window
         builder.Services.AddSingleton<IWindowManager, WindowManager>();
