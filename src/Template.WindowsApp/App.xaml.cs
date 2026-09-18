@@ -86,7 +86,9 @@ public sealed partial class App
     // ReSharper disable once AsyncVoidEventHandlerMethod
     protected override async void OnStartup(StartupEventArgs e)
     {
-        MainWindow = windowManager.Load();
+        var mainWindow = windowManager.Load();
+        mainWindow.Closed += OnMainWindowClosed;
+        MainWindow = mainWindow;
 
         await host.StartAsync().ConfigureAwait(true);
 
@@ -94,9 +96,20 @@ public sealed partial class App
     }
 
     // ReSharper disable once AsyncVoidEventHandlerMethod
-    protected override async void OnExit(ExitEventArgs e)
+    private async void OnMainWindowClosed(object? sender, EventArgs e)
     {
-        await host.StopAsync(TimeSpan.FromSeconds(5)).ConfigureAwait(false);
+        try
+        {
+            await host.StopAsync(TimeSpan.FromSeconds(5)).ConfigureAwait(true);
+        }
+        finally
+        {
+            Shutdown();
+        }
+    }
+
+    protected override void OnExit(ExitEventArgs e)
+    {
         host.Dispose();
     }
 
