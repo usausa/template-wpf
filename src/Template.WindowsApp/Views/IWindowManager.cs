@@ -28,19 +28,29 @@ public sealed class WindowManager : NotificationObject, IWindowManager
 
         if (settings.MainWindowPlacement is not null)
         {
-            mainWindow.Left = settings.MainWindowPlacement.Left;
-            mainWindow.Top = settings.MainWindowPlacement.Top;
-            mainWindow.Width = settings.MainWindowPlacement.Width;
-            mainWindow.Height = settings.MainWindowPlacement.Height;
-            if (settings.MainWindowPlacement.Maximized)
-            {
-                mainWindow.WindowState = WindowState.Maximized;
-            }
+            RestorePlacement(mainWindow, settings.MainWindowPlacement);
         }
 
         mainWindow.Show();
 
         return mainWindow;
+    }
+
+    private static void RestorePlacement(Window window, MainWindowPlacement placement)
+    {
+        var left = SystemParameters.VirtualScreenLeft;
+        var top = SystemParameters.VirtualScreenTop;
+        var width = Math.Min(placement.Width, SystemParameters.VirtualScreenWidth);
+        var height = Math.Min(placement.Height, SystemParameters.VirtualScreenHeight);
+
+        window.Left = Math.Clamp(placement.Left, left, Math.Max(left, left + SystemParameters.VirtualScreenWidth - width));
+        window.Top = Math.Clamp(placement.Top, top, Math.Max(top, top + SystemParameters.VirtualScreenHeight - height));
+        window.Width = width;
+        window.Height = height;
+        if (placement.Maximized)
+        {
+            window.WindowState = WindowState.Maximized;
+        }
     }
 
     public void Save()
