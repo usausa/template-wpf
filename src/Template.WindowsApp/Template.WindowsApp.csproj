@@ -11,15 +11,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BunnyTail.DependencyInjection" Version="0.5.0" />
-    <PackageReference Include="BunnyTail.XamlProperty.Wpf" Version="1.1.0" />
+    <PackageReference Include="BunnyTail.DependencyInjection" Version="0.6.0" />
+    <PackageReference Include="BunnyTail.XamlProperty.Wpf" Version="1.2.0" />
     <PackageReference Include="MahApps.Metro" Version="3.0.0-rc0529" />
     <PackageReference Include="MahApps.Metro.IconPacks.FontAwesome" Version="6.2.1" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.11" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.11" />
-    <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="10.0.11" />
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.158" />
-    <PackageReference Include="Rester" Version="2.15.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.12" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.12" />
+    <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="10.0.12" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.161" />
+    <PackageReference Include="Rester" Version="2.17.0" />
     <PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0" />
     <PackageReference Include="Serilog.Extensions.Hosting" Version="10.0.0" />
     <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.0" />
@@ -28,15 +28,15 @@
     <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
     <PackageReference Include="System.Reactive" Version="7.0.0" />
     <PackageReference Include="System.Reactive.Wpf" Version="7.0.0" />
-    <PackageReference Include="Usa.Smart.Core" Version="2.19.0" />
+    <PackageReference Include="Usa.Smart.Core" Version="2.20.0" />
     <PackageReference Include="Usa.Smart.Mapper" Version="1.0.0-beta9" />
-    <PackageReference Include="Usa.Smart.Mvvm" Version="2.11.0" />
-    <PackageReference Include="Usa.Smart.Navigation" Version="3.8.0" />
-    <PackageReference Include="Usa.Smart.Navigation.Extensions.DependencyInjection" Version="3.8.0" />
-    <PackageReference Include="Usa.Smart.Navigation.Windows" Version="3.8.0" />
+    <PackageReference Include="Usa.Smart.Mvvm" Version="2.12.0" />
+    <PackageReference Include="Usa.Smart.Navigation" Version="3.11.0" />
+    <PackageReference Include="Usa.Smart.Navigation.Extensions.DependencyInjection" Version="3.11.0" />
+    <PackageReference Include="Usa.Smart.Navigation.Windows" Version="3.11.0" />
     <PackageReference Include="Usa.Smart.Reactive" Version="2.15.0" />
-    <PackageReference Include="Usa.Smart.Windows" Version="2.31.0" />
-    <PackageReference Include="Usa.Smart.Windows.Extensions" Version="2.31.0" />
+    <PackageReference Include="Usa.Smart.Windows" Version="2.32.0" />
+    <PackageReference Include="Usa.Smart.Windows.Extensions" Version="2.32.0" />
   </ItemGroup>
 
   <ItemGroup>
