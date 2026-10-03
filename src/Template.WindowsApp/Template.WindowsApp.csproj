@@ -30,13 +30,13 @@
     <PackageReference Include="System.Reactive.Wpf" Version="7.0.0" />
     <PackageReference Include="Usa.Smart.Core" Version="2.20.0" />
     <PackageReference Include="Usa.Smart.Mapper" Version="1.0.0-beta9" />
-    <PackageReference Include="Usa.Smart.Mvvm" Version="2.12.0" />
-    <PackageReference Include="Usa.Smart.Navigation" Version="3.11.0" />
-    <PackageReference Include="Usa.Smart.Navigation.Extensions.DependencyInjection" Version="3.11.0" />
-    <PackageReference Include="Usa.Smart.Navigation.Windows" Version="3.11.0" />
+    <PackageReference Include="Usa.Smart.Mvvm" Version="2.16.0" />
+    <PackageReference Include="Usa.Smart.Navigation" Version="3.15.0" />
+    <PackageReference Include="Usa.Smart.Navigation.Extensions.DependencyInjection" Version="3.15.0" />
+    <PackageReference Include="Usa.Smart.Navigation.Windows" Version="3.15.0" />
     <PackageReference Include="Usa.Smart.Reactive" Version="2.15.0" />
-    <PackageReference Include="Usa.Smart.Windows" Version="2.32.0" />
-    <PackageReference Include="Usa.Smart.Windows.Extensions" Version="2.32.0" />
+    <PackageReference Include="Usa.Smart.Windows" Version="2.34.0" />
+    <PackageReference Include="Usa.Smart.Windows.Extensions" Version="2.34.0" />
   </ItemGroup>
 
   <ItemGroup>
