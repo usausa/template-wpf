@@ -12,11 +12,8 @@
   "AttributeOrderingRuleGroups": [
     "xmlns",
     "xmlns:x",
-    "xmlns:sys",
     "xmlns:d",
     "xmlns:mc",
-
-    "xmlns:logging",
 
     "xmlns:s",
     "xmlns:navigation",
@@ -30,6 +27,7 @@
     "xmlns:strings",
 
     "xmlns:application",
+    "xmlns:shell",
     "xmlns:diagnostics",
 
     "xmlns:animations",
@@ -39,8 +37,9 @@
     "xmlns:effects",
     "xmlns:markup",
 
-    "xmlns:drawing",
-    "xmlns:scene",
+    "xmlns:domain",
+    "xmlns:logic",
+    "xmlns:helpers",
 
     "xmlns:components",
     "xmlns:services",
@@ -48,9 +47,6 @@
     "xmlns:state",
 
     "xmlns:models",
-    "xmlns:entity",
-    "xmlns:app",
-    "xmlns:sample",
 
     "xmlns:views",
     "xmlns:modules",
@@ -139,7 +135,7 @@
     "ImageSource",
 
     "FontFamily, FontSize, FontWeight, FontStyle",
-    "Color, Background, Foreground",
+    "Color, Background, BackgroundColor, Foreground",
     "Brush",
     "Data, Points",
     "Stretch",
@@ -157,6 +153,9 @@
 
     "InputScope",
 
+    "Speed",
+    "GaugeWidth",
+
     "OnContent, OffContent",
 
     "ToolTip",
@@ -171,7 +170,8 @@
     "HandleEmptyString",
     "NullValue",
     "NonNullValue",
-    "DefaultValue"
+    "DefaultValue",
+    "Plural, Singular"
   ],
   "FirstLineAttributes": "",
   "OrderAttributesByName": true,
