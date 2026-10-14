@@ -5,19 +5,16 @@
                  xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                  xmlns:s="http://smart/windows"
                  xmlns:navigation="http://smart/navigation"
-                 xmlns:views="clr-namespace:Template.WindowsApp.Views"
                  xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                 xmlns:views="clr-namespace:Template.WindowsApp.Views"
                  mc:Ignorable="d"
                  x:Class="Template.WindowsApp.Views.MainWindow"
                  s:DataContextResolver.Type="{x:Type views:MainWindowViewModel}"
                  d:DataContext="{d:DesignInstance Type={x:Type views:MainWindowViewModel}}"
-                 Width="1024"
-                 Height="768"
+                 Width="1024" Height="768"
                  Title="MainWindow"
                  Icon="../App.ico"
-                 ResizeMode="CanResizeWithGrip"
-                 ShowIconOnTitleBar="True"
-                 WindowTransitionsEnabled="False">
+                 ResizeMode="CanResizeWithGrip" ShowIconOnTitleBar="True" WindowTransitionsEnabled="False">
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">

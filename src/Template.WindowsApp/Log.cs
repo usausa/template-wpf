@@ -34,4 +34,12 @@ internal static partial class Log
 
     [LoggerMessage(Level = LogLevel.Information, Message = "Execute end.")]
     public static partial void InfoExecuteEnd(this ILogger logger);
+
+    // Navigation
+
+    [LoggerMessage(Level = LogLevel.Warning, Message = "Leak suspected. target=[{target}]")]
+    public static partial void WarnLeakSuspected(this ILogger logger, string target);
+
+    [LoggerMessage(Level = LogLevel.Debug, Message = "Closed object collected. target=[{target}]")]
+    public static partial void DebugClosedObjectCollected(this ILogger logger, string target);
 }

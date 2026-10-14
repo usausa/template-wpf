@@ -8,11 +8,11 @@ public sealed partial class MenuViewModel : AppViewModelBase
     [ObservableProperty]
     public partial string Message { get; set; }
 
-    public ICommand NavigateCommand { get; }
+    public IObserveCommand ForwardCommand { get; }
 
     public MenuViewModel(GreetService greetService)
     {
         Message = greetService.MakeMessage();
-        NavigateCommand = MakeDelegateCommand(() => Navigator.Forward(ViewId.Sub));
+        ForwardCommand = MakeAsyncCommand<ViewId>(x => Navigator.ForwardAsync(x));
     }
 }

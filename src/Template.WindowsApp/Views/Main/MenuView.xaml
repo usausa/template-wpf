@@ -3,20 +3,22 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:s="http://smart/windows"
-             xmlns:local="clr-namespace:Template.WindowsApp.Views.Main"
+             xmlns:markup="clr-namespace:Template.WindowsApp.Markup"
+             xmlns:module="clr-namespace:Template.WindowsApp.Views.Main"
              mc:Ignorable="d"
              x:Class="Template.WindowsApp.Views.Main.MenuView"
-             s:DataContextResolver.Type="{x:Type local:MenuViewModel}"
-             d:DataContext="{d:DesignInstance Type={x:Type local:MenuViewModel}}"
+             s:DataContextResolver.Type="{x:Type module:MenuViewModel}"
+             d:DataContext="{d:DesignInstance Type={x:Type module:MenuViewModel}}"
              d:DesignWidth="800" d:DesignHeight="450">
 
     <StackPanel Margin="16">
-        <TextBlock FontSize="24"
-                   Text="{Binding Message}" />
+        <TextBlock Text="{Binding Message}"
+                   FontSize="24" />
         <Button Width="128"
                 Margin="0,16,0,0"
                 HorizontalAlignment="Left"
-                Command="{Binding NavigateCommand}"
+                Command="{Binding ForwardCommand}"
+                CommandParameter="{markup:ViewId Sub}"
                 Content="Navigate" />
     </StackPanel>
 

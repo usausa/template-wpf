@@ -3,21 +3,17 @@
                  xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                  x:Class="Template.WindowsApp.Views.Dialogs.InputDialog"
                  Width="384"
-                 SizeToContent="Height"
-                 WindowStartupLocation="CenterOwner"
-                 ResizeMode="NoResize"
-                 ShowInTaskbar="False"
-                 Title="Input">
+                 Title="Input"
+                 ResizeMode="NoResize" ShowInTaskbar="False" SizeToContent="Height" WindowStartupLocation="CenterOwner">
 
     <StackPanel Margin="16">
         <TextBox x:Name="ValueText" />
-        <StackPanel Margin="0,16,0,0"
-                    HorizontalAlignment="Right"
-                    Orientation="Horizontal">
+        <StackPanel Orientation="Horizontal"
+                    Margin="0,16,0,0"
+                    HorizontalAlignment="Right">
             <Button Width="96"
-                    Click="OnOkClick"
                     Content="OK"
-                    IsDefault="True" />
+                    Click="OnOkClick" IsDefault="True" />
             <Button Width="96"
                     Margin="8,0,0,0"
                     Content="Cancel"

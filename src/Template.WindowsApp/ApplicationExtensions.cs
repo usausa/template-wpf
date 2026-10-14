@@ -14,6 +14,9 @@ using Rester;
 
 using Serilog;
 
+#if DEBUG
+using Template.WindowsApp.Extender;
+#endif
 using Template.WindowsApp.Services;
 using Template.WindowsApp.Settings;
 using Template.WindowsApp.Views;
@@ -66,6 +69,9 @@ public static partial class ApplicationExtensions
         builder.Services.AddNavigator(static (_, config) =>
         {
             config.UseWindowsNavigationProvider();
+#if DEBUG
+            config.AddPlugin<LeakDetectionPlugin>();
+#endif
             config.UseIdViewMapper(static m => m.AutoRegister(ViewSource()));
         });
 

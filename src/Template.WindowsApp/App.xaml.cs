@@ -70,10 +70,10 @@ public sealed partial class App
 
         // Setup navigator
         var navigator = host.Services.GetRequiredService<INavigator>();
-        navigator.Navigated += static (_, args) =>
+        navigator.Navigated += (_, args) =>
         {
             // for debug
-            System.Diagnostics.Debug.WriteLine($"Navigated: [{args.Context.FromId}]->[{args.Context.ToId}]");
+            System.Diagnostics.Debug.WriteLine($"Navigated: [{args.Context.FromId}]->[{args.Context.ToId}] : stacked=[{navigator.StackedCount}]");
         };
 #endif
         return host;

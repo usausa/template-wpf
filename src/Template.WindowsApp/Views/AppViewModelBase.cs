@@ -4,7 +4,7 @@ namespace Template.WindowsApp.Views;
 public abstract class AppViewModelBase :
     ExtendViewModelBase,
     INavigatorAware,
-    INavigationEventSupport,
+    INavigationEventSupportAsync,
     INavigationLifecycleSupport
 {
     public INavigator Navigator { get; set; } = default!;
@@ -14,17 +14,18 @@ public abstract class AppViewModelBase :
         AcceptsCommand = false;
     }
 
-    public void OnNavigatingFrom(INavigationContext context)
+    protected override void Dispose(bool disposing)
     {
+        base.Dispose(disposing);
+
+        System.Diagnostics.Debug.WriteLine($"{GetType()} is Disposed");
     }
 
-    public void OnNavigatingTo(INavigationContext context)
-    {
-    }
+    public virtual Task OnNavigatingFromAsync(INavigationContext context) => Task.CompletedTask;
 
-    public void OnNavigatedTo(INavigationContext context)
-    {
-    }
+    public virtual Task OnNavigatingToAsync(INavigationContext context) => Task.CompletedTask;
+
+    public virtual Task OnNavigatedToAsync(INavigationContext context) => Task.CompletedTask;
 
     public void OnActivated() => AcceptsCommand = true;
 

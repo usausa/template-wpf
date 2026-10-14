@@ -34,11 +34,13 @@ global using Smart.Collections.Generic;
 global using Smart.ComponentModel;
 global using Smart.Mvvm;
 global using Smart.Mvvm.Messaging;
+global using Smart.Mvvm.ViewModels;
 global using Smart.Navigation;
 global using Smart.Navigation.Attributes;
 global using Smart.Navigation.Plugins.Parameter;
 global using Smart.Navigation.Plugins.Scope;
 global using Smart.Text;
+global using Smart.Windows.Input;
 global using Smart.Windows.Messaging;
 global using Smart.Windows.ViewModels;
 
