@@ -11,8 +11,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BunnyTail.DependencyInjection" Version="0.9.0" />
-    <PackageReference Include="BunnyTail.XamlProperty.Wpf" Version="1.4.0" />
+    <PackageReference Include="BunnyTail.DependencyInjection" Version="0.10.0" />
+    <PackageReference Include="BunnyTail.XamlProperty.Wpf" Version="1.5.0" />
     <PackageReference Include="MahApps.Metro" Version="3.0.0-rc0529" />
     <PackageReference Include="MahApps.Metro.IconPacks.FontAwesome" Version="6.2.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.13" />
