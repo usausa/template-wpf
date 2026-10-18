@@ -23,9 +23,6 @@
 
     "xmlns:i",
 
-    "xmlns:mah",
-    "xmlns:iconPacks",
-
     "xmlns:fonts",
     "xmlns:strings",
 
@@ -92,7 +89,6 @@
     "d:DesignWidth, d:DesignHeight",
     "ResizeMode",
     "WindowStartupLocation, SizeToContent, ShowInTaskbar",
-    "ShowIconOnTitleBar, WindowTransitionsEnabled",
 
     "controls:*",
     "behaviors:*",
@@ -191,7 +187,6 @@
   "FormatMarkupExtension": true,
   "NoNewLineMarkupExtensions": "
     Binding, TemplateBinding,
-    iconPacks:FontAwesome,
     s:BoolToBrush, s:BoolToColor, s:BoolToText, s:BoolToVisibility,
     s:ColorBlend,
     s:CompareToBool, s:CompareToBrush, s:CompareToColor, s:CompareToText, s:CompareToVisibility,
