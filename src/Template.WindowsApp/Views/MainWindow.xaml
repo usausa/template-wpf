@@ -5,6 +5,7 @@
                     xmlns:s="http://smart/windows"
                     xmlns:navigation="http://smart/navigation"
                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+                    xmlns:shell="clr-namespace:Template.WindowsApp.Shell"
                     xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
                     xmlns:views="clr-namespace:Template.WindowsApp.Views"
                     mc:Ignorable="d"
@@ -15,6 +16,57 @@
                     ResizeMode="CanResizeWithGrip"
                     Title="MainWindow"
                     Icon="../App.ico">
+
+    <controls:AppWindow.Resources>
+        <Style x:Key="SideBarButtonStyle"
+               TargetType="{x:Type Button}">
+            <Setter Property="Height" Value="40" />
+            <Setter Property="MinWidth" Value="0" />
+            <Setter Property="MinHeight" Value="0" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid d:DataContext="{d:DesignInstance Type={x:Type shell:NavigationItem}}"
+                              Background="{TemplateBinding Background}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="48" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Grid.ColumnSpan="2"
+                                    Visibility="{Binding IsSelected, Converter={StaticResource BoolToVisibilityConverter}}"
+                                    Background="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                            <Border Grid.Column="0"
+                                    Width="3" Height="16"
+                                    HorizontalAlignment="Left"
+                                    Visibility="{Binding IsSelected, Converter={StaticResource BoolToVisibilityConverter}}"
+                                    Background="{DynamicResource AccentFillColorDefaultBrush}" />
+                            <TextBlock Grid.Column="0"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       Text="{Binding Icon}"
+                                       FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                                       FontSize="16" />
+                            <TextBlock Grid.Column="1"
+                                       VerticalAlignment="Center"
+                                       TextTrimming="CharacterEllipsis"
+                                       Text="{Binding Title}"
+                                       FontSize="14" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource SubtleFillColorTertiaryBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </controls:AppWindow.Resources>
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
@@ -28,6 +80,16 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
+    <controls:AppWindow.LeftHeader>
+        <ToggleButton Style="{StaticResource TitleBarButtonStyle}"
+                      Width="48"
+                      IsChecked="{Binding WindowManager.IsPaneOpen}"
+                      Content="&#xE700;"
+                      FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                      FontSize="16"
+                      AutomationProperties.Name="Navigation" />
+    </controls:AppWindow.LeftHeader>
+
     <controls:AppWindow.RightHeader>
         <Button Style="{StaticResource TitleBarButtonStyle}"
                 Width="64"
@@ -36,8 +98,46 @@
     </controls:AppWindow.RightHeader>
 
     <Grid>
-        <Canvas navigation:NavigationContainer.Navigator="{Binding Navigator}" />
-        <ProgressBar VerticalAlignment="Bottom"
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0"
+                Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
+                ClipToBounds="True">
+            <Border.Style>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="Width" Value="48" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding WindowManager.IsPaneOpen}"
+                                     Value="True">
+                            <Setter Property="Width" Value="200" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <ItemsControl ItemsSource="{Binding Items}"
+                          Focusable="False"
+                          KeyboardNavigation.DirectionalNavigation="Cycle" KeyboardNavigation.TabNavigation="Once">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type shell:NavigationItem}">
+                        <Button Style="{StaticResource SideBarButtonStyle}"
+                                Command="{Binding DataContext.ForwardCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
+                                CommandParameter="{Binding Id}"
+                                ToolTip="{Binding Title}"
+                                AutomationProperties.Name="{Binding Title}"
+                                ToolTipService.IsEnabled="{Binding DataContext.WindowManager.IsPaneOpen, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Converter={StaticResource ReverseConverter}}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Border>
+
+        <Canvas Grid.Column="1"
+                navigation:NavigationContainer.Navigator="{Binding Navigator}" />
+
+        <ProgressBar Grid.Column="0" Grid.ColumnSpan="2"
+                     VerticalAlignment="Bottom"
                      IsIndeterminate="True"
                      Visibility="{Binding BusyState.IsBusy, Converter={StaticResource BoolToVisibilityConverter}}" />
     </Grid>

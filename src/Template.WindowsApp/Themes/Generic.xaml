@@ -112,13 +112,12 @@
                                     </Grid.ColumnDefinitions>
 
                                     <ContentPresenter Grid.Column="0"
-                                                      Margin="4,0,0,0"
                                                       Content="{TemplateBinding LeftHeader}"
                                                       WindowChrome.IsHitTestVisibleInChrome="True" />
                                     <Image x:Name="IconImage"
                                            Grid.Column="1"
                                            Width="16" Height="16"
-                                           Margin="12,0,0,0"
+                                           Margin="16,0,0,0"
                                            Source="{TemplateBinding Icon}"
                                            RenderOptions.BitmapScalingMode="HighQuality" />
                                     <TextBlock Grid.Column="2"

@@ -6,9 +6,9 @@
              xmlns:markup="clr-namespace:Template.WindowsApp.Markup"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Main"
              mc:Ignorable="d"
-             x:Class="Template.WindowsApp.Views.Main.MenuView"
-             s:DataContextResolver.Type="{x:Type module:MenuViewModel}"
-             d:DataContext="{d:DesignInstance Type={x:Type module:MenuViewModel}}"
+             x:Class="Template.WindowsApp.Views.Main.HomeView"
+             s:DataContextResolver.Type="{x:Type module:HomeViewModel}"
+             d:DataContext="{d:DesignInstance Type={x:Type module:HomeViewModel}}"
              d:DesignWidth="800" d:DesignHeight="450">
 
     <StackPanel Margin="16">

@@ -35,13 +35,15 @@
             <!-- ================================================================================ -->
 
             <Style x:Key="TitleBarButtonStyle"
-                   TargetType="{x:Type Button}">
+                   TargetType="{x:Type ButtonBase}">
+                <Setter Property="MinWidth" Value="0" />
+                <Setter Property="MinHeight" Value="0" />
                 <Setter Property="Background" Value="Transparent" />
                 <Setter Property="Foreground" Value="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource AncestorType={x:Type ContentPresenter}}}" />
                 <Setter Property="Focusable" Value="False" />
                 <Setter Property="Template">
                     <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Button}">
+                        <ControlTemplate TargetType="{x:Type ButtonBase}">
                             <Grid Background="{TemplateBinding Background}">
                                 <Border x:Name="Overlay"
                                         Background="{TemplateBinding Foreground}"

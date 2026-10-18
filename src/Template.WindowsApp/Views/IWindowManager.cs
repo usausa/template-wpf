@@ -6,6 +6,8 @@ using Template.WindowsApp.Settings;
 
 public interface IWindowManager
 {
+    bool IsPaneOpen { get; set; }
+
     Window Load();
 
     void Save();
@@ -16,6 +18,12 @@ public sealed class WindowManager : NotificationObject, IWindowManager
     private readonly IServiceProvider provider;
 
     private readonly WindowSettings settings = new();
+
+    public bool IsPaneOpen
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
 
     public WindowManager(IServiceProvider provider)
     {
@@ -30,6 +38,7 @@ public sealed class WindowManager : NotificationObject, IWindowManager
         {
             RestorePlacement(mainWindow, settings.MainWindowPlacement);
         }
+        IsPaneOpen = settings.IsPaneOpen;
 
         mainWindow.Show();
 
@@ -65,6 +74,7 @@ public sealed class WindowManager : NotificationObject, IWindowManager
             Height = (int)mainWindow.Height,
             Maximized = mainWindow.WindowState == WindowState.Maximized
         };
+        settings.IsPaneOpen = IsPaneOpen;
 
         settings.Save();
     }

@@ -29,6 +29,6 @@ public sealed partial class SubViewModel : AppViewModelBase
                 Result = value;
             }
         });
-        BackCommand = MakeAsyncCommand(() => Navigator.ForwardAsync(ViewId.Menu));
+        BackCommand = MakeAsyncCommand(() => Navigator.ForwardAsync(ViewId.Home));
     }
 }

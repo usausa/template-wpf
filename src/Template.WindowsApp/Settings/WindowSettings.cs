@@ -23,4 +23,12 @@ public sealed class WindowSettings : ApplicationSettingsBase
         get => (MainWindowPlacement)this[nameof(MainWindowPlacement)];
         set => this[nameof(MainWindowPlacement)] = value;
     }
+
+    [UserScopedSetting]
+    [DefaultSettingValue("True")]
+    public bool IsPaneOpen
+    {
+        get => (bool)this[nameof(IsPaneOpen)];
+        set => this[nameof(IsPaneOpen)] = value;
+    }
 }

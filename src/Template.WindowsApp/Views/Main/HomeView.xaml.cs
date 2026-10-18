@@ -1,9 +1,9 @@
 namespace Template.WindowsApp.Views.Main;
 
-[View(ViewId.Menu)]
-public sealed partial class MenuView
+[View(ViewId.Home)]
+public sealed partial class HomeView
 {
-    public MenuView()
+    public HomeView()
     {
         InitializeComponent();
     }

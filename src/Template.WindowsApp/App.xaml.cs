@@ -92,7 +92,7 @@ public sealed partial class App
 
         await host.StartAsync().ConfigureAwait(true);
 
-        await host.Services.GetRequiredService<INavigator>().ForwardAsync(ViewId.Menu).ConfigureAwait(true);
+        await host.Services.GetRequiredService<INavigator>().ForwardAsync(ViewId.Home).ConfigureAwait(true);
     }
 
     // ReSharper disable once AsyncVoidEventHandlerMethod
