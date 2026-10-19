@@ -8,6 +8,8 @@ public interface IWindowManager
 {
     bool IsPaneOpen { get; set; }
 
+    IList<string> RecentCommands { get; }
+
     Window Load();
 
     void Save();
@@ -25,6 +27,8 @@ public sealed class WindowManager : NotificationObject, IWindowManager
         set => SetProperty(ref field, value);
     }
 
+    public IList<string> RecentCommands { get; } = [];
+
     public WindowManager(IServiceProvider provider)
     {
         this.provider = provider;
@@ -39,6 +43,10 @@ public sealed class WindowManager : NotificationObject, IWindowManager
             RestorePlacement(mainWindow, settings.MainWindowPlacement);
         }
         IsPaneOpen = settings.IsPaneOpen;
+        foreach (var id in (settings.RecentCommands ?? string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries))
+        {
+            RecentCommands.Add(id);
+        }
 
         mainWindow.Show();
 
@@ -75,6 +83,7 @@ public sealed class WindowManager : NotificationObject, IWindowManager
             Maximized = mainWindow.WindowState == WindowState.Maximized
         };
         settings.IsPaneOpen = IsPaneOpen;
+        settings.RecentCommands = string.Join(',', RecentCommands);
 
         settings.Save();
     }

@@ -1,9 +1,10 @@
 namespace Template.WindowsApp.Views.Main;
 
 using Template.WindowsApp.Services;
+using Template.WindowsApp.Shell;
 
 // ReSharper disable once ClassNeverInstantiated.Global
-public sealed partial class SubViewModel : AppViewModelBase
+public sealed partial class SubViewModel : AppViewModelBase, IShellCommandProvider
 {
     [ObservableProperty]
     public partial string Result { get; set; }
@@ -31,4 +32,10 @@ public sealed partial class SubViewModel : AppViewModelBase
         });
         BackCommand = MakeAsyncCommand(() => Navigator.ForwardAsync(ViewId.Home));
     }
+
+    public IEnumerable<ShellCommand> GetCommands() =>
+    [
+        new("Sub:Confirm", "Confirm", "Sub", "\uE8FB", ConfirmCommand),
+        new("Sub:Input", "Input", "Sub", "\uE70F", InputCommand)
+    ];
 }

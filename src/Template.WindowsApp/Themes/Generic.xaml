@@ -91,51 +91,35 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
 
-                            <Grid x:Name="TitleBar"
-                                  Grid.Row="0"
-                                  Background="{DynamicResource AccentFillColorDefaultBrush}"
-                                  TextElement.Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-
-                                <Grid Grid.Column="0"
-                                      ClipToBounds="True">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-
-                                    <ContentPresenter Grid.Column="0"
-                                                      Content="{TemplateBinding LeftHeader}"
+                            <controls:TitleBarPanel x:Name="TitleBar"
+                                                    Grid.Row="0"
+                                                    Background="{DynamicResource AccentFillColorDefaultBrush}"
+                                                    TextElement.Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}">
+                                <StackPanel Orientation="Horizontal">
+                                    <ContentPresenter Content="{TemplateBinding LeftHeader}"
                                                       WindowChrome.IsHitTestVisibleInChrome="True" />
                                     <Image x:Name="IconImage"
-                                           Grid.Column="1"
                                            Width="16" Height="16"
                                            Margin="16,0,0,0"
                                            Source="{TemplateBinding Icon}"
                                            RenderOptions.BitmapScalingMode="HighQuality" />
-                                    <TextBlock Grid.Column="2"
-                                               Margin="16,0,0,0"
-                                               VerticalAlignment="Center"
-                                               TextTrimming="CharacterEllipsis"
-                                               Text="{TemplateBinding Title}"
-                                               FontSize="12" />
-                                    <ContentPresenter Grid.Column="3"
-                                                      Content="{TemplateBinding TitleBarContent}"
-                                                      WindowChrome.IsHitTestVisibleInChrome="True" />
-                                    <ContentPresenter Grid.Column="5"
-                                                      Content="{TemplateBinding RightHeader}"
-                                                      WindowChrome.IsHitTestVisibleInChrome="True" />
-                                </Grid>
+                                </StackPanel>
 
-                                <StackPanel Grid.Column="1"
-                                            Orientation="Horizontal">
+                                <TextBlock x:Name="TitleText"
+                                           Margin="16,0,0,0"
+                                           VerticalAlignment="Center"
+                                           TextTrimming="CharacterEllipsis"
+                                           Text="{TemplateBinding Title}"
+                                           FontSize="12" />
+
+                                <ContentPresenter x:Name="TitleBarContentPresenter"
+                                                  Margin="16,0,16,0"
+                                                  Content="{TemplateBinding TitleBarContent}"
+                                                  WindowChrome.IsHitTestVisibleInChrome="True" />
+
+                                <StackPanel Orientation="Horizontal">
+                                    <ContentPresenter Content="{TemplateBinding RightHeader}"
+                                                      WindowChrome.IsHitTestVisibleInChrome="True" />
                                     <controls:CaptionButton x:Name="PART_MinimizeButton"
                                                             Content="&#xE921;"
                                                             ToolTip="Minimize"
@@ -149,7 +133,7 @@
                                                             ToolTip="Close"
                                                             AutomationProperties.Name="Close" />
                                 </StackPanel>
-                            </Grid>
+                            </controls:TitleBarPanel>
 
                             <AdornerDecorator Grid.Row="1">
                                 <ContentPresenter />
@@ -170,6 +154,17 @@
                         </Trigger>
                         <Trigger Property="Icon" Value="{x:Null}">
                             <Setter TargetName="IconImage" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="TitleText" Property="Margin" Value="0" />
+                        </Trigger>
+                        <Trigger Property="ShowIconOnTitleBar" Value="False">
+                            <Setter TargetName="IconImage" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="TitleText" Property="Margin" Value="0" />
+                        </Trigger>
+                        <Trigger Property="LeftHeader" Value="{x:Null}">
+                            <Setter TargetName="TitleText" Property="Margin" Value="16,0,0,0" />
+                        </Trigger>
+                        <Trigger Property="TitleBarContent" Value="{x:Null}">
+                            <Setter TargetName="TitleBarContentPresenter" Property="Visibility" Value="Collapsed" />
                         </Trigger>
                         <Trigger Property="WindowState" Value="Maximized">
                             <Setter TargetName="PART_MaximizeButton" Property="AutomationProperties.Name" Value="Restore" />

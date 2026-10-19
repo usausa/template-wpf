@@ -6,6 +6,7 @@
                     xmlns:navigation="http://smart/navigation"
                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                     xmlns:shell="clr-namespace:Template.WindowsApp.Shell"
+                    xmlns:behaviors="clr-namespace:Template.WindowsApp.Behaviors"
                     xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
                     xmlns:views="clr-namespace:Template.WindowsApp.Views"
                     mc:Ignorable="d"
@@ -15,7 +16,8 @@
                     Width="1024" Height="768"
                     ResizeMode="CanResizeWithGrip"
                     Title="MainWindow"
-                    Icon="../App.ico">
+                    Icon="../App.ico"
+                    ShowIconOnTitleBar="False">
 
     <controls:AppWindow.Resources>
         <Style x:Key="SideBarButtonStyle"
@@ -66,7 +68,87 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style x:Key="CommandBoxStyle"
+               TargetType="{x:Type Button}">
+            <Setter Property="MinWidth" Value="0" />
+            <Setter Property="MinHeight" Value="0" />
+            <Setter Property="Foreground" Value="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource AncestorType={x:Type ContentPresenter}}}" />
+            <Setter Property="Focusable" Value="False" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Border x:Name="Overlay"
+                                    Background="{TemplateBinding Foreground}"
+                                    Opacity="0.15" />
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="12,0,12,0"
+                                        VerticalAlignment="Center"
+                                        Opacity="0.7">
+                                <TextBlock VerticalAlignment="Center"
+                                           Text="&#xE721;"
+                                           FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                                           FontSize="12" />
+                                <ContentPresenter Margin="8,0,0,0"
+                                                  VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Overlay" Property="Opacity" Value="0.25" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Overlay" Property="Opacity" Value="0.375" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CommandItemStyle"
+               TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Height" Value="36" />
+            <Setter Property="MinHeight" Value="0" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+            <Setter Property="Focusable" Value="False" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <Border x:Name="Selection"
+                                    Visibility="Collapsed"
+                                    Background="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                            <Border x:Name="Indicator"
+                                    Width="3" Height="16"
+                                    HorizontalAlignment="Left"
+                                    Visibility="Collapsed"
+                                    Background="{DynamicResource AccentFillColorDefaultBrush}" />
+                            <ContentPresenter />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Selection" Property="Visibility" Value="Visible" />
+                                <Setter TargetName="Indicator" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </controls:AppWindow.Resources>
+
+    <controls:AppWindow.InputBindings>
+        <KeyBinding Command="{Binding OpenPaletteCommand}"
+                    Gesture="Ctrl+Shift+P" />
+    </controls:AppWindow.InputBindings>
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
@@ -89,6 +171,14 @@
                       FontSize="16"
                       AutomationProperties.Name="Navigation" />
     </controls:AppWindow.LeftHeader>
+
+    <controls:AppWindow.TitleBarContent>
+        <Button Style="{StaticResource CommandBoxStyle}"
+                Width="400" Height="32"
+                Command="{Binding OpenPaletteCommand}"
+                Content="Search commands (Ctrl+Shift+P)"
+                FontSize="12" />
+    </controls:AppWindow.TitleBarContent>
 
     <controls:AppWindow.RightHeader>
         <Button Style="{StaticResource TitleBarButtonStyle}"
@@ -140,6 +230,133 @@
                      VerticalAlignment="Bottom"
                      IsIndeterminate="True"
                      Visibility="{Binding BusyState.IsBusy, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+        <FrameworkElement x:Name="PaletteAnchor"
+                          Grid.Column="0" Grid.ColumnSpan="2"
+                          Width="600"
+                          HorizontalAlignment="Center" VerticalAlignment="Top" />
+
+        <Popup Grid.Column="0"
+               IsOpen="{Binding Palette.IsOpen}"
+               Placement="Bottom"
+               PlacementTarget="{Binding ElementName=PaletteAnchor}"
+               StaysOpen="False">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Opened">
+                    <s:SetFocusAction TargetObject="{Binding ElementName=CommandText}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <Border Width="600"
+                    Background="{DynamicResource FlyoutBackground}"
+                    BorderBrush="{DynamicResource FlyoutBorderBrush}"
+                    BorderThickness="1">
+                <StackPanel>
+                    <Grid>
+                        <TextBox x:Name="CommandText"
+                                 Height="32"
+                                 Text="{Binding Palette.Text, UpdateSourceTrigger=PropertyChanged}"
+                                 AutomationProperties.Name="Command text">
+                            <TextBox.InputBindings>
+                                <KeyBinding Key="Up"
+                                            Command="{Binding MovePaletteCommand}"
+                                            CommandParameter="{x:Static shell:CommandPaletteMove.Previous}" />
+                                <KeyBinding Key="Down"
+                                            Command="{Binding MovePaletteCommand}"
+                                            CommandParameter="{x:Static shell:CommandPaletteMove.Next}" />
+                                <KeyBinding Key="PageUp"
+                                            Command="{Binding MovePaletteCommand}"
+                                            CommandParameter="{x:Static shell:CommandPaletteMove.PreviousPage}" />
+                                <KeyBinding Key="PageDown"
+                                            Command="{Binding MovePaletteCommand}"
+                                            CommandParameter="{x:Static shell:CommandPaletteMove.NextPage}" />
+                                <KeyBinding Key="Enter"
+                                            Command="{Binding ExecutePaletteCommand}" />
+                                <KeyBinding Key="Escape"
+                                            Command="{Binding ClosePaletteCommand}" />
+                            </TextBox.InputBindings>
+                        </TextBox>
+                        <TextBlock Margin="12,0,0,0"
+                                   VerticalAlignment="Center"
+                                   IsHitTestVisible="False"
+                                   Text="Type to search"
+                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Text, ElementName=CommandText}"
+                                                     Value="">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Grid>
+                    <ListBox MaxHeight="360"
+                             Padding="0"
+                             ItemsSource="{Binding Palette.Candidates}"
+                             Focusable="False"
+                             Background="Transparent"
+                             BorderThickness="0"
+                             ItemContainerStyle="{StaticResource CommandItemStyle}"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             SelectedIndex="{Binding Palette.SelectedIndex}">
+                        <i:Interaction.Behaviors>
+                            <behaviors:ScrollIntoSelectedItemBehavior />
+                        </i:Interaction.Behaviors>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type shell:ShellCommand}">
+                                <Grid Background="Transparent">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="48" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseLeftButtonUp">
+                                            <i:InvokeCommandAction Command="{Binding DataContext.ExecutePaletteCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                                                   CommandParameter="{Binding}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                    <TextBlock Grid.Column="0"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                                               Text="{Binding Icon}"
+                                               FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                                               FontSize="16" />
+                                    <TextBlock Grid.Column="1"
+                                               VerticalAlignment="Center"
+                                               TextTrimming="CharacterEllipsis"
+                                               Text="{Binding Title}"
+                                               FontSize="14" />
+                                    <TextBlock Grid.Column="2"
+                                               Margin="0,0,16,0"
+                                               VerticalAlignment="Center"
+                                               Text="{Binding Category}"
+                                               FontSize="12"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <TextBlock Margin="12,8,12,8"
+                               Text="No matching commands"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Palette.Candidates.Count}"
+                                                 Value="0">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+        </Popup>
     </Grid>
 
 </controls:AppWindow>

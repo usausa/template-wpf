@@ -16,13 +16,25 @@ public sealed class MainWindowViewModel : ExtendViewModelBase
 
     public IReadOnlyList<NavigationItem> Items { get; } =
     [
-        new(ViewId.Home, "Home", ""),
-        new(ViewId.Sub, "Sub", "")
+        new(ViewId.Home, "Home", "\uE80F"),
+        new(ViewId.Sub, "Sub", "\uE8A5")
     ];
+
+    public CommandPalette Palette { get; }
 
     public IObserveCommand ForwardCommand { get; }
 
     public IObserveCommand ExecuteCommand { get; }
+
+    public IObserveCommand ToggleNavigationCommand { get; }
+
+    public IObserveCommand OpenPaletteCommand { get; }
+
+    public IObserveCommand ClosePaletteCommand { get; }
+
+    public IObserveCommand MovePaletteCommand { get; }
+
+    public IObserveCommand ExecutePaletteCommand { get; }
 
     public MainWindowViewModel(
         ILogger<MainWindowViewModel> logger,
@@ -32,9 +44,15 @@ public sealed class MainWindowViewModel : ExtendViewModelBase
         this.logger = logger;
         WindowManager = windowManager;
         Navigator = navigator;
+        Palette = new CommandPalette(windowManager.RecentCommands);
 
         ForwardCommand = MakeAsyncCommand<ViewId>(x => Equals(Navigator.CurrentViewId, x) ? Task.CompletedTask : Navigator.ForwardAsync(x));
         ExecuteCommand = MakeAsyncCommand(Execute, () => !BusyState.IsBusy);
+        ToggleNavigationCommand = MakeDelegateCommand(() => WindowManager.IsPaneOpen = !WindowManager.IsPaneOpen);
+        OpenPaletteCommand = MakeDelegateCommand(CommandMode.Simple, () => Palette.Open(CollectCommands()));
+        ClosePaletteCommand = MakeDelegateCommand(CommandMode.Simple, Palette.Close);
+        MovePaletteCommand = MakeDelegateCommand<CommandPaletteMove>(CommandMode.Simple, Palette.Move);
+        ExecutePaletteCommand = MakeDelegateCommand<ShellCommand?>(CommandMode.Simple, ExecutePalette);
 
         // Busy while navigating
         Disposables.Add(Observable.FromEventPattern<EventArgs>(h => Navigator.ExecutingChanged += h, h => Navigator.ExecutingChanged -= h)
@@ -63,6 +81,27 @@ public sealed class MainWindowViewModel : ExtendViewModelBase
         foreach (var item in Items)
         {
             item.IsSelected = item.Id == id;
+        }
+    }
+
+    private List<ShellCommand> CollectCommands()
+    {
+        var commands = Items.Select(x => new ShellCommand($"View:{x.Id}", x.Title, "View", x.Icon, ForwardCommand, x.Id)).ToList();
+        commands.Add(new ShellCommand("Window:Execute", "Execute", "Window", "\uE768", ExecuteCommand));
+        commands.Add(new ShellCommand("Window:ToggleNavigation", "Toggle navigation", "Window", "\uE700", ToggleNavigationCommand));
+        if (Navigator.CurrentTarget is IShellCommandProvider provider)
+        {
+            commands.AddRange(provider.GetCommands());
+        }
+        return commands;
+    }
+
+    private void ExecutePalette(ShellCommand? command)
+    {
+        var target = Palette.Pick(command);
+        if ((target is not null) && target.Command.CanExecute(target.Parameter))
+        {
+            target.Command.Execute(target.Parameter);
         }
     }
 

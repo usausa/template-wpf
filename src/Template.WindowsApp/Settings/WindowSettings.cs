@@ -31,4 +31,11 @@ public sealed class WindowSettings : ApplicationSettingsBase
         get => (bool)this[nameof(IsPaneOpen)];
         set => this[nameof(IsPaneOpen)] = value;
     }
+
+    [UserScopedSetting]
+    public string? RecentCommands
+    {
+        get => (string?)this[nameof(RecentCommands)];
+        set => this[nameof(RecentCommands)] = value;
+    }
 }

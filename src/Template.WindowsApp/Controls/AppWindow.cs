@@ -22,6 +22,9 @@ public partial class AppWindow : Window
     [DependencyProperty]
     public partial object? RightHeader { get; set; }
 
+    [DependencyProperty(DefaultValue = true)]
+    public partial bool ShowIconOnTitleBar { get; set; }
+
     static AppWindow()
     {
         DefaultStyleKeyProperty.OverrideMetadata(typeof(AppWindow), new FrameworkPropertyMetadata(typeof(AppWindow)));
