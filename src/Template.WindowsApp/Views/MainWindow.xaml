@@ -240,7 +240,7 @@
                IsOpen="{Binding Palette.IsOpen}"
                AllowsTransparency="True" Placement="Bottom"
                PlacementTarget="{Binding ElementName=PaletteAnchor}"
-               StaysOpen="False">
+               StaysOpen="False" VerticalOffset="-40">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="Opened">
                     <s:SetFocusAction TargetObject="{Binding ElementName=CommandText}" />

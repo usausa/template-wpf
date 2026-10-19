@@ -73,7 +73,6 @@
     <Style TargetType="{x:Type controls:AppWindow}">
         <Setter Property="Background" Value="{DynamicResource WindowBackground}" />
         <Setter Property="Foreground" Value="{DynamicResource WindowForeground}" />
-        <Setter Property="WindowStyle" Value="None" />
         <Setter Property="WindowChrome.WindowChrome">
             <Setter.Value>
                 <WindowChrome CornerRadius="0"
@@ -84,7 +83,8 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:AppWindow}">
-                    <Border Background="{TemplateBinding Background}">
+                    <Border x:Name="RootBorder"
+                            Background="{TemplateBinding Background}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="48" />
@@ -145,13 +145,6 @@
                                         Visibility="Collapsed"
                                         IsTabStop="False"
                                         WindowChrome.IsHitTestVisibleInChrome="True" WindowChrome.ResizeGripDirection="BottomRight" />
-
-                            <Border x:Name="WindowBorder"
-                                    Grid.Row="0" Grid.RowSpan="2"
-                                    Visibility="Collapsed"
-                                    IsHitTestVisible="False"
-                                    BorderBrush="{DynamicResource SurfaceStrokeColorDefaultBrush}"
-                                    BorderThickness="1" />
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -174,13 +167,13 @@
                             <Setter TargetName="TitleBarContentPresenter" Property="Visibility" Value="Collapsed" />
                         </Trigger>
                         <Trigger Property="WindowState" Value="Maximized">
+                            <Setter TargetName="RootBorder" Property="Padding" Value="8" />
                             <Setter TargetName="PART_MaximizeButton" Property="AutomationProperties.Name" Value="Restore" />
                             <Setter TargetName="PART_MaximizeButton" Property="Content" Value="&#xE923;" />
                         </Trigger>
                         <Trigger Property="ResizeMode" Value="NoResize">
                             <Setter TargetName="PART_MinimizeButton" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="PART_MaximizeButton" Property="Visibility" Value="Collapsed" />
-                            <Setter TargetName="WindowBorder" Property="Visibility" Value="Visible" />
                         </Trigger>
                         <Trigger Property="ResizeMode" Value="CanMinimize">
                             <Setter TargetName="PART_MaximizeButton" Property="Visibility" Value="Collapsed" />

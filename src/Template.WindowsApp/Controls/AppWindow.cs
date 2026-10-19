@@ -84,9 +84,6 @@ public partial class AppWindow : Window
     {
         switch (msg)
         {
-            case NativeMethods.WmGetMinMaxInfo:
-                NativeMethods.FitMaximizedToWorkArea(hwnd, lParam);
-                break;
             case NativeMethods.WmNcHitTest when IsOverMaximizeButton(lParam):
                 handled = true;
                 return NativeMethods.HtMaxButton;
