@@ -238,7 +238,7 @@
 
         <Popup Grid.Column="0"
                IsOpen="{Binding Palette.IsOpen}"
-               Placement="Bottom"
+               AllowsTransparency="True" Placement="Bottom"
                PlacementTarget="{Binding ElementName=PaletteAnchor}"
                StaysOpen="False">
             <i:Interaction.Triggers>

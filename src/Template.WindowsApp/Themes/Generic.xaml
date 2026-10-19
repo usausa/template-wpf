@@ -145,6 +145,13 @@
                                         Visibility="Collapsed"
                                         IsTabStop="False"
                                         WindowChrome.IsHitTestVisibleInChrome="True" WindowChrome.ResizeGripDirection="BottomRight" />
+
+                            <Border x:Name="WindowBorder"
+                                    Grid.Row="0" Grid.RowSpan="2"
+                                    Visibility="Collapsed"
+                                    IsHitTestVisible="False"
+                                    BorderBrush="{DynamicResource SurfaceStrokeColorDefaultBrush}"
+                                    BorderThickness="1" />
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -173,6 +180,7 @@
                         <Trigger Property="ResizeMode" Value="NoResize">
                             <Setter TargetName="PART_MinimizeButton" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="PART_MaximizeButton" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="WindowBorder" Property="Visibility" Value="Visible" />
                         </Trigger>
                         <Trigger Property="ResizeMode" Value="CanMinimize">
                             <Setter TargetName="PART_MaximizeButton" Property="Visibility" Value="Collapsed" />
