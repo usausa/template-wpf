@@ -129,6 +129,19 @@
                 </Setter>
             </Style>
 
+            <Style x:Key="SamplePanelStyle"
+                   TargetType="{x:Type StackPanel}">
+                <Setter Property="Margin" Value="0,16,0,0" />
+            </Style>
+
+            <Style x:Key="SampleResultTextStyle"
+                   TargetType="{x:Type TextBlock}"
+                   BasedOn="{StaticResource PageTextStyle}">
+                <Setter Property="Margin" Value="0,8,0,0" />
+                <Setter Property="FontSize" Value="{DynamicResource CaptionTextBlockFontSize}" />
+                <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+            </Style>
+
             <!-- ================================================================================ -->
             <!-- Style -->
             <!-- ================================================================================ -->

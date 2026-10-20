@@ -8,6 +8,14 @@ public sealed class NavigationMenu
     [
         new NavigationItem(ViewId.Home, "Home", "\uE80F"),
         new NavigationGroup(
+            "Basic input",
+            "\uE961",
+            [
+                new(ViewId.Buttons, "Buttons", "\uEDA4"),
+                new(ViewId.Choices, "Choices", "\uE73A"),
+                new(ViewId.Text, "Text", "\uE8D2")
+            ]),
+        new NavigationGroup(
             "Feedback",
             "\uE946",
             [
