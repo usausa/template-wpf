@@ -1,0 +1,198 @@
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:s="http://smart/windows"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:behaviors="clr-namespace:Template.WindowsApp.Behaviors"
+             xmlns:module="clr-namespace:Template.WindowsApp.Views.Collections"
+             mc:Ignorable="d"
+             x:Class="Template.WindowsApp.Views.Collections.HierarchyView"
+             s:DataContextResolver.Type="{x:Type module:HierarchyViewModel}"
+             d:DataContext="{d:DesignInstance Type={x:Type module:HierarchyViewModel}}"
+             d:DesignWidth="800" d:DesignHeight="600">
+
+    <UserControl.Resources>
+        <Style x:Key="NodeIconTextStyle"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="0,0,8,0" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24">
+            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+                       Text="Hierarchy" />
+            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+                       Text="Tree views with templates, selection and on-demand loading." />
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Grid.Column="0"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="TreeView" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Items written in XAML."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <TreeView x:Name="DocumentTree"
+                                      AutomationProperties.Name="Documents">
+                                <TreeViewItem Header="Work Documents" IsExpanded="True" IsSelected="True">
+                                    <TreeViewItem Header="Feature Schedule" />
+                                    <TreeViewItem Header="Overall Project Plan" />
+                                </TreeViewItem>
+                                <TreeViewItem Header="Personal Documents">
+                                    <TreeViewItem Header="Contractor contact info" />
+                                    <TreeViewItem Header="Home Remodel">
+                                        <TreeViewItem Header="Paint Color Scheme" />
+                                        <TreeViewItem Header="Flooring Woodgrain Type" />
+                                        <TreeViewItem Header="Kitchen Cabinet Style" />
+                                    </TreeViewItem>
+                                </TreeViewItem>
+                            </TreeView>
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding SelectedItem.(HeaderedItemsControl.Header), ElementName=DocumentTree, StringFormat='Selected: {0}', TargetNullValue='Selected: -'}" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="0" Grid.Column="2"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="Data binding" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Departments, teams and members from the view model."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <TreeView ItemsSource="{Binding Departments}"
+                                      AutomationProperties.Name="Organization">
+                                <TreeView.ItemContainerStyle>
+                                    <Style TargetType="{x:Type TreeViewItem}"
+                                           BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                                        <Setter Property="AutomationProperties.Name" Value="{Binding Name}" />
+                                    </Style>
+                                </TreeView.ItemContainerStyle>
+                                <TreeView.Resources>
+                                    <HierarchicalDataTemplate ItemsSource="{Binding Teams}"
+                                                              DataType="{x:Type module:Department}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Style="{StaticResource NodeIconTextStyle}"
+                                                       Text="&#xE731;" />
+                                            <TextBlock VerticalAlignment="Center"
+                                                       Text="{Binding Name}" />
+                                        </StackPanel>
+                                    </HierarchicalDataTemplate>
+                                    <HierarchicalDataTemplate ItemsSource="{Binding Members}"
+                                                              DataType="{x:Type module:Team}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Style="{StaticResource NodeIconTextStyle}"
+                                                       Text="&#xE716;" />
+                                            <TextBlock VerticalAlignment="Center"
+                                                       Text="{Binding Name}" />
+                                        </StackPanel>
+                                    </HierarchicalDataTemplate>
+                                    <DataTemplate DataType="{x:Type module:Member}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Style="{StaticResource NodeIconTextStyle}"
+                                                       Text="&#xE77B;" />
+                                            <TextBlock VerticalAlignment="Center"
+                                                       Text="{Binding Name}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </TreeView.Resources>
+                                <i:Interaction.Behaviors>
+                                    <behaviors:TreeViewSelectedItemBehavior SelectedItem="{Binding SelectedNode}" />
+                                </i:Interaction.Behaviors>
+                            </TreeView>
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding SelectedPath, StringFormat='Selected: {0}', TargetNullValue='Selected: -'}" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="1" Grid.Column="0"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="Load on demand" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Child folders are loaded when a folder is expanded."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <TreeView ItemsSource="{Binding Folders}"
+                                      AutomationProperties.Name="Folders">
+                                <TreeView.ItemContainerStyle>
+                                    <Style TargetType="{x:Type TreeViewItem}"
+                                           BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                                        <Setter Property="AutomationProperties.Name" Value="{Binding Name}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsPlaceholder}"
+                                                         Value="True">
+                                                <Setter Property="AutomationProperties.Name" Value="Loading…" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TreeView.ItemContainerStyle>
+                                <TreeView.Resources>
+                                    <HierarchicalDataTemplate ItemsSource="{Binding Children}"
+                                                              DataType="{x:Type module:FolderNode}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock x:Name="FolderIcon"
+                                                       Style="{StaticResource NodeIconTextStyle}"
+                                                       Text="&#xE8B7;" />
+                                            <TextBlock x:Name="FolderName"
+                                                       VerticalAlignment="Center"
+                                                       Text="{Binding Name}" />
+                                        </StackPanel>
+                                        <HierarchicalDataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding IsPlaceholder}"
+                                                         Value="True">
+                                                <Setter TargetName="FolderIcon" Property="Visibility" Value="Collapsed" />
+                                                <Setter TargetName="FolderName" Property="Text" Value="Loading…" />
+                                                <Setter TargetName="FolderName" Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+                                            </DataTrigger>
+                                        </HierarchicalDataTemplate.Triggers>
+                                    </HierarchicalDataTemplate>
+                                </TreeView.Resources>
+                                <i:Interaction.Behaviors>
+                                    <behaviors:TreeViewExpandedCommandBehavior Command="{Binding LoadCommand}" />
+                                </i:Interaction.Behaviors>
+                            </TreeView>
+                        </StackPanel>
+                        <TextBlock>
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}"
+                                       BasedOn="{StaticResource SampleResultTextStyle}">
+                                    <Setter Property="Text" Value="{Binding LoadedCount, StringFormat='Loaded: {0} folders'}" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding LoadedCount}"
+                                                     Value="1">
+                                            <Setter Property="Text" Value="Loaded: 1 folder" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

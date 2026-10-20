@@ -1,0 +1,160 @@
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:s="http://smart/windows"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:behaviors="clr-namespace:Template.WindowsApp.Behaviors"
+             xmlns:helpers="clr-namespace:Template.WindowsApp.Helpers"
+             xmlns:module="clr-namespace:Template.WindowsApp.Views.BasicInput"
+             mc:Ignorable="d"
+             x:Class="Template.WindowsApp.Views.BasicInput.DateTimeView"
+             s:DataContextResolver.Type="{x:Type module:DateTimeViewModel}"
+             d:DataContext="{d:DesignInstance Type={x:Type module:DateTimeViewModel}}"
+             d:DesignWidth="800" d:DesignHeight="600">
+
+    <UserControl.Resources>
+        <helpers:ShortDateConverter x:Key="ShortDateConverter" />
+    </UserControl.Resources>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24">
+            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+                       Text="Date &amp; time" />
+            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+                       Text="Date pickers and calendars." />
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Grid.Column="0"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="DatePicker" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Pick a date from a drop-down calendar."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <DatePicker Width="240"
+                                        HorizontalAlignment="Left"
+                                        AutomationProperties.Name="Date"
+                                        SelectedDate="{Binding Date}" />
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding Date, Converter={StaticResource ShortDateConverter}, StringFormat='Selected: {0}', TargetNullValue='Selected: -'}" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="0" Grid.Column="2"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="Limits" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Only the next 30 days can be picked."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <DatePicker Width="240"
+                                        HorizontalAlignment="Left"
+                                        AutomationProperties.Name="Limited date"
+                                        DisplayDateEnd="{Binding LastDate, Mode=OneWay}"
+                                        DisplayDateStart="{Binding FirstDate, Mode=OneWay}"
+                                        SelectedDate="{Binding LimitedDate}">
+                                <i:Interaction.Behaviors>
+                                    <behaviors:DatePickerRangeBehavior Minimum="{Binding FirstDate}"
+                                                                       Maximum="{Binding LastDate}" />
+                                </i:Interaction.Behaviors>
+                            </DatePicker>
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding LimitedDate, Converter={StaticResource ShortDateConverter}, StringFormat='Selected: {0}', TargetNullValue='Selected: -'}" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="1" Grid.Column="0"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="Calendar" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Select a day on a calendar."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <Calendar HorizontalAlignment="Left"
+                                      AutomationProperties.Name="Calendar"
+                                      SelectedDate="{Binding CalendarDate}" />
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding CalendarDate, Converter={StaticResource ShortDateConverter}, StringFormat='Selected: {0}', TargetNullValue='Selected: -'}" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="1" Grid.Column="2"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="Date range" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Select a range of days."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <Calendar x:Name="RangeCalendar"
+                                      HorizontalAlignment="Left"
+                                      SelectionMode="SingleRange"
+                                      AutomationProperties.Name="Date range">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectedDatesChanged">
+                                        <i:InvokeCommandAction Command="{Binding RangeCommand}"
+                                                               CommandParameter="{Binding SelectedDates, ElementName=RangeCalendar}" />
+                                    </i:EventTrigger>
+                                    <s:EventRequestTrigger Request="{Binding ClearRangeRequest}">
+                                        <i:CallMethodAction MethodName="Clear"
+                                                            TargetObject="{Binding SelectedDates, ElementName=RangeCalendar}" />
+                                    </s:EventRequestTrigger>
+                                </i:Interaction.Triggers>
+                            </Calendar>
+                        </StackPanel>
+                        <TextBlock>
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}"
+                                       BasedOn="{StaticResource SampleResultTextStyle}">
+                                    <Setter Property="Text">
+                                        <Setter.Value>
+                                            <MultiBinding StringFormat="Selected: {0} – {1} ({2} days)">
+                                                <Binding Path="RangeStart"
+                                                         Converter="{StaticResource ShortDateConverter}" />
+                                                <Binding Path="RangeEnd"
+                                                         Converter="{StaticResource ShortDateConverter}" />
+                                                <Binding Path="RangeDays" />
+                                            </MultiBinding>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RangeDays}"
+                                                     Value="1">
+                                            <Setter Property="Text" Value="{Binding RangeStart, Converter={StaticResource ShortDateConverter}, StringFormat='Selected: {0} (1 day)'}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding RangeDays}"
+                                                     Value="0">
+                                            <Setter Property="Text" Value="Selected: -" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

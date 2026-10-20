@@ -13,20 +13,23 @@ public sealed class NavigationMenu
             [
                 new(ViewId.Buttons, "Buttons", "\uEDA4"),
                 new(ViewId.Choices, "Choices", "\uE73A"),
-                new(ViewId.Text, "Text", "\uE8D2")
+                new(ViewId.Text, "Text", "\uE8D2"),
+                new(ViewId.DateTime, "Date & time", "\uEC92")
             ]),
         new NavigationGroup(
             "Collections",
             "\uE8A9",
             [
                 new(ViewId.DataGrid, "Data grid", "\uE80A"),
-                new(ViewId.ListDetail, "List & detail", "\uE779")
+                new(ViewId.ListDetail, "List & detail", "\uE779"),
+                new(ViewId.Hierarchy, "Hierarchy", "\uEABB")
             ]),
         new NavigationGroup(
             "Forms",
             "\uF0E3",
             [
-                new(ViewId.Validation, "Validation", "\uE930")
+                new(ViewId.Validation, "Validation", "\uE930"),
+                new(ViewId.Wizard, "Wizard", "\uEF90")
             ]),
         new NavigationGroup(
             "Feedback",
