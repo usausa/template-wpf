@@ -19,5 +19,8 @@ public enum ViewId
     Containers,
     Colors,
     Typography,
+    Icons,
+    ShapesAnimation,
+    Charts,
     Settings
 }

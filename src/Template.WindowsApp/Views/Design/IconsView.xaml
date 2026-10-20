@@ -1,0 +1,215 @@
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:s="http://smart/windows"
+             xmlns:module="clr-namespace:Template.WindowsApp.Views.Design"
+             mc:Ignorable="d"
+             x:Class="Template.WindowsApp.Views.Design.IconsView"
+             s:DataContextResolver.Type="{x:Type module:IconsViewModel}"
+             d:DataContext="{d:DesignInstance Type={x:Type module:IconsViewModel}}"
+             d:DesignWidth="800" d:DesignHeight="600">
+
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Style="{StaticResource PageTitleTextStyle}"
+                   Text="Icons" />
+        <TextBlock Grid.Row="1"
+                   Style="{StaticResource PageDescriptionTextStyle}"
+                   Text="Segoe Fluent Icons glyphs with their names and codes." />
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="320" />
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0"
+                    Style="{StaticResource CardStyle}"
+                    Margin="0,0,16,8">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0"
+                          Width="320"
+                          HorizontalAlignment="Left">
+                        <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                                 AutomationProperties.Name="Search icons" />
+                        <TextBlock Margin="12,0,0,0"
+                                   VerticalAlignment="Center"
+                                   Visibility="{Binding SearchText, Converter={s:NullToVisibility Null=Visible, NonNull=Collapsed, HandleEmptyString=True}}"
+                                   IsHitTestVisible="False"
+                                   Text="Search icons"
+                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
+                    </Grid>
+                    <ListBox Grid.Row="1"
+                             Margin="0,16,0,0"
+                             ItemsSource="{Binding Items}"
+                             SelectedItem="{Binding SelectedIcon}"
+                             AutomationProperties.Name="Icons" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListBoxItem}"
+                                   BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                                <Setter Property="Padding" Value="0" />
+                                <Setter Property="AutomationProperties.Name" Value="{Binding Name}" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type module:IconEntry}">
+                                <StackPanel Width="80" Height="72">
+                                    <TextBlock Margin="0,12,0,0"
+                                               HorizontalAlignment="Center"
+                                               Text="{Binding Glyph}"
+                                               FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                                               FontSize="24" />
+                                    <TextBlock Margin="4,8,4,0"
+                                               HorizontalAlignment="Center"
+                                               TextTrimming="CharacterEllipsis"
+                                               Text="{Binding Name}"
+                                               FontSize="12"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <Grid Grid.Row="2"
+                          Margin="0,16,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"
+                                   Style="{DynamicResource BodyTextBlockStyle}"
+                                   VerticalAlignment="Center">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0}–{1} of {2}">
+                                    <Binding Path="RangeStart" />
+                                    <Binding Path="RangeEnd" />
+                                    <Binding Path="TotalCount" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                        <Button Grid.Column="1"
+                                Style="{StaticResource IconButtonStyle}"
+                                Command="{Binding PreviousCommand}"
+                                Content="&#xE76B;"
+                                ToolTip="Previous page"
+                                AutomationProperties.Name="Previous page" />
+                        <Button Grid.Column="2"
+                                Style="{StaticResource IconButtonStyle}"
+                                Margin="8,0,0,0"
+                                Command="{Binding NextCommand}"
+                                Content="&#xE76C;"
+                                ToolTip="Next page"
+                                AutomationProperties.Name="Next page" />
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="1"
+                    Style="{StaticResource CardStyle}">
+                <StackPanel>
+                    <ContentControl Focusable="False"
+                                    Content="{Binding SelectedIcon}">
+                        <ContentControl.Resources>
+                            <DataTemplate DataType="{x:Type module:IconEntry}">
+                                <StackPanel>
+                                    <Border Width="96" Height="96"
+                                            HorizontalAlignment="Left"
+                                            Background="{DynamicResource SubtleFillColorSecondaryBrush}">
+                                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                   Text="{Binding Glyph}"
+                                                   FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                                                   FontSize="48" />
+                                    </Border>
+                                    <TextBlock Style="{DynamicResource BodyStrongTextBlockStyle}"
+                                               Margin="0,16,0,0"
+                                               Text="{Binding Name}" />
+                                    <StackPanel Margin="0,16,0,0">
+                                        <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                                   Text="Code" />
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0"
+                                                       VerticalAlignment="Center"
+                                                       Text="{Binding Code}" />
+                                            <Button Grid.Column="1"
+                                                    Style="{StaticResource IconButtonStyle}"
+                                                    Command="{Binding DataContext.CopyCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                    CommandParameter="{Binding Code}"
+                                                    Content="&#xE8C8;"
+                                                    ToolTip="Copy"
+                                                    AutomationProperties.Name="Copy code" />
+                                        </Grid>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,16,0,0">
+                                        <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                                   Text="XAML" />
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0"
+                                                       VerticalAlignment="Center"
+                                                       Text="{Binding Xaml}" />
+                                            <Button Grid.Column="1"
+                                                    Style="{StaticResource IconButtonStyle}"
+                                                    Command="{Binding DataContext.CopyCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                    CommandParameter="{Binding Xaml}"
+                                                    Content="&#xE8C8;"
+                                                    ToolTip="Copy"
+                                                    AutomationProperties.Name="Copy XAML" />
+                                        </Grid>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,16,0,0">
+                                        <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                                   Text="C#" />
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0"
+                                                       VerticalAlignment="Center"
+                                                       Text="{Binding CSharp}" />
+                                            <Button Grid.Column="1"
+                                                    Style="{StaticResource IconButtonStyle}"
+                                                    Command="{Binding DataContext.CopyCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                    CommandParameter="{Binding CSharp}"
+                                                    Content="&#xE8C8;"
+                                                    ToolTip="Copy"
+                                                    AutomationProperties.Name="Copy C#" />
+                                        </Grid>
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ContentControl.Resources>
+                    </ContentControl>
+                    <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                               Margin="0,16,0,0"
+                               Text="{Binding Copied, StringFormat='Copied: {0}', TargetNullValue='Copied: -'}" />
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+
+</UserControl>

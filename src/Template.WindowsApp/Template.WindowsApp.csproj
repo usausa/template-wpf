@@ -44,6 +44,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Views\Design\Icons.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <ExcludeFromSingleFile>True</ExcludeFromSingleFile>

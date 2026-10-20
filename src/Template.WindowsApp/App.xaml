@@ -34,16 +34,22 @@
             <!-- Chart -->
             <!-- ================================================================================ -->
 
+            <Color x:Key="ChartBlueSuperLightColor">#C0D8FF</Color>
+            <Color x:Key="ChartBlueLightColor">#8AB8FF</Color>
+            <Color x:Key="ChartBlueColor">#5794F2</Color>
+            <Color x:Key="ChartBlueSemiDarkColor">#3274D9</Color>
+            <Color x:Key="ChartBlueDarkColor">#1F60C4</Color>
+
             <SolidColorBrush x:Key="ChartBlueSuperLightBrush"
-                             Color="#C0D8FF" />
+                             Color="{StaticResource ChartBlueSuperLightColor}" />
             <SolidColorBrush x:Key="ChartBlueLightBrush"
-                             Color="#8AB8FF" />
+                             Color="{StaticResource ChartBlueLightColor}" />
             <SolidColorBrush x:Key="ChartBlueBrush"
-                             Color="#5794F2" />
+                             Color="{StaticResource ChartBlueColor}" />
             <SolidColorBrush x:Key="ChartBlueSemiDarkBrush"
-                             Color="#3274D9" />
+                             Color="{StaticResource ChartBlueSemiDarkColor}" />
             <SolidColorBrush x:Key="ChartBlueDarkBrush"
-                             Color="#1F60C4" />
+                             Color="{StaticResource ChartBlueDarkColor}" />
 
             <!-- ================================================================================ -->
             <!-- Page -->

@@ -51,7 +51,15 @@ public sealed class NavigationMenu
             "\uEB3C",
             [
                 new(ViewId.Colors, "Colors", "\uE790"),
-                new(ViewId.Typography, "Typography", "\uE8E9")
+                new(ViewId.Typography, "Typography", "\uE8E9"),
+                new(ViewId.Icons, "Icons", "\uED58")
+            ]),
+        new NavigationGroup(
+            "Graphics",
+            "\uEC87",
+            [
+                new(ViewId.ShapesAnimation, "Shapes & animation", "\uF158"),
+                new(ViewId.Charts, "Charts", "\uE9D2")
             ])
     ];
 

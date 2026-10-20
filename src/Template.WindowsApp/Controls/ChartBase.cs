@@ -39,13 +39,16 @@ public abstract partial class ChartBase : FrameworkElement
     }
 
     protected FormattedText MakeText(string text) =>
+        MakeText(text, LabelFontSize, LabelBrush ?? Brushes.Black);
+
+    protected FormattedText MakeText(string text, double fontSize, Brush brush) =>
         new(
             text,
             CultureInfo.CurrentCulture,
             FlowDirection.LeftToRight,
             new Typeface(TextElement.GetFontFamily(this), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal),
-            LabelFontSize,
-            LabelBrush ?? Brushes.Black,
+            fontSize,
+            brush,
             VisualTreeHelper.GetDpi(this).PixelsPerDip);
 
     private void OnValuesChanged(IReadOnlyList<double>? oldValue, IReadOnlyList<double>? newValue) =>
