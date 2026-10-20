@@ -150,7 +150,8 @@
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Grid.Column="0"
                                                        VerticalAlignment="Center"
-                                                       Text="{Binding Code}" />
+                                                       Text="{Binding Code}"
+                                                       FontFamily="{StaticResource CodeFontFamily}" />
                                             <Button Grid.Column="1"
                                                     Style="{StaticResource IconButtonStyle}"
                                                     Command="{Binding DataContext.CopyCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
@@ -170,7 +171,8 @@
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Grid.Column="0"
                                                        VerticalAlignment="Center"
-                                                       Text="{Binding Xaml}" />
+                                                       Text="{Binding Xaml}"
+                                                       FontFamily="{StaticResource CodeFontFamily}" />
                                             <Button Grid.Column="1"
                                                     Style="{StaticResource IconButtonStyle}"
                                                     Command="{Binding DataContext.CopyCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
@@ -190,7 +192,8 @@
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Grid.Column="0"
                                                        VerticalAlignment="Center"
-                                                       Text="{Binding CSharp}" />
+                                                       Text="{Binding CSharp}"
+                                                       FontFamily="{StaticResource CodeFontFamily}" />
                                             <Button Grid.Column="1"
                                                     Style="{StaticResource IconButtonStyle}"
                                                     Command="{Binding DataContext.CopyCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"

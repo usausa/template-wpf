@@ -60,6 +60,13 @@ public sealed class NavigationMenu
             [
                 new(ViewId.ShapesAnimation, "Shapes & animation", "\uF158"),
                 new(ViewId.Charts, "Charts", "\uE9D2")
+            ]),
+        new NavigationGroup(
+            "System",
+            "\uE770",
+            [
+                new(ViewId.ClipboardDrag, "Clipboard & drag", "\uE77F"),
+                new(ViewId.Environment, "Environment", "\uE9D9")
             ])
     ];
 

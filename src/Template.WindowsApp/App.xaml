@@ -20,6 +20,7 @@
 
             <CornerRadius x:Key="ControlCornerRadius">0</CornerRadius>
             <CornerRadius x:Key="OverlayCornerRadius">0</CornerRadius>
+            <FontFamily x:Key="CodeFontFamily">Cascadia Mono, Consolas</FontFamily>
 
             <!-- ================================================================================ -->
             <!-- Converter -->

@@ -22,5 +22,7 @@ public enum ViewId
     Icons,
     ShapesAnimation,
     Charts,
+    ClipboardDrag,
+    Environment,
     Settings
 }

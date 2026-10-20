@@ -36,6 +36,10 @@ internal static partial class NativeMethods
     [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool TrackMouseEvent(ref TrackMouseEventInfo info);
 
+    [LibraryImport("user32.dll")]
+    [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+    public static partial uint GetDpiForSystem();
+
     public static void TrackNonClientMouseLeave(IntPtr hwnd)
     {
         var info = new TrackMouseEventInfo
