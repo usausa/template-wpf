@@ -1,0 +1,264 @@
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:s="http://smart/windows"
+             xmlns:module="clr-namespace:Template.WindowsApp.Views.Layout"
+             mc:Ignorable="d"
+             x:Class="Template.WindowsApp.Views.Layout.PanelsView"
+             s:DataContextResolver.Type="{x:Type module:PanelsViewModel}"
+             d:DataContext="{d:DesignInstance Type={x:Type module:PanelsViewModel}}"
+             d:DesignWidth="800" d:DesignHeight="600">
+
+    <UserControl.Resources>
+        <s:ParameterEqualsConverter x:Key="ParameterEqualsConverter" />
+
+        <Style x:Key="PanelBoxStyle"
+               TargetType="{x:Type Border}">
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="MinHeight" Value="32" />
+            <Setter Property="Background" Value="{DynamicResource AccentFillColorDefaultBrush}" />
+        </Style>
+
+        <Style x:Key="PanelBoxTextStyle"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+        </Style>
+
+        <DataTemplate x:Key="FixedBoxTemplate">
+            <Border Style="{StaticResource PanelBoxStyle}"
+                    Width="64" Height="32">
+                <TextBlock Style="{StaticResource PanelBoxTextStyle}"
+                           Text="{Binding}" />
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="FillBoxTemplate">
+            <Border Style="{StaticResource PanelBoxStyle}"
+                    Height="32">
+                <TextBlock Style="{StaticResource PanelBoxTextStyle}"
+                           Text="{Binding}" />
+            </Border>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24">
+            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+                       Text="Panels" />
+            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+                       Text="Grid, StackPanel, WrapPanel, DockPanel and UniformGrid." />
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="Grid" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Rows and columns, with cells that span."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <Grid Height="108"
+                              Margin="0,16,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Row="0" Grid.Column="0"
+                                    Style="{StaticResource PanelBoxStyle}">
+                                <TextBlock Style="{StaticResource PanelBoxTextStyle}"
+                                           Text="0, 0" />
+                            </Border>
+                            <Border Grid.Row="0" Grid.Column="1"
+                                    Style="{StaticResource PanelBoxStyle}">
+                                <TextBlock Style="{StaticResource PanelBoxTextStyle}"
+                                           Text="0, 1" />
+                            </Border>
+                            <Border Grid.Row="0" Grid.Column="2"
+                                    Style="{StaticResource PanelBoxStyle}">
+                                <TextBlock Style="{StaticResource PanelBoxTextStyle}"
+                                           Text="0, 2" />
+                            </Border>
+                            <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                                    Style="{StaticResource PanelBoxStyle}">
+                                <TextBlock Style="{StaticResource PanelBoxTextStyle}"
+                                           Text="ColumnSpan 2" />
+                            </Border>
+                            <Border Grid.Row="1" Grid.RowSpan="2" Grid.Column="2"
+                                    Style="{StaticResource PanelBoxStyle}">
+                                <TextBlock Style="{StaticResource PanelBoxTextStyle}"
+                                           Text="RowSpan 2" />
+                            </Border>
+                            <Border Grid.Row="2" Grid.Column="0"
+                                    Style="{StaticResource PanelBoxStyle}">
+                                <TextBlock Style="{StaticResource PanelBoxTextStyle}"
+                                           Text="2, 0" />
+                            </Border>
+                            <Border Grid.Row="2" Grid.Column="1"
+                                    Style="{StaticResource PanelBoxStyle}">
+                                <TextBlock Style="{StaticResource PanelBoxTextStyle}"
+                                           Text="2, 1" />
+                            </Border>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="1" Grid.Column="0"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="StackPanel" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Stacks items in one direction."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}"
+                                    Orientation="Horizontal">
+                            <RadioButton IsChecked="{Binding Orientation, Converter={StaticResource ParameterEqualsConverter}, ConverterParameter=Vertical}"
+                                         Content="Vertical" />
+                            <RadioButton IsChecked="{Binding Orientation, Converter={StaticResource ParameterEqualsConverter}, ConverterParameter=Horizontal}"
+                                         Content="Horizontal" />
+                        </StackPanel>
+                        <ItemsControl Margin="0,8,0,0"
+                                      HorizontalAlignment="Left"
+                                      ItemsSource="{Binding StackItems}"
+                                      ItemTemplate="{StaticResource FixedBoxTemplate}"
+                                      Focusable="False">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="{Binding Orientation}" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding Orientation, StringFormat='Orientation: {0}'}" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="1" Grid.Column="2"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="WrapPanel" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Wraps items onto the next line."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <Slider Width="240"
+                                    HorizontalAlignment="Left"
+                                    Value="{Binding WrapWidth}"
+                                    Minimum="200" Maximum="480"
+                                    AutomationProperties.Name="Width" IsSnapToTickEnabled="True" TickFrequency="10" />
+                        </StackPanel>
+                        <ItemsControl Width="{Binding WrapWidth}"
+                                      Margin="0,8,0,0"
+                                      HorizontalAlignment="Left"
+                                      ItemsSource="{Binding WrapItems}"
+                                      ItemTemplate="{StaticResource FixedBoxTemplate}"
+                                      Focusable="False">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding WrapWidth, StringFormat='Width: {0}'}" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="2" Grid.Column="0"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="DockPanel" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Docks items to the edges and fills the rest."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <DockPanel Height="160"
+                                   Margin="0,16,0,0">
+                            <Border DockPanel.Dock="Top"
+                                    Style="{StaticResource PanelBoxStyle}"
+                                    Height="32">
+                                <TextBlock Style="{StaticResource PanelBoxTextStyle}"
+                                           Text="Top" />
+                            </Border>
+                            <Border DockPanel.Dock="Bottom"
+                                    Style="{StaticResource PanelBoxStyle}"
+                                    Height="32">
+                                <TextBlock Style="{StaticResource PanelBoxTextStyle}"
+                                           Text="Bottom" />
+                            </Border>
+                            <Border DockPanel.Dock="Left"
+                                    Style="{StaticResource PanelBoxStyle}"
+                                    Width="64">
+                                <TextBlock Style="{StaticResource PanelBoxTextStyle}"
+                                           Text="Left" />
+                            </Border>
+                            <Border DockPanel.Dock="Right"
+                                    Style="{StaticResource PanelBoxStyle}"
+                                    Width="64">
+                                <TextBlock Style="{StaticResource PanelBoxTextStyle}"
+                                           Text="Right" />
+                            </Border>
+                            <Border Style="{StaticResource PanelBoxStyle}">
+                                <TextBlock Style="{StaticResource PanelBoxTextStyle}"
+                                           Text="Fill" />
+                            </Border>
+                        </DockPanel>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="2" Grid.Column="2"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="UniformGrid" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Cells of the same size."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <Slider Width="240"
+                                    HorizontalAlignment="Left"
+                                    Value="{Binding Columns}"
+                                    Minimum="1" Maximum="4"
+                                    AutomationProperties.Name="Columns" IsSnapToTickEnabled="True" TickFrequency="1" />
+                        </StackPanel>
+                        <ItemsControl Margin="0,8,0,0"
+                                      ItemsSource="{Binding GridItems}"
+                                      ItemTemplate="{StaticResource FillBoxTemplate}"
+                                      Focusable="False">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Columns="{Binding Columns}" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding Columns, StringFormat='Columns: {0}'}" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

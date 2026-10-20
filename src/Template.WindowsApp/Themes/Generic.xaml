@@ -67,6 +67,137 @@
     </Style>
 
     <!-- ================================================================================ -->
+    <!-- InfoBar -->
+    <!-- ================================================================================ -->
+
+    <Style x:Key="InfoBarCloseButtonStyle"
+           TargetType="{x:Type Button}">
+        <Setter Property="Width" Value="32" />
+        <Setter Property="Height" Value="32" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+        <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource SubtleFillColorTertiaryBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type controls:InfoBar}">
+        <Setter Property="MinHeight" Value="48" />
+        <Setter Property="Background" Value="{DynamicResource SystemFillColorAttentionBackgroundBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource CardStrokeColorDefaultBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:InfoBar}">
+                    <Border MinHeight="{TemplateBinding MinHeight}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{DynamicResource ControlCornerRadius}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0"
+                                  Margin="16,0,0,0"
+                                  VerticalAlignment="Center">
+                                <TextBlock x:Name="IconBackground"
+                                           Text="&#xF136;"
+                                           FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                                           FontSize="16"
+                                           Foreground="{DynamicResource SystemFillColorAttentionBrush}" />
+                                <TextBlock x:Name="IconGlyph"
+                                           Text="&#xF13F;"
+                                           FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                                           FontSize="16"
+                                           Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+                            </Grid>
+                            <TextBlock Grid.Column="1"
+                                       Margin="12,13,12,13"
+                                       VerticalAlignment="Center"
+                                       TextWrapping="Wrap"
+                                       FontSize="14">
+                                <Run Text="{Binding Title, RelativeSource={RelativeSource TemplatedParent}}"
+                                     FontWeight="SemiBold" />
+                                <Run Text=" " />
+                                <Run Text="{Binding Message, RelativeSource={RelativeSource TemplatedParent}}" />
+                            </TextBlock>
+                            <ContentPresenter x:Name="ActionPresenter"
+                                              Grid.Column="2"
+                                              Margin="0,0,8,0"
+                                              VerticalAlignment="Center"
+                                              Content="{TemplateBinding ActionButton}" />
+                            <Button x:Name="PART_CloseButton"
+                                    Grid.Column="3"
+                                    Style="{StaticResource InfoBarCloseButtonStyle}"
+                                    Margin="0,0,8,0"
+                                    VerticalAlignment="Center"
+                                    Content="&#xE711;"
+                                    ToolTip="Close"
+                                    AutomationProperties.Name="Close" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Severity" Value="Success">
+                            <Setter TargetName="IconBackground" Property="Foreground" Value="{DynamicResource SystemFillColorSuccessBrush}" />
+                            <Setter TargetName="IconGlyph" Property="Text" Value="&#xF13E;" />
+                        </Trigger>
+                        <Trigger Property="Severity" Value="Warning">
+                            <Setter TargetName="IconBackground" Property="Foreground" Value="{DynamicResource SystemFillColorCautionBrush}" />
+                            <Setter TargetName="IconGlyph" Property="Text" Value="&#xF13C;" />
+                        </Trigger>
+                        <Trigger Property="Severity" Value="Error">
+                            <Setter TargetName="IconBackground" Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+                            <Setter TargetName="IconGlyph" Property="Text" Value="&#xF13D;" />
+                        </Trigger>
+                        <Trigger Property="ActionButton" Value="{x:Null}">
+                            <Setter TargetName="ActionPresenter" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="IsClosable" Value="False">
+                            <Setter TargetName="PART_CloseButton" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="Severity" Value="Success">
+                <Setter Property="Background" Value="{DynamicResource SystemFillColorSuccessBackgroundBrush}" />
+            </Trigger>
+            <Trigger Property="Severity" Value="Warning">
+                <Setter Property="Background" Value="{DynamicResource SystemFillColorCautionBackgroundBrush}" />
+            </Trigger>
+            <Trigger Property="Severity" Value="Error">
+                <Setter Property="Background" Value="{DynamicResource SystemFillColorCriticalBackgroundBrush}" />
+            </Trigger>
+            <Trigger Property="IsOpen" Value="False">
+                <Setter Property="Visibility" Value="Collapsed" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- ================================================================================ -->
     <!-- Window -->
     <!-- ================================================================================ -->
 

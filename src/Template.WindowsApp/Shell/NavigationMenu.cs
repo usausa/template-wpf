@@ -36,7 +36,15 @@ public sealed class NavigationMenu
             "\uE946",
             [
                 new(ViewId.Dialogs, "Dialogs", "\uE737"),
-                new(ViewId.Progress, "Progress", "\uF16A")
+                new(ViewId.Progress, "Progress", "\uF16A"),
+                new(ViewId.Notifications, "Notifications", "\uEA8F")
+            ]),
+        new NavigationGroup(
+            "Layout",
+            "\uECA5",
+            [
+                new(ViewId.Panels, "Panels", "\uE8A1"),
+                new(ViewId.Containers, "Containers", "\uE90C")
             ]),
         new NavigationGroup(
             "Design",

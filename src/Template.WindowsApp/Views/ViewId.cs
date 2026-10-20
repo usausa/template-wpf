@@ -14,6 +14,9 @@ public enum ViewId
     Wizard,
     Dialogs,
     Progress,
+    Notifications,
+    Panels,
+    Containers,
     Colors,
     Typography,
     Settings

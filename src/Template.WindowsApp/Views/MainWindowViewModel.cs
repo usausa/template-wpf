@@ -1,5 +1,6 @@
 namespace Template.WindowsApp.Views;
 
+using Template.WindowsApp.Services;
 using Template.WindowsApp.Shell;
 
 // ReSharper disable once ClassNeverInstantiated.Global
@@ -17,6 +18,8 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
     public NavigationMenu Menu { get; }
 
     public CommandPalette Palette { get; }
+
+    public NotificationService Notifications { get; }
 
     [ObservableProperty]
     public partial bool IsNavigating { get; set; }
@@ -37,16 +40,20 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
 
     public IObserveCommand ExecutePaletteCommand { get; }
 
+    public IObserveCommand CloseNotificationCommand { get; }
+
     public MainWindowViewModel(
         ILogger<MainWindowViewModel> logger,
         IWindowManager windowManager,
         INavigator navigator,
-        NavigationMenu menu)
+        NavigationMenu menu,
+        NotificationService notifications)
     {
         this.logger = logger;
         WindowManager = windowManager;
         Navigator = navigator;
         Menu = menu;
+        Notifications = notifications;
         Palette = new CommandPalette(windowManager.RecentCommands);
 
         ForwardCommand = MakeAsyncCommand<ViewId>(x => Equals(Navigator.CurrentViewId, x) ? Task.CompletedTask : Navigator.ForwardAsync(x, new NavigationParameter().WithPushEffect()));
@@ -57,6 +64,7 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
         ClosePaletteCommand = MakeDelegateCommand(CommandMode.Simple, Palette.Close);
         MovePaletteCommand = MakeDelegateCommand<CommandPaletteMove>(CommandMode.Simple, Palette.Move);
         ExecutePaletteCommand = MakeDelegateCommand<ShellCommand?>(CommandMode.Simple, ExecutePalette);
+        CloseNotificationCommand = MakeDelegateCommand<Notification>(CommandMode.Simple, Notifications.Close);
 
         // Busy while navigating
         Disposables.Add(Observable.FromEventPattern<EventArgs>(h => Navigator.ExecutingChanged += h, h => Navigator.ExecutingChanged -= h)

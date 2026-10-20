@@ -8,6 +8,7 @@
                     xmlns:shell="clr-namespace:Template.WindowsApp.Shell"
                     xmlns:behaviors="clr-namespace:Template.WindowsApp.Behaviors"
                     xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
+                    xmlns:services="clr-namespace:Template.WindowsApp.Services"
                     xmlns:views="clr-namespace:Template.WindowsApp.Views"
                     mc:Ignorable="d"
                     x:Class="Template.WindowsApp.Views.MainWindow"
@@ -398,6 +399,26 @@
                 </Style>
             </ProgressBar.Style>
         </ProgressBar>
+
+        <ItemsControl Grid.Column="1"
+                      Width="360"
+                      Margin="24"
+                      HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                      ItemsSource="{Binding Notifications.Items}"
+                      Focusable="False">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type services:Notification}">
+                    <Border Margin="0,8,0,0"
+                            Background="{DynamicResource SolidBackgroundFillColorBaseBrush}">
+                        <controls:InfoBar Title="{Binding Title}"
+                                          CloseButtonCommand="{Binding DataContext.CloseNotificationCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                          CloseButtonCommandParameter="{Binding}"
+                                          Message="{Binding Message}"
+                                          Severity="{Binding Severity}" />
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
 
         <FrameworkElement x:Name="PaletteAnchor"
                           Grid.Column="0" Grid.ColumnSpan="2"
