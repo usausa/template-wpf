@@ -1,0 +1,121 @@
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:s="http://smart/windows"
+             xmlns:module="clr-namespace:Template.WindowsApp.Views.Collections"
+             mc:Ignorable="d"
+             x:Class="Template.WindowsApp.Views.Collections.ListDetailView"
+             s:DataContextResolver.Type="{x:Type module:ListDetailViewModel}"
+             d:DataContext="{d:DesignInstance Type={x:Type module:ListDetailViewModel}}"
+             d:DesignWidth="800" d:DesignHeight="600">
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24">
+            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+                       Text="List &amp; detail" />
+            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+                       Text="Select a customer to view and edit the details." />
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="320" />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0"
+                        Style="{StaticResource CardStyle}"
+                        Height="{Binding ActualHeight, ElementName=DetailCard}"
+                        Margin="0,0,16,8">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0"
+                                    Orientation="Horizontal">
+                            <Button Style="{StaticResource IconButtonStyle}"
+                                    Command="{Binding AddCommand}"
+                                    Content="&#xE710;"
+                                    ToolTip="Add"
+                                    AutomationProperties.Name="Add" />
+                            <Button Style="{StaticResource IconButtonStyle}"
+                                    Margin="8,0,0,0"
+                                    Command="{Binding DeleteCommand}"
+                                    Content="&#xE74D;"
+                                    ToolTip="Delete"
+                                    AutomationProperties.Name="Delete" />
+                        </StackPanel>
+                        <ListView Grid.Row="1"
+                                  Margin="0,16,0,0"
+                                  ItemsSource="{Binding Customers}"
+                                  SelectedItem="{Binding SelectedCustomer}"
+                                  AutomationProperties.Name="Customers" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Width="140"
+                                                    DisplayMemberBinding="{Binding Name}"
+                                                    Header="Name" />
+                                    <GridViewColumn Width="140"
+                                                    DisplayMemberBinding="{Binding Company}"
+                                                    Header="Company" />
+                                    <GridViewColumn Width="110"
+                                                    DisplayMemberBinding="{Binding City}"
+                                                    Header="City" />
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+                </Border>
+
+                <Border x:Name="DetailCard"
+                        Grid.Column="1"
+                        Style="{StaticResource CardStyle}"
+                        VerticalAlignment="Top">
+                    <StackPanel IsEnabled="{Binding SelectedCustomer, Converter={s:NullToBool Invert=True}}">
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                       Text="Name" />
+                            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                     AutomationProperties.Name="Name" />
+                        </StackPanel>
+                        <StackPanel Margin="0,16,0,0">
+                            <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                       Text="Company" />
+                            <TextBox Text="{Binding Company, UpdateSourceTrigger=PropertyChanged}"
+                                     AutomationProperties.Name="Company" />
+                        </StackPanel>
+                        <StackPanel Margin="0,16,0,0">
+                            <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                       Text="Email" />
+                            <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
+                                     AutomationProperties.Name="Email" />
+                        </StackPanel>
+                        <StackPanel Margin="0,16,0,0">
+                            <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                       Text="Phone" />
+                            <TextBox Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}"
+                                     AutomationProperties.Name="Phone" />
+                        </StackPanel>
+                        <StackPanel Margin="0,16,0,0">
+                            <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                       Text="City" />
+                            <TextBox Text="{Binding City, UpdateSourceTrigger=PropertyChanged}"
+                                     AutomationProperties.Name="City" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="0,16,0,0">
+                            <Button Style="{DynamicResource AccentButtonStyle}"
+                                    Command="{Binding SaveCommand}"
+                                    Content="Save" />
+                            <Button Margin="8,0,0,0"
+                                    Command="{Binding CancelCommand}"
+                                    Content="Cancel" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

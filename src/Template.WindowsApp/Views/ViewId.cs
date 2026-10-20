@@ -6,6 +6,9 @@ public enum ViewId
     Buttons,
     Choices,
     Text,
+    DataGrid,
+    ListDetail,
+    Validation,
     Dialogs,
     Settings
 }

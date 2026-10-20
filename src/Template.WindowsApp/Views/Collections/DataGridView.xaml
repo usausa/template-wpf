@@ -1,0 +1,123 @@
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:s="http://smart/windows"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:behaviors="clr-namespace:Template.WindowsApp.Behaviors"
+             xmlns:helpers="clr-namespace:Template.WindowsApp.Helpers"
+             xmlns:module="clr-namespace:Template.WindowsApp.Views.Collections"
+             mc:Ignorable="d"
+             x:Class="Template.WindowsApp.Views.Collections.DataGridView"
+             s:DataContextResolver.Type="{x:Type module:DataGridViewModel}"
+             d:DataContext="{d:DesignInstance Type={x:Type module:DataGridViewModel}}"
+             d:DesignWidth="800" d:DesignHeight="600">
+
+    <UserControl.Resources>
+        <helpers:CurrencyConverter x:Key="CurrencyConverter" />
+        <Style x:Key="NumberCellTextStyle"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{x:Static DataGridTextColumn.DefaultElementStyle}">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+        <Style x:Key="NumberCellEditingStyle"
+               TargetType="{x:Type TextBox}"
+               BasedOn="{x:Static DataGridTextColumn.DefaultEditingElementStyle}">
+            <Setter Property="TextAlignment" Value="Right" />
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24">
+            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+                       Text="Data grid" />
+            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+                       Text="Sort, filter, edit and page through products." />
+
+            <Border Style="{StaticResource CardStyle}">
+                <StackPanel>
+                    <Grid Width="240"
+                          HorizontalAlignment="Left">
+                        <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                                 AutomationProperties.Name="Search" />
+                        <TextBlock Margin="12,0,0,0"
+                                   VerticalAlignment="Center"
+                                   Visibility="{Binding SearchText, Converter={s:NullToVisibility Null=Visible, NonNull=Collapsed, HandleEmptyString=True}}"
+                                   IsHitTestVisible="False"
+                                   Text="Search"
+                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
+                    </Grid>
+
+                    <DataGrid Margin="0,16,0,0"
+                              ItemsSource="{Binding Items}"
+                              AutoGenerateColumns="False" AutomationProperties.Name="Products" CanUserAddRows="False" CanUserDeleteRows="False"
+                              HeadersVisibility="Column">
+                        <i:Interaction.Behaviors>
+                            <behaviors:DataGridSortBehavior Sort="{Binding Sort}" />
+                            <behaviors:CommitEditOnLostFocusBehavior />
+                        </i:Interaction.Behaviors>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="80"
+                                                Binding="{Binding Code}"
+                                                Header="Code" IsReadOnly="True" />
+                            <DataGridTextColumn Width="*"
+                                                Binding="{Binding Name}"
+                                                Header="Name" />
+                            <DataGridComboBoxColumn Width="120"
+                                                    ItemsSource="{x:Static module:DataGridViewModel.Categories}"
+                                                    Header="Category"
+                                                    SelectedItemBinding="{Binding Category}"
+                                                    SortMemberPath="Category" />
+                            <DataGridTextColumn Width="100"
+                                                Binding="{Binding Price, Converter={StaticResource CurrencyConverter}}"
+                                                EditingElementStyle="{StaticResource NumberCellEditingStyle}"
+                                                ElementStyle="{StaticResource NumberCellTextStyle}"
+                                                Header="Price" />
+                            <DataGridTextColumn Width="80"
+                                                Binding="{Binding Stock, TargetNullValue=-}"
+                                                EditingElementStyle="{StaticResource NumberCellEditingStyle}"
+                                                ElementStyle="{StaticResource NumberCellTextStyle}"
+                                                Header="Stock" />
+                            <DataGridCheckBoxColumn Width="72"
+                                                    Binding="{Binding IsActive}"
+                                                    Header="Active" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Grid Margin="0,16,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"
+                                   Style="{DynamicResource BodyTextBlockStyle}"
+                                   VerticalAlignment="Center">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0}–{1} of {2}">
+                                    <Binding Path="RangeStart" />
+                                    <Binding Path="RangeEnd" />
+                                    <Binding Path="TotalCount" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                        <Button Grid.Column="1"
+                                Style="{StaticResource IconButtonStyle}"
+                                Command="{Binding PreviousCommand}"
+                                Content="&#xE76B;"
+                                ToolTip="Previous page"
+                                AutomationProperties.Name="Previous page" />
+                        <Button Grid.Column="2"
+                                Style="{StaticResource IconButtonStyle}"
+                                Margin="8,0,0,0"
+                                Command="{Binding NextCommand}"
+                                Content="&#xE76C;"
+                                ToolTip="Next page"
+                                AutomationProperties.Name="Next page" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

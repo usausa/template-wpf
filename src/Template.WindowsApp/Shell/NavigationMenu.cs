@@ -16,6 +16,19 @@ public sealed class NavigationMenu
                 new(ViewId.Text, "Text", "\uE8D2")
             ]),
         new NavigationGroup(
+            "Collections",
+            "\uE8A9",
+            [
+                new(ViewId.DataGrid, "Data grid", "\uE80A"),
+                new(ViewId.ListDetail, "List & detail", "\uE779")
+            ]),
+        new NavigationGroup(
+            "Forms",
+            "\uF0E3",
+            [
+                new(ViewId.Validation, "Validation", "\uE930")
+            ]),
+        new NavigationGroup(
             "Feedback",
             "\uE946",
             [
