@@ -32,225 +32,244 @@
                 <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
                            Text="Validation timing, manual errors, focus, comparisons, rules and a form." />
 
-                <Border Style="{StaticResource CardStyle}">
-                    <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
-                                   Text="Validate on lost focus" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Validates when the field loses focus."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
-                            <TextBlock Style="{StaticResource FieldLabelTextStyle}"
-                                       Text="Text1" />
-                            <TextBox Width="320"
-                                     HorizontalAlignment="Left"
-                                     Text="{Binding Text1, UpdateSourceTrigger=PropertyChanged}"
-                                     AutomationProperties.Name="Text1">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="GotFocus">
-                                        <s:CallMethodAction MethodName="ClearErrors" MethodParameter="Text1"
-                                                            TargetObject="{Binding Errors}" />
-                                    </i:EventTrigger>
-                                    <i:EventTrigger EventName="LostFocus">
-                                        <s:CallMethodAction MethodName="Validate" MethodParameter="Text1"
-                                                            TargetObject="{Binding}" />
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                            </TextBox>
-                            <TextBlock Style="{StaticResource FieldErrorTextStyle}"
-                                       Visibility="{Binding Errors[Text1], Converter={s:NullToVisibility Null=Collapsed, NonNull=Visible}}"
-                                       Text="{Binding Errors[Text1]}" />
-                        </StackPanel>
-                    </StackPanel>
-                </Border>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="8" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-                <Border Style="{StaticResource CardStyle}">
-                    <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
-                                   Text="Manual validation" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Adds and clears an error from code."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
-                            <TextBlock Style="{StaticResource FieldLabelTextStyle}"
-                                       Text="Text2" />
-                            <TextBox Width="320"
-                                     HorizontalAlignment="Left"
-                                     Text="{Binding Text2, UpdateSourceTrigger=PropertyChanged}"
-                                     AutomationProperties.Name="Text2" />
-                            <TextBlock Style="{StaticResource FieldErrorTextStyle}"
-                                       Visibility="{Binding Errors[Text2], Converter={s:NullToVisibility Null=Collapsed, NonNull=Visible}}"
-                                       Text="{Binding Errors[Text2]}" />
-                            <StackPanel Orientation="Horizontal"
-                                        Margin="0,16,0,0">
-                                <Button Command="{Binding ErrorCommand}"
-                                        Content="Error" />
-                                <Button Margin="8,0,0,0"
-                                        Command="{Binding ClearCommand}"
-                                        Content="Clear" />
-                            </StackPanel>
-                        </StackPanel>
-                    </StackPanel>
-                </Border>
-
-                <Border Style="{StaticResource CardStyle}">
-                    <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
-                                   Text="Focus request" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Moves focus to the first field with an error."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
-                            <Button Command="{Binding FocusCommand}"
-                                    Content="Focus" />
-                        </StackPanel>
-                    </StackPanel>
-                </Border>
-
-                <Border Style="{StaticResource CardStyle}">
-                    <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
-                                   Text="Correlation (compare)" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Checks that two fields match."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
-                            <StackPanel>
+                    <Border Grid.Row="0" Grid.Column="0"
+                            Style="{StaticResource CardStyle}">
+                        <StackPanel>
+                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                       Text="Validate on lost focus" />
+                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                       Text="Validates when the field loses focus."
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                            <StackPanel Style="{StaticResource SamplePanelStyle}">
                                 <TextBlock Style="{StaticResource FieldLabelTextStyle}"
-                                           Text="Email" />
+                                           Text="Text1" />
                                 <TextBox Width="320"
                                          HorizontalAlignment="Left"
-                                         Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
-                                         AutomationProperties.Name="Email" />
-                            </StackPanel>
-                            <StackPanel Margin="0,16,0,0">
-                                <TextBlock Style="{StaticResource FieldLabelTextStyle}"
-                                           Text="Confirm email" />
-                                <TextBox Width="320"
-                                         HorizontalAlignment="Left"
-                                         Text="{Binding ConfirmEmail, UpdateSourceTrigger=PropertyChanged}"
-                                         AutomationProperties.Name="Confirm email" />
-                                <TextBlock Style="{StaticResource FieldErrorTextStyle}"
-                                           Visibility="{Binding Errors[ConfirmEmail], Converter={s:NullToVisibility Null=Collapsed, NonNull=Visible}}"
-                                           Text="{Binding Errors[ConfirmEmail]}" />
-                            </StackPanel>
-                        </StackPanel>
-                    </StackPanel>
-                </Border>
-
-                <Border Style="{StaticResource CardStyle}">
-                    <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
-                                   Text="Validation rules" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Checks the input in the binding."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
-                            <StackPanel>
-                                <TextBlock Style="{StaticResource FieldLabelTextStyle}"
-                                           Text="Email" />
-                                <TextBox x:Name="RuleEmailInput"
-                                         Width="320"
-                                         HorizontalAlignment="Left"
-                                         AutomationProperties.Name="Email">
-                                    <TextBox.Text>
-                                        <Binding Path="RuleEmail"
-                                                 UpdateSourceTrigger="PropertyChanged">
-                                            <Binding.ValidationRules>
-                                                <helpers:EmailValidationRule ErrorMessage="Invalid email format" />
-                                            </Binding.ValidationRules>
-                                        </Binding>
-                                    </TextBox.Text>
+                                         Text="{Binding Text1, UpdateSourceTrigger=PropertyChanged}"
+                                         AutomationProperties.Name="Text1">
                                     <i:Interaction.Triggers>
-                                        <s:EventRequestTrigger Request="{Binding ClearRulesRequest}">
-                                            <i:CallMethodAction MethodName="Clear" />
-                                        </s:EventRequestTrigger>
+                                        <i:EventTrigger EventName="GotFocus">
+                                            <s:CallMethodAction MethodName="ClearErrors" MethodParameter="Text1"
+                                                                TargetObject="{Binding Errors}" />
+                                        </i:EventTrigger>
+                                        <i:EventTrigger EventName="LostFocus">
+                                            <s:CallMethodAction MethodName="Validate" MethodParameter="Text1"
+                                                                TargetObject="{Binding}" />
+                                        </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                 </TextBox>
                                 <TextBlock Style="{StaticResource FieldErrorTextStyle}"
-                                           Visibility="{Binding (Validation.HasError), ElementName=RuleEmailInput, Converter={StaticResource ErrorVisibilityConverter}}"
-                                           Text="{Binding (Validation.Errors)/ErrorContent, ElementName=RuleEmailInput}" />
-                            </StackPanel>
-                            <StackPanel Margin="0,16,0,0">
-                                <TextBlock Style="{StaticResource FieldLabelTextStyle}"
-                                           Text="Quantity" />
-                                <TextBox x:Name="QuantityInput"
-                                         Width="320"
-                                         HorizontalAlignment="Left"
-                                         AutomationProperties.Name="Quantity">
-                                    <TextBox.Text>
-                                        <Binding Path="Quantity"
-                                                 UpdateSourceTrigger="PropertyChanged">
-                                            <Binding.ValidationRules>
-                                                <helpers:RangeValidationRule Minimum="1" Maximum="100"
-                                                                             ErrorMessage="Must be from 1 to 100" />
-                                            </Binding.ValidationRules>
-                                        </Binding>
-                                    </TextBox.Text>
-                                    <i:Interaction.Triggers>
-                                        <s:EventRequestTrigger Request="{Binding ClearRulesRequest}">
-                                            <i:CallMethodAction MethodName="Clear" />
-                                        </s:EventRequestTrigger>
-                                    </i:Interaction.Triggers>
-                                </TextBox>
-                                <TextBlock Style="{StaticResource FieldErrorTextStyle}"
-                                           Visibility="{Binding (Validation.HasError), ElementName=QuantityInput, Converter={StaticResource ErrorVisibilityConverter}}"
-                                           Text="{Binding (Validation.Errors)/ErrorContent, ElementName=QuantityInput}" />
+                                           Visibility="{Binding Errors[Text1], Converter={s:NullToVisibility Null=Collapsed, NonNull=Visible}}"
+                                           Text="{Binding Errors[Text1]}" />
                             </StackPanel>
                         </StackPanel>
-                    </StackPanel>
-                </Border>
+                    </Border>
 
-                <Border Style="{StaticResource CardStyle}">
-                    <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
-                                   Text="Form" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Submit is enabled when every field is valid."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
-                            <StackPanel>
+                    <Border Grid.Row="0" Grid.Column="2"
+                            Style="{StaticResource CardStyle}">
+                        <StackPanel>
+                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                       Text="Manual validation" />
+                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                       Text="Adds and clears an error from code."
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                            <StackPanel Style="{StaticResource SamplePanelStyle}">
                                 <TextBlock Style="{StaticResource FieldLabelTextStyle}"
-                                           Text="Name" />
+                                           Text="Text2" />
                                 <TextBox Width="320"
                                          HorizontalAlignment="Left"
-                                         Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
-                                         AutomationProperties.Name="Name" />
+                                         Text="{Binding Text2, UpdateSourceTrigger=PropertyChanged}"
+                                         AutomationProperties.Name="Text2" />
                                 <TextBlock Style="{StaticResource FieldErrorTextStyle}"
-                                           Visibility="{Binding Errors[Name], Converter={s:NullToVisibility Null=Collapsed, NonNull=Visible}}"
-                                           Text="{Binding Errors[Name]}" />
+                                           Visibility="{Binding Errors[Text2], Converter={s:NullToVisibility Null=Collapsed, NonNull=Visible}}"
+                                           Text="{Binding Errors[Text2]}" />
+                                <StackPanel Orientation="Horizontal"
+                                            Margin="0,16,0,0">
+                                    <Button Command="{Binding ErrorCommand}"
+                                            Content="Error" />
+                                    <Button Margin="8,0,0,0"
+                                            Command="{Binding ClearCommand}"
+                                            Content="Clear" />
+                                </StackPanel>
                             </StackPanel>
-                            <StackPanel Margin="0,16,0,0">
-                                <TextBlock Style="{StaticResource FieldLabelTextStyle}"
-                                           Text="Email" />
-                                <TextBox Width="320"
-                                         HorizontalAlignment="Left"
-                                         Text="{Binding FormEmail, UpdateSourceTrigger=PropertyChanged}"
-                                         AutomationProperties.Name="Email" />
-                                <TextBlock Style="{StaticResource FieldErrorTextStyle}"
-                                           Visibility="{Binding Errors[FormEmail], Converter={s:NullToVisibility Null=Collapsed, NonNull=Visible}}"
-                                           Text="{Binding Errors[FormEmail]}" />
-                            </StackPanel>
-                            <StackPanel Margin="0,16,0,0">
-                                <TextBlock Style="{StaticResource FieldLabelTextStyle}"
-                                           Text="Age" />
-                                <TextBox Width="320"
-                                         HorizontalAlignment="Left"
-                                         Text="{Binding Age, UpdateSourceTrigger=PropertyChanged}"
-                                         AutomationProperties.Name="Age" />
-                                <TextBlock Style="{StaticResource FieldErrorTextStyle}"
-                                           Visibility="{Binding Errors[Age], Converter={s:NullToVisibility Null=Collapsed, NonNull=Visible}}"
-                                           Text="{Binding Errors[Age]}" />
-                            </StackPanel>
-                            <Button Style="{DynamicResource AccentButtonStyle}"
-                                    Margin="0,16,0,0"
-                                    Command="{Binding SubmitCommand}"
-                                    Content="Submit" />
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
-                                   Text="{Binding LastSubmitted, StringFormat='Last submitted: {0}', TargetNullValue='Last submitted: -'}" />
-                    </StackPanel>
-                </Border>
+                    </Border>
+
+                    <Border Grid.Row="1" Grid.Column="0"
+                            Style="{StaticResource CardStyle}">
+                        <StackPanel>
+                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                       Text="Focus request" />
+                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                       Text="Moves focus to the first field with an error."
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                            <StackPanel Style="{StaticResource SamplePanelStyle}">
+                                <Button Command="{Binding FocusCommand}"
+                                        Content="Focus" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Row="1" Grid.Column="2"
+                            Style="{StaticResource CardStyle}">
+                        <StackPanel>
+                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                       Text="Correlation (compare)" />
+                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                       Text="Checks that two fields match."
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                            <StackPanel Style="{StaticResource SamplePanelStyle}">
+                                <StackPanel>
+                                    <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                               Text="Email" />
+                                    <TextBox Width="320"
+                                             HorizontalAlignment="Left"
+                                             Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
+                                             AutomationProperties.Name="Email" />
+                                </StackPanel>
+                                <StackPanel Margin="0,16,0,0">
+                                    <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                               Text="Confirm email" />
+                                    <TextBox Width="320"
+                                             HorizontalAlignment="Left"
+                                             Text="{Binding ConfirmEmail, UpdateSourceTrigger=PropertyChanged}"
+                                             AutomationProperties.Name="Confirm email" />
+                                    <TextBlock Style="{StaticResource FieldErrorTextStyle}"
+                                               Visibility="{Binding Errors[ConfirmEmail], Converter={s:NullToVisibility Null=Collapsed, NonNull=Visible}}"
+                                               Text="{Binding Errors[ConfirmEmail]}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Row="2" Grid.Column="0"
+                            Style="{StaticResource CardStyle}">
+                        <StackPanel>
+                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                       Text="Validation rules" />
+                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                       Text="Checks the input in the binding."
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                            <StackPanel Style="{StaticResource SamplePanelStyle}">
+                                <StackPanel>
+                                    <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                               Text="Email" />
+                                    <TextBox x:Name="RuleEmailInput"
+                                             Width="320"
+                                             HorizontalAlignment="Left"
+                                             AutomationProperties.Name="Email">
+                                        <TextBox.Text>
+                                            <Binding Path="RuleEmail"
+                                                     UpdateSourceTrigger="PropertyChanged">
+                                                <Binding.ValidationRules>
+                                                    <helpers:EmailValidationRule ErrorMessage="Invalid email format" />
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                        <i:Interaction.Triggers>
+                                            <s:EventRequestTrigger Request="{Binding ClearRulesRequest}">
+                                                <i:CallMethodAction MethodName="Clear" />
+                                            </s:EventRequestTrigger>
+                                        </i:Interaction.Triggers>
+                                    </TextBox>
+                                    <TextBlock Style="{StaticResource FieldErrorTextStyle}"
+                                               Visibility="{Binding (Validation.HasError), ElementName=RuleEmailInput, Converter={StaticResource ErrorVisibilityConverter}}"
+                                               Text="{Binding (Validation.Errors)/ErrorContent, ElementName=RuleEmailInput}" />
+                                </StackPanel>
+                                <StackPanel Margin="0,16,0,0">
+                                    <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                               Text="Quantity" />
+                                    <TextBox x:Name="QuantityInput"
+                                             Width="320"
+                                             HorizontalAlignment="Left"
+                                             AutomationProperties.Name="Quantity">
+                                        <TextBox.Text>
+                                            <Binding Path="Quantity"
+                                                     UpdateSourceTrigger="PropertyChanged">
+                                                <Binding.ValidationRules>
+                                                    <helpers:RangeValidationRule Minimum="1" Maximum="100"
+                                                                                 ErrorMessage="Must be from 1 to 100" />
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                        <i:Interaction.Triggers>
+                                            <s:EventRequestTrigger Request="{Binding ClearRulesRequest}">
+                                                <i:CallMethodAction MethodName="Clear" />
+                                            </s:EventRequestTrigger>
+                                        </i:Interaction.Triggers>
+                                    </TextBox>
+                                    <TextBlock Style="{StaticResource FieldErrorTextStyle}"
+                                               Visibility="{Binding (Validation.HasError), ElementName=QuantityInput, Converter={StaticResource ErrorVisibilityConverter}}"
+                                               Text="{Binding (Validation.Errors)/ErrorContent, ElementName=QuantityInput}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Row="2" Grid.Column="2"
+                            Style="{StaticResource CardStyle}">
+                        <StackPanel>
+                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                       Text="Form" />
+                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                       Text="Submit is enabled when every field is valid."
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                            <StackPanel Style="{StaticResource SamplePanelStyle}">
+                                <StackPanel>
+                                    <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                               Text="Name" />
+                                    <TextBox Width="320"
+                                             HorizontalAlignment="Left"
+                                             Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                             AutomationProperties.Name="Name" />
+                                    <TextBlock Style="{StaticResource FieldErrorTextStyle}"
+                                               Visibility="{Binding Errors[Name], Converter={s:NullToVisibility Null=Collapsed, NonNull=Visible}}"
+                                               Text="{Binding Errors[Name]}" />
+                                </StackPanel>
+                                <StackPanel Margin="0,16,0,0">
+                                    <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                               Text="Email" />
+                                    <TextBox Width="320"
+                                             HorizontalAlignment="Left"
+                                             Text="{Binding FormEmail, UpdateSourceTrigger=PropertyChanged}"
+                                             AutomationProperties.Name="Email" />
+                                    <TextBlock Style="{StaticResource FieldErrorTextStyle}"
+                                               Visibility="{Binding Errors[FormEmail], Converter={s:NullToVisibility Null=Collapsed, NonNull=Visible}}"
+                                               Text="{Binding Errors[FormEmail]}" />
+                                </StackPanel>
+                                <StackPanel Margin="0,16,0,0">
+                                    <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                               Text="Age" />
+                                    <TextBox Width="320"
+                                             HorizontalAlignment="Left"
+                                             Text="{Binding Age, UpdateSourceTrigger=PropertyChanged}"
+                                             AutomationProperties.Name="Age" />
+                                    <TextBlock Style="{StaticResource FieldErrorTextStyle}"
+                                               Visibility="{Binding Errors[Age], Converter={s:NullToVisibility Null=Collapsed, NonNull=Visible}}"
+                                               Text="{Binding Errors[Age]}" />
+                                </StackPanel>
+                                <Button Style="{DynamicResource AccentButtonStyle}"
+                                        Margin="0,16,0,0"
+                                        Command="{Binding SubmitCommand}"
+                                        Content="Submit" />
+                            </StackPanel>
+                            <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                       Text="{Binding LastSubmitted, StringFormat='Last submitted: {0}', TargetNullValue='Last submitted: -'}" />
+                        </StackPanel>
+                    </Border>
+                </Grid>
             </StackPanel>
         </AdornerDecorator>
     </ScrollViewer>

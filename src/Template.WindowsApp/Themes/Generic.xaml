@@ -144,7 +144,7 @@
                                         HorizontalAlignment="Right" VerticalAlignment="Bottom"
                                         Visibility="Collapsed"
                                         IsTabStop="False"
-                                        WindowChrome.IsHitTestVisibleInChrome="True" WindowChrome.ResizeGripDirection="BottomRight" />
+                                        WindowChrome.ResizeGripDirection="BottomRight" />
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>

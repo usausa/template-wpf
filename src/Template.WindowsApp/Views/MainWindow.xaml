@@ -13,8 +13,7 @@
                     x:Class="Template.WindowsApp.Views.MainWindow"
                     s:DataContextResolver.Type="{x:Type views:MainWindowViewModel}"
                     d:DataContext="{d:DesignInstance Type={x:Type views:MainWindowViewModel}}"
-                    Width="1024" Height="768"
-                    ResizeMode="CanResizeWithGrip"
+                    Width="1280" Height="960" MinWidth="1024" MinHeight="768"
                     Title="MainWindow"
                     Icon="../App.ico"
                     ShowIconOnTitleBar="False">
@@ -377,12 +376,28 @@
         </Border>
 
         <Canvas Grid.Column="1"
-                navigation:NavigationContainer.Navigator="{Binding Navigator}" />
+                navigation:NavigationContainer.Navigator="{Binding Navigator}"
+                ClipToBounds="True" />
 
         <ProgressBar Grid.Column="0" Grid.ColumnSpan="2"
                      VerticalAlignment="Bottom"
-                     IsIndeterminate="True"
-                     Visibility="{Binding BusyState.IsBusy, Converter={StaticResource BoolToVisibilityConverter}}" />
+                     IsIndeterminate="True">
+            <ProgressBar.Style>
+                <Style TargetType="{x:Type ProgressBar}"
+                       BasedOn="{StaticResource {x:Type ProgressBar}}">
+                    <Setter Property="Visibility" Value="Hidden" />
+                    <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding BusyState.IsBusy}" Value="True" />
+                                <Condition Binding="{Binding IsNavigating}" Value="False" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Visibility" Value="Visible" />
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ProgressBar.Style>
+        </ProgressBar>
 
         <FrameworkElement x:Name="PaletteAnchor"
                           Grid.Column="0" Grid.ColumnSpan="2"

@@ -35,6 +35,6 @@ public sealed partial class HomeViewModel : AppViewModelBase
         Samples = menu.Groups
             .Select(static x => new SampleEntry(x.Title, x.Icon, string.Join(" · ", x.Items.Select(static y => y.Title)), x.Items[0].Id))
             .ToList();
-        ForwardCommand = MakeAsyncCommand<ViewId>(x => Navigator.ForwardAsync(x));
+        ForwardCommand = MakeAsyncCommand<ViewId>(x => Navigator.ForwardAsync(x, new NavigationParameter().WithPushEffect()));
     }
 }

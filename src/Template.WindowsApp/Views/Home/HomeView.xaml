@@ -12,119 +12,151 @@
              d:DesignWidth="800" d:DesignHeight="600">
 
     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="24">
-            <TextBlock Style="{StaticResource PageTitleTextStyle}"
-                       Text="Home" />
-            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
-                       Text="{Binding Message}" />
+        <Grid MinHeight="{Binding ViewportHeight, RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}}">
+            <Grid Margin="24">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-            <StackPanel Style="{StaticResource SectionPanelStyle}">
-                <ItemsControl Margin="0,0,-8,0"
-                              ItemsSource="{Binding Summaries}"
-                              Focusable="False">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <UniformGrid Rows="1" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="{x:Type module:Summary}">
-                            <Border Style="{StaticResource CardStyle}"
-                                    Margin="0,0,8,8">
-                                <StackPanel>
-                                    <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                               Text="{Binding Title}"
-                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                                    <TextBlock Style="{DynamicResource TitleTextBlockStyle}"
-                                               Text="{Binding Value}" />
-                                    <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                               TextTrimming="CharacterEllipsis"
-                                               Text="{Binding Change}"
-                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                                </StackPanel>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                <TextBlock Grid.Row="0"
+                           Style="{StaticResource PageTitleTextStyle}"
+                           Text="Home" />
+                <TextBlock Grid.Row="1"
+                           Style="{StaticResource PageDescriptionTextStyle}"
+                           Text="{Binding Message}" />
 
-                <UniformGrid Rows="1"
-                             Margin="0,0,-8,0">
-                    <Border Style="{StaticResource CardStyle}"
-                            Margin="0,0,8,8">
-                        <StackPanel>
-                            <TextBlock Style="{DynamicResource BodyStrongTextBlockStyle}"
-                                       Text="Sales, last 7 days" />
-                            <controls:LineChart Height="220"
-                                                Margin="0,16,0,0"
-                                                Fill="{StaticResource ChartBlueSuperLightBrush}"
-                                                Stroke="{StaticResource ChartBlueBrush}"
-                                                GridBrush="{DynamicResource DividerStrokeColorDefaultBrush}"
-                                                LabelBrush="{DynamicResource TextFillColorSecondaryBrush}"
-                                                Labels="{Binding SalesLabels}"
-                                                Values="{Binding SalesValues}" />
-                        </StackPanel>
-                    </Border>
-                    <Border Style="{StaticResource CardStyle}"
-                            Margin="0,0,8,8">
-                        <StackPanel>
-                            <TextBlock Style="{DynamicResource BodyStrongTextBlockStyle}"
-                                       Text="Sales by category" />
-                            <controls:BarChart Height="220"
-                                               Margin="0,16,0,0"
-                                               Fill="{StaticResource ChartBlueBrush}"
-                                               LabelBrush="{DynamicResource TextFillColorSecondaryBrush}"
-                                               Labels="{Binding CategoryLabels}"
-                                               Values="{Binding CategoryValues}" />
-                        </StackPanel>
-                    </Border>
-                </UniformGrid>
-            </StackPanel>
+                <Grid Grid.Row="2"
+                      Style="{StaticResource SectionPanelStyle}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
 
-            <StackPanel Style="{StaticResource SectionPanelStyle}">
-                <TextBlock Style="{StaticResource SectionHeaderTextStyle}"
-                           Text="Samples" />
-                <ItemsControl Margin="0,0,-8,0"
-                              ItemsSource="{Binding Samples}"
-                              Focusable="False">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <UniformGrid Columns="4" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="{x:Type module:SampleEntry}">
-                            <Button Style="{StaticResource CardButtonStyle}"
-                                    Margin="0,0,8,8"
-                                    Command="{Binding DataContext.ForwardCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
-                                    CommandParameter="{Binding Id}"
-                                    AutomationProperties.Name="{Binding Title}">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0"
-                                               VerticalAlignment="Center"
-                                               Text="{Binding Icon}"
-                                               FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                               FontSize="24" />
-                                    <StackPanel Grid.Column="1"
-                                                Margin="16,0,0,0"
-                                                VerticalAlignment="Center">
-                                        <TextBlock Style="{DynamicResource BodyStrongTextBlockStyle}"
-                                                   Text="{Binding Title}" />
+                    <ItemsControl Grid.Row="0"
+                                  Margin="0,0,-8,0"
+                                  ItemsSource="{Binding Summaries}"
+                                  Focusable="False">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Rows="1" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type module:Summary}">
+                                <Border Style="{StaticResource CardStyle}"
+                                        Margin="0,0,8,8">
+                                    <StackPanel>
+                                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                                   Text="{Binding Title}"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                        <TextBlock Style="{DynamicResource TitleTextBlockStyle}"
+                                                   Text="{Binding Value}" />
                                         <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
                                                    TextTrimming="CharacterEllipsis"
-                                                   Text="{Binding Description}"
+                                                   Text="{Binding Change}"
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
                                     </StackPanel>
-                                </Grid>
-                            </Button>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </StackPanel>
-        </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <UniformGrid Grid.Row="1"
+                                 Rows="1"
+                                 Margin="0,0,-8,0">
+                        <Border Style="{StaticResource CardStyle}"
+                                Margin="0,0,8,8">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0"
+                                           Style="{DynamicResource BodyStrongTextBlockStyle}"
+                                           Text="Sales, last 7 days" />
+                                <controls:LineChart Grid.Row="1"
+                                                    MinHeight="220"
+                                                    Margin="0,16,0,0"
+                                                    Fill="{StaticResource ChartBlueSuperLightBrush}"
+                                                    Stroke="{StaticResource ChartBlueBrush}"
+                                                    GridBrush="{DynamicResource DividerStrokeColorDefaultBrush}"
+                                                    LabelBrush="{DynamicResource TextFillColorSecondaryBrush}"
+                                                    Labels="{Binding SalesLabels}"
+                                                    Values="{Binding SalesValues}" />
+                            </Grid>
+                        </Border>
+                        <Border Style="{StaticResource CardStyle}"
+                                Margin="0,0,8,8">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0"
+                                           Style="{DynamicResource BodyStrongTextBlockStyle}"
+                                           Text="Sales by category" />
+                                <controls:BarChart Grid.Row="1"
+                                                   MinHeight="220"
+                                                   Margin="0,16,0,0"
+                                                   Fill="{StaticResource ChartBlueBrush}"
+                                                   LabelBrush="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   Labels="{Binding CategoryLabels}"
+                                                   Values="{Binding CategoryValues}" />
+                            </Grid>
+                        </Border>
+                    </UniformGrid>
+                </Grid>
+
+                <StackPanel Grid.Row="3"
+                            Style="{StaticResource SectionPanelStyle}">
+                    <TextBlock Style="{StaticResource SectionHeaderTextStyle}"
+                               Text="Samples" />
+                    <ItemsControl Margin="0,0,-8,0"
+                                  ItemsSource="{Binding Samples}"
+                                  Focusable="False">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="4" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type module:SampleEntry}">
+                                <Button Style="{StaticResource CardButtonStyle}"
+                                        Margin="0,0,8,8"
+                                        Command="{Binding DataContext.ForwardCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
+                                        CommandParameter="{Binding Id}"
+                                        AutomationProperties.Name="{Binding Title}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0"
+                                                   VerticalAlignment="Center"
+                                                   Text="{Binding Icon}"
+                                                   FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                                                   FontSize="24" />
+                                        <StackPanel Grid.Column="1"
+                                                    Margin="16,0,0,0"
+                                                    VerticalAlignment="Center">
+                                            <TextBlock Style="{DynamicResource BodyStrongTextBlockStyle}"
+                                                       Text="{Binding Title}" />
+                                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                                       TextTrimming="CharacterEllipsis"
+                                                       Text="{Binding Description}"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Grid>
+        </Grid>
     </ScrollViewer>
 
 </UserControl>

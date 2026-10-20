@@ -38,4 +38,12 @@ public sealed class WindowSettings : ApplicationSettingsBase
         get => (string?)this[nameof(RecentCommands)];
         set => this[nameof(RecentCommands)] = value;
     }
+
+    [UserScopedSetting]
+    [DefaultSettingValue("Light")]
+    public string Theme
+    {
+        get => (string)this[nameof(Theme)];
+        set => this[nameof(Theme)] = value;
+    }
 }

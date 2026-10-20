@@ -10,6 +10,17 @@
              d:DataContext="{d:DesignInstance Type={x:Type module:SettingsViewModel}}"
              d:DesignWidth="800" d:DesignHeight="600">
 
+    <UserControl.Resources>
+        <module:ThemeTextConverter x:Key="ThemeToTextConverter" />
+        <Style x:Key="SettingIconTextStyle"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+    </UserControl.Resources>
+
     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="24">
             <TextBlock Style="{StaticResource PageTitleTextStyle}"
@@ -19,15 +30,131 @@
 
             <StackPanel Style="{StaticResource SectionPanelStyle}">
                 <TextBlock Style="{StaticResource SectionHeaderTextStyle}"
+                           Text="Appearance" />
+                <Border Style="{StaticResource CardStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"
+                                   Style="{StaticResource SettingIconTextStyle}"
+                                   Text="&#xE771;" />
+                        <StackPanel Grid.Column="1"
+                                    Margin="8,0,16,0"
+                                    VerticalAlignment="Center">
+                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                       Text="App theme" />
+                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                       Text="Select which app theme to display"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        </StackPanel>
+                        <ComboBox Grid.Column="2"
+                                  Width="200"
+                                  VerticalAlignment="Center"
+                                  ItemsSource="{Binding Themes}"
+                                  SelectedItem="{Binding WindowManager.Theme}"
+                                  AutomationProperties.Name="App theme">
+                            <ComboBox.ItemContainerStyle>
+                                <Style TargetType="{x:Type ComboBoxItem}"
+                                       BasedOn="{StaticResource {x:Type ComboBoxItem}}">
+                                    <Setter Property="AutomationProperties.Name" Value="{Binding Converter={StaticResource ThemeToTextConverter}}" />
+                                </Style>
+                            </ComboBox.ItemContainerStyle>
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource ThemeToTextConverter}}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </Grid>
+                </Border>
+            </StackPanel>
+
+            <StackPanel Style="{StaticResource SectionPanelStyle}">
+                <TextBlock Style="{StaticResource SectionHeaderTextStyle}"
+                           Text="Navigation" />
+                <Border Style="{StaticResource CardStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"
+                                   Style="{StaticResource SettingIconTextStyle}"
+                                   Text="&#xE700;" />
+                        <StackPanel Grid.Column="1"
+                                    Margin="8,0,16,0"
+                                    VerticalAlignment="Center">
+                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                       Text="Navigation pane" />
+                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                       Text="Show the pane with labels"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        </StackPanel>
+                        <CheckBox Grid.Column="2"
+                                  MinWidth="0"
+                                  VerticalAlignment="Center"
+                                  IsChecked="{Binding WindowManager.IsPaneOpen}"
+                                  AutomationProperties.Name="Navigation pane" />
+                    </Grid>
+                </Border>
+            </StackPanel>
+
+            <StackPanel Style="{StaticResource SectionPanelStyle}">
+                <TextBlock Style="{StaticResource SectionHeaderTextStyle}"
+                           Text="Command palette" />
+                <Border Style="{StaticResource CardStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"
+                                   Style="{StaticResource SettingIconTextStyle}"
+                                   Text="&#xE81C;" />
+                        <StackPanel Grid.Column="1"
+                                    Margin="8,0,16,0"
+                                    VerticalAlignment="Center">
+                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                       Text="Recent commands" />
+                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                       Text="Recently used commands are listed first"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        </StackPanel>
+                        <Button Grid.Column="2"
+                                VerticalAlignment="Center"
+                                Command="{Binding ClearRecentCommand}"
+                                Content="Clear" />
+                    </Grid>
+                </Border>
+            </StackPanel>
+
+            <StackPanel Style="{StaticResource SectionPanelStyle}">
+                <TextBlock Style="{StaticResource SectionHeaderTextStyle}"
                            Text="About" />
                 <Border Style="{StaticResource CardStyle}">
-                    <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
-                                   Text="{Binding ApplicationName}" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="{Binding VersionText}"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                    </StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"
+                                   Style="{StaticResource SettingIconTextStyle}"
+                                   Text="&#xE946;" />
+                        <StackPanel Grid.Column="1"
+                                    Margin="8,0,0,0"
+                                    VerticalAlignment="Center">
+                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                       Text="{Binding ApplicationName}" />
+                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                       Text="{Binding VersionText}"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        </StackPanel>
+                    </Grid>
                 </Border>
             </StackPanel>
         </StackPanel>

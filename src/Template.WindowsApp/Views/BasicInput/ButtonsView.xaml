@@ -17,96 +17,112 @@
             <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
                        Text="Buttons, repeat buttons, toggle buttons and icon buttons." />
 
-            <Border Style="{StaticResource CardStyle}">
-                <StackPanel>
-                    <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
-                               Text="Button" />
-                    <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                               Text="Standard, accent and disabled buttons."
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                    <StackPanel Style="{StaticResource SamplePanelStyle}"
-                                Orientation="Horizontal">
-                        <Button Command="{Binding ClickCommand}"
-                                Content="Standard" />
-                        <Button Style="{DynamicResource AccentButtonStyle}"
-                                Margin="8,0,0,0"
-                                Command="{Binding ClickCommand}"
-                                Content="Accent" />
-                        <Button Margin="8,0,0,0"
-                                IsEnabled="False"
-                                Content="Disabled" />
-                    </StackPanel>
-                    <TextBlock Style="{StaticResource SampleResultTextStyle}"
-                               Text="{Binding ClickCount, StringFormat='Clicked {0} times'}" />
-                </StackPanel>
-            </Border>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-            <Border Style="{StaticResource CardStyle}">
-                <StackPanel>
-                    <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
-                               Text="RepeatButton" />
-                    <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                               Text="Repeats the command while pressed."
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                    <StackPanel Style="{StaticResource SamplePanelStyle}">
-                        <RepeatButton Command="{Binding RepeatCommand}"
-                                      Content="Hold to repeat" />
+                <Border Grid.Row="0" Grid.Column="0"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="Button" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Standard, accent and disabled buttons."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}"
+                                    Orientation="Horizontal">
+                            <Button Command="{Binding ClickCommand}"
+                                    Content="Standard" />
+                            <Button Style="{DynamicResource AccentButtonStyle}"
+                                    Margin="8,0,0,0"
+                                    Command="{Binding ClickCommand}"
+                                    Content="Accent" />
+                            <Button Margin="8,0,0,0"
+                                    IsEnabled="False"
+                                    Content="Disabled" />
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding ClickCount, StringFormat='Clicked {0} times'}" />
                     </StackPanel>
-                    <TextBlock Style="{StaticResource SampleResultTextStyle}"
-                               Text="{Binding RepeatCount, StringFormat='Count: {0}'}" />
-                </StackPanel>
-            </Border>
+                </Border>
 
-            <Border Style="{StaticResource CardStyle}">
-                <StackPanel>
-                    <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
-                               Text="ToggleButton" />
-                    <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                               Text="Switches between on and off."
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                    <StackPanel Style="{StaticResource SamplePanelStyle}">
-                        <ToggleButton IsChecked="{Binding IsToggled}"
-                                      Content="Toggle" />
+                <Border Grid.Row="0" Grid.Column="2"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="RepeatButton" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Repeats the command while pressed."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <RepeatButton Command="{Binding RepeatCommand}"
+                                          Content="Hold to repeat" />
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding RepeatCount, StringFormat='Count: {0}'}" />
                     </StackPanel>
-                    <TextBlock Style="{StaticResource SampleResultTextStyle}"
-                               Text="{Binding IsToggled, Converter={s:BoolToText True=On, False=Off}, StringFormat='State: {0}'}" />
-                </StackPanel>
-            </Border>
+                </Border>
 
-            <Border Style="{StaticResource CardStyle}">
-                <StackPanel>
-                    <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
-                               Text="Icon buttons" />
-                    <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                               Text="Buttons with a glyph and a tooltip."
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                    <StackPanel Style="{StaticResource SamplePanelStyle}"
-                                Orientation="Horizontal">
-                        <Button Style="{StaticResource IconButtonStyle}"
-                                Command="{Binding PressCommand}"
-                                CommandParameter="Add"
-                                Content="&#xE710;"
-                                ToolTip="Add"
-                                AutomationProperties.Name="Add" />
-                        <Button Style="{StaticResource IconButtonStyle}"
-                                Margin="8,0,0,0"
-                                Command="{Binding PressCommand}"
-                                CommandParameter="Edit"
-                                Content="&#xE70F;"
-                                ToolTip="Edit"
-                                AutomationProperties.Name="Edit" />
-                        <Button Style="{StaticResource IconButtonStyle}"
-                                Margin="8,0,0,0"
-                                Command="{Binding PressCommand}"
-                                CommandParameter="Delete"
-                                Content="&#xE74D;"
-                                ToolTip="Delete"
-                                AutomationProperties.Name="Delete" />
+                <Border Grid.Row="1" Grid.Column="0"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="ToggleButton" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Switches between on and off."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <ToggleButton IsChecked="{Binding IsToggled}"
+                                          Content="Toggle" />
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding IsToggled, Converter={s:BoolToText True=On, False=Off}, StringFormat='State: {0}'}" />
                     </StackPanel>
-                    <TextBlock Style="{StaticResource SampleResultTextStyle}"
-                               Text="{Binding LastPressed, StringFormat='Last pressed: {0}', TargetNullValue='Last pressed: -'}" />
-                </StackPanel>
-            </Border>
+                </Border>
+
+                <Border Grid.Row="1" Grid.Column="2"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="Icon buttons" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Buttons with a glyph and a tooltip."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}"
+                                    Orientation="Horizontal">
+                            <Button Style="{StaticResource IconButtonStyle}"
+                                    Command="{Binding PressCommand}"
+                                    CommandParameter="Add"
+                                    Content="&#xE710;"
+                                    ToolTip="Add"
+                                    AutomationProperties.Name="Add" />
+                            <Button Style="{StaticResource IconButtonStyle}"
+                                    Margin="8,0,0,0"
+                                    Command="{Binding PressCommand}"
+                                    CommandParameter="Edit"
+                                    Content="&#xE70F;"
+                                    ToolTip="Edit"
+                                    AutomationProperties.Name="Edit" />
+                            <Button Style="{StaticResource IconButtonStyle}"
+                                    Margin="8,0,0,0"
+                                    Command="{Binding PressCommand}"
+                                    CommandParameter="Delete"
+                                    Content="&#xE74D;"
+                                    ToolTip="Delete"
+                                    AutomationProperties.Name="Delete" />
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding LastPressed, StringFormat='Last pressed: {0}', TargetNullValue='Last pressed: -'}" />
+                    </StackPanel>
+                </Border>
+            </Grid>
         </StackPanel>
     </ScrollViewer>
 

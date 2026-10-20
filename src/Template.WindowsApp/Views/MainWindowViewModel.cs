@@ -4,7 +4,7 @@ using Template.WindowsApp.Shell;
 
 // ReSharper disable once ClassNeverInstantiated.Global
 [ObservableGeneratorOption(Reactive = true, ViewModel = true)]
-public sealed class MainWindowViewModel : ExtendViewModelBase
+public sealed partial class MainWindowViewModel : ExtendViewModelBase
 {
     private readonly ILogger<MainWindowViewModel> logger;
 
@@ -17,6 +17,9 @@ public sealed class MainWindowViewModel : ExtendViewModelBase
     public NavigationMenu Menu { get; }
 
     public CommandPalette Palette { get; }
+
+    [ObservableProperty]
+    public partial bool IsNavigating { get; set; }
 
     public IObserveCommand ForwardCommand { get; }
 
@@ -46,7 +49,7 @@ public sealed class MainWindowViewModel : ExtendViewModelBase
         Menu = menu;
         Palette = new CommandPalette(windowManager.RecentCommands);
 
-        ForwardCommand = MakeAsyncCommand<ViewId>(x => Equals(Navigator.CurrentViewId, x) ? Task.CompletedTask : Navigator.ForwardAsync(x));
+        ForwardCommand = MakeAsyncCommand<ViewId>(x => Equals(Navigator.CurrentViewId, x) ? Task.CompletedTask : Navigator.ForwardAsync(x, new NavigationParameter().WithPushEffect()));
         ToggleGroupCommand = MakeDelegateCommand<NavigationGroup>(ToggleGroup);
         ExecuteCommand = MakeAsyncCommand(Execute, () => !BusyState.IsBusy);
         ToggleNavigationCommand = MakeDelegateCommand(() => WindowManager.IsPaneOpen = !WindowManager.IsPaneOpen);
@@ -68,12 +71,14 @@ public sealed class MainWindowViewModel : ExtendViewModelBase
     {
         if (Navigator.Executing)
         {
+            IsNavigating = true;
             navigatingBusy ??= BusyState.Begin();
         }
         else
         {
             navigatingBusy?.Dispose();
             navigatingBusy = null;
+            IsNavigating = false;
         }
     }
 

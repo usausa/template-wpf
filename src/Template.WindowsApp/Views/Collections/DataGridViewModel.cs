@@ -5,7 +5,7 @@ using Template.WindowsApp.Shell;
 // ReSharper disable once ClassNeverInstantiated.Global
 public sealed partial class DataGridViewModel : AppViewModelBase, IShellCommandProvider
 {
-    private const int PageSize = 10;
+    private const int PageSize = 15;
 
     private static readonly string[][] ProductNames =
     [

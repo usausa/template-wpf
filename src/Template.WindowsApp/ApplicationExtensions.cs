@@ -89,6 +89,7 @@ public static partial class ApplicationExtensions
         // Service
         builder.Services.AddServices();
         builder.Services.AddSingleton<IDialogService, DialogService>();
+        builder.Services.AddSingleton<IClipboardService, ClipboardService>();
 
         // Window
         builder.Services.AddSingleton<IWindowManager, WindowManager>();

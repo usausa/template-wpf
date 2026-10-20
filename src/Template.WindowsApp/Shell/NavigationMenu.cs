@@ -32,7 +32,15 @@ public sealed class NavigationMenu
             "Feedback",
             "\uE946",
             [
-                new(ViewId.Dialogs, "Dialogs", "\uE737")
+                new(ViewId.Dialogs, "Dialogs", "\uE737"),
+                new(ViewId.Progress, "Progress", "\uF16A")
+            ]),
+        new NavigationGroup(
+            "Design",
+            "\uEB3C",
+            [
+                new(ViewId.Colors, "Colors", "\uE790"),
+                new(ViewId.Typography, "Typography", "\uE8E9")
             ])
     ];
 

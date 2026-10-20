@@ -18,115 +18,133 @@
             <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
                        Text="Text boxes, password boxes and rich text." />
 
-            <Border Style="{StaticResource CardStyle}">
-                <StackPanel>
-                    <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
-                               Text="TextBox" />
-                    <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                               Text="Single-line input with a hint."
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                    <StackPanel Style="{StaticResource SamplePanelStyle}">
-                        <Grid Width="320"
-                              HorizontalAlignment="Left">
-                            <TextBox Text="{Binding SingleLineText, UpdateSourceTrigger=PropertyChanged}"
-                                     AutomationProperties.Name="Single-line text" />
-                            <TextBlock Margin="12,0,0,0"
-                                       VerticalAlignment="Center"
-                                       Visibility="{Binding SingleLineText, Converter={s:NullToVisibility Null=Visible, NonNull=Collapsed, HandleEmptyString=True}}"
-                                       IsHitTestVisible="False"
-                                       Text="Type here"
-                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
-                        </Grid>
-                    </StackPanel>
-                    <TextBlock Style="{StaticResource SampleResultTextStyle}"
-                               Text="{Binding SingleLineText.Length, StringFormat='Length: {0}'}" />
-                </StackPanel>
-            </Border>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-            <Border Style="{StaticResource CardStyle}">
-                <StackPanel>
-                    <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
-                               Text="PasswordBox" />
-                    <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                               Text="Hidden input."
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                    <StackPanel Style="{StaticResource SamplePanelStyle}">
-                        <PasswordBox x:Name="PasswordInput"
-                                     Width="320"
-                                     HorizontalAlignment="Left"
-                                     AutomationProperties.Name="Password">
+                <Border Grid.Row="0" Grid.Column="0"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="TextBox" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Single-line input with a hint."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <Grid Width="320"
+                                  HorizontalAlignment="Left">
+                                <TextBox Text="{Binding SingleLineText, UpdateSourceTrigger=PropertyChanged}"
+                                         AutomationProperties.Name="Single-line text" />
+                                <TextBlock Margin="12,0,0,0"
+                                           VerticalAlignment="Center"
+                                           Visibility="{Binding SingleLineText, Converter={s:NullToVisibility Null=Visible, NonNull=Collapsed, HandleEmptyString=True}}"
+                                           IsHitTestVisible="False"
+                                           Text="Type here"
+                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
+                            </Grid>
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding SingleLineText.Length, StringFormat='Length: {0}'}" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="0" Grid.Column="2"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="PasswordBox" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Hidden input."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <PasswordBox x:Name="PasswordInput"
+                                         Width="320"
+                                         HorizontalAlignment="Left"
+                                         AutomationProperties.Name="Password">
+                                <i:Interaction.Triggers>
+                                    <s:EventRequestTrigger Request="{Binding ClearPasswordRequest}">
+                                        <i:CallMethodAction MethodName="Clear" />
+                                    </s:EventRequestTrigger>
+                                </i:Interaction.Triggers>
+                            </PasswordBox>
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding Password.Length, ElementName=PasswordInput, StringFormat='Length: {0}'}">
                             <i:Interaction.Triggers>
-                                <s:EventRequestTrigger Request="{Binding ClearPasswordRequest}">
-                                    <i:CallMethodAction MethodName="Clear" />
-                                </s:EventRequestTrigger>
+                                <i:EventTrigger EventName="PasswordChanged"
+                                                SourceObject="{Binding ElementName=PasswordInput}">
+                                    <s:UpdateTargetAction PropertyName="Text" />
+                                </i:EventTrigger>
                             </i:Interaction.Triggers>
-                        </PasswordBox>
+                        </TextBlock>
                     </StackPanel>
-                    <TextBlock Style="{StaticResource SampleResultTextStyle}"
-                               Text="{Binding Password.Length, ElementName=PasswordInput, StringFormat='Length: {0}'}">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="PasswordChanged"
-                                            SourceObject="{Binding ElementName=PasswordInput}">
-                                <s:UpdateTargetAction PropertyName="Text" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </TextBlock>
-                </StackPanel>
-            </Border>
+                </Border>
 
-            <Border Style="{StaticResource CardStyle}">
-                <StackPanel>
-                    <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
-                               Text="Multi-line" />
-                    <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                               Text="Multiple lines of text."
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                    <StackPanel Style="{StaticResource SamplePanelStyle}">
-                        <TextBox Height="96"
-                                 TextWrapping="Wrap"
-                                 VerticalScrollBarVisibility="Auto"
-                                 Text="{Binding MultiLineText, UpdateSourceTrigger=PropertyChanged}"
-                                 AcceptsReturn="True" AutomationProperties.Name="Multi-line text" />
-                    </StackPanel>
-                    <TextBlock Style="{StaticResource SampleResultTextStyle}"
-                               Text="{Binding LineCount, StringFormat='Lines: {0}'}" />
-                </StackPanel>
-            </Border>
-
-            <Border Style="{StaticResource CardStyle}">
-                <StackPanel>
-                    <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
-                               Text="RichTextBox" />
-                    <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                               Text="Formatted text."
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                    <StackPanel Style="{StaticResource SamplePanelStyle}">
-                        <RichTextBox Height="96"
+                <Border Grid.Row="1" Grid.Column="0"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="Multi-line" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Multiple lines of text."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <TextBox Height="96"
+                                     TextWrapping="Wrap"
                                      VerticalScrollBarVisibility="Auto"
-                                     AutomationProperties.Name="Rich text">
-                            <FlowDocument>
-                                <Paragraph xml:space="preserve">Rich text with <Bold>bold</Bold>, <Italic>italic</Italic> and <Underline>underline</Underline>.</Paragraph>
-                            </FlowDocument>
-                        </RichTextBox>
+                                     Text="{Binding MultiLineText, UpdateSourceTrigger=PropertyChanged}"
+                                     AcceptsReturn="True" AutomationProperties.Name="Multi-line text" />
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding LineCount, StringFormat='Lines: {0}'}" />
                     </StackPanel>
-                </StackPanel>
-            </Border>
+                </Border>
 
-            <Border Style="{StaticResource CardStyle}">
-                <StackPanel>
-                    <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
-                               Text="Read-only" />
-                    <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                               Text="Text that cannot be changed."
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                    <StackPanel Style="{StaticResource SamplePanelStyle}">
-                        <TextBox Width="320"
-                                 HorizontalAlignment="Left"
-                                 Text="This text is read-only."
-                                 AutomationProperties.Name="Read-only text" IsReadOnly="True" />
+                <Border Grid.Row="1" Grid.Column="2"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="RichTextBox" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Formatted text."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <RichTextBox Height="96"
+                                         VerticalScrollBarVisibility="Auto"
+                                         AutomationProperties.Name="Rich text">
+                                <FlowDocument>
+                                    <Paragraph xml:space="preserve">Rich text with <Bold>bold</Bold>, <Italic>italic</Italic> and <Underline>underline</Underline>.</Paragraph>
+                                </FlowDocument>
+                            </RichTextBox>
+                        </StackPanel>
                     </StackPanel>
-                </StackPanel>
-            </Border>
+                </Border>
+
+                <Border Grid.Row="2" Grid.Column="0"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="Read-only" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Text that cannot be changed."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <TextBox Width="320"
+                                     HorizontalAlignment="Left"
+                                     Text="This text is read-only."
+                                     AutomationProperties.Name="Read-only text" IsReadOnly="True" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </Grid>
         </StackPanel>
     </ScrollViewer>
 

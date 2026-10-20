@@ -1,0 +1,99 @@
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:s="http://smart/windows"
+             xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
+             xmlns:module="clr-namespace:Template.WindowsApp.Views.Design"
+             mc:Ignorable="d"
+             x:Class="Template.WindowsApp.Views.Design.ColorsView"
+             s:DataContextResolver.Type="{x:Type module:ColorsViewModel}"
+             d:DataContext="{d:DesignInstance Type={x:Type module:ColorsViewModel}}"
+             d:DesignWidth="800" d:DesignHeight="600">
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24">
+            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+                       Text="Colors" />
+            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+                       Text="Theme brushes and their resource names." />
+
+            <Grid Margin="0,0,0,16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ComboBox Grid.Column="0"
+                          Width="240"
+                          ItemsSource="{Binding Categories}"
+                          SelectedItem="{Binding SelectedCategory}"
+                          AutomationProperties.Name="Category" DisplayMemberPath="Title">
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ComboBoxItem}"
+                               BasedOn="{StaticResource {x:Type ComboBoxItem}}">
+                            <Setter Property="AutomationProperties.Name" Value="{Binding Title}" />
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                </ComboBox>
+                <TextBlock Grid.Column="1"
+                           Style="{StaticResource SampleResultTextStyle}"
+                           Margin="16,0,0,0"
+                           VerticalAlignment="Center"
+                           Text="{Binding Copied, StringFormat='Copied: {0}', TargetNullValue='Copied: -'}" />
+            </Grid>
+
+            <ItemsControl ItemsSource="{Binding SelectedCategory.Groups}"
+                          Focusable="False">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type module:ColorGroup}">
+                        <StackPanel Style="{StaticResource SectionPanelStyle}">
+                            <TextBlock Style="{StaticResource SectionHeaderTextStyle}"
+                                       Text="{Binding Title}" />
+                            <Border Style="{StaticResource CardStyle}">
+                                <ItemsControl ItemsSource="{Binding Entries}"
+                                              Focusable="False">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate DataType="{x:Type module:ColorEntry}">
+                                            <Grid Margin="0,4">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="32" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <controls:BrushSwatch Grid.Column="0"
+                                                                      Width="32" Height="32"
+                                                                      BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                                                                      BorderThickness="1"
+                                                                      BrushKey="{Binding Key}" />
+                                                <TextBlock Grid.Column="1"
+                                                           Style="{DynamicResource BodyTextBlockStyle}"
+                                                           Margin="16,0"
+                                                           VerticalAlignment="Center"
+                                                           Text="{Binding Name}" />
+                                                <TextBlock Grid.Column="2"
+                                                           Style="{DynamicResource CaptionTextBlockStyle}"
+                                                           Margin="0,0,16,0"
+                                                           VerticalAlignment="Center"
+                                                           Text="{Binding Key}"
+                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                                <Button Grid.Column="3"
+                                                        Style="{StaticResource IconButtonStyle}"
+                                                        Command="{Binding DataContext.CopyCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                        CommandParameter="{Binding Key}"
+                                                        Content="&#xE8C8;"
+                                                        ToolTip="Copy"
+                                                        AutomationProperties.Name="{Binding Key, StringFormat='Copy {0}'}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Border>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

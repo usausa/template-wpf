@@ -1,0 +1,229 @@
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:s="http://smart/windows"
+             xmlns:module="clr-namespace:Template.WindowsApp.Views.Design"
+             mc:Ignorable="d"
+             x:Class="Template.WindowsApp.Views.Design.TypographyView"
+             s:DataContextResolver.Type="{x:Type module:TypographyViewModel}"
+             d:DataContext="{d:DesignInstance Type={x:Type module:TypographyViewModel}}"
+             d:DesignWidth="800" d:DesignHeight="600">
+
+    <UserControl.Resources>
+        <Style x:Key="HeaderCellTextStyle"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource PageTextStyle}">
+            <Setter Property="Margin" Value="0,0,16,8" />
+            <Setter Property="FontSize" Value="{DynamicResource CaptionTextBlockFontSize}" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+        <Style x:Key="ValueCellTextStyle"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource PageTextStyle}">
+            <Setter Property="Margin" Value="0,0,16,0" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="{DynamicResource CaptionTextBlockFontSize}" />
+        </Style>
+        <Style x:Key="KeyCellTextStyle"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource ValueCellTextStyle}">
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24">
+            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+                       Text="Typography" />
+            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+                       Text="Text styles of the Fluent theme." />
+
+            <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                       Margin="0,0,0,16"
+                       Text="{Binding Copied, StringFormat='Copied: {0}', TargetNullValue='Copied: -'}" />
+
+            <Border Style="{StaticResource CardStyle}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="64" />
+                        <ColumnDefinition Width="96" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0"
+                               Style="{StaticResource HeaderCellTextStyle}"
+                               Text="Example" />
+                    <TextBlock Grid.Row="0" Grid.Column="1"
+                               Style="{StaticResource HeaderCellTextStyle}"
+                               Text="Size" />
+                    <TextBlock Grid.Row="0" Grid.Column="2"
+                               Style="{StaticResource HeaderCellTextStyle}"
+                               Text="Weight" />
+                    <TextBlock Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2"
+                               Style="{StaticResource HeaderCellTextStyle}"
+                               Text="Style" />
+                    <TextBlock Grid.Row="1" Grid.Column="0"
+                               Style="{DynamicResource CaptionTextBlockStyle}"
+                               Margin="0,8,16,8"
+                               VerticalAlignment="Center"
+                               Text="Caption" />
+                    <TextBlock Grid.Row="1" Grid.Column="1"
+                               Style="{StaticResource ValueCellTextStyle}"
+                               Text="12" />
+                    <TextBlock Grid.Row="1" Grid.Column="2"
+                               Style="{StaticResource ValueCellTextStyle}"
+                               Text="Regular" />
+                    <TextBlock Grid.Row="1" Grid.Column="3"
+                               Style="{StaticResource KeyCellTextStyle}"
+                               Text="CaptionTextBlockStyle" />
+                    <Button Grid.Row="1" Grid.Column="4"
+                            Style="{StaticResource IconButtonStyle}"
+                            Command="{Binding CopyCommand}"
+                            CommandParameter="CaptionTextBlockStyle"
+                            Content="&#xE8C8;"
+                            ToolTip="Copy"
+                            AutomationProperties.Name="Copy CaptionTextBlockStyle" />
+                    <TextBlock Grid.Row="2" Grid.Column="0"
+                               Style="{DynamicResource BodyTextBlockStyle}"
+                               Margin="0,8,16,8"
+                               VerticalAlignment="Center"
+                               Text="Body" />
+                    <TextBlock Grid.Row="2" Grid.Column="1"
+                               Style="{StaticResource ValueCellTextStyle}"
+                               Text="14" />
+                    <TextBlock Grid.Row="2" Grid.Column="2"
+                               Style="{StaticResource ValueCellTextStyle}"
+                               Text="Regular" />
+                    <TextBlock Grid.Row="2" Grid.Column="3"
+                               Style="{StaticResource KeyCellTextStyle}"
+                               Text="BodyTextBlockStyle" />
+                    <Button Grid.Row="2" Grid.Column="4"
+                            Style="{StaticResource IconButtonStyle}"
+                            Command="{Binding CopyCommand}"
+                            CommandParameter="BodyTextBlockStyle"
+                            Content="&#xE8C8;"
+                            ToolTip="Copy"
+                            AutomationProperties.Name="Copy BodyTextBlockStyle" />
+                    <TextBlock Grid.Row="3" Grid.Column="0"
+                               Style="{DynamicResource BodyStrongTextBlockStyle}"
+                               Margin="0,8,16,8"
+                               VerticalAlignment="Center"
+                               Text="Body strong" />
+                    <TextBlock Grid.Row="3" Grid.Column="1"
+                               Style="{StaticResource ValueCellTextStyle}"
+                               Text="14" />
+                    <TextBlock Grid.Row="3" Grid.Column="2"
+                               Style="{StaticResource ValueCellTextStyle}"
+                               Text="SemiBold" />
+                    <TextBlock Grid.Row="3" Grid.Column="3"
+                               Style="{StaticResource KeyCellTextStyle}"
+                               Text="BodyStrongTextBlockStyle" />
+                    <Button Grid.Row="3" Grid.Column="4"
+                            Style="{StaticResource IconButtonStyle}"
+                            Command="{Binding CopyCommand}"
+                            CommandParameter="BodyStrongTextBlockStyle"
+                            Content="&#xE8C8;"
+                            ToolTip="Copy"
+                            AutomationProperties.Name="Copy BodyStrongTextBlockStyle" />
+                    <TextBlock Grid.Row="4" Grid.Column="0"
+                               Style="{DynamicResource SubtitleTextBlockStyle}"
+                               Margin="0,8,16,8"
+                               VerticalAlignment="Center"
+                               Text="Subtitle" />
+                    <TextBlock Grid.Row="4" Grid.Column="1"
+                               Style="{StaticResource ValueCellTextStyle}"
+                               Text="20" />
+                    <TextBlock Grid.Row="4" Grid.Column="2"
+                               Style="{StaticResource ValueCellTextStyle}"
+                               Text="SemiBold" />
+                    <TextBlock Grid.Row="4" Grid.Column="3"
+                               Style="{StaticResource KeyCellTextStyle}"
+                               Text="SubtitleTextBlockStyle" />
+                    <Button Grid.Row="4" Grid.Column="4"
+                            Style="{StaticResource IconButtonStyle}"
+                            Command="{Binding CopyCommand}"
+                            CommandParameter="SubtitleTextBlockStyle"
+                            Content="&#xE8C8;"
+                            ToolTip="Copy"
+                            AutomationProperties.Name="Copy SubtitleTextBlockStyle" />
+                    <TextBlock Grid.Row="5" Grid.Column="0"
+                               Style="{DynamicResource TitleTextBlockStyle}"
+                               Margin="0,8,16,8"
+                               VerticalAlignment="Center"
+                               Text="Title" />
+                    <TextBlock Grid.Row="5" Grid.Column="1"
+                               Style="{StaticResource ValueCellTextStyle}"
+                               Text="28" />
+                    <TextBlock Grid.Row="5" Grid.Column="2"
+                               Style="{StaticResource ValueCellTextStyle}"
+                               Text="SemiBold" />
+                    <TextBlock Grid.Row="5" Grid.Column="3"
+                               Style="{StaticResource KeyCellTextStyle}"
+                               Text="TitleTextBlockStyle" />
+                    <Button Grid.Row="5" Grid.Column="4"
+                            Style="{StaticResource IconButtonStyle}"
+                            Command="{Binding CopyCommand}"
+                            CommandParameter="TitleTextBlockStyle"
+                            Content="&#xE8C8;"
+                            ToolTip="Copy"
+                            AutomationProperties.Name="Copy TitleTextBlockStyle" />
+                    <TextBlock Grid.Row="6" Grid.Column="0"
+                               Style="{DynamicResource TitleLargeTextBlockStyle}"
+                               Margin="0,8,16,8"
+                               VerticalAlignment="Center"
+                               Text="Title large" />
+                    <TextBlock Grid.Row="6" Grid.Column="1"
+                               Style="{StaticResource ValueCellTextStyle}"
+                               Text="40" />
+                    <TextBlock Grid.Row="6" Grid.Column="2"
+                               Style="{StaticResource ValueCellTextStyle}"
+                               Text="SemiBold" />
+                    <TextBlock Grid.Row="6" Grid.Column="3"
+                               Style="{StaticResource KeyCellTextStyle}"
+                               Text="TitleLargeTextBlockStyle" />
+                    <Button Grid.Row="6" Grid.Column="4"
+                            Style="{StaticResource IconButtonStyle}"
+                            Command="{Binding CopyCommand}"
+                            CommandParameter="TitleLargeTextBlockStyle"
+                            Content="&#xE8C8;"
+                            ToolTip="Copy"
+                            AutomationProperties.Name="Copy TitleLargeTextBlockStyle" />
+                    <TextBlock Grid.Row="7" Grid.Column="0"
+                               Style="{DynamicResource DisplayTextBlockStyle}"
+                               Margin="0,8,16,8"
+                               VerticalAlignment="Center"
+                               Text="Display" />
+                    <TextBlock Grid.Row="7" Grid.Column="1"
+                               Style="{StaticResource ValueCellTextStyle}"
+                               Text="68" />
+                    <TextBlock Grid.Row="7" Grid.Column="2"
+                               Style="{StaticResource ValueCellTextStyle}"
+                               Text="SemiBold" />
+                    <TextBlock Grid.Row="7" Grid.Column="3"
+                               Style="{StaticResource KeyCellTextStyle}"
+                               Text="DisplayTextBlockStyle" />
+                    <Button Grid.Row="7" Grid.Column="4"
+                            Style="{StaticResource IconButtonStyle}"
+                            Command="{Binding CopyCommand}"
+                            CommandParameter="DisplayTextBlockStyle"
+                            Content="&#xE8C8;"
+                            ToolTip="Copy"
+                            AutomationProperties.Name="Copy DisplayTextBlockStyle" />
+                </Grid>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

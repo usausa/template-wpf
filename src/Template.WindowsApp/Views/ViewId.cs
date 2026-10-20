@@ -10,5 +10,8 @@ public enum ViewId
     ListDetail,
     Validation,
     Dialogs,
+    Progress,
+    Colors,
+    Typography,
     Settings
 }

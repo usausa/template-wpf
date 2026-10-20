@@ -8,6 +8,8 @@ public interface IWindowManager
 {
     bool IsPaneOpen { get; set; }
 
+    AppTheme Theme { get; set; }
+
     IList<string> RecentCommands { get; }
 
     Window Load();
@@ -27,6 +29,18 @@ public sealed class WindowManager : NotificationObject, IWindowManager
         set => SetProperty(ref field, value);
     }
 
+    public AppTheme Theme
+    {
+        get;
+        set
+        {
+            if (SetProperty(ref field, value))
+            {
+                ApplyTheme(value);
+            }
+        }
+    }
+
     public IList<string> RecentCommands { get; } = [];
 
     public WindowManager(IServiceProvider provider)
@@ -43,6 +57,7 @@ public sealed class WindowManager : NotificationObject, IWindowManager
             RestorePlacement(mainWindow, settings.MainWindowPlacement);
         }
         IsPaneOpen = settings.IsPaneOpen;
+        Theme = Enum.TryParse<AppTheme>(settings.Theme, out var theme) ? theme : AppTheme.Light;
         foreach (var id in (settings.RecentCommands ?? string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries))
         {
             RecentCommands.Add(id);
@@ -70,6 +85,16 @@ public sealed class WindowManager : NotificationObject, IWindowManager
         }
     }
 
+    private static void ApplyTheme(AppTheme theme)
+    {
+        Application.Current.ThemeMode = theme switch
+        {
+            AppTheme.Dark => ThemeMode.Dark,
+            AppTheme.System => ThemeMode.System,
+            _ => ThemeMode.Light
+        };
+    }
+
     public void Save()
     {
         var mainWindow = provider.GetRequiredService<MainWindow>();
@@ -83,6 +108,7 @@ public sealed class WindowManager : NotificationObject, IWindowManager
             Maximized = mainWindow.WindowState == WindowState.Maximized
         };
         settings.IsPaneOpen = IsPaneOpen;
+        settings.Theme = Theme.ToString();
         settings.RecentCommands = string.Join(',', RecentCommands);
 
         settings.Save();
