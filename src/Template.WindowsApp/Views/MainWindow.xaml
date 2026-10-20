@@ -25,6 +25,7 @@
             <Setter Property="Height" Value="40" />
             <Setter Property="MinWidth" Value="0" />
             <Setter Property="MinHeight" Value="0" />
+            <Setter Property="Padding" Value="0" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
@@ -33,28 +34,61 @@
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Grid d:DataContext="{d:DesignInstance Type={x:Type shell:NavigationItem}}"
                               Background="{TemplateBinding Background}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="48" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <Border Grid.Column="0" Grid.ColumnSpan="2"
-                                    Visibility="{Binding IsSelected, Converter={StaticResource BoolToVisibilityConverter}}"
+                            <Border Visibility="{Binding IsSelected, Converter={StaticResource BoolToVisibilityConverter}}"
                                     Background="{DynamicResource SubtleFillColorSecondaryBrush}" />
-                            <Border Grid.Column="0"
-                                    Width="3" Height="16"
+                            <Border Width="3" Height="16"
                                     HorizontalAlignment="Left"
                                     Visibility="{Binding IsSelected, Converter={StaticResource BoolToVisibilityConverter}}"
                                     Background="{DynamicResource AccentFillColorDefaultBrush}" />
-                            <TextBlock Grid.Column="0"
-                                       HorizontalAlignment="Center" VerticalAlignment="Center"
-                                       Text="{Binding Icon}"
-                                       FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                       FontSize="16" />
-                            <TextBlock Grid.Column="1"
-                                       VerticalAlignment="Center"
-                                       TextTrimming="CharacterEllipsis"
-                                       Text="{Binding Title}"
-                                       FontSize="14" />
+                            <Grid Margin="{TemplateBinding Padding}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="48" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                                           Text="{Binding Icon}"
+                                           FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                                           FontSize="16" />
+                                <TextBlock Grid.Column="1"
+                                           VerticalAlignment="Center"
+                                           TextTrimming="CharacterEllipsis"
+                                           Text="{Binding Title}"
+                                           FontSize="14" />
+                            </Grid>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource SubtleFillColorTertiaryBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SideBarChildButtonStyle"
+               TargetType="{x:Type Button}"
+               BasedOn="{StaticResource SideBarButtonStyle}">
+            <Setter Property="Padding" Value="31,0,0,0" />
+        </Style>
+
+        <Style x:Key="SideBarGroupButtonStyle"
+               TargetType="{x:Type Button}">
+            <Setter Property="Height" Value="40" />
+            <Setter Property="MinWidth" Value="0" />
+            <Setter Property="MinHeight" Value="0" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <ContentPresenter />
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -207,20 +241,139 @@
                     </Style.Triggers>
                 </Style>
             </Border.Style>
-            <ItemsControl ItemsSource="{Binding Items}"
-                          Focusable="False"
-                          KeyboardNavigation.DirectionalNavigation="Cycle" KeyboardNavigation.TabNavigation="Once">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="{x:Type shell:NavigationItem}">
-                        <Button Style="{StaticResource SideBarButtonStyle}"
-                                Command="{Binding DataContext.ForwardCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
-                                CommandParameter="{Binding Id}"
-                                ToolTip="{Binding Title}"
-                                AutomationProperties.Name="{Binding Title}"
-                                ToolTipService.IsEnabled="{Binding DataContext.WindowManager.IsPaneOpen, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Converter={StaticResource ReverseConverter}}" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+            <Border.Resources>
+                <DataTemplate DataType="{x:Type shell:NavigationItem}">
+                    <Button Style="{StaticResource SideBarButtonStyle}"
+                            Command="{Binding DataContext.ForwardCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                            CommandParameter="{Binding Id}"
+                            ToolTip="{Binding Title}"
+                            AutomationProperties.Name="{Binding Title}"
+                            ToolTipService.IsEnabled="{Binding DataContext.WindowManager.IsPaneOpen, RelativeSource={RelativeSource AncestorType={x:Type Window}}, Converter={StaticResource ReverseConverter}}" />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type shell:NavigationGroup}">
+                    <StackPanel>
+                        <Grid>
+                            <Grid>
+                                <Grid.Style>
+                                    <Style TargetType="{x:Type Grid}">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding IsChildSelected}" Value="True" />
+                                                    <Condition Binding="{Binding IsExpanded}" Value="False" />
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </MultiDataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding IsChildSelected}" Value="True" />
+                                                    <Condition Binding="{Binding DataContext.WindowManager.IsPaneOpen, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Value="False" />
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+                                <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                                <Border Width="3" Height="16"
+                                        HorizontalAlignment="Left"
+                                        Background="{DynamicResource AccentFillColorDefaultBrush}" />
+                            </Grid>
+                            <Button Style="{StaticResource SideBarGroupButtonStyle}"
+                                    Command="{Binding DataContext.ToggleGroupCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                    CommandParameter="{Binding}"
+                                    ToolTip="{Binding Title}"
+                                    AutomationProperties.Name="{Binding Title}"
+                                    ToolTipService.IsEnabled="{Binding DataContext.WindowManager.IsPaneOpen, RelativeSource={RelativeSource AncestorType={x:Type Window}}, Converter={StaticResource ReverseConverter}}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="48" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="40" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                                               Text="{Binding Icon}"
+                                               FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                                               FontSize="16" />
+                                    <TextBlock Grid.Column="1"
+                                               VerticalAlignment="Center"
+                                               TextTrimming="CharacterEllipsis"
+                                               Text="{Binding Title}"
+                                               FontSize="14" />
+                                    <TextBlock Grid.Column="2"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                                               Text="&#xE70D;"
+                                               FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                                               FontSize="8"
+                                               RenderTransformOrigin="0.5,0.5">
+                                        <TextBlock.Style>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Setter Property="RenderTransform">
+                                                    <Setter.Value>
+                                                        <RotateTransform Angle="0" />
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsExpanded}"
+                                                                 Value="True">
+                                                        <Setter Property="RenderTransform">
+                                                            <Setter.Value>
+                                                                <RotateTransform Angle="180" />
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Grid>
+                            </Button>
+                        </Grid>
+                        <ItemsControl ItemsSource="{Binding Items}"
+                                      Focusable="False">
+                            <ItemsControl.Style>
+                                <Style TargetType="{x:Type ItemsControl}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding IsExpanded}" Value="True" />
+                                                <Condition Binding="{Binding DataContext.WindowManager.IsPaneOpen, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Value="True" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ItemsControl.Style>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="{x:Type shell:NavigationItem}">
+                                    <Button Style="{StaticResource SideBarChildButtonStyle}"
+                                            Command="{Binding DataContext.ForwardCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                            CommandParameter="{Binding Id}"
+                                            AutomationProperties.Name="{Binding Title}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </DataTemplate>
+            </Border.Resources>
+            <Grid KeyboardNavigation.DirectionalNavigation="Cycle" KeyboardNavigation.TabNavigation="Once">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <ScrollViewer Grid.Row="0"
+                              HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
+                              Focusable="False">
+                    <ItemsControl ItemsSource="{Binding Menu.Items}"
+                                  Focusable="False" />
+                </ScrollViewer>
+                <ItemsControl Grid.Row="1"
+                              ItemsSource="{Binding Menu.FooterItems}"
+                              Focusable="False" />
+            </Grid>
         </Border>
 
         <Canvas Grid.Column="1"

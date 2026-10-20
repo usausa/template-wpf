@@ -1,4 +1,4 @@
-namespace Template.WindowsApp.Views.Main;
+namespace Template.WindowsApp.Views.Home;
 
 [View(ViewId.Home)]
 public sealed partial class HomeView

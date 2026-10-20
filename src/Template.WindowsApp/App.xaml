@@ -31,6 +31,105 @@
                                          FalseValue="Hidden" />
 
             <!-- ================================================================================ -->
+            <!-- Chart -->
+            <!-- ================================================================================ -->
+
+            <SolidColorBrush x:Key="ChartBlueSuperLightBrush"
+                             Color="#C0D8FF" />
+            <SolidColorBrush x:Key="ChartBlueLightBrush"
+                             Color="#8AB8FF" />
+            <SolidColorBrush x:Key="ChartBlueBrush"
+                             Color="#5794F2" />
+            <SolidColorBrush x:Key="ChartBlueSemiDarkBrush"
+                             Color="#3274D9" />
+            <SolidColorBrush x:Key="ChartBlueDarkBrush"
+                             Color="#1F60C4" />
+
+            <!-- ================================================================================ -->
+            <!-- Page -->
+            <!-- ================================================================================ -->
+
+            <Style x:Key="PageTextStyle"
+                   TargetType="{x:Type TextBlock}">
+                <Setter Property="FontSize" Value="{DynamicResource BodyTextBlockFontSize}" />
+                <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                <Setter Property="TextWrapping" Value="Wrap" />
+                <Setter Property="LineStackingStrategy" Value="MaxHeight" />
+            </Style>
+
+            <Style x:Key="PageTitleTextStyle"
+                   TargetType="{x:Type TextBlock}"
+                   BasedOn="{StaticResource PageTextStyle}">
+                <Setter Property="FontSize" Value="{DynamicResource TitleTextBlockFontSize}" />
+                <Setter Property="FontWeight" Value="SemiBold" />
+            </Style>
+
+            <Style x:Key="PageDescriptionTextStyle"
+                   TargetType="{x:Type TextBlock}"
+                   BasedOn="{StaticResource PageTextStyle}">
+                <Setter Property="Margin" Value="0,0,0,24" />
+                <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+            </Style>
+
+            <Style x:Key="SectionPanelStyle"
+                   TargetType="{x:Type StackPanel}">
+                <Setter Property="Margin" Value="0,0,0,8" />
+            </Style>
+
+            <Style x:Key="SectionHeaderTextStyle"
+                   TargetType="{x:Type TextBlock}"
+                   BasedOn="{StaticResource PageTextStyle}">
+                <Setter Property="Margin" Value="0,0,0,8" />
+                <Setter Property="FontWeight" Value="SemiBold" />
+            </Style>
+
+            <Style x:Key="CardStyle"
+                   TargetType="{x:Type Border}">
+                <Setter Property="Margin" Value="0,0,0,8" />
+                <Setter Property="Padding" Value="16" />
+                <Setter Property="Background" Value="{DynamicResource CardBackgroundFillColorDefaultBrush}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource CardStrokeColorDefaultBrush}" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="CornerRadius" Value="2" />
+            </Style>
+
+            <Style x:Key="CardButtonStyle"
+                   TargetType="{x:Type Button}">
+                <Setter Property="MinWidth" Value="0" />
+                <Setter Property="MinHeight" Value="0" />
+                <Setter Property="Padding" Value="16" />
+                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="Background" Value="{DynamicResource CardBackgroundFillColorDefaultBrush}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource CardStrokeColorDefaultBrush}" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Padding="{TemplateBinding Padding}"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="2">
+                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource CardBackgroundFillColorSecondaryBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource SubtleFillColorTertiaryBrush}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!-- ================================================================================ -->
             <!-- Style -->
             <!-- ================================================================================ -->
 

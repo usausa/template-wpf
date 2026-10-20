@@ -14,15 +14,13 @@ public sealed class MainWindowViewModel : ExtendViewModelBase
 
     public INavigator Navigator { get; }
 
-    public IReadOnlyList<NavigationItem> Items { get; } =
-    [
-        new(ViewId.Home, "Home", "\uE80F"),
-        new(ViewId.Sub, "Sub", "\uE8A5")
-    ];
+    public NavigationMenu Menu { get; }
 
     public CommandPalette Palette { get; }
 
     public IObserveCommand ForwardCommand { get; }
+
+    public IObserveCommand ToggleGroupCommand { get; }
 
     public IObserveCommand ExecuteCommand { get; }
 
@@ -39,14 +37,17 @@ public sealed class MainWindowViewModel : ExtendViewModelBase
     public MainWindowViewModel(
         ILogger<MainWindowViewModel> logger,
         IWindowManager windowManager,
-        INavigator navigator)
+        INavigator navigator,
+        NavigationMenu menu)
     {
         this.logger = logger;
         WindowManager = windowManager;
         Navigator = navigator;
+        Menu = menu;
         Palette = new CommandPalette(windowManager.RecentCommands);
 
         ForwardCommand = MakeAsyncCommand<ViewId>(x => Equals(Navigator.CurrentViewId, x) ? Task.CompletedTask : Navigator.ForwardAsync(x));
+        ToggleGroupCommand = MakeDelegateCommand<NavigationGroup>(ToggleGroup);
         ExecuteCommand = MakeAsyncCommand(Execute, () => !BusyState.IsBusy);
         ToggleNavigationCommand = MakeDelegateCommand(() => WindowManager.IsPaneOpen = !WindowManager.IsPaneOpen);
         OpenPaletteCommand = MakeDelegateCommand(CommandMode.Simple, () => Palette.Open(CollectCommands()));
@@ -60,7 +61,7 @@ public sealed class MainWindowViewModel : ExtendViewModelBase
 
         Disposables.Add(Observable
             .FromEventPattern<NavigationEventArgs>(h => Navigator.Navigated += h, h => Navigator.Navigated -= h)
-            .Subscribe(x => UpdateSelection(x.EventArgs.Context.ToId as ViewId?)));
+            .Subscribe(x => Menu.Select(x.EventArgs.Context.ToId as ViewId?)));
     }
 
     private void UpdateNavigatingBusy()
@@ -76,17 +77,22 @@ public sealed class MainWindowViewModel : ExtendViewModelBase
         }
     }
 
-    private void UpdateSelection(ViewId? id)
+    private void ToggleGroup(NavigationGroup group)
     {
-        foreach (var item in Items)
+        if (WindowManager.IsPaneOpen)
         {
-            item.IsSelected = item.Id == id;
+            group.IsExpanded = !group.IsExpanded;
+        }
+        else
+        {
+            WindowManager.IsPaneOpen = true;
+            group.IsExpanded = true;
         }
     }
 
     private List<ShellCommand> CollectCommands()
     {
-        var commands = Items.Select(x => new ShellCommand($"View:{x.Id}", x.Title, "View", x.Icon, ForwardCommand, x.Id)).ToList();
+        var commands = Menu.EnumerateItems().Select(x => new ShellCommand($"View:{x.Id}", x.Title, "View", x.Icon, ForwardCommand, x.Id)).ToList();
         commands.Add(new ShellCommand("Window:Execute", "Execute", "Window", "\uE768", ExecuteCommand));
         commands.Add(new ShellCommand("Window:ToggleNavigation", "Toggle navigation", "Window", "\uE700", ToggleNavigationCommand));
         if (Navigator.CurrentTarget is IShellCommandProvider provider)

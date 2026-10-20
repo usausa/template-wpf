@@ -19,6 +19,7 @@ using Template.WindowsApp.Extender;
 #endif
 using Template.WindowsApp.Services;
 using Template.WindowsApp.Settings;
+using Template.WindowsApp.Shell;
 using Template.WindowsApp.Views;
 
 public static partial class ApplicationExtensions
@@ -91,6 +92,7 @@ public static partial class ApplicationExtensions
 
         // Window
         builder.Services.AddSingleton<IWindowManager, WindowManager>();
+        builder.Services.AddSingleton<NavigationMenu>();
         builder.Services.AddSingleton<MainWindow>();
         // View & ViewModel
         builder.Services.AddViews();
