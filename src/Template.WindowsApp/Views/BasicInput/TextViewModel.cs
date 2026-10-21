@@ -5,6 +5,8 @@ using Template.WindowsApp.Shell;
 // ReSharper disable once ClassNeverInstantiated.Global
 public sealed partial class TextViewModel : AppViewModelBase, IShellCommandProvider
 {
+    private const double DefaultNumber = 10;
+
     [ObservableProperty]
     public partial string SingleLineText { get; set; }
 
@@ -13,6 +15,9 @@ public sealed partial class TextViewModel : AppViewModelBase, IShellCommandProvi
 
     [ObservableProperty]
     public partial int LineCount { get; set; }
+
+    [ObservableProperty]
+    public partial double? Number { get; set; }
 
     public EventRequest ClearPasswordRequest { get; } = new();
 
@@ -23,6 +28,7 @@ public sealed partial class TextViewModel : AppViewModelBase, IShellCommandProvi
         SingleLineText = string.Empty;
         MultiLineText = string.Empty;
         LineCount = CountLines(MultiLineText);
+        Number = DefaultNumber;
 
         SubscribeMultiLineText(x => LineCount = CountLines(x));
 
@@ -35,6 +41,7 @@ public sealed partial class TextViewModel : AppViewModelBase, IShellCommandProvi
     {
         SingleLineText = string.Empty;
         MultiLineText = string.Empty;
+        Number = DefaultNumber;
         ClearPasswordRequest.Request();
     }
 

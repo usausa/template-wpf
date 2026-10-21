@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:s="http://smart/windows"
+             xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.BasicInput"
              mc:Ignorable="d"
              x:Class="Template.WindowsApp.Views.BasicInput.ChoicesView"
@@ -28,7 +29,7 @@
             <TextBlock Style="{StaticResource PageTitleTextStyle}"
                        Text="Choices" />
             <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
-                       Text="Check boxes, radio buttons, combo boxes and sliders." />
+                       Text="Check boxes, toggle switches, radio buttons, combo boxes and sliders." />
 
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -37,6 +38,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
@@ -127,6 +129,22 @@
                         </StackPanel>
                         <TextBlock Style="{StaticResource SampleResultTextStyle}"
                                    Text="{Binding Value, StringFormat='Value: {0}'}" />
+                    </StackPanel>
+                </Border>
+                <Border Grid.Row="2" Grid.Column="0"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="ToggleSwitch" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Turn an option on or off."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <controls:ToggleSwitch IsChecked="{Binding IsSwitchOn}"
+                                                   AutomationProperties.Name="Toggle switch" />
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding IsSwitchOn, Converter={s:BoolToText True=On, False=Off}, StringFormat='State: {0}'}" />
                     </StackPanel>
                 </Border>
             </Grid>

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:s="http://smart/windows"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.BasicInput"
              mc:Ignorable="d"
              x:Class="Template.WindowsApp.Views.BasicInput.TextView"
@@ -16,7 +17,7 @@
             <TextBlock Style="{StaticResource PageTitleTextStyle}"
                        Text="Text" />
             <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
-                       Text="Text boxes, password boxes and rich text." />
+                       Text="Text boxes, password boxes, number boxes and rich text." />
 
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -39,17 +40,11 @@
                                    Text="Single-line input with a hint."
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
                         <StackPanel Style="{StaticResource SamplePanelStyle}">
-                            <Grid Width="320"
-                                  HorizontalAlignment="Left">
-                                <TextBox Text="{Binding SingleLineText, UpdateSourceTrigger=PropertyChanged}"
-                                         AutomationProperties.Name="Single-line text" />
-                                <TextBlock Margin="12,0,0,0"
-                                           VerticalAlignment="Center"
-                                           Visibility="{Binding SingleLineText, Converter={s:NullToVisibility Null=Visible, NonNull=Collapsed, HandleEmptyString=True}}"
-                                           IsHitTestVisible="False"
-                                           Text="Type here"
-                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
-                            </Grid>
+                            <TextBox Width="320"
+                                     controls:TextBoxHelper.PlaceholderText="Type here"
+                                     HorizontalAlignment="Left"
+                                     Text="{Binding SingleLineText, UpdateSourceTrigger=PropertyChanged}"
+                                     AutomationProperties.Name="Single-line text" />
                         </StackPanel>
                         <TextBlock Style="{StaticResource SampleResultTextStyle}"
                                    Text="{Binding SingleLineText.Length, StringFormat='Length: {0}'}" />
@@ -67,6 +62,7 @@
                         <StackPanel Style="{StaticResource SamplePanelStyle}">
                             <PasswordBox x:Name="PasswordInput"
                                          Width="320"
+                                         controls:PasswordBoxHelper.IsCapsLockWarningEnabled="True" controls:PasswordBoxHelper.IsRevealButtonEnabled="True"
                                          HorizontalAlignment="Left"
                                          AutomationProperties.Name="Password">
                                 <i:Interaction.Triggers>
@@ -142,6 +138,25 @@
                                      Text="This text is read-only."
                                      AutomationProperties.Name="Read-only text" IsReadOnly="True" />
                         </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Row="2" Grid.Column="2"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="NumberBox" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Number input with spin buttons."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <controls:NumberBox Width="160"
+                                                HorizontalAlignment="Left"
+                                                Value="{Binding Number}"
+                                                Minimum="0" Maximum="100"
+                                                AutomationProperties.Name="Number" />
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding Number, StringFormat='Value: {0}', TargetNullValue='Value: none'}" />
                     </StackPanel>
                 </Border>
             </Grid>

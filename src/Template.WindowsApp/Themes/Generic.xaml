@@ -322,4 +322,176 @@
         </Setter>
     </Style>
 
+    <!-- ================================================================================ -->
+    <!-- Number box -->
+    <!-- ================================================================================ -->
+
+    <Style x:Key="NumberBoxSpinButtonStyle"
+           TargetType="{x:Type RepeatButton}">
+        <Setter Property="Width" Value="32" />
+        <Setter Property="Delay" Value="400" />
+        <Setter Property="Interval" Value="100" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Background" Value="{DynamicResource TextControlButtonBackground}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextControlButtonForeground}" />
+        <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                    <Border Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource TextControlButtonBackgroundPointerOver}" />
+                            <Setter Property="Foreground" Value="{DynamicResource TextControlButtonForegroundPointerOver}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource TextControlButtonBackgroundPressed}" />
+                            <Setter Property="Foreground" Value="{DynamicResource TextControlButtonForegroundPressed}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{DynamicResource TextFillColorDisabledBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type controls:NumberBox}">
+        <Setter Property="MinWidth" Value="120" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:NumberBox}">
+                    <Grid>
+                        <TextBox x:Name="PART_TextBox"
+                                 Style="{DynamicResource DefaultTextBoxBaseStyle}"
+                                 Padding="10,5,70,6"
+                                 AutomationProperties.Name="{TemplateBinding AutomationProperties.Name}"
+                                 InputMethod.IsInputMethodEnabled="False" />
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="0,1,1,2"
+                                    HorizontalAlignment="Right">
+                            <RepeatButton x:Name="PART_UpButton"
+                                          Style="{StaticResource NumberBoxSpinButtonStyle}"
+                                          Content="&#xE70E;"
+                                          AutomationProperties.Name="Increase" />
+                            <RepeatButton x:Name="PART_DownButton"
+                                          Style="{StaticResource NumberBoxSpinButtonStyle}"
+                                          Content="&#xE70D;"
+                                          AutomationProperties.Name="Decrease" />
+                        </StackPanel>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ================================================================================ -->
+    <!-- Toggle switch -->
+    <!-- ================================================================================ -->
+
+    <Style TargetType="{x:Type controls:ToggleSwitch}">
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Foreground" Value="{DynamicResource ToggleSwitchContentForeground}" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource DefaultControlFocusVisualStyle}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:ToggleSwitch}">
+                    <Grid Background="Transparent">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="12" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="ToggleStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0:0:0.1" />
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Off">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Knob" Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)" To="0" Duration="0" />
+                                        <DoubleAnimation Storyboard.TargetName="Curtain" Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)" To="-44" Duration="0" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="On">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Knob" Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)" To="38" Duration="0" />
+                                        <DoubleAnimation Storyboard.TargetName="Curtain" Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)" To="0" Duration="0" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <ContentPresenter x:Name="OffContentPresenter"
+                                          Grid.Column="0"
+                                          HorizontalAlignment="Right" VerticalAlignment="Center"
+                                          Content="{TemplateBinding OffContent}"
+                                          TextElement.Foreground="{TemplateBinding Foreground}" />
+                        <ContentPresenter x:Name="OnContentPresenter"
+                                          Grid.Column="0"
+                                          HorizontalAlignment="Right" VerticalAlignment="Center"
+                                          Visibility="Hidden"
+                                          Content="{TemplateBinding OnContent}"
+                                          TextElement.Foreground="{TemplateBinding Foreground}" />
+                        <Grid Grid.Column="2"
+                              Width="50" Height="19"
+                              VerticalAlignment="Center">
+                            <Border x:Name="OuterBorder"
+                                    BorderBrush="{DynamicResource ToggleSwitchStrokeOff}"
+                                    BorderThickness="2">
+                                <Border x:Name="InnerBorder"
+                                        Margin="1"
+                                        Background="{DynamicResource ToggleSwitchFillOff}"
+                                        ClipToBounds="True">
+                                    <Rectangle x:Name="Curtain"
+                                               Width="44"
+                                               HorizontalAlignment="Left"
+                                               Fill="{DynamicResource ToggleSwitchFillOn}">
+                                        <Rectangle.RenderTransform>
+                                            <TranslateTransform X="-44" />
+                                        </Rectangle.RenderTransform>
+                                    </Rectangle>
+                                </Border>
+                            </Border>
+                            <Grid x:Name="Knob"
+                                  Width="12"
+                                  HorizontalAlignment="Left">
+                                <Grid.RenderTransform>
+                                    <TranslateTransform />
+                                </Grid.RenderTransform>
+                                <Rectangle Fill="{DynamicResource SolidBackgroundFillColorBaseBrush}" />
+                                <Rectangle x:Name="KnobFill"
+                                           Fill="{DynamicResource TextFillColorPrimaryBrush}" />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="OffContentPresenter" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="OnContentPresenter" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="OuterBorder" Property="BorderBrush" Value="{DynamicResource ToggleSwitchStrokeOffPointerOver}" />
+                            <Setter TargetName="InnerBorder" Property="Background" Value="{DynamicResource ToggleSwitchFillOffPointerOver}" />
+                            <Setter TargetName="Curtain" Property="Fill" Value="{DynamicResource ToggleSwitchFillOnPointerOver}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{DynamicResource ToggleSwitchContentForegroundDisabled}" />
+                            <Setter TargetName="OuterBorder" Property="BorderBrush" Value="{DynamicResource ToggleSwitchStrokeOffDisabled}" />
+                            <Setter TargetName="InnerBorder" Property="Background" Value="{DynamicResource ToggleSwitchFillOffDisabled}" />
+                            <Setter TargetName="Curtain" Property="Fill" Value="{DynamicResource ToggleSwitchFillOnDisabled}" />
+                            <Setter TargetName="KnobFill" Property="Fill" Value="{DynamicResource TextFillColorDisabledBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

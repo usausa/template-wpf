@@ -440,48 +440,30 @@
                     BorderBrush="{DynamicResource FlyoutBorderBrush}"
                     BorderThickness="1">
                 <StackPanel>
-                    <Grid>
-                        <TextBox x:Name="CommandText"
-                                 Height="32"
-                                 Text="{Binding Palette.Text, UpdateSourceTrigger=PropertyChanged}"
-                                 AutomationProperties.Name="Command text">
-                            <TextBox.InputBindings>
-                                <KeyBinding Key="Up"
-                                            Command="{Binding MovePaletteCommand}"
-                                            CommandParameter="{x:Static shell:CommandPaletteMove.Previous}" />
-                                <KeyBinding Key="Down"
-                                            Command="{Binding MovePaletteCommand}"
-                                            CommandParameter="{x:Static shell:CommandPaletteMove.Next}" />
-                                <KeyBinding Key="PageUp"
-                                            Command="{Binding MovePaletteCommand}"
-                                            CommandParameter="{x:Static shell:CommandPaletteMove.PreviousPage}" />
-                                <KeyBinding Key="PageDown"
-                                            Command="{Binding MovePaletteCommand}"
-                                            CommandParameter="{x:Static shell:CommandPaletteMove.NextPage}" />
-                                <KeyBinding Key="Enter"
-                                            Command="{Binding ExecutePaletteCommand}" />
-                                <KeyBinding Key="Escape"
-                                            Command="{Binding ClosePaletteCommand}" />
-                            </TextBox.InputBindings>
-                        </TextBox>
-                        <TextBlock Margin="12,0,0,0"
-                                   VerticalAlignment="Center"
-                                   IsHitTestVisible="False"
-                                   Text="Type to search"
-                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}">
-                            <TextBlock.Style>
-                                <Style TargetType="{x:Type TextBlock}">
-                                    <Setter Property="Visibility" Value="Collapsed" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Text, ElementName=CommandText}"
-                                                     Value="">
-                                            <Setter Property="Visibility" Value="Visible" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                    </Grid>
+                    <TextBox x:Name="CommandText"
+                             Height="32"
+                             controls:TextBoxHelper.PlaceholderText="Type to search"
+                             Text="{Binding Palette.Text, UpdateSourceTrigger=PropertyChanged}"
+                             AutomationProperties.Name="Command text">
+                        <TextBox.InputBindings>
+                            <KeyBinding Key="Up"
+                                        Command="{Binding MovePaletteCommand}"
+                                        CommandParameter="{x:Static shell:CommandPaletteMove.Previous}" />
+                            <KeyBinding Key="Down"
+                                        Command="{Binding MovePaletteCommand}"
+                                        CommandParameter="{x:Static shell:CommandPaletteMove.Next}" />
+                            <KeyBinding Key="PageUp"
+                                        Command="{Binding MovePaletteCommand}"
+                                        CommandParameter="{x:Static shell:CommandPaletteMove.PreviousPage}" />
+                            <KeyBinding Key="PageDown"
+                                        Command="{Binding MovePaletteCommand}"
+                                        CommandParameter="{x:Static shell:CommandPaletteMove.NextPage}" />
+                            <KeyBinding Key="Enter"
+                                        Command="{Binding ExecutePaletteCommand}" />
+                            <KeyBinding Key="Escape"
+                                        Command="{Binding ClosePaletteCommand}" />
+                        </TextBox.InputBindings>
+                    </TextBox>
                     <ListBox MaxHeight="360"
                              Padding="0"
                              ItemsSource="{Binding Palette.Candidates}"

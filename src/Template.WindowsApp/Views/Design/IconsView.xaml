@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:s="http://smart/windows"
+             xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Design"
              mc:Ignorable="d"
              x:Class="Template.WindowsApp.Views.Design.IconsView"
@@ -39,18 +40,12 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Grid Grid.Row="0"
-                          Width="320"
-                          HorizontalAlignment="Left">
-                        <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
-                                 AutomationProperties.Name="Search icons" />
-                        <TextBlock Margin="12,0,0,0"
-                                   VerticalAlignment="Center"
-                                   Visibility="{Binding SearchText, Converter={s:NullToVisibility Null=Visible, NonNull=Collapsed, HandleEmptyString=True}}"
-                                   IsHitTestVisible="False"
-                                   Text="Search icons"
-                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
-                    </Grid>
+                    <TextBox Grid.Row="0"
+                             Width="320"
+                             controls:TextBoxHelper.PlaceholderText="Search icons"
+                             HorizontalAlignment="Left"
+                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                             AutomationProperties.Name="Search icons" />
                     <ListBox Grid.Row="1"
                              Margin="0,16,0,0"
                              ItemsSource="{Binding Items}"

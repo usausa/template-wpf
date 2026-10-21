@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:s="http://smart/windows"
+             xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Settings"
              mc:Ignorable="d"
              x:Class="Template.WindowsApp.Views.Settings.SettingsView"
@@ -94,11 +95,10 @@
                                        Text="Show the pane with labels"
                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
                         </StackPanel>
-                        <CheckBox Grid.Column="2"
-                                  MinWidth="0"
-                                  VerticalAlignment="Center"
-                                  IsChecked="{Binding WindowManager.IsPaneOpen}"
-                                  AutomationProperties.Name="Navigation pane" />
+                        <controls:ToggleSwitch Grid.Column="2"
+                                               VerticalAlignment="Center"
+                                               IsChecked="{Binding WindowManager.IsPaneOpen}"
+                                               AutomationProperties.Name="Navigation pane" />
                     </Grid>
                 </Border>
             </StackPanel>

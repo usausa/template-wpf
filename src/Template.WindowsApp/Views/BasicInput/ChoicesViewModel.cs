@@ -18,6 +18,9 @@ public sealed partial class ChoicesViewModel : AppViewModelBase, IShellCommandPr
     public partial bool? ThreeState { get; set; }
 
     [ObservableProperty]
+    public partial bool IsSwitchOn { get; set; }
+
+    [ObservableProperty]
     public partial string Size { get; set; }
 
     public IReadOnlyList<string> Fruits { get; } = [DefaultFruit, "Banana", "Cherry", "Grape", "Lemon"];
@@ -43,6 +46,7 @@ public sealed partial class ChoicesViewModel : AppViewModelBase, IShellCommandPr
     {
         TwoState = false;
         ThreeState = null;
+        IsSwitchOn = false;
         Size = DefaultSize;
         Fruit = DefaultFruit;
         Value = DefaultValue;
