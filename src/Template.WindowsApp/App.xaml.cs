@@ -8,7 +8,6 @@ using Microsoft.Extensions.Hosting;
 
 using Smart.Mvvm.Resolver;
 
-using Template.WindowsApp.Services;
 using Template.WindowsApp.Views;
 using Template.WindowsApp.Views.Dialogs;
 
@@ -164,10 +163,12 @@ public sealed partial class App
         showingError = true;
         try
         {
-            var dialog = new ErrorDialog(host.Services.GetRequiredService<IClipboardService>(), host.Services.GetRequiredService<IExplorerService>())
+            var viewModel = host.Services.GetRequiredService<ErrorDialogViewModel>();
+            viewModel.Details = MakeDetails(ex);
+            viewModel.LogFolder = FindLogFolder();
+            var dialog = new ErrorDialog
             {
-                Details = MakeDetails(ex),
-                LogFolder = FindLogFolder()
+                DataContext = viewModel
             };
             if (MainWindow is { IsLoaded: true } owner)
             {

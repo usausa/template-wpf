@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:s="http://smart/windows"
              xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
+             xmlns:services="clr-namespace:Template.WindowsApp.Services"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Home"
              mc:Ignorable="d"
              x:Class="Template.WindowsApp.Views.Home.HomeView"
@@ -56,7 +57,7 @@
                                                    Text="{Binding Value}" />
                                         <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
                                                    TextTrimming="CharacterEllipsis"
-                                                   Text="{Binding Change}"
+                                                   Text="{Binding Detail}"
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
                                     </StackPanel>
                                 </Border>
@@ -76,16 +77,17 @@
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Row="0"
                                            Style="{DynamicResource BodyStrongTextBlockStyle}"
-                                           Text="Sales, last 7 days" />
+                                           Text="Memory, last 60 seconds" />
                                 <controls:LineChart Grid.Row="1"
                                                     MinHeight="220"
                                                     Margin="0,16,0,0"
                                                     Fill="{StaticResource ChartBlueSuperLightBrush}"
                                                     Stroke="{StaticResource ChartBlueBrush}"
+                                                    Capacity="{x:Static services:ProcessMonitorService.Capacity}"
                                                     GridBrush="{DynamicResource DividerStrokeColorDefaultBrush}"
                                                     LabelBrush="{DynamicResource TextFillColorSecondaryBrush}"
-                                                    Labels="{Binding SalesLabels}"
-                                                    Values="{Binding SalesValues}" />
+                                                    Labels="{Binding MemoryLabels}"
+                                                    Values="{Binding MemoryValues}" />
                             </Grid>
                         </Border>
                         <Border Style="{StaticResource CardStyle}"
@@ -97,14 +99,14 @@
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Row="0"
                                            Style="{DynamicResource BodyStrongTextBlockStyle}"
-                                           Text="Sales by category" />
+                                           Text="Log entries by level" />
                                 <controls:BarChart Grid.Row="1"
                                                    MinHeight="220"
                                                    Margin="0,16,0,0"
                                                    Fill="{StaticResource ChartBlueBrush}"
                                                    LabelBrush="{DynamicResource TextFillColorSecondaryBrush}"
-                                                   Labels="{Binding CategoryLabels}"
-                                                   Values="{Binding CategoryValues}" />
+                                                   Labels="{Binding LevelLabels}"
+                                                   Values="{Binding LevelValues}" />
                             </Grid>
                         </Border>
                     </UniformGrid>

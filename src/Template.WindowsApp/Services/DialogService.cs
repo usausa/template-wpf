@@ -16,17 +16,21 @@ public sealed class DialogService : IDialogService
 
     public string? Input(string title, string? initial = null)
     {
-        var dialog = new InputDialog
+        var viewModel = new InputDialogViewModel
         {
             Title = title,
             Value = initial ?? string.Empty
+        };
+        var dialog = new InputDialog
+        {
+            DataContext = viewModel
         };
         if (Owner is { } owner)
         {
             dialog.Owner = owner;
         }
 
-        return dialog.ShowDialog() == true ? dialog.Value : null;
+        return dialog.ShowDialog() == true ? viewModel.Value : null;
     }
 
     public void Notify(string message) =>
