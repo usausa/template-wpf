@@ -251,18 +251,21 @@
                                 <StackPanel Orientation="Horizontal">
                                     <ContentPresenter Content="{TemplateBinding RightHeader}"
                                                       WindowChrome.IsHitTestVisibleInChrome="True" />
-                                    <controls:CaptionButton x:Name="PART_MinimizeButton"
-                                                            Content="&#xE921;"
-                                                            ToolTip="Minimize"
-                                                            AutomationProperties.Name="Minimize" />
-                                    <controls:CaptionButton x:Name="PART_MaximizeButton"
-                                                            Content="&#xE922;"
-                                                            AutomationProperties.Name="Maximize" />
-                                    <controls:CaptionButton x:Name="PART_CloseButton"
-                                                            Style="{StaticResource CloseCaptionButtonStyle}"
-                                                            Content="&#xE8BB;"
-                                                            ToolTip="Close"
-                                                            AutomationProperties.Name="Close" />
+                                    <StackPanel x:Name="PART_CaptionButtons"
+                                                Orientation="Horizontal">
+                                        <controls:CaptionButton x:Name="PART_MinimizeButton"
+                                                                Content="&#xE921;"
+                                                                ToolTip="Minimize"
+                                                                AutomationProperties.Name="Minimize" />
+                                        <controls:CaptionButton x:Name="PART_MaximizeButton"
+                                                                Content="&#xE922;"
+                                                                AutomationProperties.Name="Maximize" />
+                                        <controls:CaptionButton x:Name="PART_CloseButton"
+                                                                Style="{StaticResource CloseCaptionButtonStyle}"
+                                                                Content="&#xE8BB;"
+                                                                ToolTip="Close"
+                                                                AutomationProperties.Name="Close" />
+                                    </StackPanel>
                                 </StackPanel>
                             </controls:TitleBarPanel>
 
@@ -276,6 +279,22 @@
                                         Visibility="Collapsed"
                                         IsTabStop="False"
                                         WindowChrome.ResizeGripDirection="BottomRight" />
+
+                            <Grid x:Name="OverlayRoot"
+                                  Grid.Row="0" Grid.RowSpan="2"
+                                  KeyboardNavigation.ControlTabNavigation="Cycle" KeyboardNavigation.DirectionalNavigation="Contained" KeyboardNavigation.TabNavigation="Cycle">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="48" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Rectangle x:Name="PART_OverlayTitleBar"
+                                           Grid.Row="0"
+                                           Fill="{DynamicResource ContentDialogSmokeFill}" />
+                                <Rectangle Grid.Row="1"
+                                           Fill="{DynamicResource ContentDialogSmokeFill}" />
+                                <ContentPresenter Grid.Row="0" Grid.RowSpan="2"
+                                                  Content="{TemplateBinding OverlayContent}" />
+                            </Grid>
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -296,6 +315,9 @@
                         </Trigger>
                         <Trigger Property="TitleBarContent" Value="{x:Null}">
                             <Setter TargetName="TitleBarContentPresenter" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="OverlayContent" Value="{x:Null}">
+                            <Setter TargetName="OverlayRoot" Property="Visibility" Value="Collapsed" />
                         </Trigger>
                         <Trigger Property="WindowState" Value="Maximized">
                             <Setter TargetName="RootBorder" Property="Padding" Value="8" />
@@ -545,6 +567,276 @@
                                 FontSize="8"
                                 AutomationProperties.Name="More options" />
                     </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ================================================================================ -->
+    <!-- Time picker -->
+    <!-- ================================================================================ -->
+
+    <Style x:Key="TimePickerToggleButtonStyle"
+           TargetType="{x:Type ToggleButton}">
+        <Setter Property="MinHeight" Value="32" />
+        <Setter Property="Background" Value="{DynamicResource TimePickerButtonBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ControlElevationBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource DefaultControlFocusVisualStyle}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Border x:Name="Border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{DynamicResource ControlCornerRadius}">
+                        <ContentPresenter />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource TimePickerButtonBackgroundPointerOver}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource TimePickerButtonBackgroundPressed}" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource TimePickerButtonBorderBrushPressed}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource TimePickerButtonBackgroundDisabled}" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource TimePickerButtonBorderBrushDisabled}" />
+                            <Setter Property="Foreground" Value="{DynamicResource TimePickerButtonForegroundDisabled}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="TimePickerFlyoutButtonStyle"
+           TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+        <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource DefaultControlFocusVisualStyle}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="Border"
+                            Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource SubtleFillColorTertiaryBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type controls:TimePickerColumn}">
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource DefaultControlFocusVisualStyle}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:TimePickerColumn}">
+                    <ItemsControl ItemsSource="{TemplateBinding Rows}"
+                                  Focusable="False"
+                                  Background="Transparent">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type controls:TimePickerRow}">
+                                <Border x:Name="Row"
+                                        Height="40"
+                                        Background="Transparent">
+                                    <TextBlock x:Name="RowText"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                                               Text="{Binding Text}"
+                                               FontSize="14" />
+                                </Border>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding IsSelected}"
+                                                 Value="True">
+                                        <Setter TargetName="RowText" Property="Foreground" Value="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+                                    </DataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding IsSelected}" Value="False" />
+                                            <Condition Binding="{Binding IsMouseOver, ElementName=Row}" Value="True" />
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter TargetName="Row" Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                                    </MultiDataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type controls:TimePicker}">
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:TimePicker}">
+                    <Grid>
+                        <ToggleButton x:Name="PART_ToggleButton"
+                                      Style="{StaticResource TimePickerToggleButtonStyle}"
+                                      IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                      AutomationProperties.Name="{TemplateBinding AutomationProperties.Name}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="1" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock x:Name="PART_HourText"
+                                           Grid.Column="0"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                                           FontSize="14" />
+                                <Border Grid.Column="1"
+                                        Background="{DynamicResource ControlStrokeColorDefaultBrush}" />
+                                <TextBlock x:Name="PART_MinuteText"
+                                           Grid.Column="2"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                                           FontSize="14" />
+                            </Grid>
+                        </ToggleButton>
+                        <Popup IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                               AllowsTransparency="True" Placement="Bottom"
+                               PlacementTarget="{Binding ElementName=PART_ToggleButton}"
+                               StaysOpen="False" VerticalOffset="4">
+                            <Border Width="{Binding ActualWidth, ElementName=PART_ToggleButton}"
+                                    Background="{DynamicResource SolidBackgroundFillColorQuarternaryBrush}"
+                                    BorderBrush="{DynamicResource FlyoutBorderBrush}"
+                                    BorderThickness="1"
+                                    KeyboardNavigation.TabNavigation="Cycle">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="280" />
+                                        <RowDefinition Height="1" />
+                                        <RowDefinition Height="40" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="1" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
+                                            Height="40"
+                                            Margin="4,0,4,0"
+                                            VerticalAlignment="Center"
+                                            Background="{DynamicResource AccentFillColorDefaultBrush}" />
+                                    <controls:TimePickerColumn x:Name="PART_HourColumn"
+                                                               Grid.Row="0" Grid.Column="0" />
+                                    <Border Grid.Row="0" Grid.Column="1"
+                                            Background="{DynamicResource ControlStrokeColorDefaultBrush}" />
+                                    <controls:TimePickerColumn x:Name="PART_MinuteColumn"
+                                                               Grid.Row="0" Grid.Column="2" />
+                                    <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+                                            Background="{DynamicResource ControlStrokeColorDefaultBrush}" />
+                                    <Button x:Name="PART_AcceptButton"
+                                            Grid.Row="2" Grid.Column="0"
+                                            Style="{StaticResource TimePickerFlyoutButtonStyle}"
+                                            Content="&#xE8FB;"
+                                            ToolTip="Accept"
+                                            AutomationProperties.Name="Accept" />
+                                    <Button x:Name="PART_CancelButton"
+                                            Grid.Row="2" Grid.Column="2"
+                                            Style="{StaticResource TimePickerFlyoutButtonStyle}"
+                                            Content="&#xE711;"
+                                            ToolTip="Cancel"
+                                            AutomationProperties.Name="Cancel" />
+                                </Grid>
+                            </Border>
+                        </Popup>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="SelectedTime" Value="{x:Null}">
+                            <Setter TargetName="PART_HourText" Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+                            <Setter TargetName="PART_MinuteText" Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsDropDownOpen" Value="True">
+                            <Setter TargetName="PART_ToggleButton" Property="IsHitTestVisible" Value="False" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ================================================================================ -->
+    <!-- Content dialog -->
+    <!-- ================================================================================ -->
+
+    <Style TargetType="{x:Type controls:ContentDialog}">
+        <Setter Property="MinWidth" Value="320" />
+        <Setter Property="MaxWidth" Value="548" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Background" Value="{DynamicResource ContentDialogBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ContentDialogBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Foreground" Value="{DynamicResource ContentDialogForeground}" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:ContentDialog}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{DynamicResource OverlayCornerRadius}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Border Grid.Row="0"
+                                    Padding="24"
+                                    Background="{DynamicResource ContentDialogTopOverlay}"
+                                    BorderBrush="{DynamicResource ContentDialogSeparatorBorderBrush}"
+                                    BorderThickness="0,0,0,1">
+                                <StackPanel>
+                                    <TextBlock Margin="0,0,0,12"
+                                               TextWrapping="Wrap"
+                                               Text="{TemplateBinding Title}"
+                                               FontSize="20" FontWeight="SemiBold" />
+                                    <ContentPresenter />
+                                </StackPanel>
+                            </Border>
+                            <Grid Grid.Row="1"
+                                  Margin="24">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="8" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Button x:Name="PART_PrimaryButton"
+                                        Grid.Column="0"
+                                        Style="{DynamicResource AccentButtonStyle}"
+                                        HorizontalAlignment="Stretch"
+                                        Command="{TemplateBinding PrimaryButtonCommand}"
+                                        Content="{TemplateBinding PrimaryButtonText}" />
+                                <Button x:Name="PART_CloseButton"
+                                        Grid.Column="2"
+                                        HorizontalAlignment="Stretch"
+                                        Command="{TemplateBinding CloseButtonCommand}"
+                                        Content="{TemplateBinding CloseButtonText}" />
+                            </Grid>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="PrimaryButtonText" Value="{x:Null}">
+                            <Setter TargetName="PART_PrimaryButton" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

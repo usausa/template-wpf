@@ -25,6 +25,12 @@ public sealed partial class DateTimeViewModel : AppViewModelBase, IShellCommandP
     [ObservableProperty]
     public partial DateTime? LimitedDate { get; set; }
 
+    [ObservableProperty]
+    public partial TimeSpan? Time { get; set; }
+
+    [ObservableProperty]
+    public partial TimeSpan? StepTime { get; set; }
+
     public DateTime FirstDate { get; }
 
     public DateTime LastDate { get; }
@@ -66,6 +72,8 @@ public sealed partial class DateTimeViewModel : AppViewModelBase, IShellCommandP
         Date = null;
         CalendarDate = null;
         LimitedDate = null;
+        Time = null;
+        StepTime = null;
         ClearRangeRequest.Request();
     }
 

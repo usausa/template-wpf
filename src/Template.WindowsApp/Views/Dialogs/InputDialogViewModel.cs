@@ -1,17 +1,22 @@
 namespace Template.WindowsApp.Views.Dialogs;
 
 [ObservableGeneratorOption(Reactive = true, ViewModel = true)]
-public sealed partial class InputDialogViewModel : ExtendViewModelBase
+public sealed partial class InputDialogViewModel : DialogViewModelBase
 {
-    [ObservableProperty]
-    public partial string Title { get; set; }
+    public string Title { get; init; } = string.Empty;
 
     [ObservableProperty]
     public partial string Value { get; set; }
 
+    public IObserveCommand PrimaryCommand { get; }
+
+    public IObserveCommand CloseCommand { get; }
+
     public InputDialogViewModel()
     {
-        Title = string.Empty;
         Value = string.Empty;
+
+        PrimaryCommand = MakeDelegateCommand(() => Complete(true));
+        CloseCommand = MakeDelegateCommand(() => Complete(false));
     }
 }

@@ -17,6 +17,8 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
 
     public NavigationMenu Menu { get; }
 
+    public DialogHost Dialogs { get; }
+
     public CommandPalette Palette { get; }
 
     public NotificationService Notifications { get; }
@@ -49,6 +51,7 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
         IWindowManager windowManager,
         INavigator navigator,
         NavigationMenu menu,
+        DialogHost dialogs,
         NotificationService notifications,
         TaskbarService taskbar)
     {
@@ -56,6 +59,7 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
         WindowManager = windowManager;
         Navigator = navigator;
         Menu = menu;
+        Dialogs = dialogs;
         Notifications = notifications;
         Taskbar = taskbar;
         Palette = new CommandPalette(windowManager.RecentCommands, windowManager.CommandCounts);
@@ -64,7 +68,7 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
         ToggleGroupCommand = MakeDelegateCommand<NavigationGroup>(ToggleGroup);
         ExecuteCommand = MakeAsyncCommand(Execute, () => !BusyState.IsBusy);
         ToggleNavigationCommand = MakeDelegateCommand(() => WindowManager.IsPaneOpen = !WindowManager.IsPaneOpen);
-        OpenPaletteCommand = MakeDelegateCommand(CommandMode.Simple, () => Palette.Open(CollectCommands()));
+        OpenPaletteCommand = MakeDelegateCommand(CommandMode.Simple, OpenPalette);
         ClosePaletteCommand = MakeDelegateCommand(CommandMode.Simple, Palette.Close);
         MovePaletteCommand = MakeDelegateCommand<CommandPaletteMove>(CommandMode.Simple, Palette.Move);
         ExecutePaletteCommand = MakeDelegateCommand<CommandCandidate?>(CommandMode.Simple, ExecutePalette);
@@ -117,6 +121,14 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
             commands.AddRange(provider.GetCommands());
         }
         return commands;
+    }
+
+    private void OpenPalette()
+    {
+        if (Dialogs.Current is null)
+        {
+            Palette.Open(CollectCommands());
+        }
     }
 
     private void ExecutePalette(CommandCandidate? candidate)

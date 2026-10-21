@@ -33,11 +33,11 @@
             <TextBlock Style="{StaticResource PageTitleTextStyle}"
                        Text="Dialogs" />
             <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
-                       Text="Show message boxes, input, file and error dialogs." />
+                       Text="Show in-window, file and error dialogs." />
 
             <StackPanel Style="{StaticResource SectionPanelStyle}">
                 <TextBlock Style="{StaticResource SectionHeaderTextStyle}"
-                           Text="Message boxes" />
+                           Text="In-window dialogs" />
                 <Border Style="{StaticResource CardStyle}">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -82,11 +82,6 @@
                                 AutomationProperties.Name="Run Notify" />
                     </Grid>
                 </Border>
-            </StackPanel>
-
-            <StackPanel Style="{StaticResource SectionPanelStyle}">
-                <TextBlock Style="{StaticResource SectionHeaderTextStyle}"
-                           Text="Input" />
                 <Border Style="{StaticResource CardStyle}">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -109,6 +104,30 @@
                                 Style="{StaticResource RunButtonStyle}"
                                 Command="{Binding InputCommand}"
                                 AutomationProperties.Name="Run Input" />
+                    </Grid>
+                </Border>
+                <Border Style="{StaticResource CardStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0"
+                                    VerticalAlignment="Center">
+                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                       Text="Progress" />
+                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                       Text="Run a task and show its progress."
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        </StackPanel>
+                        <TextBlock Grid.Column="1"
+                                   Style="{StaticResource ResultTextStyle}"
+                                   Text="{Binding ProgressResult}" />
+                        <Button Grid.Column="2"
+                                Style="{StaticResource RunButtonStyle}"
+                                Command="{Binding ProgressCommand}"
+                                AutomationProperties.Name="Run Progress" />
                     </Grid>
                 </Border>
             </StackPanel>

@@ -2,11 +2,13 @@ namespace Template.WindowsApp.Services;
 
 public interface IDialogService
 {
-    bool Confirm(string message);
+    Task<bool> ConfirmAsync(string message);
 
-    string? Input(string title, string? initial = null);
+    Task NotifyAsync(string message);
 
-    void Notify(string message);
+    Task<string?> InputAsync(string title, string? initial = null);
+
+    Task<bool> ProgressAsync(string title, string message, Func<IProgress<double>, CancellationToken, Task> action);
 
     string? OpenFile(string? filter = null);
 

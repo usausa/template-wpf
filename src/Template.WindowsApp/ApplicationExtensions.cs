@@ -96,6 +96,7 @@ public static partial class ApplicationExtensions
         // Window
         builder.Services.AddSingleton<IWindowManager, WindowManager>();
         builder.Services.AddSingleton<NavigationMenu>();
+        builder.Services.AddSingleton<DialogHost>();
         builder.Services.AddSingleton<MainWindow>();
         // View & ViewModel
         builder.Services.AddViews();

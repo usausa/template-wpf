@@ -2,6 +2,7 @@ namespace Template.WindowsApp.Services;
 
 using Microsoft.Win32;
 
+using Template.WindowsApp.Shell;
 using Template.WindowsApp.Views.Dialogs;
 
 // ReSharper disable once ClassNeverInstantiated.Global
@@ -9,32 +10,68 @@ public sealed class DialogService : IDialogService
 {
     private const string AllFilesFilter = "All files (*.*)|*.*";
 
+    private readonly DialogHost host;
+
     private static Window? Owner => Application.Current.MainWindow;
 
-    public bool Confirm(string message) =>
-        Show(message, "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
-
-    public string? Input(string title, string? initial = null)
+    public DialogService(DialogHost host)
     {
-        var viewModel = new InputDialogViewModel
-        {
-            Title = title,
-            Value = initial ?? string.Empty
-        };
-        var dialog = new InputDialog
-        {
-            DataContext = viewModel
-        };
-        if (Owner is { } owner)
-        {
-            dialog.Owner = owner;
-        }
-
-        return dialog.ShowDialog() == true ? viewModel.Value : null;
+        this.host = host;
     }
 
-    public void Notify(string message) =>
-        Show(message, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+    public async Task<bool> ConfirmAsync(string message)
+    {
+        using var dialog = new MessageDialogViewModel
+        {
+            Title = "Confirm",
+            Message = message,
+            PrimaryButtonText = "Yes",
+            CloseButtonText = "No"
+        };
+        return await host.ShowAsync(dialog, static x => x.Completion).ConfigureAwait(true);
+    }
+
+    public async Task NotifyAsync(string message)
+    {
+        using var dialog = new MessageDialogViewModel
+        {
+            Title = "Information",
+            Message = message,
+            CloseButtonText = "OK"
+        };
+        await host.ShowAsync(dialog, static x => x.Completion).ConfigureAwait(true);
+    }
+
+    public async Task<string?> InputAsync(string title, string? initial = null)
+    {
+        using var dialog = new InputDialogViewModel
+        {
+            Title = title
+        };
+        dialog.Value = initial ?? string.Empty;
+        return await host.ShowAsync(dialog, static async x => await x.Completion.ConfigureAwait(true) ? x.Value : null).ConfigureAwait(true);
+    }
+
+    public async Task<bool> ProgressAsync(string title, string message, Func<IProgress<double>, CancellationToken, Task> action)
+    {
+        using var dialog = new ProgressDialogViewModel
+        {
+            Title = title,
+            Message = message
+        };
+        return await host.ShowAsync(dialog, async x =>
+        {
+            try
+            {
+                await action(x.Progress, x.Token).ConfigureAwait(true);
+                return true;
+            }
+            catch (OperationCanceledException) when (x.Token.IsCancellationRequested)
+            {
+                return false;
+            }
+        }).ConfigureAwait(true);
+    }
 
     public string? OpenFile(string? filter = null)
     {
@@ -60,9 +97,6 @@ public sealed class DialogService : IDialogService
         var dialog = new OpenFolderDialog();
         return ShowDialog(dialog) ? dialog.FolderName : null;
     }
-
-    private static MessageBoxResult Show(string message, string caption, MessageBoxButton button, MessageBoxImage icon) =>
-        Owner is { } owner ? MessageBox.Show(owner, message, caption, button, icon) : MessageBox.Show(message, caption, button, icon);
 
     private static bool ShowDialog(CommonDialog dialog) =>
         (Owner is { } owner ? dialog.ShowDialog(owner) : dialog.ShowDialog()) == true;

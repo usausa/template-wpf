@@ -1,8 +1,8 @@
 namespace Template.WindowsApp.Views.Dialogs;
 
-public sealed partial class InputDialog
+public sealed partial class ProgressDialogView
 {
-    public InputDialog()
+    public ProgressDialogView()
     {
         InitializeComponent();
     }

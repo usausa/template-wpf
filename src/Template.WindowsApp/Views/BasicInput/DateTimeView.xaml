@@ -5,6 +5,7 @@
              xmlns:s="http://smart/windows"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:behaviors="clr-namespace:Template.WindowsApp.Behaviors"
+             xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
              xmlns:helpers="clr-namespace:Template.WindowsApp.Helpers"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.BasicInput"
              mc:Ignorable="d"
@@ -22,7 +23,7 @@
             <TextBlock Style="{StaticResource PageTitleTextStyle}"
                        Text="Date &amp; time" />
             <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
-                       Text="Date pickers and calendars." />
+                       Text="Date and time pickers and calendars." />
 
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -31,6 +32,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
@@ -151,6 +153,42 @@
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="2" Grid.Column="0"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="TimePicker" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Pick a time from a drop-down list."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <controls:TimePicker Width="240"
+                                                 AutomationProperties.Name="Time"
+                                                 SelectedTime="{Binding Time}" />
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding Time, StringFormat='Selected: {0:hh\\:mm}', TargetNullValue='Selected: -'}" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="2" Grid.Column="2"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="Minute increment" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Minutes go up in steps of 15."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <controls:TimePicker Width="240"
+                                                 AutomationProperties.Name="Step time" MinuteIncrement="15"
+                                                 SelectedTime="{Binding StepTime}" />
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding StepTime, StringFormat='Selected: {0:hh\\:mm}', TargetNullValue='Selected: -'}" />
                     </StackPanel>
                 </Border>
             </Grid>

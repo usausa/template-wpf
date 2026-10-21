@@ -69,7 +69,7 @@ public sealed partial class ListDetailViewModel : AppViewModelBase, IShellComman
         SubscribeSelectedCustomer(Load);
 
         AddCommand = MakeDelegateCommand(Add);
-        DeleteCommand = MakeDelegateCommand(() => Delete(dialogService), () => SelectedCustomer is not null);
+        DeleteCommand = MakeAsyncCommand(() => DeleteAsync(dialogService), () => SelectedCustomer is not null);
         SaveCommand = MakeDelegateCommand(Save, IsChanged);
         CancelCommand = MakeDelegateCommand(() => Load(SelectedCustomer), IsChanged);
 
@@ -96,9 +96,9 @@ public sealed partial class ListDetailViewModel : AppViewModelBase, IShellComman
         SelectedCustomer = customer;
     }
 
-    private void Delete(IDialogService dialogService)
+    private async Task DeleteAsync(IDialogService dialogService)
     {
-        if ((SelectedCustomer is not { } customer) || !dialogService.Confirm("Delete this customer?"))
+        if ((SelectedCustomer is not { } customer) || !await dialogService.ConfirmAsync("Delete this customer?").ConfigureAwait(true))
         {
             return;
         }

@@ -13,6 +13,10 @@ public partial class AppWindow : Window
 
     private Button? closeButton;
 
+    private FrameworkElement? captionButtons;
+
+    private FrameworkElement? overlayTitleBar;
+
     [DependencyProperty]
     public partial object? LeftHeader { get; set; }
 
@@ -24,6 +28,9 @@ public partial class AppWindow : Window
 
     [DependencyProperty(DefaultValue = true)]
     public partial bool ShowIconOnTitleBar { get; set; }
+
+    [DependencyProperty]
+    public partial object? OverlayContent { get; set; }
 
     static AppWindow()
     {
@@ -61,10 +68,21 @@ public partial class AppWindow : Window
         {
             closeButton.Click -= OnCloseClick;
         }
+        if (captionButtons is not null)
+        {
+            captionButtons.SizeChanged -= OnCaptionButtonsSizeChanged;
+        }
 
         minimizeButton = GetTemplateChild("PART_MinimizeButton") as Button;
         maximizeButton = GetTemplateChild("PART_MaximizeButton") as CaptionButton;
         closeButton = GetTemplateChild("PART_CloseButton") as Button;
+        captionButtons = GetTemplateChild("PART_CaptionButtons") as FrameworkElement;
+        overlayTitleBar = GetTemplateChild("PART_OverlayTitleBar") as FrameworkElement;
+
+        if (captionButtons is not null)
+        {
+            captionButtons.SizeChanged += OnCaptionButtonsSizeChanged;
+        }
 
         if (minimizeButton is not null)
         {
@@ -148,4 +166,7 @@ public partial class AppWindow : Window
     private void OnMaximizeClick(object sender, RoutedEventArgs e) => ToggleMaximize();
 
     private void OnCloseClick(object sender, RoutedEventArgs e) => SystemCommands.CloseWindow(this);
+
+    private void OnCaptionButtonsSizeChanged(object sender, SizeChangedEventArgs e) =>
+        overlayTitleBar?.Margin = new Thickness(0, 0, e.NewSize.Width, 0);
 }

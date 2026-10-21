@@ -10,6 +10,7 @@
                     xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
                     xmlns:services="clr-namespace:Template.WindowsApp.Services"
                     xmlns:views="clr-namespace:Template.WindowsApp.Views"
+                    xmlns:dialogs="clr-namespace:Template.WindowsApp.Views.Dialogs"
                     mc:Ignorable="d"
                     x:Class="Template.WindowsApp.Views.MainWindow"
                     s:DataContextResolver.Type="{x:Type views:MainWindowViewModel}"
@@ -17,9 +18,20 @@
                     Width="1280" Height="960" MinWidth="1024" MinHeight="768"
                     Title="MainWindow"
                     Icon="../App.ico"
+                    OverlayContent="{Binding Dialogs.Current}"
                     ShowIconOnTitleBar="False">
 
     <controls:AppWindow.Resources>
+        <DataTemplate DataType="{x:Type dialogs:MessageDialogViewModel}">
+            <dialogs:MessageDialogView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type dialogs:InputDialogViewModel}">
+            <dialogs:InputDialogView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type dialogs:ProgressDialogViewModel}">
+            <dialogs:ProgressDialogView />
+        </DataTemplate>
+
         <Style x:Key="SideBarButtonStyle"
                TargetType="{x:Type Button}">
             <Setter Property="Height" Value="40" />
@@ -397,6 +409,7 @@
                             <MultiDataTrigger.Conditions>
                                 <Condition Binding="{Binding BusyState.IsBusy}" Value="True" />
                                 <Condition Binding="{Binding IsNavigating}" Value="False" />
+                                <Condition Binding="{Binding Dialogs.Current}" Value="{x:Null}" />
                             </MultiDataTrigger.Conditions>
                             <Setter Property="Visibility" Value="Visible" />
                         </MultiDataTrigger>
