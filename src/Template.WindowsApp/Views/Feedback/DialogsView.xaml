@@ -33,7 +33,7 @@
             <TextBlock Style="{StaticResource PageTitleTextStyle}"
                        Text="Dialogs" />
             <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
-                       Text="Show message boxes, input and file dialogs." />
+                       Text="Show message boxes, input, file and error dialogs." />
 
             <StackPanel Style="{StaticResource SectionPanelStyle}">
                 <TextBlock Style="{StaticResource SectionHeaderTextStyle}"
@@ -189,6 +189,31 @@
                                 Style="{StaticResource RunButtonStyle}"
                                 Command="{Binding SelectFolderCommand}"
                                 AutomationProperties.Name="Run Select folder" />
+                    </Grid>
+                </Border>
+            </StackPanel>
+
+            <StackPanel Style="{StaticResource SectionPanelStyle}">
+                <TextBlock Style="{StaticResource SectionHeaderTextStyle}"
+                           Text="Errors" />
+                <Border Style="{StaticResource CardStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0"
+                                    VerticalAlignment="Center">
+                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                       Text="Unhandled exception" />
+                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                       Text="Throw an exception to show the error window."
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        </StackPanel>
+                        <Button Grid.Column="1"
+                                Style="{StaticResource RunButtonStyle}"
+                                Command="{Binding UnhandledExceptionCommand}"
+                                AutomationProperties.Name="Run Unhandled exception" />
                     </Grid>
                 </Border>
             </StackPanel>

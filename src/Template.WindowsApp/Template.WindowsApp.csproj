@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
+    <StartupObject>Template.WindowsApp.Program</StartupObject>
     <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
     <UseWPF>true</UseWPF>
     <SatelliteResourceLanguages>en;ja</SatelliteResourceLanguages>

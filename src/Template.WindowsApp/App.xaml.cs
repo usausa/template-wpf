@@ -2,12 +2,15 @@ namespace Template.WindowsApp;
 
 using System.Runtime.InteropServices;
 
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using Smart.Mvvm.Resolver;
 
+using Template.WindowsApp.Services;
 using Template.WindowsApp.Views;
+using Template.WindowsApp.Views.Dialogs;
 
 public sealed partial class App
 {
@@ -16,6 +19,10 @@ public sealed partial class App
     private readonly ILogger<App> log;
 
     private readonly IWindowManager windowManager;
+
+    private bool showingError;
+
+    public SingleInstance? SingleInstance { get; init; }
 
     //--------------------------------------------------------------------------------
     // Constructor
@@ -43,8 +50,13 @@ public sealed partial class App
         log.InfoStartupApplication(environment.ApplicationName, typeof(App).Assembly.GetName().Version);
         log.InfoStartupEnvironment(environment.EnvironmentName, environment.ContentRootPath);
 
-        Current.DispatcherUnhandledException += (_, ea) => HandleException(ea.Exception);
-        AppDomain.CurrentDomain.UnhandledException += (_, ea) => HandleException((Exception)ea.ExceptionObject);
+        Current.DispatcherUnhandledException += (_, ea) =>
+        {
+            ShowError(ea.Exception);
+            ea.Handled = true;
+        };
+        AppDomain.CurrentDomain.UnhandledException += (_, ea) => Dispatcher.Invoke(() => ShowError((Exception)ea.ExceptionObject));
+        TaskScheduler.UnobservedTaskException += (_, ea) => log.ErrorUnobservedTaskException(ea.Exception);
     }
 
     private static IHost CreateHost()
@@ -92,7 +104,9 @@ public sealed partial class App
 
         await host.StartAsync().ConfigureAwait(true);
 
-        await host.Services.GetRequiredService<INavigator>().ForwardAsync(ViewId.Home).ConfigureAwait(true);
+        await host.Services.GetRequiredService<INavigator>().ForwardAsync(FindView(e.Args) ?? ViewId.Home).ConfigureAwait(true);
+
+        SingleInstance?.Listen(OnSecondInstance);
     }
 
     // ReSharper disable once AsyncVoidEventHandlerMethod
@@ -117,10 +131,104 @@ public sealed partial class App
     // Event
     //--------------------------------------------------------------------------------
 
-    private void HandleException(Exception ex)
+    // ReSharper disable once AsyncVoidMethod
+    private async void OnSecondInstance(string[] args)
+    {
+        log.InfoSecondInstance(String.Join(' ', args));
+
+        if (MainWindow is { } window)
+        {
+            if (window.WindowState == WindowState.Minimized)
+            {
+                SystemCommands.RestoreWindow(window);
+            }
+            window.Activate();
+        }
+
+        var navigator = host.Services.GetRequiredService<INavigator>();
+        if ((FindView(args) is { } id) && !Equals(navigator.CurrentViewId, id))
+        {
+            await navigator.ForwardAsync(id).ConfigureAwait(true);
+        }
+    }
+
+    private void ShowError(Exception ex)
     {
         log.ErrorUnknownException(ex);
 
-        MessageBox.Show(ex.ToString(), "Unknown error.", MessageBoxButton.OK, MessageBoxImage.Error);
+        if (showingError)
+        {
+            return;
+        }
+
+        showingError = true;
+        try
+        {
+            var dialog = new ErrorDialog(host.Services.GetRequiredService<IClipboardService>(), host.Services.GetRequiredService<IExplorerService>())
+            {
+                Details = MakeDetails(ex),
+                LogFolder = FindLogFolder()
+            };
+            if (MainWindow is { IsLoaded: true } owner)
+            {
+                dialog.Owner = owner;
+            }
+            else
+            {
+                dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                dialog.ShowInTaskbar = true;
+            }
+            dialog.ShowDialog();
+        }
+        finally
+        {
+            showingError = false;
+        }
+    }
+
+    //--------------------------------------------------------------------------------
+    // Helper
+    //--------------------------------------------------------------------------------
+
+    private ViewId? FindView(string[] args)
+    {
+        var value = new ConfigurationBuilder().AddCommandLine(args).Build()["view"];
+        if (String.IsNullOrEmpty(value))
+        {
+            return null;
+        }
+
+        foreach (var id in Enum.GetValues<ViewId>())
+        {
+            if (String.Equals(id.ToString(), value, StringComparison.OrdinalIgnoreCase))
+            {
+                return id;
+            }
+        }
+
+        log.WarnUnknownView(value);
+        return null;
+    }
+
+    private string MakeDetails(Exception ex)
+    {
+        var time = host.Services.GetRequiredService<TimeProvider>().GetLocalNow();
+        return $"""
+            Time: {time:yyyy-MM-dd HH:mm:ss}
+            Version: {typeof(App).Assembly.GetName().Version}
+            OS: {RuntimeInformation.OSDescription}
+            .NET: {RuntimeInformation.FrameworkDescription}
+
+            {ex}
+            """;
+    }
+
+    private string? FindLogFolder()
+    {
+        var path = host.Services.GetRequiredService<IConfiguration>().GetSection("Serilog:WriteTo").GetChildren()
+            .Where(static x => String.Equals(x["Name"], "File", StringComparison.OrdinalIgnoreCase))
+            .Select(static x => x["Args:path"])
+            .FirstOrDefault(static x => !String.IsNullOrEmpty(x));
+        return path is null ? null : Path.GetDirectoryName(Path.GetFullPath(path));
     }
 }

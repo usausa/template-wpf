@@ -27,6 +27,17 @@ internal static partial class Log
     [LoggerMessage(Level = LogLevel.Error, Message = "Unknown exception.")]
     public static partial void ErrorUnknownException(this ILogger logger, Exception ex);
 
+    [LoggerMessage(Level = LogLevel.Error, Message = "Unobserved task exception.")]
+    public static partial void ErrorUnobservedTaskException(this ILogger logger, Exception ex);
+
+    // Instance
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "Second instance started. args=[{args}]")]
+    public static partial void InfoSecondInstance(this ILogger logger, string args);
+
+    [LoggerMessage(Level = LogLevel.Warning, Message = "Unknown view. view=[{view}]")]
+    public static partial void WarnUnknownView(this ILogger logger, string view);
+
     // Startup
 
     [LoggerMessage(Level = LogLevel.Information, Message = "Execute start.")]

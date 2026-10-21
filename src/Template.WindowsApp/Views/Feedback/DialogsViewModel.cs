@@ -35,6 +35,8 @@ public sealed partial class DialogsViewModel : AppViewModelBase, IShellCommandPr
 
     public IObserveCommand SelectFolderCommand { get; }
 
+    public IObserveCommand UnhandledExceptionCommand { get; }
+
     public DialogsViewModel(IDialogService dialogService)
     {
         ConfirmResult = string.Empty;
@@ -56,6 +58,7 @@ public sealed partial class DialogsViewModel : AppViewModelBase, IShellCommandPr
         OpenFileCommand = MakeDelegateCommand(() => OpenFileResult = dialogService.OpenFile() ?? Canceled);
         SaveFileCommand = MakeDelegateCommand(() => SaveFileResult = dialogService.SaveFile("sample.txt") ?? Canceled);
         SelectFolderCommand = MakeDelegateCommand(() => SelectFolderResult = dialogService.SelectFolder() ?? Canceled);
+        UnhandledExceptionCommand = MakeDelegateCommand(static () => throw new InvalidOperationException("This is a sample exception."));
     }
 
     public IEnumerable<ShellCommand> GetCommands() =>
@@ -65,6 +68,7 @@ public sealed partial class DialogsViewModel : AppViewModelBase, IShellCommandPr
         new("Dialogs:Input", "Input", "Dialogs", "\uE70F", InputCommand),
         new("Dialogs:OpenFile", "Open file", "Dialogs", "\uE8E5", OpenFileCommand),
         new("Dialogs:SaveFile", "Save file", "Dialogs", "\uE74E", SaveFileCommand),
-        new("Dialogs:SelectFolder", "Select folder", "Dialogs", "\uE8B7", SelectFolderCommand)
+        new("Dialogs:SelectFolder", "Select folder", "Dialogs", "\uE8B7", SelectFolderCommand),
+        new("Dialogs:UnhandledException", "Unhandled exception", "Dialogs", "\uE783", UnhandledExceptionCommand)
     ];
 }

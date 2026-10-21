@@ -2,6 +2,8 @@ namespace Template.WindowsApp.Controls;
 
 using System.Runtime.InteropServices;
 
+using Microsoft.Win32.SafeHandles;
+
 internal static partial class NativeMethods
 {
     public const int WmNcHitTest = 0x0084;
@@ -39,6 +41,16 @@ internal static partial class NativeMethods
     [LibraryImport("user32.dll")]
     [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
     public static partial uint GetDpiForSystem();
+
+    [LibraryImport("user32.dll")]
+    [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static partial bool AllowSetForegroundWindow(uint processId);
+
+    [LibraryImport("kernel32.dll")]
+    [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static partial bool GetNamedPipeServerProcessId(SafePipeHandle pipe, out uint serverProcessId);
 
     public static void TrackNonClientMouseLeave(IntPtr hwnd)
     {
