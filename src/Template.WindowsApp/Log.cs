@@ -53,4 +53,9 @@ internal static partial class Log
 
     [LoggerMessage(Level = LogLevel.Debug, Message = "Closed object collected. target=[{target}]")]
     public static partial void DebugClosedObjectCollected(this ILogger logger, string target);
+
+    // Logs
+
+    [LoggerMessage(Message = "This is a test entry.")]
+    public static partial void TestEntry(this ILogger logger, LogLevel level);
 }

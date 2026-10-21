@@ -58,7 +58,7 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
         Menu = menu;
         Notifications = notifications;
         Taskbar = taskbar;
-        Palette = new CommandPalette(windowManager.RecentCommands);
+        Palette = new CommandPalette(windowManager.RecentCommands, windowManager.CommandCounts);
 
         ForwardCommand = MakeAsyncCommand<ViewId>(x => Equals(Navigator.CurrentViewId, x) ? Task.CompletedTask : Navigator.ForwardAsync(x, new NavigationParameter().WithPushEffect()));
         ToggleGroupCommand = MakeDelegateCommand<NavigationGroup>(ToggleGroup);
@@ -67,7 +67,7 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
         OpenPaletteCommand = MakeDelegateCommand(CommandMode.Simple, () => Palette.Open(CollectCommands()));
         ClosePaletteCommand = MakeDelegateCommand(CommandMode.Simple, Palette.Close);
         MovePaletteCommand = MakeDelegateCommand<CommandPaletteMove>(CommandMode.Simple, Palette.Move);
-        ExecutePaletteCommand = MakeDelegateCommand<ShellCommand?>(CommandMode.Simple, ExecutePalette);
+        ExecutePaletteCommand = MakeDelegateCommand<CommandCandidate?>(CommandMode.Simple, ExecutePalette);
         CloseNotificationCommand = MakeDelegateCommand<Notification>(CommandMode.Simple, Notifications.Close);
 
         // Busy while navigating
@@ -119,9 +119,9 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
         return commands;
     }
 
-    private void ExecutePalette(ShellCommand? command)
+    private void ExecutePalette(CommandCandidate? candidate)
     {
-        var target = Palette.Pick(command);
+        var target = Palette.Pick(candidate);
         if ((target is not null) && target.Command.CanExecute(target.Parameter))
         {
             target.Command.Execute(target.Parameter);

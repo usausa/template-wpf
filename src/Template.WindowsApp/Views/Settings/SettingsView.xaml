@@ -122,7 +122,7 @@
                             <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
                                        Text="Recent commands" />
                             <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                       Text="Recently used commands are listed first"
+                                       Text="Recently and frequently used commands are listed first"
                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
                         </StackPanel>
                         <Button Grid.Column="2"

@@ -42,9 +42,10 @@ public static partial class ApplicationExtensions
     public static IHostApplicationBuilder ConfigureLogging(this IHostApplicationBuilder builder)
     {
         builder.Logging.ClearProviders();
-        builder.Services.AddSerilog(options =>
+        builder.Services.AddSerilog((services, options) =>
         {
             options.ReadFrom.Configuration(builder.Configuration);
+            options.WriteTo.Sink(services.GetRequiredService<MemoryLogService>());
         });
 
         return builder;

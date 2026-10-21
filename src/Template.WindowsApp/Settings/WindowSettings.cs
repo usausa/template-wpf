@@ -40,10 +40,32 @@ public sealed class WindowSettings : ApplicationSettingsBase
     }
 
     [UserScopedSetting]
+    public string? CommandCounts
+    {
+        get => (string?)this[nameof(CommandCounts)];
+        set => this[nameof(CommandCounts)] = value;
+    }
+
+    [UserScopedSetting]
     [DefaultSettingValue("Light")]
     public string Theme
     {
         get => (string)this[nameof(Theme)];
         set => this[nameof(Theme)] = value;
+    }
+
+    [UserScopedSetting]
+    [DefaultSettingValue("True")]
+    public bool UpgradeRequired
+    {
+        get => (bool)this[nameof(UpgradeRequired)];
+        set => this[nameof(UpgradeRequired)] = value;
+    }
+
+    [UserScopedSetting]
+    public string? LastVersion
+    {
+        get => (string?)this[nameof(LastVersion)];
+        set => this[nameof(LastVersion)] = value;
     }
 }

@@ -1,0 +1,185 @@
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:s="http://smart/windows"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:behaviors="clr-namespace:Template.WindowsApp.Behaviors"
+             xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
+             xmlns:module="clr-namespace:Template.WindowsApp.Views.Platform"
+             xmlns:logging="clr-namespace:Microsoft.Extensions.Logging;assembly=Microsoft.Extensions.Logging.Abstractions"
+             mc:Ignorable="d"
+             x:Class="Template.WindowsApp.Views.Platform.LogsView"
+             s:DataContextResolver.Type="{x:Type module:LogsViewModel}"
+             d:DataContext="{d:DesignInstance Type={x:Type module:LogsViewModel}}"
+             d:DesignWidth="800" d:DesignHeight="600">
+
+    <UserControl.Resources>
+        <Style x:Key="LogCellTextStyle"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{x:Static DataGridTextColumn.DefaultElementStyle}">
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Level}" Value="Warning" />
+                        <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}" Value="False" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCautionBrush}" />
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Level}" Value="Error" />
+                        <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}" Value="False" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Level}" Value="Fatal" />
+                        <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}" Value="False" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+                </MultiDataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="MessageCellTextStyle"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource LogCellTextStyle}">
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0"
+                   Style="{StaticResource PageTitleTextStyle}"
+                   Text="Logs" />
+        <TextBlock Grid.Row="1"
+                   Style="{StaticResource PageDescriptionTextStyle}"
+                   Text="Recent log entries of this app." />
+        <Border Grid.Row="2"
+                Style="{StaticResource CardStyle}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" MaxWidth="248" />
+                        </Grid.ColumnDefinitions>
+                        <ComboBox Grid.Column="0"
+                                  Width="160"
+                                  ItemsSource="{Binding Levels}"
+                                  SelectedItem="{Binding Level}"
+                                  AutomationProperties.Name="Level" />
+                        <TextBox Grid.Column="1"
+                                 controls:TextBoxHelper.PlaceholderText="Search"
+                                 Margin="8,0,0,0"
+                                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                                 AutomationProperties.Name="Search" />
+                    </Grid>
+                    <StackPanel Grid.Column="1"
+                                Orientation="Horizontal"
+                                Margin="16,0,0,0">
+                        <TextBlock VerticalAlignment="Center"
+                                   Text="Auto scroll" />
+                        <controls:ToggleSwitch Margin="12,0,0,0"
+                                               VerticalAlignment="Center"
+                                               IsChecked="{Binding AutoScroll}"
+                                               AutomationProperties.Name="Auto scroll" />
+                        <Button Margin="16,0,0,0"
+                                Command="{Binding CopyCommand}"
+                                Content="Copy" />
+                        <Button Margin="8,0,0,0"
+                                Command="{Binding ClearCommand}"
+                                Content="Clear" />
+                        <controls:SplitButton Margin="8,0,0,0"
+                                              Command="{Binding WriteEntryCommand}"
+                                              CommandParameter="{x:Static logging:LogLevel.Information}"
+                                              Content="Write entry"
+                                              AutomationProperties.Name="Write entry">
+                            <controls:SplitButton.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Command="{Binding WriteEntryCommand}"
+                                              CommandParameter="{x:Static logging:LogLevel.Information}"
+                                              Header="Information" />
+                                    <MenuItem Command="{Binding WriteEntryCommand}"
+                                              CommandParameter="{x:Static logging:LogLevel.Warning}"
+                                              Header="Warning" />
+                                    <MenuItem Command="{Binding WriteEntryCommand}"
+                                              CommandParameter="{x:Static logging:LogLevel.Error}"
+                                              Header="Error" />
+                                </ContextMenu>
+                            </controls:SplitButton.ContextMenu>
+                        </controls:SplitButton>
+                    </StackPanel>
+                </Grid>
+
+                <DataGrid Grid.Row="1"
+                          Margin="0,16,0,0"
+                          ItemsSource="{Binding Items}"
+                          SelectedItem="{Binding SelectedEntry}"
+                          SelectionMode="Single"
+                          AutoGenerateColumns="False" AutomationProperties.Name="Log entries" CanUserAddRows="False" CanUserDeleteRows="False"
+                          CanUserSortColumns="False" HeadersVisibility="Column" IsReadOnly="True">
+                    <i:Interaction.Behaviors>
+                        <behaviors:AutoScrollBehavior IsEnabled="{Binding AutoScroll}" />
+                    </i:Interaction.Behaviors>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="110"
+                                            Binding="{Binding Timestamp, StringFormat=HH:mm:ss.fff}"
+                                            ElementStyle="{StaticResource LogCellTextStyle}"
+                                            Header="Time" />
+                        <DataGridTextColumn Width="110"
+                                            Binding="{Binding Level}"
+                                            ElementStyle="{StaticResource LogCellTextStyle}"
+                                            Header="Level" />
+                        <DataGridTextColumn Width="200"
+                                            Binding="{Binding Source}"
+                                            ElementStyle="{StaticResource LogCellTextStyle}"
+                                            Header="Source" />
+                        <DataGridTextColumn Width="*"
+                                            Binding="{Binding Message}"
+                                            ElementStyle="{StaticResource MessageCellTextStyle}"
+                                            Header="Message" />
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <TextBlock Grid.Row="2"
+                           Style="{DynamicResource BodyTextBlockStyle}"
+                           Margin="0,16,0,0">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}Showing {0} of {1}">
+                            <Binding Path="ShownCount" />
+                            <Binding Path="TotalCount" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+
+                <TextBox Grid.Row="3"
+                         Height="120"
+                         Margin="0,8,0,0"
+                         TextWrapping="Wrap"
+                         VerticalScrollBarVisibility="Auto"
+                         Text="{Binding Details, Mode=OneWay}"
+                         FontFamily="{StaticResource CodeFontFamily}"
+                         AutomationProperties.Name="Details" IsReadOnly="True" />
+            </Grid>
+        </Border>
+    </Grid>
+
+</UserControl>

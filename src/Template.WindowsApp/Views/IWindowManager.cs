@@ -2,6 +2,8 @@ namespace Template.WindowsApp.Views;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using Template.WindowsApp.Controls;
+using Template.WindowsApp.Services;
 using Template.WindowsApp.Settings;
 
 public interface IWindowManager
@@ -12,6 +14,8 @@ public interface IWindowManager
 
     IList<string> RecentCommands { get; }
 
+    IDictionary<string, int> CommandCounts { get; }
+
     Window Load();
 
     void Save();
@@ -19,7 +23,11 @@ public interface IWindowManager
 
 public sealed class WindowManager : NotificationObject, IWindowManager
 {
+    private static readonly string CurrentVersion = typeof(WindowManager).Assembly.GetName().Version?.ToString(3) ?? string.Empty;
+
     private readonly IServiceProvider provider;
+
+    private readonly NotificationService notifications;
 
     private readonly WindowSettings settings = new();
 
@@ -43,13 +51,23 @@ public sealed class WindowManager : NotificationObject, IWindowManager
 
     public IList<string> RecentCommands { get; } = [];
 
-    public WindowManager(IServiceProvider provider)
+    public IDictionary<string, int> CommandCounts { get; } = new Dictionary<string, int>();
+
+    public WindowManager(IServiceProvider provider, NotificationService notifications)
     {
         this.provider = provider;
+        this.notifications = notifications;
     }
 
     public Window Load()
     {
+        if (settings.UpgradeRequired)
+        {
+            settings.Upgrade();
+            settings.UpgradeRequired = false;
+            settings.Save();
+        }
+
         var mainWindow = provider.GetRequiredService<MainWindow>();
 
         if (settings.MainWindowPlacement is not null)
@@ -61,6 +79,19 @@ public sealed class WindowManager : NotificationObject, IWindowManager
         foreach (var id in (settings.RecentCommands ?? string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries))
         {
             RecentCommands.Add(id);
+        }
+        foreach (var pair in (settings.CommandCounts ?? string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries))
+        {
+            var separator = pair.LastIndexOf('=');
+            if ((separator > 0) && Int32.TryParse(pair.AsSpan(separator + 1), NumberStyles.None, CultureInfo.InvariantCulture, out var count))
+            {
+                CommandCounts[pair[..separator]] = count;
+            }
+        }
+
+        if (!String.IsNullOrEmpty(settings.LastVersion) && (settings.LastVersion != CurrentVersion))
+        {
+            notifications.Show(InfoBarSeverity.Informational, "Updated", $"Version {CurrentVersion} is now installed.");
         }
 
         mainWindow.Show();
@@ -110,6 +141,8 @@ public sealed class WindowManager : NotificationObject, IWindowManager
         settings.IsPaneOpen = IsPaneOpen;
         settings.Theme = Theme.ToString();
         settings.RecentCommands = string.Join(',', RecentCommands);
+        settings.CommandCounts = string.Join(',', CommandCounts.Select(static x => String.Create(CultureInfo.InvariantCulture, $"{x.Key}={x.Value}")));
+        settings.LastVersion = CurrentVersion;
 
         settings.Save();
     }

@@ -28,7 +28,11 @@ public sealed class SettingsViewModel : AppViewModelBase, IShellCommandProvider
         VersionText = $"Version {name.Version?.ToString(3)} · {RuntimeInformation.FrameworkDescription}";
 
         ThemeCommand = MakeDelegateCommand<AppTheme>(x => windowManager.Theme = x);
-        ClearRecentCommand = MakeDelegateCommand(windowManager.RecentCommands.Clear);
+        ClearRecentCommand = MakeDelegateCommand(() =>
+        {
+            windowManager.RecentCommands.Clear();
+            windowManager.CommandCounts.Clear();
+        });
     }
 
     public IEnumerable<ShellCommand> GetCommands() =>

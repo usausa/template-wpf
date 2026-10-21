@@ -25,5 +25,6 @@ public enum ViewId
     Charts,
     ClipboardDrag,
     Environment,
+    Logs,
     Settings
 }
