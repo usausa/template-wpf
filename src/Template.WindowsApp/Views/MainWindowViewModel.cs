@@ -21,6 +21,8 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
 
     public NotificationService Notifications { get; }
 
+    public TaskbarService Taskbar { get; }
+
     [ObservableProperty]
     public partial bool IsNavigating { get; set; }
 
@@ -47,13 +49,15 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
         IWindowManager windowManager,
         INavigator navigator,
         NavigationMenu menu,
-        NotificationService notifications)
+        NotificationService notifications,
+        TaskbarService taskbar)
     {
         this.logger = logger;
         WindowManager = windowManager;
         Navigator = navigator;
         Menu = menu;
         Notifications = notifications;
+        Taskbar = taskbar;
         Palette = new CommandPalette(windowManager.RecentCommands);
 
         ForwardCommand = MakeAsyncCommand<ViewId>(x => Equals(Navigator.CurrentViewId, x) ? Task.CompletedTask : Navigator.ForwardAsync(x, new NavigationParameter().WithPushEffect()));

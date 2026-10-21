@@ -184,6 +184,11 @@
                     Gesture="Ctrl+Shift+P" />
     </controls:AppWindow.InputBindings>
 
+    <controls:AppWindow.TaskbarItemInfo>
+        <TaskbarItemInfo ProgressState="{Binding Taskbar.State}"
+                         ProgressValue="{Binding Taskbar.Value}" />
+    </controls:AppWindow.TaskbarItemInfo>
+
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
             <s:CancelEventAction Cancel="{Binding BusyState.IsBusy}" />

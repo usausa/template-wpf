@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:s="http://smart/windows"
+             xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.BasicInput"
              mc:Ignorable="d"
              x:Class="Template.WindowsApp.Views.BasicInput.ButtonsView"
@@ -10,12 +11,16 @@
              d:DataContext="{d:DesignInstance Type={x:Type module:ButtonsViewModel}}"
              d:DesignWidth="800" d:DesignHeight="600">
 
+    <UserControl.Resources>
+        <s:ParameterEqualsConverter x:Key="ParameterEqualsConverter" />
+    </UserControl.Resources>
+
     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="24">
             <TextBlock Style="{StaticResource PageTitleTextStyle}"
                        Text="Buttons" />
             <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
-                       Text="Buttons, repeat buttons, toggle buttons and icon buttons." />
+                       Text="Buttons, repeat buttons, toggle buttons, icon buttons, drop-down buttons and split buttons." />
 
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -24,6 +29,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
@@ -120,6 +126,74 @@
                         </StackPanel>
                         <TextBlock Style="{StaticResource SampleResultTextStyle}"
                                    Text="{Binding LastPressed, StringFormat='Last pressed: {0}', TargetNullValue='Last pressed: -'}" />
+                    </StackPanel>
+                </Border>
+                <Border Grid.Row="2" Grid.Column="0"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="DropDownButton" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Opens a menu of options."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <controls:DropDownButton HorizontalAlignment="Left"
+                                                     Content="Sort by"
+                                                     AutomationProperties.Name="Sort by">
+                                <controls:DropDownButton.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Command="{Binding SortByCommand}"
+                                                  CommandParameter="Name"
+                                                  IsChecked="{Binding SortBy, Mode=OneWay, Converter={StaticResource ParameterEqualsConverter}, ConverterParameter=Name}"
+                                                  Header="Name" IsCheckable="True" />
+                                        <MenuItem Command="{Binding SortByCommand}"
+                                                  CommandParameter="Date"
+                                                  IsChecked="{Binding SortBy, Mode=OneWay, Converter={StaticResource ParameterEqualsConverter}, ConverterParameter=Date}"
+                                                  Header="Date" IsCheckable="True" />
+                                        <MenuItem Command="{Binding SortByCommand}"
+                                                  CommandParameter="Size"
+                                                  IsChecked="{Binding SortBy, Mode=OneWay, Converter={StaticResource ParameterEqualsConverter}, ConverterParameter=Size}"
+                                                  Header="Size" IsCheckable="True" />
+                                    </ContextMenu>
+                                </controls:DropDownButton.ContextMenu>
+                            </controls:DropDownButton>
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding SortBy, StringFormat='Sort by: {0}'}" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="2" Grid.Column="2"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="SplitButton" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Runs the main action or picks another one."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <controls:SplitButton HorizontalAlignment="Left"
+                                                  Command="{Binding SaveCommand}"
+                                                  CommandParameter="Save"
+                                                  Content="Save"
+                                                  AutomationProperties.Name="Save">
+                                <controls:SplitButton.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Command="{Binding SaveCommand}"
+                                                  CommandParameter="Save"
+                                                  Header="Save" />
+                                        <MenuItem Command="{Binding SaveCommand}"
+                                                  CommandParameter="Save as"
+                                                  Header="Save as" />
+                                        <MenuItem Command="{Binding SaveCommand}"
+                                                  CommandParameter="Save all"
+                                                  Header="Save all" />
+                                    </ContextMenu>
+                                </controls:SplitButton.ContextMenu>
+                            </controls:SplitButton>
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding LastAction, StringFormat='Last action: {0}', TargetNullValue='Last action: -'}" />
                     </StackPanel>
                 </Border>
             </Grid>

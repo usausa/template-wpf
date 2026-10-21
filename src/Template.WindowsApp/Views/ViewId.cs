@@ -17,6 +17,7 @@ public enum ViewId
     Notifications,
     Panels,
     Containers,
+    MenusToolbars,
     Colors,
     Typography,
     Icons,

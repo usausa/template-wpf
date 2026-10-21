@@ -44,7 +44,8 @@ public sealed class NavigationMenu
             "\uECA5",
             [
                 new(ViewId.Panels, "Panels", "\uE8A1"),
-                new(ViewId.Containers, "Containers", "\uE90C")
+                new(ViewId.Containers, "Containers", "\uE90C"),
+                new(ViewId.MenusToolbars, "Menus & toolbars", "\uEDE3")
             ]),
         new NavigationGroup(
             "Design",
