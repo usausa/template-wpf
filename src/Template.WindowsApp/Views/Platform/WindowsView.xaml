@@ -1,0 +1,109 @@
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:s="http://smart/windows"
+             xmlns:module="clr-namespace:Template.WindowsApp.Views.Platform"
+             mc:Ignorable="d"
+             x:Class="Template.WindowsApp.Views.Platform.WindowsView"
+             s:DataContextResolver.Type="{x:Type module:WindowsViewModel}"
+             d:DataContext="{d:DesignInstance Type={x:Type module:WindowsViewModel}}"
+             d:DesignWidth="800" d:DesignHeight="600">
+
+    <UserControl.Resources>
+        <Style x:Key="ResultTextStyle"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="{DynamicResource CaptionTextBlockFontSize}" />
+            <Setter Property="MaxWidth" Value="320" />
+            <Setter Property="Margin" Value="16,0,16,0" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+        <Style x:Key="OpenButtonStyle"
+               TargetType="{x:Type Button}"
+               BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Width" Value="96" />
+            <Setter Property="Content" Value="Open" />
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24">
+            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+                       Text="Windows" />
+            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+                       Text="Open other windows and change how they behave." />
+
+            <StackPanel Style="{StaticResource SectionPanelStyle}">
+                <TextBlock Style="{StaticResource SectionHeaderTextStyle}"
+                           Text="New windows" />
+                <Border Style="{StaticResource CardStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0"
+                                    VerticalAlignment="Center">
+                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                       Text="New window" />
+                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                       Text="Open a window with its own taskbar button."
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        </StackPanel>
+                        <TextBlock Grid.Column="1"
+                                   Style="{StaticResource ResultTextStyle}"
+                                   Text="{Binding WindowResult}" />
+                        <Button Grid.Column="2"
+                                Style="{StaticResource OpenButtonStyle}"
+                                Command="{Binding NewWindowCommand}"
+                                AutomationProperties.Name="Open New window" />
+                    </Grid>
+                </Border>
+                <Border Style="{StaticResource CardStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0"
+                                    VerticalAlignment="Center">
+                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                       Text="Tool window" />
+                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                       Text="Open a window that stays above this one."
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        </StackPanel>
+                        <Button Grid.Column="1"
+                                Style="{StaticResource OpenButtonStyle}"
+                                Command="{Binding ToolWindowCommand}"
+                                AutomationProperties.Name="Open Tool window" />
+                    </Grid>
+                </Border>
+                <Border Style="{StaticResource CardStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0"
+                                    VerticalAlignment="Center">
+                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                       Text="Compact overlay" />
+                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                       Text="Open a small window that stays on top of other apps."
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        </StackPanel>
+                        <Button Grid.Column="1"
+                                Style="{StaticResource OpenButtonStyle}"
+                                Command="{Binding CompactOverlayCommand}"
+                                AutomationProperties.Name="Open Compact overlay" />
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

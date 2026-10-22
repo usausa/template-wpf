@@ -66,6 +66,7 @@ public sealed class NavigationMenu
             "System",
             "\uE770",
             [
+                new(ViewId.Windows, "Windows", "\uE78B"),
                 new(ViewId.ClipboardDrag, "Clipboard & drag", "\uE77F"),
                 new(ViewId.Environment, "Environment", "\uE9D9"),
                 new(ViewId.Logs, "Logs", "\uE9A4")

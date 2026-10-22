@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Template.WindowsApp.Controls;
 using Template.WindowsApp.Services;
 using Template.WindowsApp.Settings;
+using Template.WindowsApp.Views.Platform;
 
 public interface IWindowManager
 {
@@ -16,9 +17,19 @@ public interface IWindowManager
 
     IDictionary<string, int> CommandCounts { get; }
 
+    IList<string> RecentViews { get; }
+
+    event EventHandler? WindowsChanged;
+
     Window Load();
 
     void Save();
+
+    int Count(WindowId id);
+
+    bool Activate(WindowId id);
+
+    void Show(WindowId id, object viewModel, bool owned = false);
 }
 
 public sealed class WindowManager : NotificationObject, IWindowManager
@@ -30,6 +41,8 @@ public sealed class WindowManager : NotificationObject, IWindowManager
     private readonly NotificationService notifications;
 
     private readonly WindowSettings settings = new();
+
+    private readonly List<KeyValuePair<WindowId, Window>> windows = [];
 
     public bool IsPaneOpen
     {
@@ -52,6 +65,10 @@ public sealed class WindowManager : NotificationObject, IWindowManager
     public IList<string> RecentCommands { get; } = [];
 
     public IDictionary<string, int> CommandCounts { get; } = new Dictionary<string, int>();
+
+    public IList<string> RecentViews { get; } = [];
+
+    public event EventHandler? WindowsChanged;
 
     public WindowManager(IServiceProvider provider, NotificationService notifications)
     {
@@ -87,6 +104,10 @@ public sealed class WindowManager : NotificationObject, IWindowManager
             {
                 CommandCounts[pair[..separator]] = count;
             }
+        }
+        foreach (var id in (settings.RecentViews ?? string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries))
+        {
+            RecentViews.Add(id);
         }
 
         if (!String.IsNullOrEmpty(settings.LastVersion) && (settings.LastVersion != CurrentVersion))
@@ -142,8 +163,65 @@ public sealed class WindowManager : NotificationObject, IWindowManager
         settings.Theme = Theme.ToString();
         settings.RecentCommands = string.Join(',', RecentCommands);
         settings.CommandCounts = string.Join(',', CommandCounts.Select(static x => String.Create(CultureInfo.InvariantCulture, $"{x.Key}={x.Value}")));
+        settings.RecentViews = string.Join(',', RecentViews);
         settings.LastVersion = CurrentVersion;
 
         settings.Save();
     }
+
+    public int Count(WindowId id) => windows.Count(x => x.Key == id);
+
+    public bool Activate(WindowId id)
+    {
+        foreach (var (key, window) in windows)
+        {
+            if (key == id)
+            {
+                if (window.WindowState == WindowState.Minimized)
+                {
+                    SystemCommands.RestoreWindow(window);
+                }
+                window.Activate();
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void Show(WindowId id, object viewModel, bool owned = false)
+    {
+        var window = CreateWindow(id);
+        window.DataContext = viewModel;
+        if (owned)
+        {
+            window.Owner = provider.GetRequiredService<MainWindow>();
+        }
+        window.Closed += OnWindowClosed;
+        windows.Add(new(id, window));
+        window.Show();
+
+        WindowsChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void OnWindowClosed(object? sender, EventArgs e)
+    {
+        if (sender is not Window window)
+        {
+            return;
+        }
+
+        window.Closed -= OnWindowClosed;
+        windows.RemoveAll(x => x.Value == window);
+
+        WindowsChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    private static Window CreateWindow(WindowId id) =>
+        id switch
+        {
+            WindowId.Sample or WindowId.Tool => new SampleWindow(),
+            WindowId.Memory => new MemoryWindow(),
+            _ => throw new ArgumentOutOfRangeException(nameof(id), id, null)
+        };
 }

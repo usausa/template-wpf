@@ -47,6 +47,13 @@ public sealed class WindowSettings : ApplicationSettingsBase
     }
 
     [UserScopedSetting]
+    public string? RecentViews
+    {
+        get => (string?)this[nameof(RecentViews)];
+        set => this[nameof(RecentViews)] = value;
+    }
+
+    [UserScopedSetting]
     [DefaultSettingValue("Light")]
     public string Theme
     {

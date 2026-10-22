@@ -7,9 +7,13 @@ using Template.WindowsApp.Shell;
 [ObservableGeneratorOption(Reactive = true, ViewModel = true)]
 public sealed partial class MainWindowViewModel : ExtendViewModelBase
 {
+    private const int RecentViewCount = 5;
+
     private readonly ILogger<MainWindowViewModel> logger;
 
     private IDisposable? navigatingBusy;
+
+    private bool recentViewsApplied;
 
     public IWindowManager WindowManager { get; }
 
@@ -80,7 +84,10 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
 
         Disposables.Add(Observable
             .FromEventPattern<NavigationEventArgs>(h => Navigator.Navigated += h, h => Navigator.Navigated -= h)
-            .Subscribe(x => Menu.Select(x.EventArgs.Context.ToId as ViewId?)));
+            .Subscribe(x => OnNavigated(x.EventArgs.Context.ToId as ViewId?)));
+
+        // Jump list
+        Disposables.Add(Taskbar.RecentViewRemoved.Subscribe(x => WindowManager.RecentViews.Remove(x.ToString())));
     }
 
     private void UpdateNavigatingBusy()
@@ -96,6 +103,41 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
             navigatingBusy = null;
             IsNavigating = false;
         }
+    }
+
+    private void OnNavigated(ViewId? id)
+    {
+        Menu.Select(id);
+
+        if (AddRecentView(id) || !recentViewsApplied)
+        {
+            var items = Menu.EnumerateItems().ToDictionary(static x => x.Id.ToString());
+            Taskbar.SetRecentViews(WindowManager.RecentViews.Select(items.GetValueOrDefault).OfType<NavigationItem>().ToList());
+            recentViewsApplied = true;
+        }
+    }
+
+    private bool AddRecentView(ViewId? id)
+    {
+        if ((id is not { } value) || (value == ViewId.Home))
+        {
+            return false;
+        }
+
+        var name = value.ToString();
+        var views = WindowManager.RecentViews;
+        if ((views.Count > 0) && (views[0] == name))
+        {
+            return false;
+        }
+
+        views.Remove(name);
+        views.Insert(0, name);
+        while (views.Count > RecentViewCount)
+        {
+            views.RemoveAt(views.Count - 1);
+        }
+        return true;
     }
 
     private void ToggleGroup(NavigationGroup group)

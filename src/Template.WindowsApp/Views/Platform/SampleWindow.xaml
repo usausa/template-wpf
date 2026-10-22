@@ -1,0 +1,206 @@
+<controls:AppWindow xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:s="http://smart/windows"
+                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+                    xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
+                    xmlns:helpers="clr-namespace:Template.WindowsApp.Helpers"
+                    xmlns:module="clr-namespace:Template.WindowsApp.Views.Platform"
+                    mc:Ignorable="d"
+                    x:Class="Template.WindowsApp.Views.Platform.SampleWindow"
+                    d:DataContext="{d:DesignInstance Type={x:Type module:SampleWindowViewModel}}"
+                    Width="560" Height="680" MinWidth="400" MinHeight="300"
+                    ShowInTaskbar="{Binding ShowInTaskbar}"
+                    Title="{Binding Title}"
+                    Icon="../../App.ico"
+                    ShowIconOnTitleBar="{Binding ShowIcon}"
+                    Topmost="{Binding IsTopmost}">
+
+    <controls:AppWindow.Resources>
+        <Style x:Key="SettingIconTextStyle"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+        <Style x:Key="StatusNameTextStyle"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+    </controls:AppWindow.Resources>
+
+    <controls:AppWindow.ResizeMode>
+        <Binding Path="IsResizable">
+            <Binding.Converter>
+                <helpers:BoolToResizeModeConverter TrueValue="CanResize"
+                                                   FalseValue="CanMinimize" />
+            </Binding.Converter>
+        </Binding>
+    </controls:AppWindow.ResizeMode>
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closed">
+            <s:DataContextDisposeAction />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24,16,24,24">
+            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+                       Text="Change how this window behaves." />
+
+            <StackPanel Style="{StaticResource SectionPanelStyle}">
+                <TextBlock Style="{StaticResource SectionHeaderTextStyle}"
+                           Text="Window" />
+                <Border Style="{StaticResource CardStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"
+                                   Style="{StaticResource SettingIconTextStyle}"
+                                   Text="&#xE718;" />
+                        <StackPanel Grid.Column="1"
+                                    Margin="8,0,16,0"
+                                    VerticalAlignment="Center">
+                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                       Text="Always on top" />
+                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                       Text="Keep this window above other windows"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        </StackPanel>
+                        <controls:ToggleSwitch Grid.Column="2"
+                                               VerticalAlignment="Center"
+                                               IsChecked="{Binding IsTopmost}"
+                                               AutomationProperties.Name="Always on top" />
+                    </Grid>
+                </Border>
+                <Border Style="{StaticResource CardStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"
+                                   Style="{StaticResource SettingIconTextStyle}"
+                                   Text="&#xE744;" />
+                        <StackPanel Grid.Column="1"
+                                    Margin="8,0,16,0"
+                                    VerticalAlignment="Center">
+                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                       Text="Resizable" />
+                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                       Text="Let this window be resized and maximized"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        </StackPanel>
+                        <controls:ToggleSwitch Grid.Column="2"
+                                               VerticalAlignment="Center"
+                                               IsChecked="{Binding IsResizable}"
+                                               AutomationProperties.Name="Resizable" />
+                    </Grid>
+                </Border>
+                <Border Style="{StaticResource CardStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"
+                                   Style="{StaticResource SettingIconTextStyle}"
+                                   Text="&#xE7C4;" />
+                        <StackPanel Grid.Column="1"
+                                    Margin="8,0,16,0"
+                                    VerticalAlignment="Center">
+                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                       Text="Show in taskbar" />
+                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                       Text="Show a button for this window on the taskbar"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        </StackPanel>
+                        <controls:ToggleSwitch Grid.Column="2"
+                                               VerticalAlignment="Center"
+                                               IsChecked="{Binding ShowInTaskbar}"
+                                               AutomationProperties.Name="Show in taskbar" />
+                    </Grid>
+                </Border>
+                <Border Style="{StaticResource CardStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"
+                                   Style="{StaticResource SettingIconTextStyle}"
+                                   Text="&#xECAA;" />
+                        <StackPanel Grid.Column="1"
+                                    Margin="8,0,16,0"
+                                    VerticalAlignment="Center">
+                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                       Text="Title bar icon" />
+                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                       Text="Show the app icon on the title bar"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        </StackPanel>
+                        <controls:ToggleSwitch Grid.Column="2"
+                                               VerticalAlignment="Center"
+                                               IsChecked="{Binding ShowIcon}"
+                                               AutomationProperties.Name="Title bar icon" />
+                    </Grid>
+                </Border>
+            </StackPanel>
+
+            <StackPanel Style="{StaticResource SectionPanelStyle}">
+                <TextBlock Style="{StaticResource SectionHeaderTextStyle}"
+                           Text="Status" />
+                <Border Style="{StaticResource CardStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="96" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0"
+                                   Style="{StaticResource StatusNameTextStyle}"
+                                   Text="Size" />
+                        <TextBlock Grid.Row="0" Grid.Column="1">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0:0} × {1:0}">
+                                    <Binding Path="ActualWidth"
+                                             RelativeSource="{RelativeSource AncestorType={x:Type Window}}" />
+                                    <Binding Path="ActualHeight"
+                                             RelativeSource="{RelativeSource AncestorType={x:Type Window}}" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="0"
+                                   Style="{StaticResource StatusNameTextStyle}"
+                                   Margin="0,8,0,0"
+                                   Text="State" />
+                        <TextBlock Grid.Row="1" Grid.Column="1"
+                                   Margin="0,8,0,0"
+                                   Text="{Binding WindowState, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+                        <TextBlock Grid.Row="2" Grid.Column="0"
+                                   Style="{StaticResource StatusNameTextStyle}"
+                                   Margin="0,8,0,0"
+                                   Text="Owner" />
+                        <TextBlock Grid.Row="2" Grid.Column="1"
+                                   Margin="0,8,0,0"
+                                   Text="{Binding Owner.Title, RelativeSource={RelativeSource AncestorType={x:Type Window}}, FallbackValue=None}" />
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+
+</controls:AppWindow>

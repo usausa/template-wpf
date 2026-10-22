@@ -135,6 +135,37 @@
 
             <StackPanel Style="{StaticResource SectionPanelStyle}">
                 <TextBlock Style="{StaticResource SectionHeaderTextStyle}"
+                           Text="Taskbar" />
+                <Border Style="{StaticResource CardStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"
+                                   Style="{StaticResource SettingIconTextStyle}"
+                                   Text="&#xE823;" />
+                        <StackPanel Grid.Column="1"
+                                    Margin="8,0,16,0"
+                                    VerticalAlignment="Center">
+                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                       Text="Recent pages" />
+                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                       Text="Recently opened pages are listed in the jump list"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        </StackPanel>
+                        <Button Grid.Column="2"
+                                VerticalAlignment="Center"
+                                Command="{Binding ClearRecentPagesCommand}"
+                                Content="Clear"
+                                AutomationProperties.Name="Clear recent pages" />
+                    </Grid>
+                </Border>
+            </StackPanel>
+
+            <StackPanel Style="{StaticResource SectionPanelStyle}">
+                <TextBlock Style="{StaticResource SectionHeaderTextStyle}"
                            Text="About" />
                 <Border Style="{StaticResource CardStyle}">
                     <Grid>

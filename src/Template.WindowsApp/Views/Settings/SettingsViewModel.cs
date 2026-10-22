@@ -2,6 +2,7 @@ namespace Template.WindowsApp.Views.Settings;
 
 using System.Runtime.InteropServices;
 
+using Template.WindowsApp.Services;
 using Template.WindowsApp.Shell;
 
 // ReSharper disable once ClassNeverInstantiated.Global
@@ -19,7 +20,9 @@ public sealed class SettingsViewModel : AppViewModelBase, IShellCommandProvider
 
     public IObserveCommand ClearRecentCommand { get; }
 
-    public SettingsViewModel(IWindowManager windowManager)
+    public IObserveCommand ClearRecentPagesCommand { get; }
+
+    public SettingsViewModel(IWindowManager windowManager, TaskbarService taskbar)
     {
         WindowManager = windowManager;
 
@@ -33,6 +36,11 @@ public sealed class SettingsViewModel : AppViewModelBase, IShellCommandProvider
             windowManager.RecentCommands.Clear();
             windowManager.CommandCounts.Clear();
         });
+        ClearRecentPagesCommand = MakeDelegateCommand(() =>
+        {
+            windowManager.RecentViews.Clear();
+            taskbar.SetRecentViews([]);
+        });
     }
 
     public IEnumerable<ShellCommand> GetCommands() =>
@@ -40,6 +48,7 @@ public sealed class SettingsViewModel : AppViewModelBase, IShellCommandProvider
         new("Settings:LightTheme", "Light theme", "Settings", "\uE790", ThemeCommand, AppTheme.Light),
         new("Settings:DarkTheme", "Dark theme", "Settings", "\uE790", ThemeCommand, AppTheme.Dark),
         new("Settings:SystemTheme", "System theme", "Settings", "\uE790", ThemeCommand, AppTheme.System),
-        new("Settings:ClearRecentCommands", "Clear recent commands", "Settings", "\uE74D", ClearRecentCommand)
+        new("Settings:ClearRecentCommands", "Clear recent commands", "Settings", "\uE74D", ClearRecentCommand),
+        new("Settings:ClearRecentPages", "Clear recent pages", "Settings", "\uE74D", ClearRecentPagesCommand)
     ];
 }
