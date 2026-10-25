@@ -23,12 +23,13 @@
         </Style>
         <Style x:Key="NumberCellEditingStyle"
                TargetType="{x:Type TextBox}"
-               BasedOn="{x:Static DataGridTextColumn.DefaultEditingElementStyle}">
+               BasedOn="{StaticResource DataGridEditingTextBoxStyle}">
             <Setter Property="TextAlignment" Value="Right" />
         </Style>
     </UserControl.Resources>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
+                  Focusable="False">
         <StackPanel Margin="24">
             <TextBlock Style="{StaticResource PageTitleTextStyle}"
                        Text="Data grid" />
@@ -58,9 +59,11 @@
                                                 Header="Code" IsReadOnly="True" />
                             <DataGridTextColumn Width="*"
                                                 Binding="{Binding Name}"
+                                                EditingElementStyle="{StaticResource DataGridEditingTextBoxStyle}"
                                                 Header="Name" />
                             <DataGridComboBoxColumn Width="120"
                                                     ItemsSource="{x:Static module:DataGridViewModel.Categories}"
+                                                    EditingElementStyle="{StaticResource DataGridEditingComboBoxStyle}"
                                                     Header="Category"
                                                     SelectedItemBinding="{Binding Category}"
                                                     SortMemberPath="Category" />

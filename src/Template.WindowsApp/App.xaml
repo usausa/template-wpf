@@ -207,6 +207,10 @@
                                     <Setter TargetName="Border" Property="Background" Value="{DynamicResource DataGridRowSelectedBackgroundThemeBrush}" />
                                     <Setter Property="Foreground" Value="{DynamicResource DataGridRowSelectedForegroundThemeBrush}" />
                                 </Trigger>
+                                <Trigger Property="IsEditing" Value="True">
+                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource ControlSolidFillColorDefaultBrush}" />
+                                    <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+                                </Trigger>
                                 <Trigger Property="IsFocused" Value="True">
                                     <Setter TargetName="FocusBorder" Property="BorderBrush" Value="{DynamicResource {x:Static DataGrid.FocusBorderBrushKey}}" />
                                 </Trigger>
@@ -214,6 +218,20 @@
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
+            </Style>
+
+            <Style x:Key="DataGridEditingTextBoxStyle"
+                   TargetType="{x:Type TextBox}"
+                   BasedOn="{x:Static DataGridTextColumn.DefaultEditingElementStyle}">
+                <Setter Property="Background" Value="{DynamicResource TextControlBackgroundFocused}" />
+                <Setter Property="Foreground" Value="{DynamicResource TextControlForegroundFocused}" />
+                <Setter Property="CaretBrush" Value="{DynamicResource TextControlForegroundFocused}" />
+            </Style>
+
+            <Style x:Key="DataGridEditingComboBoxStyle"
+                   TargetType="{x:Type ComboBox}"
+                   BasedOn="{StaticResource {x:Type ComboBox}}">
+                <Setter Property="IsSynchronizedWithCurrentItem" Value="False" />
             </Style>
 
             <Style x:Key="TitleBarButtonStyle"

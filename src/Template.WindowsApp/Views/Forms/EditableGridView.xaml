@@ -39,28 +39,21 @@
             <Setter Property="Margin" Value="0,0,8,0" />
             <Setter Property="HorizontalAlignment" Value="Right" />
         </Style>
-        <Style x:Key="EditingStyle"
-               TargetType="{x:Type TextBox}"
-               BasedOn="{x:Static DataGridTextColumn.DefaultEditingElementStyle}">
-            <Setter Property="Background" Value="{DynamicResource TextControlBackgroundFocused}" />
-            <Setter Property="Foreground" Value="{DynamicResource TextControlForegroundFocused}" />
-            <Setter Property="CaretBrush" Value="{DynamicResource TextControlForegroundFocused}" />
-        </Style>
         <Style x:Key="CodeEditingStyle"
                TargetType="{x:Type TextBox}"
-               BasedOn="{StaticResource EditingStyle}">
+               BasedOn="{StaticResource DataGridEditingTextBoxStyle}">
             <Setter Property="MaxLength" Value="10" />
             <Setter Property="CharacterCasing" Value="Upper" />
             <Setter Property="controls:TextBoxHelper.AllowedCharacters" Value="[A-Za-z0-9-]" />
         </Style>
         <Style x:Key="DescriptionEditingStyle"
                TargetType="{x:Type TextBox}"
-               BasedOn="{StaticResource EditingStyle}">
+               BasedOn="{StaticResource DataGridEditingTextBoxStyle}">
             <Setter Property="MaxLength" Value="40" />
         </Style>
         <Style x:Key="NumberEditingStyle"
                TargetType="{x:Type TextBox}"
-               BasedOn="{StaticResource EditingStyle}">
+               BasedOn="{StaticResource DataGridEditingTextBoxStyle}">
             <Setter Property="TextAlignment" Value="Right" />
             <Setter Property="controls:TextBoxHelper.AllowedCharacters" Value="[0-9]" />
         </Style>
@@ -82,7 +75,7 @@
         </Style>
         <Style x:Key="NoteEditingStyle"
                TargetType="{x:Type TextBox}"
-               BasedOn="{StaticResource EditingStyle}">
+               BasedOn="{StaticResource DataGridEditingTextBoxStyle}">
             <Setter Property="MaxLength" Value="100" />
         </Style>
         <Style x:Key="LineCellStyle"
@@ -129,6 +122,10 @@
                             <Trigger Property="IsSelected" Value="True">
                                 <Setter TargetName="Border" Property="Background" Value="{DynamicResource DataGridRowSelectedBackgroundThemeBrush}" />
                                 <Setter Property="Foreground" Value="{DynamicResource DataGridRowSelectedForegroundThemeBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsEditing" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{DynamicResource ControlSolidFillColorDefaultBrush}" />
+                                <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
                             </Trigger>
                             <Trigger Property="IsFocused" Value="True">
                                 <Setter TargetName="FocusBorder" Property="BorderBrush" Value="{DynamicResource {x:Static DataGrid.FocusBorderBrushKey}}" />
@@ -365,7 +362,7 @@
                                                 Binding="{Binding Amount, Mode=OneWay, StringFormat=N2}"
                                                 ElementStyle="{StaticResource NumberCellTextStyle}"
                                                 Header="Amount" IsReadOnly="True" />
-                            <DataGridTemplateColumn Width="112" MinWidth="112"
+                            <DataGridTemplateColumn Width="128" MinWidth="128"
                                                     ClipboardContentBinding="{Binding Delivery, Converter={StaticResource ShortDateConverter}}"
                                                     Header="Delivery" SortMemberPath="Delivery">
                                 <DataGridTemplateColumn.CellTemplate>
@@ -383,6 +380,7 @@
                             </DataGridTemplateColumn>
                             <DataGridComboBoxColumn Width="112" MinWidth="112"
                                                     ItemsSource="{x:Static module:EditableGridViewModel.Statuses}"
+                                                    EditingElementStyle="{StaticResource DataGridEditingComboBoxStyle}"
                                                     Header="Status"
                                                     SelectedItemBinding="{Binding Status}"
                                                     SortMemberPath="Status" />
