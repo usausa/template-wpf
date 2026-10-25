@@ -16,37 +16,9 @@
 
     <UserControl.Resources>
         <Style x:Key="LogCellStyle"
-               TargetType="{x:Type DataGridCell}">
+               TargetType="{x:Type DataGridCell}"
+               BasedOn="{StaticResource DataGridCellStyle}">
             <Setter Property="MinHeight" Value="24" />
-            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-            <Setter Property="VerticalContentAlignment" Value="Stretch" />
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="OverridesDefaultStyle" Value="True" />
-            <Setter Property="FocusVisualStyle" Value="{DynamicResource DataGridCellFocusVisual}" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type DataGridCell}">
-                        <Border x:Name="Border"
-                                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-                                VerticalAlignment="{TemplateBinding VerticalAlignment}"
-                                Background="Transparent"
-                                BorderBrush="Transparent"
-                                SnapsToDevicePixels="True">
-                            <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="Border" Property="Background" Value="{DynamicResource DataGridRowSelectedBackgroundThemeBrush}" />
-                                <Setter Property="Foreground" Value="{DynamicResource DataGridRowSelectedForegroundThemeBrush}" />
-                            </Trigger>
-                            <Trigger Property="IsFocused" Value="True">
-                                <Setter TargetName="Border" Property="BorderThickness" Value="1" />
-                                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource {x:Static DataGrid.FocusBorderBrushKey}}" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
         </Style>
         <Style x:Key="LogCellTextStyle"
                TargetType="{x:Type TextBlock}"

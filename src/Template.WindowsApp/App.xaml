@@ -181,6 +181,41 @@
             <!-- Style -->
             <!-- ================================================================================ -->
 
+            <Style x:Key="DataGridCellStyle"
+                   TargetType="{x:Type DataGridCell}">
+                <Setter Property="MinHeight" Value="32" />
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="OverridesDefaultStyle" Value="True" />
+                <Setter Property="FocusVisualStyle" Value="{DynamicResource DataGridCellFocusVisual}" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type DataGridCell}">
+                            <Grid HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                  VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                                  SnapsToDevicePixels="True">
+                                <Border x:Name="Border"
+                                        Background="Transparent" />
+                                <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                <Border x:Name="FocusBorder"
+                                        IsHitTestVisible="False"
+                                        BorderBrush="Transparent" BorderThickness="1" />
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource DataGridRowSelectedBackgroundThemeBrush}" />
+                                    <Setter Property="Foreground" Value="{DynamicResource DataGridRowSelectedForegroundThemeBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsFocused" Value="True">
+                                    <Setter TargetName="FocusBorder" Property="BorderBrush" Value="{DynamicResource {x:Static DataGrid.FocusBorderBrushKey}}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
             <Style x:Key="TitleBarButtonStyle"
                    TargetType="{x:Type ButtonBase}">
                 <Setter Property="MinWidth" Value="0" />

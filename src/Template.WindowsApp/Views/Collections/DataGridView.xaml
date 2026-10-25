@@ -46,6 +46,7 @@
                     <DataGrid Margin="0,16,0,0"
                               ItemsSource="{Binding Items}"
                               AutoGenerateColumns="False" AutomationProperties.Name="Products" CanUserAddRows="False" CanUserDeleteRows="False"
+                              CellStyle="{StaticResource DataGridCellStyle}"
                               HeadersVisibility="Column">
                         <i:Interaction.Behaviors>
                             <behaviors:DataGridSortBehavior Sort="{Binding Sort}" />

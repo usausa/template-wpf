@@ -1,5 +1,6 @@
 namespace Template.WindowsApp.Views;
 
+using Template.WindowsApp.Extender;
 using Template.WindowsApp.Services;
 using Template.WindowsApp.Shell;
 
@@ -68,7 +69,7 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
         Taskbar = taskbar;
         Palette = new CommandPalette(windowManager.RecentCommands, windowManager.CommandCounts);
 
-        ForwardCommand = MakeAsyncCommand<ViewId>(x => Equals(Navigator.CurrentViewId, x) ? Task.CompletedTask : Navigator.ForwardAsync(x, new NavigationParameter().WithPushEffect()));
+        ForwardCommand = MakeAsyncCommand<ViewId>(CommandMode.Simple, x => Equals(Navigator.CurrentViewId, x) ? Task.CompletedTask : Navigator.ForwardAsync(x, new NavigationParameter().WithEffect(EntranceEffect.Name)), _ => !BusyState.IsBusy || IsNavigating);
         ToggleGroupCommand = MakeDelegateCommand<NavigationGroup>(ToggleGroup);
         ExecuteCommand = MakeAsyncCommand(Execute, () => !BusyState.IsBusy);
         ToggleNavigationCommand = MakeDelegateCommand(() => WindowManager.IsPaneOpen = !WindowManager.IsPaneOpen);

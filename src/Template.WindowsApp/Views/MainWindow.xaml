@@ -76,6 +76,9 @@
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter Property="Background" Value="{DynamicResource SubtleFillColorTertiaryBrush}" />
                             </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="{DynamicResource TextFillColorDisabledBrush}" />
+                            </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>

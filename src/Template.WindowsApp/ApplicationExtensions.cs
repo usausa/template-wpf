@@ -14,9 +14,7 @@ using Rester;
 
 using Serilog;
 
-#if DEBUG
 using Template.WindowsApp.Extender;
-#endif
 using Template.WindowsApp.Services;
 using Template.WindowsApp.Settings;
 using Template.WindowsApp.Shell;
@@ -70,7 +68,7 @@ public static partial class ApplicationExtensions
         // Navigation
         builder.Services.AddNavigator(static (_, config) =>
         {
-            config.UseWindowsNavigationProvider();
+            config.UseWindowsNavigationProvider(static options => options.RegisterEffect(EntranceEffect.Name, new EntranceEffect()));
 #if DEBUG
             config.AddPlugin<LeakDetectionPlugin>();
 #endif

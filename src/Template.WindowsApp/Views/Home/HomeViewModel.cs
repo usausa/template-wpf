@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 
 using Serilog.Events;
 
+using Template.WindowsApp.Extender;
 using Template.WindowsApp.Services;
 using Template.WindowsApp.Shell;
 
@@ -97,7 +98,7 @@ public sealed partial class HomeViewModel : AppViewModelBase
         Samples = menu.Groups
             .Select(static x => new SampleEntry(x.Title, x.Icon, string.Join(" · ", x.Items.Select(static y => y.Title)), x.Items[0].Id))
             .ToList();
-        ForwardCommand = MakeAsyncCommand<ViewId>(x => Navigator.ForwardAsync(x, new NavigationParameter().WithPushEffect()));
+        ForwardCommand = MakeAsyncCommand<ViewId>(x => Navigator.ForwardAsync(x, new NavigationParameter().WithEffect(EntranceEffect.Name)));
     }
 
     private static int IndexOf(LogEventLevel level) =>
