@@ -11,6 +11,11 @@ public sealed partial class DataGridSortBehavior : Behavior<DataGrid>
     [DependencyProperty(Options = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, PropertyChanged = nameof(OnSortChanged))]
     public partial SortDescription? Sort { get; set; }
 
+    [AttachedProperty]
+    public static partial ListSortDirection GetFirstDirection(DataGridColumn column);
+
+    public static partial void SetFirstDirection(DataGridColumn column, ListSortDirection value);
+
     protected override void OnAttached()
     {
         base.OnAttached();
@@ -29,7 +34,12 @@ public sealed partial class DataGridSortBehavior : Behavior<DataGrid>
     private void OnSorting(object sender, DataGridSortingEventArgs e)
     {
         e.Handled = true;
-        var direction = e.Column.SortDirection == ListSortDirection.Ascending ? ListSortDirection.Descending : ListSortDirection.Ascending;
+        var direction = e.Column.SortDirection switch
+        {
+            ListSortDirection.Ascending => ListSortDirection.Descending,
+            ListSortDirection.Descending => ListSortDirection.Ascending,
+            _ => GetFirstDirection(e.Column)
+        };
         Sort = new SortDescription(e.Column.SortMemberPath, direction);
     }
 

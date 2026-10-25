@@ -1,0 +1,367 @@
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:s="http://smart/windows"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:behaviors="clr-namespace:Template.WindowsApp.Behaviors"
+             xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
+             xmlns:module="clr-namespace:Template.WindowsApp.Views.Forms"
+             mc:Ignorable="d"
+             x:Class="Template.WindowsApp.Views.Forms.GridVisualsView"
+             s:DataContextResolver.Type="{x:Type module:GridVisualsViewModel}"
+             d:DataContext="{d:DesignInstance Type={x:Type module:GridVisualsViewModel}}"
+             d:DesignWidth="800" d:DesignHeight="600">
+
+    <UserControl.Resources>
+        <Style x:Key="CellTextStyle"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style x:Key="NoDataTextStyle"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource CellTextStyle}">
+            <Setter Property="Text" Value="No data" />
+            <Setter Property="Visibility" Value="Collapsed" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}" />
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
+                  Focusable="False">
+        <StackPanel Margin="24">
+            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+                       Text="Grid visuals" />
+            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+                       Text="Show the state of each server in the cells with badges, bars, progress, colors and small trend lines." />
+
+            <Border Style="{StaticResource CardStyle}">
+                <StackPanel>
+                    <DataGrid ItemsSource="{Binding Items}"
+                              SelectionMode="Single"
+                              AutoGenerateColumns="False" AutomationProperties.Name="Servers" CanUserAddRows="False" CanUserDeleteRows="False"
+                              CellStyle="{StaticResource DataGridCellStyle}"
+                              HeadersVisibility="Column" IsReadOnly="True" MinRowHeight="40" SelectionUnit="FullRow">
+                        <i:Interaction.Behaviors>
+                            <behaviors:DataGridSortBehavior Sort="{Binding Sort}" />
+                        </i:Interaction.Behaviors>
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Width="112" MinWidth="112"
+                                                    Header="Server" SortMemberPath="Name">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate DataType="{x:Type module:ServerRow}">
+                                        <TextBlock Style="{StaticResource CellTextStyle}"
+                                                   Margin="8,0"
+                                                   Text="{Binding Name}"
+                                                   FontFamily="{StaticResource CodeFontFamily}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="120" MinWidth="120"
+                                                    behaviors:DataGridSortBehavior.FirstDirection="Descending"
+                                                    Header="Status" SortMemberPath="Status">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate DataType="{x:Type module:ServerRow}">
+                                        <Border x:Name="Badge"
+                                                Margin="8,0" Padding="6,2,8,2"
+                                                HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                Background="{DynamicResource SystemFillColorSuccessBackgroundBrush}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Grid VerticalAlignment="Center">
+                                                    <TextBlock x:Name="IconBackground"
+                                                               Text="&#xF136;"
+                                                               FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                                                               FontSize="14"
+                                                               Foreground="{DynamicResource SystemFillColorSuccessBrush}" />
+                                                    <TextBlock x:Name="IconGlyph"
+                                                               Text="&#xF13E;"
+                                                               FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                                                               FontSize="14"
+                                                               Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+                                                </Grid>
+                                                <TextBlock x:Name="Label"
+                                                           Margin="6,0,0,0"
+                                                           VerticalAlignment="Center"
+                                                           Text="Healthy"
+                                                           FontSize="12"
+                                                           Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+                                            </StackPanel>
+                                        </Border>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding Status}"
+                                                         Value="Warning">
+                                                <Setter TargetName="Badge" Property="Background" Value="{DynamicResource SystemFillColorCautionBackgroundBrush}" />
+                                                <Setter TargetName="IconBackground" Property="Foreground" Value="{DynamicResource SystemFillColorCautionBrush}" />
+                                                <Setter TargetName="IconGlyph" Property="Text" Value="&#xF13C;" />
+                                                <Setter TargetName="Label" Property="Text" Value="Warning" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Status}"
+                                                         Value="Down">
+                                                <Setter TargetName="Badge" Property="Background" Value="{DynamicResource SystemFillColorCriticalBackgroundBrush}" />
+                                                <Setter TargetName="IconBackground" Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+                                                <Setter TargetName="IconGlyph" Property="Text" Value="&#xF13D;" />
+                                                <Setter TargetName="Label" Property="Text" Value="Down" />
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="160" MinWidth="160"
+                                                    behaviors:DataGridSortBehavior.FirstDirection="Descending"
+                                                    Header="CPU" SortMemberPath="Cpu">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate DataType="{x:Type module:ServerRow}">
+                                        <Grid Margin="8,0">
+                                            <Grid x:Name="Content">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="44" />
+                                                </Grid.ColumnDefinitions>
+                                                <controls:DataBar x:Name="Bar"
+                                                                  Height="12"
+                                                                  VerticalAlignment="Center"
+                                                                  Value="{Binding Cpu, TargetNullValue=0}"
+                                                                  Fill="{StaticResource ChartBlueBrush}" />
+                                                <TextBlock Grid.Column="1"
+                                                           Style="{StaticResource CellTextStyle}"
+                                                           HorizontalAlignment="Right"
+                                                           Text="{Binding Cpu, StringFormat={}{0:0}%}" />
+                                            </Grid>
+                                            <TextBlock x:Name="NoData"
+                                                       Style="{StaticResource NoDataTextStyle}" />
+                                        </Grid>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding CpuLevel}"
+                                                         Value="Caution">
+                                                <Setter TargetName="Bar" Property="Fill" Value="{DynamicResource SystemFillColorCautionBrush}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding CpuLevel}"
+                                                         Value="Critical">
+                                                <Setter TargetName="Bar" Property="Fill" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Status}"
+                                                         Value="Down">
+                                                <Setter TargetName="Content" Property="Visibility" Value="Collapsed" />
+                                                <Setter TargetName="NoData" Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
+                                                         Value="True">
+                                                <Setter TargetName="NoData" Property="Foreground" Value="{DynamicResource DataGridRowSelectedForegroundThemeBrush}" />
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="200" MinWidth="200"
+                                                    behaviors:DataGridSortBehavior.FirstDirection="Descending"
+                                                    Header="Memory" SortMemberPath="MemoryPercent">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate DataType="{x:Type module:ServerRow}">
+                                        <Grid Margin="8,0">
+                                            <Grid x:Name="Content"
+                                                  Background="Transparent">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="96" />
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.ToolTip>
+                                                    <TextBlock>
+                                                        <TextBlock.Text>
+                                                            <MultiBinding StringFormat="{}{0:0.0} GB of {1:0} GB used ({2:0}%)">
+                                                                <Binding Path="MemoryUsed" />
+                                                                <Binding Path="MemoryTotal" />
+                                                                <Binding Path="MemoryPercent" />
+                                                            </MultiBinding>
+                                                        </TextBlock.Text>
+                                                    </TextBlock>
+                                                </Grid.ToolTip>
+                                                <ProgressBar x:Name="Bar"
+                                                             VerticalAlignment="Center"
+                                                             Value="{Binding MemoryPercent, TargetNullValue=0, Mode=OneWay}" />
+                                                <TextBlock Grid.Column="1"
+                                                           Style="{StaticResource CellTextStyle}"
+                                                           HorizontalAlignment="Right">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding StringFormat="{}{0:0.0} / {1:0} GB">
+                                                            <Binding Path="MemoryUsed" />
+                                                            <Binding Path="MemoryTotal" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </Grid>
+                                            <TextBlock x:Name="NoData"
+                                                       Style="{StaticResource NoDataTextStyle}" />
+                                        </Grid>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding MemoryLevel}"
+                                                         Value="Caution">
+                                                <Setter TargetName="Bar" Property="Foreground" Value="{DynamicResource SystemFillColorCautionBrush}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding MemoryLevel}"
+                                                         Value="Critical">
+                                                <Setter TargetName="Bar" Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Status}"
+                                                         Value="Down">
+                                                <Setter TargetName="Content" Property="Visibility" Value="Collapsed" />
+                                                <Setter TargetName="NoData" Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
+                                                         Value="True">
+                                                <Setter TargetName="Bar" Property="Foreground" Value="{DynamicResource DataGridRowSelectedForegroundThemeBrush}" />
+                                                <Setter TargetName="NoData" Property="Foreground" Value="{DynamicResource DataGridRowSelectedForegroundThemeBrush}" />
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="112" MinWidth="112"
+                                                    behaviors:DataGridSortBehavior.FirstDirection="Descending"
+                                                    Header="Errors" SortMemberPath="Errors">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate DataType="{x:Type module:ServerRow}">
+                                        <Grid Margin="8,0">
+                                            <StackPanel x:Name="Content"
+                                                        Orientation="Horizontal"
+                                                        HorizontalAlignment="Right">
+                                                <TextBlock Style="{StaticResource CellTextStyle}"
+                                                           Text="{Binding Errors}" />
+                                                <TextBlock x:Name="Arrow"
+                                                           Width="12"
+                                                           Margin="8,0,2,0"
+                                                           VerticalAlignment="Center"
+                                                           TextAlignment="Center"
+                                                           Text="&#xF090;"
+                                                           FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                                                           FontSize="10"
+                                                           Foreground="{DynamicResource SystemFillColorCriticalBrush}" />
+                                                <TextBlock x:Name="Change"
+                                                           Style="{StaticResource CellTextStyle}"
+                                                           Width="16"
+                                                           Text="{Binding ErrorChangeAmount}"
+                                                           Foreground="{DynamicResource SystemFillColorCriticalBrush}" />
+                                            </StackPanel>
+                                            <TextBlock x:Name="NoData"
+                                                       Style="{StaticResource NoDataTextStyle}" />
+                                        </Grid>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding ErrorDirection}"
+                                                         Value="Down">
+                                                <Setter TargetName="Arrow" Property="Text" Value="&#xF08E;" />
+                                                <Setter TargetName="Arrow" Property="Foreground" Value="{DynamicResource SystemFillColorSuccessBrush}" />
+                                                <Setter TargetName="Change" Property="Foreground" Value="{DynamicResource SystemFillColorSuccessBrush}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ErrorDirection}"
+                                                         Value="Same">
+                                                <Setter TargetName="Arrow" Property="Text" Value="&#xE738;" />
+                                                <Setter TargetName="Arrow" Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}" />
+                                                <Setter TargetName="Change" Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Status}"
+                                                         Value="Down">
+                                                <Setter TargetName="Content" Property="Visibility" Value="Collapsed" />
+                                                <Setter TargetName="NoData" Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
+                                                         Value="True">
+                                                <Setter TargetName="Arrow" Property="Foreground" Value="{DynamicResource DataGridRowSelectedForegroundThemeBrush}" />
+                                                <Setter TargetName="Change" Property="Foreground" Value="{DynamicResource DataGridRowSelectedForegroundThemeBrush}" />
+                                                <Setter TargetName="NoData" Property="Foreground" Value="{DynamicResource DataGridRowSelectedForegroundThemeBrush}" />
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="*" MinWidth="160"
+                                                    behaviors:DataGridSortBehavior.FirstDirection="Descending"
+                                                    Header="Latency" SortMemberPath="LatencyNow">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate DataType="{x:Type module:ServerRow}">
+                                        <Grid Margin="8,0">
+                                            <Grid x:Name="Content"
+                                                  Background="Transparent">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="64" />
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.ToolTip>
+                                                    <TextBlock>
+                                                        <TextBlock.Text>
+                                                            <MultiBinding StringFormat="{}Last 24 hours: min {0:0} ms, max {1:0} ms, now {2:0} ms">
+                                                                <Binding Path="LatencyMin" />
+                                                                <Binding Path="LatencyMax" />
+                                                                <Binding Path="LatencyNow" />
+                                                            </MultiBinding>
+                                                        </TextBlock.Text>
+                                                    </TextBlock>
+                                                </Grid.ToolTip>
+                                                <controls:Sparkline x:Name="Line"
+                                                                    Height="24"
+                                                                    VerticalAlignment="Center"
+                                                                    Stroke="{StaticResource ChartBlueBrush}"
+                                                                    Values="{Binding Latency}" />
+                                                <TextBlock Grid.Column="1"
+                                                           Style="{StaticResource CellTextStyle}"
+                                                           HorizontalAlignment="Right"
+                                                           Text="{Binding LatencyNow, StringFormat={}{0:0} ms}" />
+                                            </Grid>
+                                            <TextBlock x:Name="NoData"
+                                                       Style="{StaticResource NoDataTextStyle}" />
+                                        </Grid>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding Status}"
+                                                         Value="Down">
+                                                <Setter TargetName="Content" Property="Visibility" Value="Collapsed" />
+                                                <Setter TargetName="NoData" Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
+                                                         Value="True">
+                                                <Setter TargetName="Line" Property="Stroke" Value="{DynamicResource DataGridRowSelectedForegroundThemeBrush}" />
+                                                <Setter TargetName="NoData" Property="Foreground" Value="{DynamicResource DataGridRowSelectedForegroundThemeBrush}" />
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="104" MinWidth="104"
+                                                    behaviors:DataGridSortBehavior.FirstDirection="Descending"
+                                                    Header="Uptime" SortMemberPath="Uptime">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate DataType="{x:Type module:ServerRow}">
+                                        <Border x:Name="Cell"
+                                                Background="Transparent">
+                                            <TextBlock x:Name="Value"
+                                                       Style="{StaticResource CellTextStyle}"
+                                                       Margin="8,0"
+                                                       HorizontalAlignment="Right"
+                                                       Text="{Binding Uptime, StringFormat={}{0:0.00}%}" />
+                                        </Border>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding UptimeLevel}"
+                                                         Value="Caution">
+                                                <Setter TargetName="Cell" Property="Background" Value="{DynamicResource SystemFillColorCautionBackgroundBrush}" />
+                                                <Setter TargetName="Value" Property="Foreground" Value="{DynamicResource SystemFillColorCautionBrush}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding UptimeLevel}"
+                                                         Value="Critical">
+                                                <Setter TargetName="Cell" Property="Background" Value="{DynamicResource SystemFillColorCriticalBackgroundBrush}" />
+                                                <Setter TargetName="Value" Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <TextBlock Margin="0,12,0,0"
+                               TextWrapping="Wrap"
+                               Text="CPU and memory turn yellow at 80% and red at 90%. Uptime over 30 days turns yellow below 99.9% and red below 99%. Errors compare today with yesterday. Latency covers the last 24 hours."
+                               FontSize="12"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

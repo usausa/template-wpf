@@ -13,6 +13,7 @@ public enum ViewId
     Validation,
     Wizard,
     EditableGrid,
+    GridVisuals,
     Dialogs,
     Progress,
     Notifications,
