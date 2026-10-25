@@ -1,0 +1,1207 @@
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:s="http://smart/windows"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
+             xmlns:module="clr-namespace:Template.WindowsApp.Views.Collections"
+             mc:Ignorable="d"
+             x:Class="Template.WindowsApp.Views.Collections.MessagesView"
+             s:DataContextResolver.Type="{x:Type module:MessagesViewModel}"
+             d:DataContext="{d:DesignInstance Type={x:Type module:MessagesViewModel}}"
+             d:DesignWidth="1000" d:DesignHeight="800">
+
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="AvatarPurpleBrush"
+                         Color="#8F3BB8" />
+        <SolidColorBrush x:Key="AvatarGreenBrush"
+                         Color="#37872D" />
+        <SolidColorBrush x:Key="AvatarOrangeBrush"
+                         Color="#FA6400" />
+        <SolidColorBrush x:Key="AvatarBlueBrush"
+                         Color="#1F60C4" />
+
+        <s:CompareToBoolConverter x:Key="NarrowConverter"
+                                  Expression="{x:Static s:CompareExpressions.LessThan}"
+                                  TrueValue="True"
+                                  FalseValue="False" />
+
+        <CollectionViewSource x:Key="ConversationSource"
+                              Source="{Binding Conversations}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="Kind" />
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+
+        <Style x:Key="AvatarStyle"
+               TargetType="{x:Type Border}"
+               d:DataContext="{d:DesignInstance Type={x:Type module:Person}}">
+            <Setter Property="Width" Value="32" />
+            <Setter Property="Height" Value="32" />
+            <Setter Property="Background" Value="{StaticResource AvatarPurpleBrush}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Color}"
+                             Value="Green">
+                    <Setter Property="Background" Value="{StaticResource AvatarGreenBrush}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Color}"
+                             Value="Orange">
+                    <Setter Property="Background" Value="{StaticResource AvatarOrangeBrush}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Color}"
+                             Value="Blue">
+                    <Setter Property="Background" Value="{StaticResource AvatarBlueBrush}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="SmallAvatarStyle"
+               TargetType="{x:Type Border}"
+               BasedOn="{StaticResource AvatarStyle}">
+            <Setter Property="Width" Value="20" />
+            <Setter Property="Height" Value="20" />
+        </Style>
+        <Style x:Key="AvatarTextStyle"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+        <Style x:Key="SmallAvatarTextStyle"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource AvatarTextStyle}">
+            <Setter Property="FontSize" Value="9" />
+        </Style>
+        <Style x:Key="PresenceStyle"
+               TargetType="{x:Type Border}"
+               d:DataContext="{d:DesignInstance Type={x:Type module:Person}}">
+            <Setter Property="Width" Value="12" />
+            <Setter Property="Height" Value="12" />
+            <Setter Property="Margin" Value="0,0,-4,-4" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SolidBackgroundFillColorQuarternaryBrush}" />
+            <Setter Property="Background" Value="{DynamicResource SystemFillColorSuccessBrush}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Presence}"
+                             Value="Away">
+                    <Setter Property="Background" Value="{DynamicResource SystemFillColorSolidNeutralBrush}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="SmallPresenceStyle"
+               TargetType="{x:Type Border}"
+               BasedOn="{StaticResource PresenceStyle}">
+            <Setter Property="Width" Value="10" />
+            <Setter Property="Height" Value="10" />
+            <Setter Property="Margin" Value="0,0,-3,-3" />
+        </Style>
+        <DataTemplate x:Key="AvatarTemplate"
+                      DataType="{x:Type module:Person}">
+            <Grid>
+                <Border Style="{StaticResource AvatarStyle}">
+                    <TextBlock Style="{StaticResource AvatarTextStyle}"
+                               Text="{Binding Initials}" />
+                </Border>
+                <Border Style="{StaticResource PresenceStyle}" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="ListAvatarTemplate"
+                      DataType="{x:Type module:Person}">
+            <Grid>
+                <Border Style="{StaticResource SmallAvatarStyle}">
+                    <TextBlock Style="{StaticResource SmallAvatarTextStyle}"
+                               Text="{Binding Initials}" />
+                </Border>
+                <Border Style="{StaticResource SmallPresenceStyle}" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="ReplierTemplate"
+                      DataType="{x:Type module:Person}">
+            <Border Style="{StaticResource SmallAvatarStyle}"
+                    Margin="0,0,2,0">
+                <TextBlock Style="{StaticResource SmallAvatarTextStyle}"
+                           Text="{Binding Initials}" />
+            </Border>
+        </DataTemplate>
+
+        <Style x:Key="PaneHeaderTextStyle"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="16,12,16,6" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+        <DataTemplate x:Key="GroupHeaderTemplate"
+                      DataType="{x:Type CollectionViewGroup}">
+            <TextBlock x:Name="Header"
+                       Style="{StaticResource PaneHeaderTextStyle}"
+                       Text="Channels" />
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Name}"
+                             Value="Direct">
+                    <Setter TargetName="Header" Property="Margin" Value="16,20,16,6" />
+                    <Setter TargetName="Header" Property="Text" Value="Direct messages" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+        <Style x:Key="GroupItemStyle"
+               TargetType="{x:Type GroupItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type GroupItem}">
+                        <StackPanel>
+                            <ContentPresenter />
+                            <ItemsPresenter />
+                        </StackPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="CountBadgeStyle"
+               TargetType="{x:Type Border}">
+            <Setter Property="MinWidth" Value="20" />
+            <Setter Property="Height" Value="18" />
+            <Setter Property="Margin" Value="0,0,12,0" />
+            <Setter Property="Padding" Value="5,0" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Background" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+        </Style>
+        <Style x:Key="CountBadgeTextStyle"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+        </Style>
+        <Style x:Key="ConversationItemStyle"
+               TargetType="{x:Type ListBoxItem}"
+               d:DataContext="{d:DesignInstance Type={x:Type module:Conversation}}">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="FocusVisualStyle" Value="{DynamicResource DefaultControlFocusVisualStyle}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <Border x:Name="Selection"
+                                    Visibility="Collapsed"
+                                    Background="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                            <Border x:Name="Indicator"
+                                    Width="3" Height="16"
+                                    HorizontalAlignment="Left"
+                                    Visibility="Collapsed"
+                                    Background="{DynamicResource AccentFillColorDefaultBrush}" />
+                            <ContentPresenter />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Selection" Property="Visibility" Value="Visible" />
+                                <Setter TargetName="Indicator" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding UnreadCount}"
+                             Value="0">
+                    <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+                    <Setter Property="FontWeight" Value="Normal" />
+                </DataTrigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+                    <Setter Property="FontWeight" Value="SemiBold" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <DataTemplate x:Key="ConversationTemplate"
+                      DataType="{x:Type module:Conversation}">
+            <Grid x:Name="Row"
+                  Height="32">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="ChannelName"
+                           Grid.Column="0"
+                           Margin="16,0,8,0"
+                           VerticalAlignment="Center"
+                           TextTrimming="CharacterEllipsis"
+                           Text="{Binding Name, StringFormat='# {0}'}"
+                           FontSize="14" />
+                <StackPanel x:Name="Direct"
+                            Grid.Column="0"
+                            Orientation="Horizontal"
+                            Margin="16,0,8,0"
+                            Visibility="Collapsed">
+                    <ContentPresenter VerticalAlignment="Center"
+                                      Content="{Binding Person}"
+                                      ContentTemplate="{StaticResource ListAvatarTemplate}" />
+                    <TextBlock Margin="12,0,0,0"
+                               VerticalAlignment="Center"
+                               TextTrimming="CharacterEllipsis"
+                               Text="{Binding Name}"
+                               FontSize="14" />
+                </StackPanel>
+                <Border x:Name="Badge"
+                        Grid.Column="1"
+                        Style="{StaticResource CountBadgeStyle}">
+                    <TextBlock Style="{StaticResource CountBadgeTextStyle}"
+                               Text="{Binding UnreadCount}" />
+                </Border>
+            </Grid>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Kind}"
+                             Value="Direct">
+                    <Setter TargetName="Row" Property="Height" Value="36" />
+                    <Setter TargetName="ChannelName" Property="Visibility" Value="Collapsed" />
+                    <Setter TargetName="Direct" Property="Visibility" Value="Visible" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding UnreadCount}"
+                             Value="0">
+                    <Setter TargetName="Badge" Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+        <Style x:Key="HeaderStyle"
+               TargetType="{x:Type Border}">
+            <Setter Property="Height" Value="60" />
+            <Setter Property="Padding" Value="16,0,8,0" />
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+            <Setter Property="BorderBrush" Value="{DynamicResource DividerStrokeColorDefaultBrush}" />
+        </Style>
+        <Style x:Key="HeaderTitleTextStyle"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+        <Style x:Key="HeaderCaptionTextStyle"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+        <DataTemplate x:Key="ConversationHeaderTemplate"
+                      DataType="{x:Type module:Conversation}">
+            <Grid>
+                <StackPanel x:Name="Channel">
+                    <TextBlock Style="{StaticResource HeaderTitleTextStyle}"
+                               Text="{Binding Name, StringFormat='# {0}'}" />
+                    <TextBlock Style="{StaticResource HeaderCaptionTextStyle}">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0} members · {1}">
+                                <Binding Path="Members" />
+                                <Binding Path="Description" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </StackPanel>
+                <ContentControl Focusable="False"
+                                Content="{Binding Person}">
+                    <ContentControl.Resources>
+                        <DataTemplate DataType="{x:Type module:Person}">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource HeaderTitleTextStyle}"
+                                           Text="{Binding Name}" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Border x:Name="PresenceMark"
+                                            Width="8" Height="8"
+                                            VerticalAlignment="Center"
+                                            Background="{DynamicResource SystemFillColorSuccessBrush}" />
+                                    <TextBlock x:Name="PresenceText"
+                                               Style="{StaticResource HeaderCaptionTextStyle}"
+                                               Margin="6,0,0,0"
+                                               Text="Active" />
+                                </StackPanel>
+                            </StackPanel>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding Presence}"
+                                             Value="Away">
+                                    <Setter TargetName="PresenceMark" Property="Background" Value="{DynamicResource SystemFillColorSolidNeutralBrush}" />
+                                    <Setter TargetName="PresenceText" Property="Text" Value="Away" />
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ContentControl.Resources>
+                </ContentControl>
+            </Grid>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Kind}"
+                             Value="Direct">
+                    <Setter TargetName="Channel" Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+        <DataTemplate x:Key="ThreadCaptionTemplate"
+                      DataType="{x:Type module:Conversation}">
+            <TextBlock x:Name="Caption"
+                       Style="{StaticResource HeaderCaptionTextStyle}"
+                       Text="{Binding Name, StringFormat='# {0}'}" />
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Kind}"
+                             Value="Direct">
+                    <Setter TargetName="Caption" Property="Text" Value="{Binding Name}" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+        <Style x:Key="SubtleIconButtonStyle"
+               TargetType="{x:Type Button}">
+            <Setter Property="Width" Value="32" />
+            <Setter Property="Height" Value="32" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+            <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FocusVisualStyle" Value="{DynamicResource DefaultControlFocusVisualStyle}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource SubtleFillColorTertiaryBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="AddReactionButtonStyle"
+               TargetType="{x:Type controls:DropDownButton}">
+            <Setter Property="Focusable" Value="False" />
+            <Setter Property="IsTabStop" Value="False" />
+            <Setter Property="Tag" Value="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+            <Setter Property="ToolTip" Value="Add reaction" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type controls:DropDownButton}">
+                        <Button x:Name="PART_Button"
+                                Style="{StaticResource SubtleIconButtonStyle}"
+                                Focusable="False"
+                                Content="&#xF353;"
+                                AutomationProperties.Name="Add reaction" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="MenuGlyphStyle"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+        <ContextMenu x:Key="ReactionMenu"
+                     DataContext="{Binding PlacementTarget.(FrameworkElement.Tag), RelativeSource={RelativeSource Self}}"
+                     d:DataContext="{d:DesignInstance Type={x:Type module:MessagesViewModel}}"
+                     x:Shared="False">
+            <MenuItem Command="{Binding LikeCommand}"
+                      CommandParameter="{Binding PlacementTarget.(FrameworkElement.DataContext), RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
+                      Header="Like">
+                <MenuItem.Icon>
+                    <TextBlock Style="{StaticResource MenuGlyphStyle}"
+                               Text="&#xE8E1;" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Command="{Binding HeartCommand}"
+                      CommandParameter="{Binding PlacementTarget.(FrameworkElement.DataContext), RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
+                      Header="Heart">
+                <MenuItem.Icon>
+                    <TextBlock Style="{StaticResource MenuGlyphStyle}"
+                               Text="&#xEB51;" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Command="{Binding AcceptCommand}"
+                      CommandParameter="{Binding PlacementTarget.(FrameworkElement.DataContext), RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
+                      Header="Accept">
+                <MenuItem.Icon>
+                    <TextBlock Style="{StaticResource MenuGlyphStyle}"
+                               Text="&#xE8FB;" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Command="{Binding LaughCommand}"
+                      CommandParameter="{Binding PlacementTarget.(FrameworkElement.DataContext), RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
+                      Header="Laugh">
+                <MenuItem.Icon>
+                    <TextBlock Style="{StaticResource MenuGlyphStyle}"
+                               Text="&#xE899;" />
+                </MenuItem.Icon>
+            </MenuItem>
+        </ContextMenu>
+        <Style x:Key="ActionsStyle"
+               TargetType="{x:Type Border}">
+            <Setter Property="Margin" Value="0,-16,24,0" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SurfaceStrokeColorFlyoutBrush}" />
+            <Setter Property="Background" Value="{DynamicResource SolidBackgroundFillColorQuarternaryBrush}" />
+            <Setter Property="Visibility" Value="Collapsed" />
+        </Style>
+        <Style x:Key="ReactionButtonStyle"
+               TargetType="{x:Type Button}"
+               d:DataContext="{d:DesignInstance Type={x:Type module:Reaction}}">
+            <Setter Property="Margin" Value="0,6,6,0" />
+            <Setter Property="Padding" Value="8,3" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ControlStrokeColorDefaultBrush}" />
+            <Setter Property="Background" Value="{DynamicResource ControlFillColorDefaultBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+            <Setter Property="FocusVisualStyle" Value="{DynamicResource DefaultControlFocusVisualStyle}" />
+            <Setter Property="ToolTip" Value="Like" />
+            <Setter Property="AutomationProperties.Name" Value="Like" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Padding="{TemplateBinding Padding}"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource ControlFillColorSecondaryBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource ControlFillColorTertiaryBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Kind}"
+                             Value="Heart">
+                    <Setter Property="ToolTip" Value="Heart" />
+                    <Setter Property="AutomationProperties.Name" Value="Heart" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Kind}"
+                             Value="Accept">
+                    <Setter Property="ToolTip" Value="Accept" />
+                    <Setter Property="AutomationProperties.Name" Value="Accept" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Kind}"
+                             Value="Laugh">
+                    <Setter Property="ToolTip" Value="Laugh" />
+                    <Setter Property="AutomationProperties.Name" Value="Laugh" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsMine}"
+                             Value="True">
+                    <Setter Property="BorderBrush" Value="{DynamicResource AccentFillColorDefaultBrush}" />
+                    <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                    <Setter Property="Foreground" Value="{DynamicResource AccentTextFillColorPrimaryBrush}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <DataTemplate x:Key="ReactionTemplate"
+                      DataType="{x:Type module:Reaction}">
+            <Button Style="{StaticResource ReactionButtonStyle}"
+                    Command="{Binding DataContext.ToggleReactionCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                    CommandParameter="{Binding}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock x:Name="Glyph"
+                               VerticalAlignment="Center"
+                               Text="&#xE8E1;"
+                               FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                               FontSize="12" />
+                    <TextBlock Margin="6,0,0,0"
+                               VerticalAlignment="Center"
+                               Text="{Binding Count}"
+                               FontSize="12" />
+                </StackPanel>
+            </Button>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Kind}"
+                             Value="Heart">
+                    <Setter TargetName="Glyph" Property="Text" Value="&#xEB51;" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Kind}"
+                             Value="Accept">
+                    <Setter TargetName="Glyph" Property="Text" Value="&#xE8FB;" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Kind}"
+                             Value="Laugh">
+                    <Setter TargetName="Glyph" Property="Text" Value="&#xE899;" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+        <Style x:Key="ReactionsStyle"
+               TargetType="{x:Type ItemsControl}">
+            <Setter Property="Focusable" Value="False" />
+            <Setter Property="ItemTemplate" Value="{StaticResource ReactionTemplate}" />
+            <Setter Property="ItemsPanel">
+                <Setter.Value>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ReplyCountTextStyle"
+               TargetType="{x:Type TextBlock}"
+               d:DataContext="{d:DesignInstance Type={x:Type module:Message}}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Text" Value="{Binding Replies.Count, StringFormat='{}{0} replies'}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Replies.Count}"
+                             Value="1">
+                    <Setter Property="Text" Value="1 reply" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="ReplySummaryButtonStyle"
+               TargetType="{x:Type Button}"
+               d:DataContext="{d:DesignInstance Type={x:Type module:Message}}">
+            <Setter Property="Margin" Value="-4,4,0,0" />
+            <Setter Property="Padding" Value="4,2" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="FocusVisualStyle" Value="{DynamicResource DefaultControlFocusVisualStyle}" />
+            <Setter Property="AutomationProperties.Name" Value="{Binding Replies.Count, StringFormat='{}{0} replies'}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Padding="{TemplateBinding Padding}"
+                                Background="{TemplateBinding Background}">
+                            <StackPanel Orientation="Horizontal">
+                                <ItemsControl ItemsSource="{Binding Repliers}"
+                                              ItemTemplate="{StaticResource ReplierTemplate}"
+                                              Focusable="False">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </ItemsControl>
+                                <TextBlock Style="{StaticResource ReplyCountTextStyle}"
+                                           Margin="6,0,0,0"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
+                                <TextBlock Margin="8,0,0,0"
+                                           VerticalAlignment="Center"
+                                           Text="{Binding LastReplyTime, StringFormat='Last reply {0:HH:mm}'}"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource ControlFillColorSecondaryBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource ControlFillColorTertiaryBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Replies.Count}"
+                             Value="0">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Replies.Count}"
+                             Value="1">
+                    <Setter Property="AutomationProperties.Name" Value="1 reply" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="LineStyle"
+               TargetType="{x:Type Border}">
+            <Setter Property="Height" Value="1" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Background" Value="{DynamicResource DividerStrokeColorDefaultBrush}" />
+        </Style>
+        <Style x:Key="DateLabelStyle"
+               TargetType="{x:Type Border}">
+            <Setter Property="Padding" Value="12,2" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{DynamicResource DividerStrokeColorDefaultBrush}" />
+        </Style>
+        <Style x:Key="NameTextStyle"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+        <Style x:Key="TimeTextStyle"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="8,0,0,0" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+        <Style x:Key="HoverTimeTextStyle"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="0,4,0,0" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+            <Setter Property="Visibility" Value="Collapsed" />
+        </Style>
+        <Style x:Key="MessageTextStyle"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="0,2,0,0" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+        <Style x:Key="AttachmentStyle"
+               TargetType="{x:Type Border}">
+            <Setter Property="Margin" Value="0,6,0,0" />
+            <Setter Property="Padding" Value="12,8,16,8" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{DynamicResource CardStrokeColorDefaultBrush}" />
+            <Setter Property="Background" Value="{DynamicResource ControlFillColorDefaultBrush}" />
+        </Style>
+        <DataTemplate DataType="{x:Type module:Attachment}">
+            <Border Style="{StaticResource AttachmentStyle}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center"
+                               Text="&#xEA90;"
+                               FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                               FontSize="24"
+                               Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
+                    <StackPanel Margin="12,0,0,0">
+                        <TextBlock Text="{Binding Name}"
+                                   FontSize="14" FontWeight="SemiBold" />
+                        <TextBlock Text="{Binding Kilobytes, StringFormat='PDF document · {0} KB'}"
+                                   FontSize="12"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+        <DataTemplate x:Key="MessageContentTemplate"
+                      DataType="{x:Type module:Message}">
+            <StackPanel>
+                <TextBlock Style="{StaticResource MessageTextStyle}"
+                           Text="{Binding Text}" />
+                <ContentControl Focusable="False"
+                                Content="{Binding Attachment}" />
+                <ItemsControl Style="{StaticResource ReactionsStyle}"
+                              ItemsSource="{Binding Reactions}" />
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="MessageTemplate"
+                      DataType="{x:Type module:Message}">
+            <StackPanel>
+                <Grid x:Name="DateSeparator"
+                      Margin="16,12,16,6"
+                      Visibility="Collapsed">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0"
+                            Style="{StaticResource LineStyle}" />
+                    <Border Grid.Column="1"
+                            Style="{StaticResource DateLabelStyle}">
+                        <TextBlock x:Name="DateText"
+                                   Text="Yesterday"
+                                   FontSize="12" FontWeight="SemiBold" />
+                    </Border>
+                    <Border Grid.Column="2"
+                            Style="{StaticResource LineStyle}" />
+                </Grid>
+                <Grid x:Name="NewSeparator"
+                      Margin="16,12,16,6"
+                      Visibility="Collapsed">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0"
+                            Style="{StaticResource LineStyle}"
+                            Background="{DynamicResource SystemFillColorCriticalBrush}" />
+                    <TextBlock Grid.Column="1"
+                               Margin="8,0,0,0"
+                               Text="New"
+                               FontSize="12" FontWeight="SemiBold"
+                               Foreground="{DynamicResource SystemFillColorCriticalBrush}" />
+                </Grid>
+                <Grid x:Name="Row"
+                      Background="Transparent">
+                    <Grid x:Name="Body"
+                          Margin="16,6,16,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="32" />
+                            <ColumnDefinition Width="12" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <ContentPresenter x:Name="Avatar"
+                                          Grid.Column="0"
+                                          VerticalAlignment="Top"
+                                          Content="{Binding Author}"
+                                          ContentTemplate="{StaticResource AvatarTemplate}" />
+                        <TextBlock x:Name="HoverTime"
+                                   Grid.Column="0"
+                                   Style="{StaticResource HoverTimeTextStyle}"
+                                   Text="{Binding Time, StringFormat=HH:mm}" />
+                        <StackPanel Grid.Column="2">
+                            <StackPanel x:Name="Header"
+                                        Orientation="Horizontal">
+                                <TextBlock Style="{StaticResource NameTextStyle}"
+                                           Text="{Binding Author.Name}" />
+                                <TextBlock Style="{StaticResource TimeTextStyle}"
+                                           Text="{Binding Time, StringFormat=HH:mm}" />
+                            </StackPanel>
+                            <ContentPresenter Content="{Binding}"
+                                              ContentTemplate="{StaticResource MessageContentTemplate}" />
+                            <Button Style="{StaticResource ReplySummaryButtonStyle}"
+                                    Command="{Binding DataContext.OpenThreadCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                    CommandParameter="{Binding}" />
+                        </StackPanel>
+                    </Grid>
+                    <Border x:Name="Actions"
+                            Style="{StaticResource ActionsStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <controls:DropDownButton x:Name="AddReaction"
+                                                     Style="{StaticResource AddReactionButtonStyle}"
+                                                     ContextMenu="{StaticResource ReactionMenu}" />
+                            <Button Style="{StaticResource SubtleIconButtonStyle}"
+                                    Command="{Binding DataContext.OpenThreadCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                    CommandParameter="{Binding}"
+                                    Focusable="False"
+                                    Content="&#xE97A;"
+                                    ToolTip="Reply in thread"
+                                    AutomationProperties.Name="Reply in thread" />
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </StackPanel>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding StartsDay}"
+                             Value="True">
+                    <Setter TargetName="DateSeparator" Property="Visibility" Value="Visible" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsToday}"
+                             Value="True">
+                    <Setter TargetName="DateText" Property="Text" Value="Today" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsFirstUnread}"
+                             Value="True">
+                    <Setter TargetName="NewSeparator" Property="Visibility" Value="Visible" />
+                </DataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsContinuation}" Value="True" />
+                        <Condition Binding="{Binding IsFirstUnread}" Value="False" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter TargetName="Body" Property="Margin" Value="16,0,16,2" />
+                    <Setter TargetName="Avatar" Property="Visibility" Value="Collapsed" />
+                    <Setter TargetName="Header" Property="Visibility" Value="Collapsed" />
+                </MultiDataTrigger>
+                <Trigger Property="IsMouseOver" Value="True" SourceName="Row">
+                    <Setter TargetName="Row" Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                    <Setter TargetName="Actions" Property="Visibility" Value="Visible" />
+                </Trigger>
+                <DataTrigger Binding="{Binding ContextMenu.IsOpen, ElementName=AddReaction, FallbackValue=False}"
+                             Value="True">
+                    <Setter TargetName="Row" Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                    <Setter TargetName="Actions" Property="Visibility" Value="Visible" />
+                </DataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsMouseOver, ElementName=Row}" Value="True" />
+                        <Condition Binding="{Binding Visibility, ElementName=Avatar}" Value="Collapsed" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter TargetName="HoverTime" Property="Visibility" Value="Visible" />
+                </MultiDataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+        <DataTemplate x:Key="ThreadRootTemplate"
+                      DataType="{x:Type module:Message}">
+            <Grid x:Name="Row"
+                  Background="Transparent">
+                <Grid Margin="16,6,16,2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="32" />
+                        <ColumnDefinition Width="12" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <ContentPresenter Grid.Column="0"
+                                      VerticalAlignment="Top"
+                                      Content="{Binding Author}"
+                                      ContentTemplate="{StaticResource AvatarTemplate}" />
+                    <StackPanel Grid.Column="2">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource NameTextStyle}"
+                                       Text="{Binding Author.Name}" />
+                            <TextBlock Style="{StaticResource TimeTextStyle}"
+                                       Text="{Binding Time, StringFormat=HH:mm}" />
+                        </StackPanel>
+                        <ContentPresenter Content="{Binding}"
+                                          ContentTemplate="{StaticResource MessageContentTemplate}" />
+                    </StackPanel>
+                </Grid>
+                <Border x:Name="Actions"
+                        Style="{StaticResource ActionsStyle}">
+                    <controls:DropDownButton x:Name="AddReaction"
+                                             Style="{StaticResource AddReactionButtonStyle}"
+                                             ContextMenu="{StaticResource ReactionMenu}" />
+                </Border>
+            </Grid>
+            <DataTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True" SourceName="Row">
+                    <Setter TargetName="Row" Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                    <Setter TargetName="Actions" Property="Visibility" Value="Visible" />
+                </Trigger>
+                <DataTrigger Binding="{Binding ContextMenu.IsOpen, ElementName=AddReaction, FallbackValue=False}"
+                             Value="True">
+                    <Setter TargetName="Row" Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                    <Setter TargetName="Actions" Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+        <DataTemplate x:Key="ReplyTemplate"
+                      DataType="{x:Type module:Message}">
+            <Grid x:Name="Row"
+                  Background="Transparent">
+                <Grid x:Name="Body"
+                      Margin="16,6,16,2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="32" />
+                        <ColumnDefinition Width="12" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <ContentPresenter x:Name="Avatar"
+                                      Grid.Column="0"
+                                      VerticalAlignment="Top"
+                                      Content="{Binding Author}"
+                                      ContentTemplate="{StaticResource AvatarTemplate}" />
+                    <TextBlock x:Name="HoverTime"
+                               Grid.Column="0"
+                               Style="{StaticResource HoverTimeTextStyle}"
+                               Text="{Binding Time, StringFormat=HH:mm}" />
+                    <StackPanel Grid.Column="2">
+                        <StackPanel x:Name="Header"
+                                    Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource NameTextStyle}"
+                                       Text="{Binding Author.Name}" />
+                            <TextBlock Style="{StaticResource TimeTextStyle}"
+                                       Text="{Binding Time, StringFormat=HH:mm}" />
+                        </StackPanel>
+                        <ContentPresenter Content="{Binding}"
+                                          ContentTemplate="{StaticResource MessageContentTemplate}" />
+                    </StackPanel>
+                </Grid>
+                <Border x:Name="Actions"
+                        Style="{StaticResource ActionsStyle}">
+                    <controls:DropDownButton x:Name="AddReaction"
+                                             Style="{StaticResource AddReactionButtonStyle}"
+                                             ContextMenu="{StaticResource ReactionMenu}" />
+                </Border>
+            </Grid>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding IsContinuation}"
+                             Value="True">
+                    <Setter TargetName="Body" Property="Margin" Value="16,0,16,2" />
+                    <Setter TargetName="Avatar" Property="Visibility" Value="Collapsed" />
+                    <Setter TargetName="Header" Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+                <Trigger Property="IsMouseOver" Value="True" SourceName="Row">
+                    <Setter TargetName="Row" Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                    <Setter TargetName="Actions" Property="Visibility" Value="Visible" />
+                </Trigger>
+                <DataTrigger Binding="{Binding ContextMenu.IsOpen, ElementName=AddReaction, FallbackValue=False}"
+                             Value="True">
+                    <Setter TargetName="Row" Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                    <Setter TargetName="Actions" Property="Visibility" Value="Visible" />
+                </DataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsMouseOver, ElementName=Row}" Value="True" />
+                        <Condition Binding="{Binding IsContinuation}" Value="True" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter TargetName="HoverTime" Property="Visibility" Value="Visible" />
+                </MultiDataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+        <Style x:Key="ComposerTextBoxStyle"
+               TargetType="{x:Type TextBox}"
+               BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="MaxHeight" Value="120" />
+            <Setter Property="AcceptsReturn" Value="True" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+        </Style>
+        <Style x:Key="MessageTextBoxStyle"
+               TargetType="{x:Type TextBox}"
+               BasedOn="{StaticResource ComposerTextBoxStyle}"
+               d:DataContext="{d:DesignInstance Type={x:Type module:MessagesViewModel}}">
+            <Setter Property="controls:TextBoxHelper.PlaceholderText" Value="{Binding Selected.Name, StringFormat='Message #{0}', FallbackValue=''}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Selected.Kind, FallbackValue=Channel}"
+                             Value="Direct">
+                    <Setter Property="controls:TextBoxHelper.PlaceholderText" Value="{Binding Selected.Name, StringFormat='Message {0}', FallbackValue=''}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Style="{StaticResource PageTitleTextStyle}"
+                   Text="Messages" />
+        <TextBlock Grid.Row="1"
+                   Style="{StaticResource PageDescriptionTextStyle}"
+                   Text="Channels, threads and reactions like a chat app." />
+
+        <Border x:Name="Card"
+                Grid.Row="2"
+                Style="{StaticResource CardStyle}"
+                Padding="0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0"
+                        BorderBrush="{DynamicResource DividerStrokeColorDefaultBrush}"
+                        BorderThickness="0,0,1,0">
+                    <ListBox Padding="0,4,0,8"
+                             ItemsSource="{Binding Source={StaticResource ConversationSource}}"
+                             ItemTemplate="{StaticResource ConversationTemplate}"
+                             SelectedItem="{Binding Selected}"
+                             Background="Transparent"
+                             BorderThickness="0"
+                             AutomationProperties.Name="Conversations"
+                             ItemContainerStyle="{StaticResource ConversationItemStyle}"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListBox.GroupStyle>
+                            <GroupStyle ContainerStyle="{StaticResource GroupItemStyle}"
+                                        HeaderTemplate="{StaticResource GroupHeaderTemplate}" />
+                        </ListBox.GroupStyle>
+                    </ListBox>
+                </Border>
+
+                <Grid Grid.Column="1">
+                    <Grid>
+                        <Grid.Style>
+                            <Style TargetType="{x:Type Grid}">
+                                <Style.Triggers>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding IsThreadOpen}" Value="True" />
+                                            <Condition Binding="{Binding ActualWidth, ElementName=Card, Converter={StaticResource NarrowConverter}, ConverterParameter=920}" Value="False" />
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Margin" Value="0,0,320,0" />
+                                    </MultiDataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding IsThreadOpen}" Value="True" />
+                                            <Condition Binding="{Binding ActualWidth, ElementName=Card, Converter={StaticResource NarrowConverter}, ConverterParameter=920}" Value="True" />
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Visibility" Value="Hidden" />
+                                    </MultiDataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Border Grid.Row="0"
+                                Style="{StaticResource HeaderStyle}">
+                            <ContentPresenter VerticalAlignment="Center"
+                                              Content="{Binding Selected}"
+                                              ContentTemplate="{StaticResource ConversationHeaderTemplate}" />
+                        </Border>
+                        <ScrollViewer Grid.Row="1"
+                                      HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
+                                      AutomationProperties.Name="Messages">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Loaded">
+                                    <i:CallMethodAction MethodName="ScrollToEnd" />
+                                </i:EventTrigger>
+                                <s:EventRequestTrigger Request="{Binding ScrollRequest}">
+                                    <i:CallMethodAction MethodName="ScrollToEnd" />
+                                </s:EventRequestTrigger>
+                            </i:Interaction.Triggers>
+                            <ItemsControl Margin="0,4,0,12"
+                                          ItemsSource="{Binding Selected.Messages, FallbackValue={x:Null}}"
+                                          ItemTemplate="{StaticResource MessageTemplate}"
+                                          Focusable="False" />
+                        </ScrollViewer>
+                        <Grid Grid.Row="2"
+                              Margin="16,8,16,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0"
+                                     Style="{StaticResource MessageTextBoxStyle}"
+                                     Text="{Binding Selected.Draft, UpdateSourceTrigger=PropertyChanged, FallbackValue=''}"
+                                     AutomationProperties.Name="Message">
+                                <TextBox.InputBindings>
+                                    <KeyBinding Key="Enter"
+                                                Command="{Binding SendCommand}" />
+                                </TextBox.InputBindings>
+                            </TextBox>
+                            <Button Grid.Column="1"
+                                    Style="{DynamicResource AccentButtonStyle}"
+                                    Width="40" Height="32" MinWidth="0"
+                                    Margin="8,0,0,0" Padding="0"
+                                    VerticalAlignment="Bottom"
+                                    Command="{Binding SendCommand}"
+                                    Focusable="False"
+                                    Content="&#xE724;"
+                                    FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                                    FontSize="14"
+                                    ToolTip="Send"
+                                    AutomationProperties.Name="Send" />
+                        </Grid>
+                    </Grid>
+
+                    <Border BorderBrush="{DynamicResource DividerStrokeColorDefaultBrush}">
+                        <Border.Style>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="Width" Value="320" />
+                                <Setter Property="HorizontalAlignment" Value="Right" />
+                                <Setter Property="BorderThickness" Value="1,0,0,0" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ActualWidth, ElementName=Card, Converter={StaticResource NarrowConverter}, ConverterParameter=920}"
+                                                 Value="True">
+                                        <Setter Property="Width" Value="Auto" />
+                                        <Setter Property="HorizontalAlignment" Value="Stretch" />
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsThreadOpen}"
+                                                 Value="False">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Border Grid.Row="0"
+                                    Style="{StaticResource HeaderStyle}">
+                                <Grid>
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock Style="{StaticResource HeaderTitleTextStyle}"
+                                                   Text="Thread" />
+                                        <ContentPresenter Content="{Binding Selected}"
+                                                          ContentTemplate="{StaticResource ThreadCaptionTemplate}" />
+                                    </StackPanel>
+                                    <Button Style="{StaticResource SubtleIconButtonStyle}"
+                                            HorizontalAlignment="Right" VerticalAlignment="Center"
+                                            Command="{Binding CloseThreadCommand}"
+                                            Content="&#xE711;"
+                                            FontSize="12"
+                                            ToolTip="Close thread"
+                                            AutomationProperties.Name="Close thread" />
+                                </Grid>
+                            </Border>
+                            <ScrollViewer Grid.Row="1"
+                                          HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
+                                          AutomationProperties.Name="Thread">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Loaded">
+                                        <i:CallMethodAction MethodName="ScrollToEnd" />
+                                    </i:EventTrigger>
+                                    <s:EventRequestTrigger Request="{Binding ThreadScrollRequest}">
+                                        <i:CallMethodAction MethodName="ScrollToEnd" />
+                                    </s:EventRequestTrigger>
+                                </i:Interaction.Triggers>
+                                <StackPanel Margin="0,16,0,12">
+                                    <ContentPresenter Content="{Binding Thread}"
+                                                      ContentTemplate="{StaticResource ThreadRootTemplate}" />
+                                    <Grid DataContext="{Binding Thread}"
+                                          Margin="16,8,16,4">
+                                        <Grid.Style>
+                                            <Style TargetType="{x:Type Grid}"
+                                                   d:DataContext="{d:DesignInstance Type={x:Type module:Message}}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Replies.Count}"
+                                                                 Value="0">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Grid.Style>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0"
+                                                   Style="{StaticResource ReplyCountTextStyle}"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                        <Border Grid.Column="1"
+                                                Style="{StaticResource LineStyle}"
+                                                Margin="8,0,0,0" />
+                                    </Grid>
+                                    <ItemsControl ItemsSource="{Binding Thread.Replies, FallbackValue={x:Null}}"
+                                                  ItemTemplate="{StaticResource ReplyTemplate}"
+                                                  Focusable="False" />
+                                </StackPanel>
+                            </ScrollViewer>
+                            <Grid Grid.Row="2"
+                                  Margin="16,8,16,16">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0"
+                                         Style="{StaticResource ComposerTextBoxStyle}"
+                                         controls:TextBoxHelper.PlaceholderText="Reply…"
+                                         Text="{Binding ReplyDraft, UpdateSourceTrigger=PropertyChanged}"
+                                         AutomationProperties.Name="Reply">
+                                    <TextBox.InputBindings>
+                                        <KeyBinding Key="Enter"
+                                                    Command="{Binding ReplyCommand}" />
+                                    </TextBox.InputBindings>
+                                </TextBox>
+                                <Button Grid.Column="1"
+                                        Style="{DynamicResource AccentButtonStyle}"
+                                        Width="40" Height="32" MinWidth="0"
+                                        Margin="8,0,0,0" Padding="0"
+                                        VerticalAlignment="Bottom"
+                                        Command="{Binding ReplyCommand}"
+                                        Focusable="False"
+                                        Content="&#xE724;"
+                                        FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                                        FontSize="14"
+                                        ToolTip="Send reply"
+                                        AutomationProperties.Name="Send reply" />
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+
+</UserControl>

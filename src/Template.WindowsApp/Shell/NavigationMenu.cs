@@ -22,7 +22,8 @@ public sealed class NavigationMenu
             [
                 new(ViewId.DataGrid, "Data grid", "\uE80A"),
                 new(ViewId.ListDetail, "List & detail", "\uE779"),
-                new(ViewId.Hierarchy, "Hierarchy", "\uEABB")
+                new(ViewId.Hierarchy, "Hierarchy", "\uEABB"),
+                new(ViewId.Messages, "Messages", "\uE8F2")
             ]),
         new NavigationGroup(
             "Forms",

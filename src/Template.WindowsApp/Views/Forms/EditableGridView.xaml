@@ -164,6 +164,7 @@
                BasedOn="{StaticResource LineCellStyle}">
             <Setter Property="InputMethod.IsInputMethodEnabled" Value="False" />
         </Style>
+        <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
         <Style x:Key="LineRowStyle"
                TargetType="{x:Type DataGridRow}"
                BasedOn="{StaticResource DefaultDataGridRowStyle}"

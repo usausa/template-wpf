@@ -10,6 +10,7 @@ public enum ViewId
     DataGrid,
     ListDetail,
     Hierarchy,
+    Messages,
     Validation,
     Wizard,
     EditableGrid,
