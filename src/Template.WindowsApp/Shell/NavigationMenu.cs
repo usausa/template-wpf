@@ -60,7 +60,8 @@ public sealed class NavigationMenu
             "\uEC87",
             [
                 new(ViewId.ShapesAnimation, "Shapes & animation", "\uF158"),
-                new(ViewId.Charts, "Charts", "\uE9D2")
+                new(ViewId.Charts, "Charts", "\uE9D2"),
+                new(ViewId.LiveData, "Live data", "\uE93E")
             ]),
         new NavigationGroup(
             "System",

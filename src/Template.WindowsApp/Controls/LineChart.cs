@@ -20,6 +20,12 @@ public sealed partial class LineChart : ChartBase
     [DependencyProperty(Options = FrameworkPropertyMetadataOptions.AffectsRender)]
     public partial int Capacity { get; set; }
 
+    [DependencyProperty(DefaultValue = double.NaN, Options = FrameworkPropertyMetadataOptions.AffectsRender)]
+    public partial double Minimum { get; set; }
+
+    [DependencyProperty(DefaultValue = double.NaN, Options = FrameworkPropertyMetadataOptions.AffectsRender)]
+    public partial double Maximum { get; set; }
+
     protected override void OnRender(DrawingContext drawingContext)
     {
         var values = Values;
@@ -29,13 +35,17 @@ public sealed partial class LineChart : ChartBase
         }
 
         var plotHeight = ActualHeight - MakeText("0").Height - LabelSpacing;
-        var max = MaxOf(values);
-        if ((ActualWidth <= 0) || (plotHeight <= 0) || (max <= 0))
+        var low = Double.IsNaN(Minimum) ? 0 : Minimum;
+        var high = Maximum;
+        if (Double.IsNaN(high))
+        {
+            var max = MaxOf(values);
+            high = max > 0 ? NiceMax(max) : 0;
+        }
+        if ((ActualWidth <= 0) || (plotHeight <= 0) || (high <= low))
         {
             return;
         }
-
-        max = NiceMax(max);
 
         if (GridBrush is not null)
         {
@@ -53,7 +63,7 @@ public sealed partial class LineChart : ChartBase
         var points = new Point[values.Count];
         for (var i = 0; i < values.Count; i++)
         {
-            points[i] = new Point(step * (offset + i + 0.5), plotHeight - (plotHeight * values[i] / max));
+            points[i] = new Point(step * (offset + i + 0.5), plotHeight - (plotHeight * (Math.Clamp(values[i], low, high) - low) / (high - low)));
         }
 
         if (Fill is not null)

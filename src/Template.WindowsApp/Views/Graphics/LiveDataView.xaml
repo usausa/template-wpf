@@ -1,0 +1,202 @@
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:s="http://smart/windows"
+             xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
+             xmlns:module="clr-namespace:Template.WindowsApp.Views.Graphics"
+             mc:Ignorable="d"
+             x:Class="Template.WindowsApp.Views.Graphics.LiveDataView"
+             s:DataContextResolver.Type="{x:Type module:LiveDataViewModel}"
+             d:DataContext="{d:DesignInstance Type={x:Type module:LiveDataViewModel}}"
+             d:DesignWidth="800" d:DesignHeight="600">
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <Grid MinHeight="{Binding ViewportHeight, RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}}">
+            <Grid Margin="24">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0"
+                           Style="{StaticResource PageTitleTextStyle}"
+                           Text="Live data" />
+                <TextBlock Grid.Row="1"
+                           Style="{StaticResource PageDescriptionTextStyle}"
+                           Text="Values that keep streaming in, drawn at a limited rate, with streams that stop marked." />
+
+                <Border Grid.Row="2"
+                        Style="{StaticResource CardStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0"
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+                            <TextBlock VerticalAlignment="Center"
+                                       Text="Updates per second" />
+                            <ComboBox Width="96"
+                                      Margin="12,0,0,0"
+                                      ItemsSource="{Binding Rates}"
+                                      SelectedItem="{Binding SelectedRate}"
+                                      AutomationProperties.Name="Updates per second" ItemStringFormat="N0" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    Margin="32,0,0,0"
+                                    VerticalAlignment="Center">
+                            <TextBlock VerticalAlignment="Center"
+                                       Text="Draw 4 times per second" />
+                            <controls:ToggleSwitch Margin="12,0,0,0"
+                                                   VerticalAlignment="Center"
+                                                   IsChecked="{Binding IsLimited}"
+                                                   AutomationProperties.Name="Draw 4 times per second" />
+                        </StackPanel>
+                        <TextBlock Grid.Column="2"
+                                   Margin="32,0,16,0"
+                                   VerticalAlignment="Center"
+                                   FontSize="12"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}Received {0:N0} · Drawn {1:N0}">
+                                    <Binding Path="ReceivedCount" />
+                                    <Binding Path="DrawnCount" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                        <StackPanel Grid.Column="3"
+                                    Orientation="Horizontal">
+                            <Button Width="96"
+                                    Command="{Binding PauseCommand}"
+                                    Content="{Binding IsPaused, Converter={s:BoolToText True=Resume, False=Pause}}" />
+                            <Button Margin="8,0,0,0"
+                                    Command="{Binding DropCommand}"
+                                    Content="Stop Humidity for 5 s" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <ItemsControl Grid.Row="3"
+                              Margin="0,8,-8,0"
+                              ItemsSource="{Binding Sensors}"
+                              Focusable="False">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="2" Columns="2" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type module:LiveSensor}">
+                            <Border Style="{StaticResource CardStyle}"
+                                    Margin="0,0,8,8">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0"
+                                                   Style="{DynamicResource BodyStrongTextBlockStyle}"
+                                                   Text="{Binding Name}" />
+                                        <TextBlock x:Name="LiveText"
+                                                   Grid.Column="1"
+                                                   VerticalAlignment="Center"
+                                                   Text="Live"
+                                                   FontSize="12"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                        <Border x:Name="StaleBadge"
+                                                Grid.Column="1"
+                                                Padding="8,2"
+                                                VerticalAlignment="Center"
+                                                Visibility="Collapsed"
+                                                Background="{DynamicResource SystemFillColorCautionBackgroundBrush}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center"
+                                                           Text="&#xE7BA;"
+                                                           FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                                                           FontSize="12"
+                                                           Foreground="{DynamicResource SystemFillColorCautionBrush}" />
+                                                <TextBlock Margin="6,0,0,0"
+                                                           VerticalAlignment="Center"
+                                                           Text="No data for 3 s"
+                                                           FontSize="12" />
+                                            </StackPanel>
+                                        </Border>
+                                    </Grid>
+                                    <StackPanel Grid.Row="1"
+                                                Orientation="Horizontal"
+                                                Margin="0,8,0,0">
+                                        <TextBlock x:Name="Reading"
+                                                   Text="{Binding ValueText}"
+                                                   FontSize="{DynamicResource TitleTextBlockFontSize}"
+                                                   FontWeight="SemiBold" />
+                                        <TextBlock Margin="6,0,0,5"
+                                                   VerticalAlignment="Bottom"
+                                                   Text="{Binding Unit}"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                        <StackPanel x:Name="Movement"
+                                                    Orientation="Horizontal"
+                                                    Margin="12,0,0,0"
+                                                    VerticalAlignment="Bottom">
+                                            <TextBlock x:Name="Caret"
+                                                       Margin="0,0,0,6"
+                                                       VerticalAlignment="Bottom"
+                                                       Text="&#xF08E;"
+                                                       FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                                                       FontSize="10"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                            <TextBlock Margin="4,0,0,4"
+                                                       VerticalAlignment="Bottom"
+                                                       Text="{Binding DeltaText}"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <controls:LineChart Grid.Row="2"
+                                                        MinHeight="150"
+                                                        Margin="0,12,0,0"
+                                                        Minimum="{Binding Minimum}"
+                                                        Maximum="{Binding Maximum}"
+                                                        Fill="{StaticResource ChartBlueSuperLightBrush}"
+                                                        Stroke="{StaticResource ChartBlueBrush}"
+                                                        Capacity="{x:Static module:LiveSensor.Capacity}"
+                                                        GridBrush="{DynamicResource DividerStrokeColorDefaultBrush}"
+                                                        Values="{Binding Values}" />
+                                </Grid>
+                            </Border>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding IsRising}"
+                                             Value="True">
+                                    <Setter TargetName="Caret" Property="Text" Value="&#xF090;" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding DeltaText}"
+                                             Value="">
+                                    <Setter TargetName="Movement" Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsStale}"
+                                             Value="True">
+                                    <Setter TargetName="LiveText" Property="Visibility" Value="Collapsed" />
+                                    <Setter TargetName="StaleBadge" Property="Visibility" Value="Visible" />
+                                    <Setter TargetName="Reading" Property="Foreground" Value="{DynamicResource TextFillColorDisabledBrush}" />
+                                    <Setter TargetName="Movement" Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </Grid>
+    </ScrollViewer>
+
+</UserControl>

@@ -23,6 +23,7 @@ public enum ViewId
     Icons,
     ShapesAnimation,
     Charts,
+    LiveData,
     Windows,
     ClipboardDrag,
     Environment,

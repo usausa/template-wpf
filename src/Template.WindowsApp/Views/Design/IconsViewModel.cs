@@ -1,6 +1,7 @@
 namespace Template.WindowsApp.Views.Design;
 
 using System.Text.Json;
+using System.Text.RegularExpressions;
 
 using Template.WindowsApp.Services;
 
@@ -12,6 +13,10 @@ public sealed partial class IconsViewModel : AppViewModelBase
     private const string ResourceName = "Template.WindowsApp.Views.Design.Icons.json";
 
     private static readonly Lazy<IconEntry[]> AllIcons = new(LoadIcons);
+
+    private static readonly char[] TermSeparators = [' ', '+'];
+
+    private readonly IClipboardService clipboardService;
 
     private IconEntry[] matches = [];
 
@@ -38,14 +43,28 @@ public sealed partial class IconsViewModel : AppViewModelBase
     [ObservableProperty]
     public partial string? Copied { get; set; }
 
+    public EventRequest FindRequest { get; } = new();
+
     public IObserveCommand PreviousCommand { get; }
 
     public IObserveCommand NextCommand { get; }
 
     public IObserveCommand CopyCommand { get; }
 
+    public IObserveCommand CopyNameCommand { get; }
+
+    public IObserveCommand CopyCodeCommand { get; }
+
+    public IObserveCommand CopyXamlCommand { get; }
+
+    public IObserveCommand CopyCSharpCommand { get; }
+
+    public IObserveCommand FindCommand { get; }
+
     public IconsViewModel(IClipboardService clipboardService)
     {
+        this.clipboardService = clipboardService;
+
         SearchText = string.Empty;
         Items = [];
 
@@ -53,11 +72,12 @@ public sealed partial class IconsViewModel : AppViewModelBase
 
         PreviousCommand = MakeDelegateCommand(() => ShowPage(pageIndex - 1), () => pageIndex > 0);
         NextCommand = MakeDelegateCommand(() => ShowPage(pageIndex + 1), () => RangeEnd < TotalCount);
-        CopyCommand = MakeDelegateCommand<string>(x =>
-        {
-            clipboardService.SetText(x);
-            Copied = x;
-        });
+        CopyCommand = MakeDelegateCommand<string>(Copy);
+        CopyNameCommand = MakeDelegateCommand(() => CopySelected(static x => x.Name), () => SelectedIcon is not null);
+        CopyCodeCommand = MakeDelegateCommand(() => CopySelected(static x => x.Code), () => SelectedIcon is not null);
+        CopyXamlCommand = MakeDelegateCommand(() => CopySelected(static x => x.Xaml), () => SelectedIcon is not null);
+        CopyCSharpCommand = MakeDelegateCommand(() => CopySelected(static x => x.CSharp), () => SelectedIcon is not null);
+        FindCommand = MakeDelegateCommand(FindRequest.Request);
 
         Filter();
     }
@@ -68,10 +88,20 @@ public sealed partial class IconsViewModel : AppViewModelBase
         return JsonSerializer.Deserialize<IconEntry[]>(stream) ?? [];
     }
 
+    [GeneratedRegex(@"\s*\|\s*")]
+    private static partial Regex AlternativeRegex();
+
+    private static bool IsMatch(IconEntry icon, string word) =>
+        icon.Name.Contains(word, StringComparison.OrdinalIgnoreCase) || icon.Code.StartsWith(word, StringComparison.OrdinalIgnoreCase);
+
     private void Filter()
     {
-        var text = SearchText.Trim();
-        matches = text.Length == 0 ? AllIcons.Value : AllIcons.Value.Where(x => x.Name.Contains(text, StringComparison.OrdinalIgnoreCase)).ToArray();
+        var terms = AlternativeRegex().Replace(SearchText, "|")
+            .Split(TermSeparators, StringSplitOptions.RemoveEmptyEntries)
+            .Select(static x => x.Split('|', StringSplitOptions.RemoveEmptyEntries))
+            .Where(static x => x.Length > 0)
+            .ToArray();
+        matches = terms.Length == 0 ? AllIcons.Value : AllIcons.Value.Where(x => terms.All(y => y.Any(z => IsMatch(x, z)))).ToArray();
         TotalCount = matches.Length;
         ShowPage(0);
     }
@@ -83,5 +113,19 @@ public sealed partial class IconsViewModel : AppViewModelBase
         RangeStart = Items.Count > 0 ? (index * PageSize) + 1 : 0;
         RangeEnd = (index * PageSize) + Items.Count;
         SelectedIcon = Items.Count > 0 ? Items[0] : null;
+    }
+
+    private void Copy(string text)
+    {
+        clipboardService.SetText(text);
+        Copied = text;
+    }
+
+    private void CopySelected(Func<IconEntry, string> selector)
+    {
+        if (SelectedIcon is not null)
+        {
+            Copy(selector(SelectedIcon));
+        }
     }
 }

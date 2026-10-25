@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:s="http://smart/windows"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Design"
              mc:Ignorable="d"
@@ -10,6 +11,12 @@
              s:DataContextResolver.Type="{x:Type module:IconsViewModel}"
              d:DataContext="{d:DesignInstance Type={x:Type module:IconsViewModel}}"
              d:DesignWidth="800" d:DesignHeight="600">
+
+    <UserControl.InputBindings>
+        <KeyBinding Key="F"
+                    Command="{Binding FindCommand}"
+                    Modifiers="Control" />
+    </UserControl.InputBindings>
 
     <Grid Margin="24">
         <Grid.RowDefinitions>
@@ -40,17 +47,41 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <TextBox Grid.Row="0"
-                             Width="320"
-                             controls:TextBoxHelper.PlaceholderText="Search icons"
-                             HorizontalAlignment="Left"
-                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
-                             AutomationProperties.Name="Search icons" />
+                    <StackPanel Grid.Row="0">
+                        <TextBox Width="320"
+                                 controls:TextBoxHelper.PlaceholderText="Search icons (Ctrl+F)"
+                                 HorizontalAlignment="Left"
+                                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Delay=300}"
+                                 AutomationProperties.Name="Search icons">
+                            <i:Interaction.Triggers>
+                                <s:EventRequestTrigger Request="{Binding FindRequest}">
+                                    <s:SetFocusAction />
+                                    <s:SelectAllTextAction />
+                                </s:EventRequestTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBox>
+                        <TextBlock Margin="0,8,0,0"
+                                   Text="Separate words with spaces to match all of them, or with | to match any. Codes such as E70 also match."
+                                   FontSize="12"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                    </StackPanel>
                     <ListBox Grid.Row="1"
                              Margin="0,16,0,0"
                              ItemsSource="{Binding Items}"
                              SelectedItem="{Binding SelectedIcon}"
                              AutomationProperties.Name="Icons" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Command="{Binding CopyNameCommand}"
+                                          Header="Copy name" />
+                                <MenuItem Command="{Binding CopyCodeCommand}"
+                                          Header="Copy code" />
+                                <MenuItem Command="{Binding CopyXamlCommand}"
+                                          Header="Copy XAML" />
+                                <MenuItem Command="{Binding CopyCSharpCommand}"
+                                          Header="Copy C#" />
+                            </ContextMenu>
+                        </ListBox.ContextMenu>
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel />
