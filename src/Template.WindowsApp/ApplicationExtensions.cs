@@ -68,7 +68,7 @@ public static partial class ApplicationExtensions
         // Navigation
         builder.Services.AddNavigator(static (_, config) =>
         {
-            config.UseWindowsNavigationProvider(static options => options.RegisterEffect(EntranceEffect.Name, new EntranceEffect()));
+            config.UseWindowsNavigationProvider(static options => options.RegisterEffect<EntranceEffect>(EntranceEffect.Name));
 #if DEBUG
             config.AddPlugin<LeakDetectionPlugin>();
 #endif

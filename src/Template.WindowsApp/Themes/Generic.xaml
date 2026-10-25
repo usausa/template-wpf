@@ -816,6 +816,10 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="8" />
+                                    <ColumnDefinition x:Name="SecondaryColumn"
+                                                      Width="*" />
+                                    <ColumnDefinition x:Name="SecondarySpacing"
+                                                      Width="8" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Button x:Name="PART_PrimaryButton"
@@ -824,8 +828,13 @@
                                         HorizontalAlignment="Stretch"
                                         Command="{TemplateBinding PrimaryButtonCommand}"
                                         Content="{TemplateBinding PrimaryButtonText}" />
-                                <Button x:Name="PART_CloseButton"
+                                <Button x:Name="SecondaryButton"
                                         Grid.Column="2"
+                                        HorizontalAlignment="Stretch"
+                                        Command="{TemplateBinding SecondaryButtonCommand}"
+                                        Content="{TemplateBinding SecondaryButtonText}" />
+                                <Button x:Name="PART_CloseButton"
+                                        Grid.Column="4"
                                         HorizontalAlignment="Stretch"
                                         Command="{TemplateBinding CloseButtonCommand}"
                                         Content="{TemplateBinding CloseButtonText}" />
@@ -835,6 +844,11 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="PrimaryButtonText" Value="{x:Null}">
                             <Setter TargetName="PART_PrimaryButton" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="SecondaryButtonText" Value="{x:Null}">
+                            <Setter TargetName="SecondaryButton" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="SecondaryColumn" Property="Width" Value="0" />
+                            <Setter TargetName="SecondarySpacing" Property="Width" Value="0" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

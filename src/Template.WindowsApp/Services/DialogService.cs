@@ -19,16 +19,37 @@ public sealed class DialogService : IDialogService
         this.host = host;
     }
 
-    public async Task<bool> ConfirmAsync(string message)
+    public Task<bool> ConfirmAsync(string message) => ConfirmAsync("Confirm", message, "Yes", "No");
+
+    public async Task<bool> ConfirmAsync(string title, string message, string acceptText, string cancelText)
     {
         using var dialog = new MessageDialogViewModel
         {
-            Title = "Confirm",
+            Title = title,
             Message = message,
-            PrimaryButtonText = "Yes",
-            CloseButtonText = "No"
+            PrimaryButtonText = acceptText,
+            CloseButtonText = cancelText
         };
         return await host.ShowAsync(dialog, static x => x.Completion).ConfigureAwait(true);
+    }
+
+    public async Task<SaveChoice> AskSaveChangesAsync(string message, bool canSave)
+    {
+        using var dialog = new MessageDialogViewModel
+        {
+            Title = "Save changes?",
+            Message = message,
+            PrimaryButtonText = "Save",
+            SecondaryButtonText = "Don't save",
+            CloseButtonText = "Cancel",
+            IsPrimaryEnabled = canSave
+        };
+        if (!await host.ShowAsync(dialog, static x => x.Completion).ConfigureAwait(true))
+        {
+            return SaveChoice.Cancel;
+        }
+
+        return dialog.IsSecondary ? SaveChoice.Discard : SaveChoice.Save;
     }
 
     public async Task NotifyAsync(string message)

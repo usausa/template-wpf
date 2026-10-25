@@ -8,15 +8,28 @@ public sealed class MessageDialogViewModel : DialogViewModelBase
 
     public string? PrimaryButtonText { get; init; }
 
+    public string? SecondaryButtonText { get; init; }
+
     public string CloseButtonText { get; init; } = string.Empty;
 
+    public bool IsPrimaryEnabled { get; init; } = true;
+
+    public bool IsSecondary { get; private set; }
+
     public IObserveCommand PrimaryCommand { get; }
+
+    public IObserveCommand SecondaryCommand { get; }
 
     public IObserveCommand CloseCommand { get; }
 
     public MessageDialogViewModel()
     {
-        PrimaryCommand = MakeDelegateCommand(() => Complete(true));
+        PrimaryCommand = MakeDelegateCommand(() => Complete(true), () => IsPrimaryEnabled);
+        SecondaryCommand = MakeDelegateCommand(() =>
+        {
+            IsSecondary = true;
+            Complete(true);
+        });
         CloseCommand = MakeDelegateCommand(() => Complete(false));
     }
 }

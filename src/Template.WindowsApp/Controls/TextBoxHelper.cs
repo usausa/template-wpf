@@ -1,5 +1,6 @@
 namespace Template.WindowsApp.Controls;
 
+using System.Text.RegularExpressions;
 using System.Windows.Controls;
 using System.Windows.Documents;
 
@@ -19,6 +20,11 @@ public static partial class TextBoxHelper
     public static partial string? GetPlaceholderText(TextBox textBox);
 
     public static partial void SetPlaceholderText(TextBox textBox, string? value);
+
+    [AttachedProperty(PropertyChanged = nameof(OnAllowedCharactersChanged))]
+    public static partial string? GetAllowedCharacters(TextBox textBox);
+
+    public static partial void SetAllowedCharacters(TextBox textBox, string? value);
 
     private static void OnPlaceholderTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -40,6 +46,48 @@ public static partial class TextBoxHelper
         if (textBox.IsLoaded)
         {
             Attach(textBox);
+        }
+    }
+
+    private static void OnAllowedCharactersChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is not TextBox textBox)
+        {
+            return;
+        }
+
+        textBox.PreviewTextInput -= OnPreviewTextInput;
+        DataObject.RemovePastingHandler(textBox, OnPasting);
+        if (e.NewValue is not null)
+        {
+            textBox.PreviewTextInput += OnPreviewTextInput;
+            DataObject.AddPastingHandler(textBox, OnPasting);
+        }
+    }
+
+    private static void OnPreviewTextInput(object sender, TextCompositionEventArgs e)
+    {
+        if ((GetAllowedCharacters((TextBox)sender) is { } pattern) && (Regex.Count(e.Text, pattern) != e.Text.Length))
+        {
+            e.Handled = true;
+        }
+    }
+
+    private static void OnPasting(object sender, DataObjectPastingEventArgs e)
+    {
+        if ((GetAllowedCharacters((TextBox)sender) is not { } pattern) || (e.SourceDataObject.GetData(DataFormats.UnicodeText) is not string text))
+        {
+            return;
+        }
+
+        var allowed = String.Concat(Regex.Matches(text, pattern).Select(static x => x.Value));
+        if (allowed.Length == 0)
+        {
+            e.CancelCommand();
+        }
+        else if (allowed.Length != text.Length)
+        {
+            e.DataObject = new DataObject(DataFormats.UnicodeText, allowed);
         }
     }
 

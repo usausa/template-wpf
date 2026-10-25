@@ -12,6 +12,7 @@ public enum ViewId
     Hierarchy,
     Validation,
     Wizard,
+    EditableGrid,
     Dialogs,
     Progress,
     Notifications,

@@ -12,7 +12,9 @@
                             CloseButtonCommand="{Binding CloseCommand}"
                             CloseButtonText="{Binding CloseButtonText}"
                             PrimaryButtonCommand="{Binding PrimaryCommand}"
-                            PrimaryButtonText="{Binding PrimaryButtonText}">
+                            PrimaryButtonText="{Binding PrimaryButtonText}"
+                            SecondaryButtonCommand="{Binding SecondaryCommand}"
+                            SecondaryButtonText="{Binding SecondaryButtonText}">
         <TextBlock TextWrapping="Wrap"
                    Text="{Binding Message}" />
     </controls:ContentDialog>

@@ -29,7 +29,8 @@ public sealed class NavigationMenu
             "\uF0E3",
             [
                 new(ViewId.Validation, "Validation", "\uE930"),
-                new(ViewId.Wizard, "Wizard", "\uEF90")
+                new(ViewId.Wizard, "Wizard", "\uEF90"),
+                new(ViewId.EditableGrid, "Editable grid", "\uEF60")
             ]),
         new NavigationGroup(
             "Feedback",

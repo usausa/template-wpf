@@ -25,10 +25,16 @@ public sealed partial class ContentDialog : ContentControl
     public partial string? PrimaryButtonText { get; set; }
 
     [DependencyProperty]
+    public partial string? SecondaryButtonText { get; set; }
+
+    [DependencyProperty]
     public partial string? CloseButtonText { get; set; }
 
     [DependencyProperty]
     public partial ICommand? PrimaryButtonCommand { get; set; }
+
+    [DependencyProperty]
+    public partial ICommand? SecondaryButtonCommand { get; set; }
 
     [DependencyProperty]
     public partial ICommand? CloseButtonCommand { get; set; }
@@ -60,7 +66,7 @@ public sealed partial class ContentDialog : ContentControl
             return;
         }
 
-        if (primaryButton is { IsVisible: true } button)
+        if (primaryButton is { IsVisible: true, IsEnabled: true } button)
         {
             button.Focus();
         }

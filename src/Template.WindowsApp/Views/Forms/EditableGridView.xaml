@@ -1,0 +1,406 @@
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:s="http://smart/windows"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:behaviors="clr-namespace:Template.WindowsApp.Behaviors"
+             xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
+             xmlns:helpers="clr-namespace:Template.WindowsApp.Helpers"
+             xmlns:module="clr-namespace:Template.WindowsApp.Views.Forms"
+             mc:Ignorable="d"
+             x:Class="Template.WindowsApp.Views.Forms.EditableGridView"
+             s:DataContextResolver.Type="{x:Type module:EditableGridViewModel}"
+             d:DataContext="{d:DesignInstance Type={x:Type module:EditableGridViewModel}}"
+             d:DesignWidth="800" d:DesignHeight="600">
+
+    <UserControl.Resources>
+        <helpers:ShortDateConverter x:Key="ShortDateConverter" />
+        <module:OrderLineCellConverter x:Key="CellConverter" />
+        <DataTemplate x:Key="IconTextTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock VerticalAlignment="Center"
+                           Text="{Binding Tag, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
+                           FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                           FontSize="16" />
+                <TextBlock Margin="8,0,0,0"
+                           VerticalAlignment="Center"
+                           Text="{Binding}" />
+            </StackPanel>
+        </DataTemplate>
+        <Style x:Key="CellTextStyle"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{x:Static DataGridTextColumn.DefaultElementStyle}">
+            <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
+        </Style>
+        <Style x:Key="NumberCellTextStyle"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource CellTextStyle}">
+            <Setter Property="Margin" Value="0,0,8,0" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+        <Style x:Key="EditingStyle"
+               TargetType="{x:Type TextBox}"
+               BasedOn="{x:Static DataGridTextColumn.DefaultEditingElementStyle}">
+            <Setter Property="Background" Value="{DynamicResource TextControlBackgroundFocused}" />
+            <Setter Property="Foreground" Value="{DynamicResource TextControlForegroundFocused}" />
+            <Setter Property="CaretBrush" Value="{DynamicResource TextControlForegroundFocused}" />
+        </Style>
+        <Style x:Key="CodeEditingStyle"
+               TargetType="{x:Type TextBox}"
+               BasedOn="{StaticResource EditingStyle}">
+            <Setter Property="MaxLength" Value="10" />
+            <Setter Property="CharacterCasing" Value="Upper" />
+            <Setter Property="controls:TextBoxHelper.AllowedCharacters" Value="[A-Za-z0-9-]" />
+        </Style>
+        <Style x:Key="DescriptionEditingStyle"
+               TargetType="{x:Type TextBox}"
+               BasedOn="{StaticResource EditingStyle}">
+            <Setter Property="MaxLength" Value="40" />
+        </Style>
+        <Style x:Key="NumberEditingStyle"
+               TargetType="{x:Type TextBox}"
+               BasedOn="{StaticResource EditingStyle}">
+            <Setter Property="TextAlignment" Value="Right" />
+            <Setter Property="controls:TextBoxHelper.AllowedCharacters" Value="[0-9]" />
+        </Style>
+        <Style x:Key="QuantityEditingStyle"
+               TargetType="{x:Type TextBox}"
+               BasedOn="{StaticResource NumberEditingStyle}">
+            <Setter Property="MaxLength" Value="3" />
+        </Style>
+        <Style x:Key="PriceEditingStyle"
+               TargetType="{x:Type TextBox}"
+               BasedOn="{StaticResource NumberEditingStyle}">
+            <Setter Property="MaxLength" Value="8" />
+            <Setter Property="controls:TextBoxHelper.AllowedCharacters" Value="[0-9.]" />
+        </Style>
+        <Style x:Key="DiscountEditingStyle"
+               TargetType="{x:Type TextBox}"
+               BasedOn="{StaticResource NumberEditingStyle}">
+            <Setter Property="MaxLength" Value="2" />
+        </Style>
+        <Style x:Key="NoteEditingStyle"
+               TargetType="{x:Type TextBox}"
+               BasedOn="{StaticResource EditingStyle}">
+            <Setter Property="MaxLength" Value="100" />
+        </Style>
+        <Style x:Key="LineCellStyle"
+               TargetType="{x:Type DataGridCell}"
+               BasedOn="{StaticResource DataGridCellStyle}"
+               d:DataContext="{d:DesignInstance Type={x:Type module:OrderLine}}">
+            <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
+            <Setter Property="ToolTip">
+                <Setter.Value>
+                    <MultiBinding Converter="{StaticResource CellConverter}"
+                                  ConverterParameter="Error">
+                        <Binding />
+                        <Binding Path="Column.SortMemberPath"
+                                 RelativeSource="{RelativeSource Self}" />
+                        <Binding Path="Revision" />
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Grid HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                              VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                              SnapsToDevicePixels="True">
+                            <Border x:Name="Border"
+                                    Background="Transparent" />
+                            <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            <Polygon x:Name="ChangedMark"
+                                     HorizontalAlignment="Left" VerticalAlignment="Top"
+                                     Visibility="Collapsed"
+                                     IsHitTestVisible="False"
+                                     Points="0,0 8,0 0,8"
+                                     Fill="{DynamicResource AccentFillColorDefaultBrush}" />
+                            <Border x:Name="ErrorBorder"
+                                    Visibility="Collapsed"
+                                    IsHitTestVisible="False"
+                                    BorderBrush="{DynamicResource SystemFillColorCriticalBrush}"
+                                    BorderThickness="1" />
+                            <Border x:Name="FocusBorder"
+                                    IsHitTestVisible="False"
+                                    BorderBrush="Transparent" BorderThickness="1" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{DynamicResource DataGridRowSelectedBackgroundThemeBrush}" />
+                                <Setter Property="Foreground" Value="{DynamicResource DataGridRowSelectedForegroundThemeBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="FocusBorder" Property="BorderBrush" Value="{DynamicResource {x:Static DataGrid.FocusBorderBrushKey}}" />
+                            </Trigger>
+                            <DataTrigger Value="True">
+                                <DataTrigger.Binding>
+                                    <MultiBinding Converter="{StaticResource CellConverter}"
+                                                  ConverterParameter="Changed">
+                                        <Binding />
+                                        <Binding Path="Column.SortMemberPath"
+                                                 RelativeSource="{RelativeSource Self}" />
+                                        <Binding Path="Revision" />
+                                    </MultiBinding>
+                                </DataTrigger.Binding>
+                                <Setter TargetName="ChangedMark" Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                            <DataTrigger Value="True">
+                                <DataTrigger.Binding>
+                                    <MultiBinding Converter="{StaticResource CellConverter}"
+                                                  ConverterParameter="HasError">
+                                        <Binding />
+                                        <Binding Path="Column.SortMemberPath"
+                                                 RelativeSource="{RelativeSource Self}" />
+                                        <Binding Path="Revision" />
+                                    </MultiBinding>
+                                </DataTrigger.Binding>
+                                <Setter TargetName="ErrorBorder" Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ImeOffCellStyle"
+               TargetType="{x:Type DataGridCell}"
+               BasedOn="{StaticResource LineCellStyle}">
+            <Setter Property="InputMethod.IsInputMethodEnabled" Value="False" />
+        </Style>
+        <Style x:Key="LineRowStyle"
+               TargetType="{x:Type DataGridRow}"
+               BasedOn="{StaticResource DefaultDataGridRowStyle}"
+               d:DataContext="{d:DesignInstance Type={x:Type module:OrderLine}}">
+            <Setter Property="Header" Value="{Binding}" />
+            <Setter Property="behaviors:DataGridReadOnlyRowBehavior.IsReadOnly" Value="{Binding IsLocked}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsLocked}"
+                             Value="True">
+                    <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="LineRowHeaderStyle"
+               TargetType="{x:Type DataGridRowHeader}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridRowHeader}">
+                        <Border Width="{TemplateBinding Width}"
+                                Background="Transparent">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <DataTemplate x:Key="LineRowHeaderTemplate"
+                      DataType="{x:Type module:OrderLine}">
+            <TextBlock x:Name="Mark"
+                       Width="16"
+                       TextAlignment="Center"
+                       FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                       FontSize="12" />
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding IsChanged}"
+                             Value="True">
+                    <Setter TargetName="Mark" Property="Text" Value="&#xEA3B;" />
+                    <Setter TargetName="Mark" Property="FontSize" Value="8" />
+                    <Setter TargetName="Mark" Property="Foreground" Value="{DynamicResource AccentTextFillColorPrimaryBrush}" />
+                    <Setter TargetName="Mark" Property="ToolTip" Value="Changed" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsNew}"
+                             Value="True">
+                    <Setter TargetName="Mark" Property="Text" Value="&#xE710;" />
+                    <Setter TargetName="Mark" Property="FontSize" Value="12" />
+                    <Setter TargetName="Mark" Property="Foreground" Value="{DynamicResource AccentTextFillColorPrimaryBrush}" />
+                    <Setter TargetName="Mark" Property="ToolTip" Value="Added" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding HasErrors}"
+                             Value="True">
+                    <Setter TargetName="Mark" Property="Text" Value="&#xEA39;" />
+                    <Setter TargetName="Mark" Property="FontSize" Value="12" />
+                    <Setter TargetName="Mark" Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+                    <Setter TargetName="Mark" Property="ToolTip" Value="{Binding ErrorText}" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
+                  Focusable="False">
+        <StackPanel Margin="24">
+            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+                       Text="Editable grid" />
+            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+                       Text="Edit rows with checks on each cell and row, undo and save the changes, and copy and paste with Excel." />
+
+            <Border Style="{StaticResource CardStyle}">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0"
+                                    Orientation="Horizontal">
+                            <Button Command="{Binding AddCommand}"
+                                    Content="Add row"
+                                    ContentTemplate="{StaticResource IconTextTemplate}"
+                                    Tag="&#xE710;" />
+                            <Button Margin="8,0,0,0"
+                                    Command="{Binding DuplicateCommand}"
+                                    Content="Duplicate"
+                                    ContentTemplate="{StaticResource IconTextTemplate}"
+                                    Tag="&#xE8C8;" />
+                            <Button Margin="8,0,0,0"
+                                    Command="{Binding DeleteCommand}"
+                                    Content="Delete"
+                                    ContentTemplate="{StaticResource IconTextTemplate}"
+                                    Tag="&#xE74D;" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    Margin="24,0,0,0">
+                            <Button Command="{Binding RevertCommand}"
+                                    Content="Revert"
+                                    ContentTemplate="{StaticResource IconTextTemplate}"
+                                    Tag="&#xE7A7;" />
+                            <Button Style="{DynamicResource AccentButtonStyle}"
+                                    Margin="8,0,0,0"
+                                    Command="{Binding SaveCommand}"
+                                    Content="Save"
+                                    ContentTemplate="{StaticResource IconTextTemplate}"
+                                    Tag="&#xE74E;" />
+                        </StackPanel>
+                        <TextBlock Grid.Column="2"
+                                   Margin="16,0,0,0"
+                                   HorizontalAlignment="Right" VerticalAlignment="Center"
+                                   Text="{Binding Summary}"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                    </Grid>
+
+                    <DataGrid Margin="0,16,0,0"
+                              ItemsSource="{Binding Lines}"
+                              SelectionMode="Extended"
+                              AutoGenerateColumns="False" AutomationProperties.Name="Order lines" CanUserAddRows="False" CanUserDeleteRows="False"
+                              CanUserSortColumns="False"
+                              CellStyle="{StaticResource LineCellStyle}"
+                              ClipboardCopyMode="ExcludeHeader"
+                              CurrentItem="{Binding CurrentItem, Mode=OneWayToSource}"
+                              HeadersVisibility="All"
+                              RowHeaderStyle="{StaticResource LineRowHeaderStyle}"
+                              RowHeaderTemplate="{StaticResource LineRowHeaderTemplate}"
+                              RowHeaderWidth="28"
+                              RowStyle="{StaticResource LineRowStyle}"
+                              SelectionUnit="CellOrRowHeader">
+                        <DataGrid.Resources>
+                            <Style TargetType="{x:Type ContentPresenter}">
+                                <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.InputBindings>
+                            <KeyBinding Key="Insert"
+                                        Command="{Binding AddCommand}" />
+                            <KeyBinding Key="D"
+                                        Command="{Binding DuplicateCommand}"
+                                        Modifiers="Control" />
+                            <KeyBinding Key="Delete"
+                                        Command="{Binding DeleteCommand}" />
+                        </DataGrid.InputBindings>
+                        <DataGrid.RowValidationRules>
+                            <module:OrderLineValidationRule ValidationStep="UpdatedValue" />
+                        </DataGrid.RowValidationRules>
+                        <i:Interaction.Behaviors>
+                            <behaviors:CommitEditOnLostFocusBehavior />
+                            <behaviors:DataGridSelectedRowsBehavior SelectedRows="{Binding SelectedRows, Mode=OneWayToSource}" />
+                            <behaviors:DataGridPasteBehavior Command="{Binding PasteCommand}" />
+                            <behaviors:DataGridReadOnlyRowBehavior />
+                            <behaviors:DataGridStayOnInvalidRowBehavior />
+                            <behaviors:DataGridKeepFocusOnRemoveBehavior />
+                            <behaviors:DataGridTypeToEditBehavior />
+                        </i:Interaction.Behaviors>
+                        <i:Interaction.Triggers>
+                            <s:EventRequestTrigger Request="{Binding CommitRequest}">
+                                <behaviors:DataGridEndEditAction />
+                            </s:EventRequestTrigger>
+                            <s:EventRequestTrigger Request="{Binding CancelRequest}">
+                                <behaviors:DataGridEndEditAction Cancel="True" />
+                            </s:EventRequestTrigger>
+                            <s:EventRequestTrigger Request="{Binding EditRequest}">
+                                <behaviors:DataGridBeginEditAction />
+                            </s:EventRequestTrigger>
+                        </i:Interaction.Triggers>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="96" MinWidth="96"
+                                                Binding="{Binding Code}"
+                                                CellStyle="{StaticResource ImeOffCellStyle}"
+                                                EditingElementStyle="{StaticResource CodeEditingStyle}"
+                                                ElementStyle="{StaticResource CellTextStyle}"
+                                                Header="Item code" />
+                            <DataGridTextColumn Width="2*" MinWidth="120"
+                                                Binding="{Binding Description}"
+                                                EditingElementStyle="{StaticResource DescriptionEditingStyle}"
+                                                ElementStyle="{StaticResource CellTextStyle}"
+                                                Header="Description" />
+                            <DataGridTextColumn Width="88" MinWidth="88"
+                                                Binding="{Binding Quantity}"
+                                                CellStyle="{StaticResource ImeOffCellStyle}"
+                                                EditingElementStyle="{StaticResource QuantityEditingStyle}"
+                                                ElementStyle="{StaticResource NumberCellTextStyle}"
+                                                Header="Quantity" />
+                            <DataGridTextColumn Width="96" MinWidth="96"
+                                                Binding="{Binding UnitPrice, StringFormat=0.00}"
+                                                CellStyle="{StaticResource ImeOffCellStyle}"
+                                                EditingElementStyle="{StaticResource PriceEditingStyle}"
+                                                ElementStyle="{StaticResource NumberCellTextStyle}"
+                                                Header="Unit price" />
+                            <DataGridTextColumn Width="112" MinWidth="112"
+                                                Binding="{Binding Discount}"
+                                                CellStyle="{StaticResource ImeOffCellStyle}"
+                                                EditingElementStyle="{StaticResource DiscountEditingStyle}"
+                                                ElementStyle="{StaticResource NumberCellTextStyle}"
+                                                Header="Discount (%)" />
+                            <DataGridTextColumn Width="104" MinWidth="104"
+                                                Binding="{Binding Amount, Mode=OneWay, StringFormat=N2}"
+                                                ElementStyle="{StaticResource NumberCellTextStyle}"
+                                                Header="Amount" IsReadOnly="True" />
+                            <DataGridTemplateColumn Width="112" MinWidth="112"
+                                                    ClipboardContentBinding="{Binding Delivery, Converter={StaticResource ShortDateConverter}}"
+                                                    Header="Delivery" SortMemberPath="Delivery">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate DataType="{x:Type module:OrderLine}">
+                                        <TextBlock Style="{StaticResource CellTextStyle}"
+                                                   Text="{Binding Delivery, Converter={StaticResource ShortDateConverter}}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate DataType="{x:Type module:OrderLine}">
+                                        <DatePicker AutomationProperties.Name="Delivery"
+                                                    SelectedDate="{Binding Delivery, UpdateSourceTrigger=PropertyChanged}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridComboBoxColumn Width="112" MinWidth="112"
+                                                    ItemsSource="{x:Static module:EditableGridViewModel.Statuses}"
+                                                    Header="Status"
+                                                    SelectedItemBinding="{Binding Status}"
+                                                    SortMemberPath="Status" />
+                            <DataGridTextColumn Width="*" MinWidth="100"
+                                                Binding="{Binding Note}"
+                                                EditingElementStyle="{StaticResource NoteEditingStyle}"
+                                                ElementStyle="{StaticResource CellTextStyle}"
+                                                Header="Note" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <TextBlock Margin="0,12,0,0"
+                               Text="Esc undoes the cell, Esc again the whole row. Ctrl+C and Ctrl+V work with Excel."
+                               FontSize="12"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>
