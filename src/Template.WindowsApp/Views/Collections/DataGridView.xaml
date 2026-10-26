@@ -16,6 +16,17 @@
 
     <UserControl.Resources>
         <helpers:CurrencyConverter x:Key="CurrencyConverter" />
+        <helpers:ShortDateConverter x:Key="ShortDateConverter" />
+        <Style x:Key="ColumnMenuItemStyle"
+               TargetType="{x:Type MenuItem}"
+               BasedOn="{StaticResource {x:Type MenuItem}}"
+               d:DataContext="{d:DesignInstance Type={x:Type behaviors:DataGridColumnSetting}}">
+            <Setter Property="Header" Value="{Binding Header}" />
+            <Setter Property="IsCheckable" Value="True" />
+            <Setter Property="IsChecked" Value="{Binding IsVisible}" />
+            <Setter Property="IsEnabled" Value="{Binding CanHide}" />
+            <Setter Property="StaysOpenOnClick" Value="True" />
+        </Style>
         <Style x:Key="NumberCellTextStyle"
                TargetType="{x:Type TextBlock}"
                BasedOn="{x:Static DataGridTextColumn.DefaultElementStyle}">
@@ -34,31 +45,48 @@
             <TextBlock Style="{StaticResource PageTitleTextStyle}"
                        Text="Data grid" />
             <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
-                       Text="Sort, filter, edit and page through products." />
+                       Text="Sort, filter, edit and page through products, and choose, freeze and resize the columns." />
 
             <Border Style="{StaticResource CardStyle}">
                 <StackPanel>
-                    <TextBox Width="240"
-                             controls:TextBoxHelper.PlaceholderText="Search"
-                             HorizontalAlignment="Left"
-                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
-                             AutomationProperties.Name="Search" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Width="240"
+                                 controls:TextBoxHelper.PlaceholderText="Search"
+                                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                                 AutomationProperties.Name="Search" />
+                        <controls:DropDownButton Margin="16,0,0,0"
+                                                 Content="Columns"
+                                                 AutomationProperties.Name="Columns">
+                            <controls:DropDownButton.ContextMenu>
+                                <ContextMenu ItemsSource="{Binding Columns}"
+                                             ItemContainerStyle="{StaticResource ColumnMenuItemStyle}" />
+                            </controls:DropDownButton.ContextMenu>
+                        </controls:DropDownButton>
+                        <CheckBox Margin="16,0,0,0"
+                                  IsChecked="{Binding IsFrozen}"
+                                  Content="Freeze Code and Name" />
+                        <Button Margin="16,0,0,0"
+                                Command="{Binding ResetColumnsCommand}"
+                                Content="Reset columns" />
+                    </StackPanel>
 
                     <DataGrid Margin="0,16,0,0"
                               ItemsSource="{Binding Items}"
                               AutoGenerateColumns="False" AutomationProperties.Name="Products" CanUserAddRows="False" CanUserDeleteRows="False"
                               CellStyle="{StaticResource DataGridCellStyle}"
+                              FrozenColumnCount="{Binding FrozenColumnCount}"
                               HeadersVisibility="Column">
                         <i:Interaction.Behaviors>
                             <behaviors:DataGridSortBehavior Sort="{Binding Sort}" />
                             <behaviors:CommitEditOnLostFocusBehavior />
+                            <behaviors:DataGridColumnLayoutBehavior Columns="{Binding Columns}" />
                         </i:Interaction.Behaviors>
                         <DataGrid.Columns>
                             <DataGridTextColumn Width="80"
                                                 Binding="{Binding Code}"
                                                 Header="Code"
                                                 IsReadOnly="True" />
-                            <DataGridTextColumn Width="*"
+                            <DataGridTextColumn Width="240"
                                                 Binding="{Binding Name}"
                                                 Header="Name"
                                                 EditingElementStyle="{StaticResource DataGridEditingTextBoxStyle}" />
@@ -68,6 +96,14 @@
                                                     EditingElementStyle="{StaticResource DataGridEditingComboBoxStyle}"
                                                     SelectedItemBinding="{Binding Category}"
                                                     SortMemberPath="Category" />
+                            <DataGridTextColumn Width="140"
+                                                Binding="{Binding Supplier}"
+                                                Header="Supplier"
+                                                IsReadOnly="True" />
+                            <DataGridTextColumn Width="110"
+                                                Binding="{Binding Warehouse}"
+                                                Header="Warehouse"
+                                                IsReadOnly="True" />
                             <DataGridTextColumn Width="100"
                                                 Binding="{Binding Price, Converter={StaticResource CurrencyConverter}}"
                                                 Header="Price"
@@ -78,6 +114,10 @@
                                                 Header="Stock"
                                                 EditingElementStyle="{StaticResource NumberCellEditingStyle}"
                                                 ElementStyle="{StaticResource NumberCellTextStyle}" />
+                            <DataGridTextColumn Width="110"
+                                                Binding="{Binding Updated, Converter={StaticResource ShortDateConverter}}"
+                                                Header="Updated"
+                                                IsReadOnly="True" SortMemberPath="Updated" />
                             <DataGridCheckBoxColumn Width="72"
                                                     Binding="{Binding IsActive}"
                                                     Header="Active" />

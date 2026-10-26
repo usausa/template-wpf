@@ -83,4 +83,29 @@ public sealed class ServerRowTests
         Assert.Null(row.LatencyMin);
         Assert.Null(row.LatencyMax);
     }
+
+    [Theory]
+    [InlineData("web-01", "web")]
+    [InlineData("queue-01", "queue")]
+    public void RoleIsFirstPartOfName(string name, string role)
+    {
+        // Act
+        var row = new ServerRow { Name = name };
+
+        // Assert
+        Assert.Equal(role, row.Role);
+    }
+
+    [Theory]
+    [InlineData(12, 7, 5)]
+    [InlineData(0, -1, 1)]
+    [InlineData(null, null, null)]
+    public void ErrorsYesterdayRemovesChange(int? errors, int? change, int? expected)
+    {
+        // Act
+        var row = new ServerRow { Name = "web-01", Errors = errors, ErrorChange = change };
+
+        // Assert
+        Assert.Equal(expected, row.ErrorsYesterday);
+    }
 }

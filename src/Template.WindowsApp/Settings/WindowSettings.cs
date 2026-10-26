@@ -61,6 +61,13 @@ public sealed class WindowSettings : ApplicationSettingsBase
     }
 
     [UserScopedSetting]
+    public string? GridLayouts
+    {
+        get => (string?)this[nameof(GridLayouts)];
+        set => this[nameof(GridLayouts)] = value;
+    }
+
+    [UserScopedSetting]
     [DefaultSettingValue("Light")]
     public string Theme
     {

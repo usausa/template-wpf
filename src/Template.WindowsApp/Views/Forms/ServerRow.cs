@@ -12,6 +12,8 @@ public sealed class ServerRow
 
     public required string Name { get; init; }
 
+    public string Role => Name.Split('-')[0];
+
     public ServerState Status { get; init; }
 
     public double? Cpu { get; init; }
@@ -42,6 +44,8 @@ public sealed class ServerRow
     };
 
     public int ErrorChangeAmount => Math.Abs(ErrorChange ?? 0);
+
+    public int? ErrorsYesterday => Errors - ErrorChange;
 
     public double? LatencyNow => Latency?[^1];
 

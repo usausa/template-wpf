@@ -1,5 +1,7 @@
 namespace Template.WindowsApp.Views;
 
+using System.Text.Json;
+
 using Microsoft.Extensions.DependencyInjection;
 
 using Template.WindowsApp.Controls;
@@ -21,6 +23,8 @@ public interface IWindowManager
     IList<string> RecentCommands { get; }
 
     IDictionary<string, int> CommandCounts { get; }
+
+    IDictionary<string, GridLayout> GridLayouts { get; }
 
     event EventHandler? WindowsChanged;
 
@@ -79,6 +83,8 @@ public sealed class WindowManager : NotificationObject, IWindowManager
 
     public IDictionary<string, int> CommandCounts { get; } = new Dictionary<string, int>();
 
+    public IDictionary<string, GridLayout> GridLayouts { get; } = new Dictionary<string, GridLayout>();
+
     public event EventHandler? WindowsChanged;
 
     public WindowManager(IServiceProvider provider, NavigationMenu menu, NotificationService notifications)
@@ -127,6 +133,7 @@ public sealed class WindowManager : NotificationObject, IWindowManager
         menu.Restore(
             (settings.FavoriteViews ?? string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries),
             (settings.RecentViews ?? string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries));
+        RestoreGridLayouts(settings.GridLayouts);
 
         if (!String.IsNullOrEmpty(settings.LastVersion) && (settings.LastVersion != CurrentVersion))
         {
@@ -152,6 +159,26 @@ public sealed class WindowManager : NotificationObject, IWindowManager
         if (placement.Maximized)
         {
             window.WindowState = WindowState.Maximized;
+        }
+    }
+
+    private void RestoreGridLayouts(string? json)
+    {
+        if (String.IsNullOrEmpty(json))
+        {
+            return;
+        }
+
+        try
+        {
+            foreach (var pair in JsonSerializer.Deserialize<Dictionary<string, GridLayout>>(json) ?? [])
+            {
+                GridLayouts[pair.Key] = pair.Value;
+            }
+        }
+        catch (JsonException)
+        {
+            GridLayouts.Clear();
         }
     }
 
@@ -190,6 +217,7 @@ public sealed class WindowManager : NotificationObject, IWindowManager
         settings.CommandCounts = string.Join(',', CommandCounts.Select(static x => String.Create(CultureInfo.InvariantCulture, $"{x.Key}={x.Value}")));
         settings.RecentViews = string.Join(',', menu.RecentPages.Select(static x => x.Id));
         settings.FavoriteViews = string.Join(',', menu.Favorites.Items.Select(static x => x.Id));
+        settings.GridLayouts = JsonSerializer.Serialize(GridLayouts);
         settings.LastVersion = CurrentVersion;
 
         settings.Save();

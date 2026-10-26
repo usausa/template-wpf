@@ -14,6 +14,25 @@
              d:DesignWidth="800" d:DesignHeight="600">
 
     <UserControl.Resources>
+        <module:ServerGroupSummaryConverter x:Key="GroupSummaryConverter" />
+        <s:MapToTextConverter x:Key="GroupByToPropertyConverter"
+                              DefaultValue="">
+            <s:MapToTextConverter.Entries>
+                <s:MapToTextEntry Key="{x:Static module:ServerGrouping.Role}"
+                                  Value="Role" />
+                <s:MapToTextEntry Key="{x:Static module:ServerGrouping.Status}"
+                                  Value="Status" />
+            </s:MapToTextConverter.Entries>
+        </s:MapToTextConverter>
+        <Style x:Key="DetailLabelStyle"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="0,0,16,8" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+        <Style x:Key="DetailValueStyle"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="0,0,0,8" />
+        </Style>
         <Style x:Key="CellTextStyle"
                TargetType="{x:Type TextBlock}">
             <Setter Property="VerticalAlignment" Value="Center" />
@@ -33,18 +52,163 @@
             <TextBlock Style="{StaticResource PageTitleTextStyle}"
                        Text="Grid visuals" />
             <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
-                       Text="Show the state of each server in the cells with badges, bars, progress, colors and small trend lines." />
+                       Text="Show the state of each server in the cells with badges, bars, progress, colors and small trend lines, group the servers and open a row for details." />
 
             <Border Style="{StaticResource CardStyle}">
                 <StackPanel>
-                    <DataGrid ItemsSource="{Binding Items}"
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="0,0,12,0"
+                                   VerticalAlignment="Center"
+                                   Text="Group by" />
+                        <ComboBox Width="160"
+                                  AutomationProperties.Name="Group by"
+                                  SelectedValue="{Binding GroupBy}"
+                                  SelectedValuePath="Tag">
+                            <ComboBoxItem Content="None"
+                                          Tag="{x:Static module:ServerGrouping.None}" />
+                            <ComboBoxItem Content="Role"
+                                          Tag="{x:Static module:ServerGrouping.Role}" />
+                            <ComboBoxItem Content="Status"
+                                          Tag="{x:Static module:ServerGrouping.Status}" />
+                        </ComboBox>
+                    </StackPanel>
+
+                    <DataGrid Margin="0,16,0,0"
+                              ItemsSource="{Binding Items}"
                               SelectionMode="Single"
                               AutoGenerateColumns="False" AutomationProperties.Name="Servers" CanUserAddRows="False" CanUserDeleteRows="False"
                               CellStyle="{StaticResource DataGridCellStyle}"
-                              HeadersVisibility="Column" IsReadOnly="True" MinRowHeight="40" SelectionUnit="FullRow">
+                              HeadersVisibility="Column" IsReadOnly="True" MinRowHeight="40" RowDetailsVisibilityMode="VisibleWhenSelected"
+                              SelectionUnit="FullRow">
                         <i:Interaction.Behaviors>
                             <behaviors:DataGridSortBehavior Sort="{Binding Sort}" />
+                            <behaviors:DataGridGroupBehavior PropertyName="{Binding GroupBy, Converter={StaticResource GroupByToPropertyConverter}}" />
                         </i:Interaction.Behaviors>
+                        <DataGrid.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.ContainerStyle>
+                                    <Style TargetType="{x:Type GroupItem}"
+                                           d:DataContext="{d:DesignInstance Type={x:Type CollectionViewGroup}}">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type GroupItem}">
+                                                    <Expander Padding="0"
+                                                              IsExpanded="True">
+                                                        <Expander.Header>
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <TextBlock Text="{Binding Name}"
+                                                                           FontWeight="SemiBold" />
+                                                                <TextBlock Margin="16,0,0,0"
+                                                                           Text="{Binding Items, Converter={StaticResource GroupSummaryConverter}}"
+                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                                            </StackPanel>
+                                                        </Expander.Header>
+                                                        <ItemsPresenter />
+                                                    </Expander>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </GroupStyle.ContainerStyle>
+                            </GroupStyle>
+                        </DataGrid.GroupStyle>
+                        <DataGrid.RowDetailsTemplate>
+                            <DataTemplate DataType="{x:Type module:ServerRow}">
+                                <Grid Margin="16,8,16,16">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel x:Name="Chart"
+                                                Grid.Column="0">
+                                        <TextBlock Style="{StaticResource DetailLabelStyle}"
+                                                   Text="Latency in the last 24 hours" />
+                                        <controls:LineChart Height="120"
+                                                            Fill="{StaticResource ChartBlueSuperLightBrush}"
+                                                            Stroke="{StaticResource ChartBlueBrush}"
+                                                            GridBrush="{DynamicResource DividerStrokeColorDefaultBrush}"
+                                                            LabelBrush="{DynamicResource TextFillColorSecondaryBrush}"
+                                                            Labels="{x:Static module:GridVisualsViewModel.HourLabels}"
+                                                            Values="{Binding Latency}" />
+                                    </StackPanel>
+                                    <TextBlock x:Name="NoData"
+                                               Grid.Column="0"
+                                               VerticalAlignment="Center"
+                                               Visibility="Collapsed"
+                                               Text="No data in the last 24 hours."
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                    <Grid Grid.Column="1"
+                                          Margin="32,0,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Row="0" Grid.Column="0"
+                                                   Style="{StaticResource DetailLabelStyle}"
+                                                   Text="Latency" />
+                                        <TextBlock x:Name="LatencyText"
+                                                   Grid.Row="0" Grid.Column="1"
+                                                   Style="{StaticResource DetailValueStyle}">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}min {0:0} ms · max {1:0} ms · now {2:0} ms">
+                                                    <Binding Path="LatencyMin" />
+                                                    <Binding Path="LatencyMax" />
+                                                    <Binding Path="LatencyNow" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                        <TextBlock Grid.Row="1" Grid.Column="0"
+                                                   Style="{StaticResource DetailLabelStyle}"
+                                                   Text="Memory" />
+                                        <TextBlock x:Name="MemoryText"
+                                                   Grid.Row="1" Grid.Column="1"
+                                                   Style="{StaticResource DetailValueStyle}">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0:0.0} of {1:0} GB">
+                                                    <Binding Path="MemoryUsed" />
+                                                    <Binding Path="MemoryTotal" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                        <TextBlock Grid.Row="2" Grid.Column="0"
+                                                   Style="{StaticResource DetailLabelStyle}"
+                                                   Text="Uptime (30 days)" />
+                                        <TextBlock Grid.Row="2" Grid.Column="1"
+                                                   Style="{StaticResource DetailValueStyle}"
+                                                   Text="{Binding Uptime, StringFormat={}{0:0.00}%}" />
+                                        <TextBlock Grid.Row="3" Grid.Column="0"
+                                                   Style="{StaticResource DetailLabelStyle}"
+                                                   Text="Errors" />
+                                        <TextBlock x:Name="ErrorsText"
+                                                   Grid.Row="3" Grid.Column="1"
+                                                   Style="{StaticResource DetailValueStyle}">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0} today · {1} yesterday">
+                                                    <Binding Path="Errors" />
+                                                    <Binding Path="ErrorsYesterday" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </Grid>
+                                </Grid>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding Status}"
+                                                 Value="Down">
+                                        <Setter TargetName="Chart" Property="Visibility" Value="Collapsed" />
+                                        <Setter TargetName="NoData" Property="Visibility" Value="Visible" />
+                                        <Setter TargetName="LatencyText" Property="Text" Value="No data" />
+                                        <Setter TargetName="MemoryText" Property="Text" Value="No data" />
+                                        <Setter TargetName="ErrorsText" Property="Text" Value="No data" />
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </DataGrid.RowDetailsTemplate>
                         <DataGrid.Columns>
                             <DataGridTemplateColumn Width="112" MinWidth="112"
                                                     Header="Server"
@@ -360,6 +524,18 @@
                             </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
+
+                    <TextBlock Margin="0,12,0,0">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}Servers {0} · Warning {1} · Down {2} · CPU average {3:0}% · Errors {4}">
+                                <Binding Path="ServerCount" />
+                                <Binding Path="WarningCount" />
+                                <Binding Path="DownCount" />
+                                <Binding Path="AverageCpu" />
+                                <Binding Path="ErrorTotal" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
 
                     <TextBlock Margin="0,12,0,0"
                                TextWrapping="Wrap"
