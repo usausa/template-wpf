@@ -70,7 +70,8 @@ public sealed class NavigationMenu
             [
                 new(ViewId.Panels, "Panels", "\uE8A1"),
                 new(ViewId.Containers, "Containers", "\uE90C"),
-                new(ViewId.MenusToolbars, "Menus & toolbars", "\uEDE3")
+                new(ViewId.MenusToolbars, "Menus & toolbars", "\uEDE3"),
+                new(ViewId.Tabs, "Tabs", "\uE89A")
             ]),
         new NavigationGroup(
             "Design",

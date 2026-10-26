@@ -26,6 +26,7 @@ public enum ViewId
     Panels,
     Containers,
     MenusToolbars,
+    Tabs,
     Colors,
     Typography,
     Icons,

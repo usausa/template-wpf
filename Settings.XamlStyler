@@ -172,6 +172,14 @@
     "DisplayName",
     "Role",
 
+    "TabWidthMode",
+    "CloseButtonOverlayMode",
+    "AddTabButtonCommand",
+    "CloseTabCommand",
+    "AvailableWidth",
+    "ReservedWidth",
+    "MoveCommand",
+
     "ToolTip",
 
     "*",

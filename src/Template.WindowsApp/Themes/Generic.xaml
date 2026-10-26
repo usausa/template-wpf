@@ -958,4 +958,169 @@
         </Setter>
     </Style>
 
+    <Style x:Key="TabViewButtonStyle"
+           TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+        <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource SubtleFillColorTertiaryBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type controls:TabView}">
+        <Setter Property="Background" Value="{DynamicResource CardBackgroundFillColorDefaultBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource CardStrokeColorDefaultBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:TabView}">
+                    <Grid KeyboardNavigation.TabNavigation="Local">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0"
+                              Margin="0,0,0,-1"
+                              HorizontalAlignment="Left"
+                              Panel.ZIndex="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <ScrollViewer x:Name="PART_ScrollViewer"
+                                          Grid.Column="0"
+                                          HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled"
+                                          Focusable="False">
+                                <controls:TabStripPanel x:Name="TabStrip"
+                                                        AvailableWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
+                                                        ReservedWidth="40"
+                                                        IsItemsHost="True" />
+                            </ScrollViewer>
+                            <Button x:Name="PART_AddButton"
+                                    Grid.Column="1"
+                                    Style="{StaticResource TabViewButtonStyle}"
+                                    Width="36" Height="36"
+                                    Margin="4,0,0,0"
+                                    Command="{TemplateBinding AddTabButtonCommand}"
+                                    Content="&#xE710;"
+                                    ToolTip="New tab"
+                                    AutomationProperties.Name="New tab" />
+                        </Grid>
+                        <Border Grid.Row="1"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                KeyboardNavigation.DirectionalNavigation="Contained" KeyboardNavigation.TabNavigation="Local">
+                            <ContentPresenter x:Name="PART_SelectedContentHost"
+                                              ContentSource="SelectedContent" />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="TabWidthMode" Value="Equal">
+                            <Setter TargetName="TabStrip" Property="IsEqualWidth" Value="True" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type controls:TabViewItem}">
+        <Setter Property="Height" Value="36" />
+        <Setter Property="MaxWidth" Value="240" />
+        <Setter Property="Padding" Value="12,0,4,0" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:TabViewItem}">
+                    <Border x:Name="Root"
+                            Padding="{TemplateBinding Padding}"
+                            Background="Transparent"
+                            BorderBrush="Transparent" BorderThickness="1,1,1,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock x:Name="GlyphText"
+                                       Grid.Column="0"
+                                       Margin="0,0,8,0"
+                                       VerticalAlignment="Center"
+                                       Text="{TemplateBinding Glyph}"
+                                       FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                                       FontSize="14" />
+                            <ContentPresenter x:Name="HeaderPresenter"
+                                              Grid.Column="1"
+                                              VerticalAlignment="Center"
+                                              ContentSource="Header" />
+                            <Button x:Name="PART_CloseButton"
+                                    Grid.Column="2"
+                                    Style="{StaticResource TabViewButtonStyle}"
+                                    Width="28" Height="28"
+                                    Margin="4,0,0,0"
+                                    Focusable="False"
+                                    Content="&#xE711;"
+                                    FontSize="10"
+                                    ToolTip="Close tab"
+                                    AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource TemplatedParent}, StringFormat='Close {0}'}" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Glyph" Value="{x:Null}">
+                            <Setter TargetName="GlyphText" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Root" Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Root" Property="Background" Value="{DynamicResource CardBackgroundFillColorDefaultBrush}" />
+                            <Setter TargetName="Root" Property="BorderBrush" Value="{DynamicResource CardStrokeColorDefaultBrush}" />
+                            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+                            <Setter Property="Panel.ZIndex" Value="1" />
+                        </Trigger>
+                        <DataTrigger Binding="{Binding CloseButtonOverlayMode, RelativeSource={RelativeSource AncestorType={x:Type controls:TabView}}}"
+                                     Value="OnPointerOver">
+                            <Setter TargetName="PART_CloseButton" Property="Visibility" Value="Hidden" />
+                        </DataTrigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="PART_CloseButton" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PART_CloseButton" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding TabWidthMode, RelativeSource={RelativeSource AncestorType={x:Type controls:TabView}}}" Value="Compact" />
+                                <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource Self}}" Value="False" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="Root" Property="Padding" Value="12,0,12,0" />
+                            <Setter TargetName="GlyphText" Property="Margin" Value="0" />
+                            <Setter TargetName="HeaderPresenter" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_CloseButton" Property="Visibility" Value="Collapsed" />
+                        </MultiDataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>
