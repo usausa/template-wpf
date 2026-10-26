@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:s="http://smart/windows"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:behaviors="clr-namespace:Template.WindowsApp.Behaviors"
              xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
              xmlns:helpers="clr-namespace:Template.WindowsApp.Helpers"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Forms"
@@ -170,7 +169,7 @@
                BasedOn="{StaticResource DefaultDataGridRowStyle}"
                d:DataContext="{d:DesignInstance Type={x:Type module:OrderLine}}">
             <Setter Property="Header" Value="{Binding}" />
-            <Setter Property="behaviors:DataGridReadOnlyRowBehavior.IsReadOnly" Value="{Binding IsLocked}" />
+            <Setter Property="module:EditableGridBehavior.IsReadOnly" Value="{Binding IsLocked}" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsLocked}"
                              Value="True">
@@ -320,25 +319,12 @@
                             <module:OrderLineValidationRule ValidationStep="UpdatedValue" />
                         </DataGrid.RowValidationRules>
                         <i:Interaction.Behaviors>
-                            <behaviors:CommitEditOnLostFocusBehavior />
-                            <behaviors:DataGridSelectedRowsBehavior SelectedRows="{Binding SelectedRows, Mode=OneWayToSource}" />
-                            <behaviors:DataGridPasteBehavior Command="{Binding PasteCommand}" />
-                            <behaviors:DataGridReadOnlyRowBehavior />
-                            <behaviors:DataGridStayOnInvalidRowBehavior />
-                            <behaviors:DataGridKeepFocusOnRemoveBehavior />
-                            <behaviors:DataGridTypeToEditBehavior />
+                            <module:EditableGridBehavior CancelRequest="{Binding CancelRequest}"
+                                                         CommitRequest="{Binding CommitRequest}"
+                                                         EditRequest="{Binding EditRequest}"
+                                                         PasteCommand="{Binding PasteCommand}"
+                                                         SelectedRows="{Binding SelectedRows, Mode=OneWayToSource}" />
                         </i:Interaction.Behaviors>
-                        <i:Interaction.Triggers>
-                            <s:EventRequestTrigger Request="{Binding CommitRequest}">
-                                <behaviors:DataGridEndEditAction />
-                            </s:EventRequestTrigger>
-                            <s:EventRequestTrigger Request="{Binding CancelRequest}">
-                                <behaviors:DataGridEndEditAction Cancel="True" />
-                            </s:EventRequestTrigger>
-                            <s:EventRequestTrigger Request="{Binding EditRequest}">
-                                <behaviors:DataGridBeginEditAction />
-                            </s:EventRequestTrigger>
-                        </i:Interaction.Triggers>
                         <DataGrid.Columns>
                             <DataGridTextColumn Width="96" MinWidth="96"
                                                 Binding="{Binding Code}"
