@@ -234,49 +234,59 @@
 
             <Border Style="{StaticResource CardStyle}">
                 <StackPanel>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0"
-                                    Orientation="Horizontal">
-                            <Button Command="{Binding AddCommand}"
-                                    Content="Add row"
-                                    ContentTemplate="{StaticResource IconTextTemplate}"
-                                    Tag="&#xE710;" />
-                            <Button Margin="8,0,0,0"
-                                    Command="{Binding DuplicateCommand}"
-                                    Content="Duplicate"
-                                    ContentTemplate="{StaticResource IconTextTemplate}"
-                                    Tag="&#xE8C8;" />
-                            <Button Margin="8,0,0,0"
-                                    Command="{Binding DeleteCommand}"
-                                    Content="Delete"
-                                    ContentTemplate="{StaticResource IconTextTemplate}"
-                                    Tag="&#xE74D;" />
-                        </StackPanel>
-                        <StackPanel Grid.Column="1"
-                                    Orientation="Horizontal"
-                                    Margin="24,0,0,0">
-                            <Button Command="{Binding RevertCommand}"
-                                    Content="Revert"
-                                    ContentTemplate="{StaticResource IconTextTemplate}"
-                                    Tag="&#xE7A7;" />
-                            <Button Style="{DynamicResource AccentButtonStyle}"
-                                    Margin="8,0,0,0"
-                                    Command="{Binding SaveCommand}"
-                                    Content="Save"
-                                    ContentTemplate="{StaticResource IconTextTemplate}"
-                                    Tag="&#xE74E;" />
-                        </StackPanel>
-                        <TextBlock Grid.Column="2"
-                                   Margin="16,0,0,0"
-                                   HorizontalAlignment="Right" VerticalAlignment="Center"
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Right"
+                                   MinWidth="160"
+                                   Margin="16,6,0,0"
+                                   VerticalAlignment="Top"
+                                   TextAlignment="Right"
                                    Text="{Binding Summary}"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                    </Grid>
+                        <WrapPanel Margin="0,0,0,-8">
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="0,0,24,8">
+                                <Button Command="{Binding AddCommand}"
+                                        Content="Add row"
+                                        ContentTemplate="{StaticResource IconTextTemplate}"
+                                        Tag="&#xE710;" />
+                                <Button Margin="8,0,0,0"
+                                        Command="{Binding DuplicateCommand}"
+                                        Content="Duplicate"
+                                        ContentTemplate="{StaticResource IconTextTemplate}"
+                                        Tag="&#xE8C8;" />
+                                <Button Margin="8,0,0,0"
+                                        Command="{Binding DeleteCommand}"
+                                        Content="Delete"
+                                        ContentTemplate="{StaticResource IconTextTemplate}"
+                                        Tag="&#xE74D;" />
+                                <Button Margin="8,0,0,0"
+                                        Command="{Binding ChangeCommand}"
+                                        Content="Change"
+                                        ToolTip="Change selected rows"
+                                        ContentTemplate="{StaticResource IconTextTemplate}"
+                                        Tag="&#xE70F;" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="0,0,24,8">
+                                <Button Command="{Binding RevertCommand}"
+                                        Content="Revert"
+                                        ContentTemplate="{StaticResource IconTextTemplate}"
+                                        Tag="&#xE7A7;" />
+                                <Button Style="{DynamicResource AccentButtonStyle}"
+                                        Margin="8,0,0,0"
+                                        Command="{Binding SaveCommand}"
+                                        Content="Save"
+                                        ContentTemplate="{StaticResource IconTextTemplate}"
+                                        Tag="&#xE74E;" />
+                            </StackPanel>
+                            <Button Margin="0,0,0,8"
+                                    Command="{Binding ExportCommand}"
+                                    Content="Export"
+                                    ToolTip="Export to CSV"
+                                    ContentTemplate="{StaticResource IconTextTemplate}"
+                                    Tag="&#xEDE1;" />
+                        </WrapPanel>
+                    </DockPanel>
 
                     <DataGrid Margin="0,16,0,0"
                               ItemsSource="{Binding Lines}"

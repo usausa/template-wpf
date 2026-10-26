@@ -1,5 +1,6 @@
 namespace Template.WindowsApp.Views.Forms;
 
+using Template.WindowsApp.Controls;
 using Template.WindowsApp.Services;
 using Template.WindowsApp.Shell;
 
@@ -15,6 +16,8 @@ public sealed partial class EditableGridViewModel : AppViewModelBase, IShellComm
     private readonly IDialogService dialogService;
 
     private readonly IClipboardService clipboardService;
+
+    private readonly NotificationService notificationService;
 
     private readonly SynchronizationContext? synchronizationContext;
 
@@ -65,11 +68,16 @@ public sealed partial class EditableGridViewModel : AppViewModelBase, IShellComm
 
     public IObserveCommand PasteCommand { get; }
 
-    public EditableGridViewModel(TimeProvider timeProvider, IDialogService dialogService, IClipboardService clipboardService)
+    public IObserveCommand ChangeCommand { get; }
+
+    public IObserveCommand ExportCommand { get; }
+
+    public EditableGridViewModel(TimeProvider timeProvider, IDialogService dialogService, IClipboardService clipboardService, NotificationService notificationService)
     {
         this.timeProvider = timeProvider;
         this.dialogService = dialogService;
         this.clipboardService = clipboardService;
+        this.notificationService = notificationService;
         synchronizationContext = SynchronizationContext.Current;
 
         saved = MakeLines(timeProvider.GetLocalNow().Date);
@@ -81,6 +89,8 @@ public sealed partial class EditableGridViewModel : AppViewModelBase, IShellComm
         RevertCommand = MakeAsyncCommand(RevertAsync, () => HasChanges);
         SaveCommand = MakeDelegateCommand(Save, () => HasChanges && (ErrorCount == 0));
         PasteCommand = MakeDelegateCommand<IReadOnlyList<string>>(Paste);
+        ChangeCommand = MakeAsyncCommand(ChangeAsync, () => SelectedLines().Any(static x => !x.IsLocked));
+        ExportCommand = MakeDelegateCommand(Export);
 
         Load();
     }
@@ -274,6 +284,72 @@ public sealed partial class EditableGridViewModel : AppViewModelBase, IShellComm
         UpdateSummary();
     }
 
+    private async Task ChangeAsync()
+    {
+        var lines = SelectedLines().Where(static x => !x.IsLocked).ToList();
+        if (!CommitEdits() || (lines.Count == 0))
+        {
+            return;
+        }
+
+        using var dialog = new BulkChangeDialogViewModel
+        {
+            Title = $"Change {Plural(lines.Count, "row", "rows")}"
+        };
+        if (await dialogService.ShowAsync(dialog).ConfigureAwait(true))
+        {
+            ApplyChange(lines, dialog.Status, dialog.Delivery, (int?)dialog.Discount);
+        }
+    }
+
+    private void ApplyChange(List<OrderLine> lines, OrderStatus? status, DateTime? delivery, int? discount)
+    {
+        foreach (var line in lines)
+        {
+            if (status is { } newStatus)
+            {
+                line.Status = newStatus;
+            }
+            if (delivery is { } newDelivery)
+            {
+                line.Delivery = newDelivery.Date;
+            }
+            if (discount is { } newDiscount)
+            {
+                line.Discount = newDiscount;
+            }
+        }
+        UpdateSummary();
+    }
+
+    private void Export()
+    {
+        if (!CommitEdits())
+        {
+            return;
+        }
+
+        var path = dialogService.SaveFile("order-lines.csv", "CSV files (*.csv)|*.csv|All files (*.*)|*.*");
+        if (path is null)
+        {
+            return;
+        }
+
+        try
+        {
+            File.WriteAllText(path, OrderLineCsv.Format(Lines.Select(static x => x.Values)), new UTF8Encoding(true));
+            notificationService.Show(InfoBarSeverity.Success, "Exported", $"{Plural(Lines.Count, "row", "rows")} to {Path.GetFileName(path)}");
+        }
+        catch (IOException ex)
+        {
+            notificationService.Show(InfoBarSeverity.Error, "Export failed", ex.Message);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            notificationService.Show(InfoBarSeverity.Error, "Export failed", ex.Message);
+        }
+    }
+
     private void Paste(IReadOnlyList<string> keys)
     {
         if ((CurrentItem is not OrderLine start) || !clipboardService.ContainsText())
@@ -376,7 +452,9 @@ public sealed partial class EditableGridViewModel : AppViewModelBase, IShellComm
         new("EditableGrid:AddRow", "Add row", "Editable grid", "\uE710", AddCommand),
         new("EditableGrid:Duplicate", "Duplicate", "Editable grid", "\uE8C8", DuplicateCommand),
         new("EditableGrid:Delete", "Delete", "Editable grid", "\uE74D", DeleteCommand),
+        new("EditableGrid:Change", "Change selected rows", "Editable grid", "\uE70F", ChangeCommand),
         new("EditableGrid:Revert", "Revert", "Editable grid", "\uE7A7", RevertCommand),
-        new("EditableGrid:Save", "Save", "Editable grid", "\uE74E", SaveCommand)
+        new("EditableGrid:Save", "Save", "Editable grid", "\uE74E", SaveCommand),
+        new("EditableGrid:Export", "Export to CSV", "Editable grid", "\uEDE1", ExportCommand)
     ];
 }

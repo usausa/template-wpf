@@ -1,5 +1,7 @@
 namespace Template.WindowsApp.Services;
 
+using Template.WindowsApp.Views.Dialogs;
+
 public interface IDialogService
 {
     Task<bool> ConfirmAsync(string message);
@@ -13,6 +15,8 @@ public interface IDialogService
     Task<string?> InputAsync(string title, string? initial = null);
 
     Task<bool> ProgressAsync(string title, string message, Func<IProgress<double>, CancellationToken, Task> action);
+
+    Task<bool> ShowAsync(DialogViewModelBase dialog);
 
     string? OpenFile(string? filter = null);
 

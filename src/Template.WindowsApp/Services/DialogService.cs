@@ -94,6 +94,8 @@ public sealed class DialogService : IDialogService
         }).ConfigureAwait(true);
     }
 
+    public Task<bool> ShowAsync(DialogViewModelBase dialog) => host.ShowAsync(dialog, static x => x.Completion);
+
     public string? OpenFile(string? filter = null)
     {
         var dialog = new OpenFileDialog

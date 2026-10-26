@@ -12,6 +12,7 @@
                     xmlns:services="clr-namespace:Template.WindowsApp.Services"
                     xmlns:views="clr-namespace:Template.WindowsApp.Views"
                     xmlns:dialogs="clr-namespace:Template.WindowsApp.Views.Dialogs"
+                    xmlns:forms="clr-namespace:Template.WindowsApp.Views.Forms"
                     mc:Ignorable="d"
                     x:Class="Template.WindowsApp.Views.MainWindow"
                     s:DataContextResolver.Type="{x:Type views:MainWindowViewModel}"
@@ -33,6 +34,9 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type dialogs:ProgressDialogViewModel}">
             <dialogs:ProgressDialogView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type forms:BulkChangeDialogViewModel}">
+            <forms:BulkChangeDialogView />
         </DataTemplate>
 
         <Style x:Key="SideBarBadgeStyle"
