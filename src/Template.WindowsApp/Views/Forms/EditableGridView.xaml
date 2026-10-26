@@ -332,40 +332,42 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Width="96" MinWidth="96"
                                                 Binding="{Binding Code}"
+                                                Header="Item code"
                                                 CellStyle="{StaticResource ImeOffCellStyle}"
                                                 EditingElementStyle="{StaticResource CodeEditingStyle}"
-                                                ElementStyle="{StaticResource CellTextStyle}"
-                                                Header="Item code" />
+                                                ElementStyle="{StaticResource CellTextStyle}" />
                             <DataGridTextColumn Width="2*" MinWidth="120"
                                                 Binding="{Binding Description}"
+                                                Header="Description"
                                                 EditingElementStyle="{StaticResource DescriptionEditingStyle}"
-                                                ElementStyle="{StaticResource CellTextStyle}"
-                                                Header="Description" />
+                                                ElementStyle="{StaticResource CellTextStyle}" />
                             <DataGridTextColumn Width="88" MinWidth="88"
                                                 Binding="{Binding Quantity}"
+                                                Header="Quantity"
                                                 CellStyle="{StaticResource ImeOffCellStyle}"
                                                 EditingElementStyle="{StaticResource QuantityEditingStyle}"
-                                                ElementStyle="{StaticResource NumberCellTextStyle}"
-                                                Header="Quantity" />
+                                                ElementStyle="{StaticResource NumberCellTextStyle}" />
                             <DataGridTextColumn Width="96" MinWidth="96"
                                                 Binding="{Binding UnitPrice, StringFormat=0.00}"
+                                                Header="Unit price"
                                                 CellStyle="{StaticResource ImeOffCellStyle}"
                                                 EditingElementStyle="{StaticResource PriceEditingStyle}"
-                                                ElementStyle="{StaticResource NumberCellTextStyle}"
-                                                Header="Unit price" />
+                                                ElementStyle="{StaticResource NumberCellTextStyle}" />
                             <DataGridTextColumn Width="112" MinWidth="112"
                                                 Binding="{Binding Discount}"
+                                                Header="Discount (%)"
                                                 CellStyle="{StaticResource ImeOffCellStyle}"
                                                 EditingElementStyle="{StaticResource DiscountEditingStyle}"
-                                                ElementStyle="{StaticResource NumberCellTextStyle}"
-                                                Header="Discount (%)" />
+                                                ElementStyle="{StaticResource NumberCellTextStyle}" />
                             <DataGridTextColumn Width="104" MinWidth="104"
                                                 Binding="{Binding Amount, Mode=OneWay, StringFormat=N2}"
+                                                Header="Amount"
                                                 ElementStyle="{StaticResource NumberCellTextStyle}"
-                                                Header="Amount" IsReadOnly="True" />
+                                                IsReadOnly="True" />
                             <DataGridTemplateColumn Width="128" MinWidth="128"
+                                                    Header="Delivery"
                                                     ClipboardContentBinding="{Binding Delivery, Converter={StaticResource ShortDateConverter}}"
-                                                    Header="Delivery" SortMemberPath="Delivery">
+                                                    SortMemberPath="Delivery">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate DataType="{x:Type module:OrderLine}">
                                         <TextBlock Style="{StaticResource CellTextStyle}"
@@ -381,15 +383,15 @@
                             </DataGridTemplateColumn>
                             <DataGridComboBoxColumn Width="112" MinWidth="112"
                                                     ItemsSource="{x:Static module:EditableGridViewModel.Statuses}"
-                                                    EditingElementStyle="{StaticResource DataGridEditingComboBoxStyle}"
                                                     Header="Status"
+                                                    EditingElementStyle="{StaticResource DataGridEditingComboBoxStyle}"
                                                     SelectedItemBinding="{Binding Status}"
                                                     SortMemberPath="Status" />
                             <DataGridTextColumn Width="*" MinWidth="100"
                                                 Binding="{Binding Note}"
+                                                Header="Note"
                                                 EditingElementStyle="{StaticResource NoteEditingStyle}"
-                                                ElementStyle="{StaticResource CellTextStyle}"
-                                                Header="Note" />
+                                                ElementStyle="{StaticResource CellTextStyle}" />
                         </DataGrid.Columns>
                     </DataGrid>
 

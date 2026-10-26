@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:s="http://smart/windows"
+             xmlns:shell="clr-namespace:Template.WindowsApp.Shell"
              xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
              xmlns:services="clr-namespace:Template.WindowsApp.Services"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Home"
@@ -12,6 +13,12 @@
              d:DataContext="{d:DesignInstance Type={x:Type module:HomeViewModel}}"
              d:DesignWidth="800" d:DesignHeight="600">
 
+    <UserControl.Resources>
+        <ItemsPanelTemplate x:Key="PageButtonPanel">
+            <WrapPanel />
+        </ItemsPanelTemplate>
+    </UserControl.Resources>
+
     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
         <Grid MinHeight="{Binding ViewportHeight, RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}}">
             <Grid Margin="24">
@@ -19,6 +26,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
@@ -112,7 +120,102 @@
                     </UniformGrid>
                 </Grid>
 
-                <StackPanel Grid.Row="3"
+                <UniformGrid Grid.Row="3"
+                             Rows="1"
+                             Margin="0,0,-8,8">
+                    <Border Style="{StaticResource CardStyle}"
+                            Margin="0,0,8,0">
+                        <StackPanel>
+                            <TextBlock Style="{DynamicResource BodyStrongTextBlockStyle}"
+                                       Text="Favorites" />
+                            <ItemsControl Margin="0,8,-8,-8"
+                                          ItemsSource="{Binding Favorites}"
+                                          Focusable="False"
+                                          ItemsPanel="{StaticResource PageButtonPanel}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type shell:NavigationItem}">
+                                        <Button Margin="0,0,8,8" Padding="12,6"
+                                                Command="{Binding DataContext.ForwardCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
+                                                CommandParameter="{Binding Id}"
+                                                AutomationProperties.Name="{Binding Title}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center"
+                                                           Text="{Binding Icon}"
+                                                           FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                                                           FontSize="16" />
+                                                <TextBlock Margin="8,0,0,0"
+                                                           VerticalAlignment="Center"
+                                                           Text="{Binding Title}" />
+                                            </StackPanel>
+                                        </Button>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <TextBlock Margin="0,8,0,0"
+                                       Text="Add pages with the star in the title bar."
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Favorites.Count}"
+                                                         Value="0">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource CardStyle}"
+                            Margin="0,0,8,0">
+                        <StackPanel>
+                            <TextBlock Style="{DynamicResource BodyStrongTextBlockStyle}"
+                                       Text="Recent pages" />
+                            <ItemsControl Margin="0,8,-8,-8"
+                                          ItemsSource="{Binding RecentPages}"
+                                          Focusable="False"
+                                          ItemsPanel="{StaticResource PageButtonPanel}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type shell:NavigationItem}">
+                                        <Button Margin="0,0,8,8" Padding="12,6"
+                                                Command="{Binding DataContext.ForwardCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
+                                                CommandParameter="{Binding Id}"
+                                                AutomationProperties.Name="{Binding Title}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center"
+                                                           Text="{Binding Icon}"
+                                                           FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                                                           FontSize="16" />
+                                                <TextBlock Margin="8,0,0,0"
+                                                           VerticalAlignment="Center"
+                                                           Text="{Binding Title}" />
+                                            </StackPanel>
+                                        </Button>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <TextBlock Margin="0,8,0,0"
+                                       Text="Pages you open appear here."
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RecentPages.Count}"
+                                                         Value="0">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+                </UniformGrid>
+
+                <StackPanel Grid.Row="4"
                             Style="{StaticResource SectionPanelStyle}">
                     <TextBlock Style="{StaticResource SectionHeaderTextStyle}"
                                Text="Samples" />

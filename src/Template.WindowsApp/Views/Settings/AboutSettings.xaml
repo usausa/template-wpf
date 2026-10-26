@@ -13,10 +13,14 @@
         <TextBlock Style="{DynamicResource SubtitleTextBlockStyle}"
                    Margin="0,0,0,16"
                    Text="About" />
-        <controls:SettingsCard Description="{Binding VersionText}"
-                               Header="{Binding ApplicationName}"
-                               HeaderIcon="&#xE946;" Keywords="Version" />
-        <controls:SettingsCard Description="Messages that the app has written while running" Header="Logs" HeaderIcon="&#xE9A4;" Keywords="Troubleshooting">
+        <controls:SettingsCard Header="{Binding ApplicationName}"
+                               Description="{Binding VersionText}"
+                               HeaderIcon="&#xE946;"
+                               Keywords="Version" />
+        <controls:SettingsCard Header="Logs"
+                               Description="Messages that the app has written while running"
+                               HeaderIcon="&#xE9A4;"
+                               Keywords="Troubleshooting">
             <TextBlock>
                 <Hyperlink Command="{Binding OpenLogsCommand}">View logs</Hyperlink>
             </TextBlock>

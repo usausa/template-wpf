@@ -54,6 +54,13 @@ public sealed class WindowSettings : ApplicationSettingsBase
     }
 
     [UserScopedSetting]
+    public string? FavoriteViews
+    {
+        get => (string?)this[nameof(FavoriteViews)];
+        set => this[nameof(FavoriteViews)] = value;
+    }
+
+    [UserScopedSetting]
     [DefaultSettingValue("Light")]
     public string Theme
     {

@@ -8,13 +8,9 @@ using Template.WindowsApp.Shell;
 [ObservableGeneratorOption(Reactive = true, ViewModel = true)]
 public sealed partial class MainWindowViewModel : ExtendViewModelBase
 {
-    private const int RecentViewCount = 5;
-
     private readonly NavigationHistory history = new();
 
     private IDisposable? navigatingBusy;
-
-    private bool recentViewsApplied;
 
     public IWindowManager WindowManager { get; }
 
@@ -36,11 +32,19 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
     [ObservableProperty]
     public partial bool IsNotificationsOpen { get; set; }
 
+    [ObservableProperty]
+    public partial bool IsFavorite { get; set; }
+
+    [ObservableProperty]
+    public partial bool CanFavorite { get; set; }
+
     public IObserveCommand ForwardCommand { get; }
 
     public IObserveCommand GoBackCommand { get; }
 
     public IObserveCommand GoForwardCommand { get; }
+
+    public IObserveCommand ToggleFavoriteCommand { get; }
 
     public IObserveCommand ToggleGroupCommand { get; }
 
@@ -82,6 +86,7 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
         ForwardCommand = MakeAsyncCommand<ViewId>(CommandMode.Simple, x => Equals(Navigator.CurrentViewId, x) ? Task.CompletedTask : Navigator.ForwardAsync(x, new NavigationParameter().WithEffect(EntranceEffect.Name)), _ => !BusyState.IsBusy || IsNavigating);
         GoBackCommand = MakeAsyncCommand(CommandMode.Simple, () => MoveAsync(-1), () => history.CanGoBack && CanMove());
         GoForwardCommand = MakeAsyncCommand(CommandMode.Simple, () => MoveAsync(1), () => history.CanGoForward && CanMove());
+        ToggleFavoriteCommand = MakeDelegateCommand(CommandMode.Simple, () => IsFavorite = !IsFavorite, () => CanFavorite);
         ToggleGroupCommand = MakeDelegateCommand<NavigationGroup>(ToggleGroup);
         ToggleNavigationCommand = MakeDelegateCommand(() => WindowManager.IsPaneOpen = !WindowManager.IsPaneOpen);
         OpenPaletteCommand = MakeDelegateCommand(CommandMode.Simple, OpenPalette);
@@ -100,6 +105,22 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
                 Notifications.MarkAllAsRead();
             }
         });
+        SubscribeIsFavorite(x =>
+        {
+            if (Navigator.CurrentViewId is not ViewId id)
+            {
+                return;
+            }
+
+            if (x)
+            {
+                Menu.AddFavorite(id);
+            }
+            else
+            {
+                Menu.RemoveFavorite(id);
+            }
+        });
 
         // Busy while navigating
         Disposables.Add(Observable.FromEventPattern<EventArgs>(h => Navigator.ExecutingChanged += h, h => Navigator.ExecutingChanged -= h)
@@ -112,8 +133,17 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
         // Unread messages
         Disposables.Add(conversations.UnreadCount.Subscribe(x => Menu.SetBadge(ViewId.Messages, x)));
 
+        // Favorites and recent pages
+        Disposables.Add(Observable
+            .FromEventPattern(h => Menu.Changed += h, h => Menu.Changed -= h)
+            .Subscribe(_ => OnMenuChanged()));
+
         // Jump list
-        Disposables.Add(Taskbar.RecentViewRemoved.Subscribe(x => WindowManager.RecentViews.Remove(x.ToString())));
+        Disposables.Add(Taskbar.ViewRemoved.Subscribe(x =>
+        {
+            Menu.RemoveFavorite(x);
+            Menu.RemoveRecentPage(x);
+        }));
     }
 
     private void UpdateNavigatingBusy()
@@ -139,37 +169,22 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
         {
             history.Visit(value);
             WindowManager.LastView = value;
+            Menu.AddRecentPage(value);
         }
 
-        if (AddRecentView(id) || !recentViewsApplied)
-        {
-            var items = Menu.EnumerateItems().ToDictionary(static x => x.Id.ToString());
-            Taskbar.SetRecentViews(WindowManager.RecentViews.Select(items.GetValueOrDefault).OfType<NavigationItem>().ToList());
-            recentViewsApplied = true;
-        }
+        UpdateFavorite();
     }
 
-    private bool AddRecentView(ViewId? id)
+    private void OnMenuChanged()
     {
-        if ((id is not { } value) || (value == ViewId.Home))
-        {
-            return false;
-        }
+        UpdateFavorite();
+        Taskbar.SetViews(Menu.Favorites.Items, Menu.RecentPages);
+    }
 
-        var name = value.ToString();
-        var views = WindowManager.RecentViews;
-        if ((views.Count > 0) && (views[0] == name))
-        {
-            return false;
-        }
-
-        views.Remove(name);
-        views.Insert(0, name);
-        while (views.Count > RecentViewCount)
-        {
-            views.RemoveAt(views.Count - 1);
-        }
-        return true;
+    private void UpdateFavorite()
+    {
+        CanFavorite = Navigator.CurrentViewId is ViewId and not ViewId.Home;
+        IsFavorite = (Navigator.CurrentViewId is ViewId id) && Menu.IsFavorite(id);
     }
 
     private bool CanMove() => !BusyState.IsBusy && (Dialogs.Current is null);
@@ -209,6 +224,9 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
         var commands = Menu.EnumerateItems().Select(x => new ShellCommand($"View:{x.Id}", x.Title, "View", x.Icon, ForwardCommand, x.Id)).ToList();
         commands.Add(new ShellCommand("Window:GoBack", "Go back", "Window", "\uE72B", GoBackCommand));
         commands.Add(new ShellCommand("Window:GoForward", "Go forward", "Window", "\uE72A", GoForwardCommand));
+        commands.Add(IsFavorite
+            ? new ShellCommand("Window:RemoveFavorite", "Remove from favorites", "Window", "\uE8D9", ToggleFavoriteCommand)
+            : new ShellCommand("Window:AddFavorite", "Add to favorites", "Window", "\uE734", ToggleFavoriteCommand));
         commands.Add(new ShellCommand("Window:ShowNotifications", "Show notifications", "Window", "\uEA8F", ShowNotificationsCommand));
         commands.Add(new ShellCommand("Window:ToggleNavigation", "Toggle navigation", "Window", "\uE700", ToggleNavigationCommand));
         if (Navigator.CurrentTarget is IShellCommandProvider provider)

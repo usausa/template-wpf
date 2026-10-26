@@ -56,27 +56,28 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Width="80"
                                                 Binding="{Binding Code}"
-                                                Header="Code" IsReadOnly="True" />
+                                                Header="Code"
+                                                IsReadOnly="True" />
                             <DataGridTextColumn Width="*"
                                                 Binding="{Binding Name}"
-                                                EditingElementStyle="{StaticResource DataGridEditingTextBoxStyle}"
-                                                Header="Name" />
+                                                Header="Name"
+                                                EditingElementStyle="{StaticResource DataGridEditingTextBoxStyle}" />
                             <DataGridComboBoxColumn Width="120"
                                                     ItemsSource="{x:Static module:DataGridViewModel.Categories}"
-                                                    EditingElementStyle="{StaticResource DataGridEditingComboBoxStyle}"
                                                     Header="Category"
+                                                    EditingElementStyle="{StaticResource DataGridEditingComboBoxStyle}"
                                                     SelectedItemBinding="{Binding Category}"
                                                     SortMemberPath="Category" />
                             <DataGridTextColumn Width="100"
                                                 Binding="{Binding Price, Converter={StaticResource CurrencyConverter}}"
+                                                Header="Price"
                                                 EditingElementStyle="{StaticResource NumberCellEditingStyle}"
-                                                ElementStyle="{StaticResource NumberCellTextStyle}"
-                                                Header="Price" />
+                                                ElementStyle="{StaticResource NumberCellTextStyle}" />
                             <DataGridTextColumn Width="80"
                                                 Binding="{Binding Stock, TargetNullValue=-}"
+                                                Header="Stock"
                                                 EditingElementStyle="{StaticResource NumberCellEditingStyle}"
-                                                ElementStyle="{StaticResource NumberCellTextStyle}"
-                                                Header="Stock" />
+                                                ElementStyle="{StaticResource NumberCellTextStyle}" />
                             <DataGridCheckBoxColumn Width="72"
                                                     Binding="{Binding IsActive}"
                                                     Header="Active" />

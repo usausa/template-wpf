@@ -150,20 +150,20 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="110"
                                             Binding="{Binding Timestamp, StringFormat=HH:mm:ss.fff}"
-                                            ElementStyle="{StaticResource LogCellTextStyle}"
-                                            Header="Time" />
+                                            Header="Time"
+                                            ElementStyle="{StaticResource LogCellTextStyle}" />
                         <DataGridTextColumn Width="110"
                                             Binding="{Binding Level}"
-                                            ElementStyle="{StaticResource LogCellTextStyle}"
-                                            Header="Level" />
+                                            Header="Level"
+                                            ElementStyle="{StaticResource LogCellTextStyle}" />
                         <DataGridTextColumn Width="200"
                                             Binding="{Binding Source}"
-                                            ElementStyle="{StaticResource LogCellTextStyle}"
-                                            Header="Source" />
+                                            Header="Source"
+                                            ElementStyle="{StaticResource LogCellTextStyle}" />
                         <DataGridTextColumn Width="*"
                                             Binding="{Binding Message}"
-                                            ElementStyle="{StaticResource MessageCellTextStyle}"
-                                            Header="Message" />
+                                            Header="Message"
+                                            ElementStyle="{StaticResource MessageCellTextStyle}" />
                     </DataGrid.Columns>
                 </DataGrid>
 

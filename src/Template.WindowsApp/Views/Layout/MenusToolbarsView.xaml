@@ -59,7 +59,8 @@
                                 <MenuItem Header="File">
                                     <MenuItem Command="{Binding MenuItemCommand}"
                                               CommandParameter="New"
-                                              Header="New" InputGestureText="Ctrl+N">
+                                              Header="New"
+                                              InputGestureText="Ctrl+N">
                                         <MenuItem.Icon>
                                             <TextBlock Style="{StaticResource GlyphTextStyle}"
                                                        Text="&#xE8A5;" />
@@ -67,7 +68,8 @@
                                     </MenuItem>
                                     <MenuItem Command="{Binding MenuItemCommand}"
                                               CommandParameter="Open"
-                                              Header="Open" InputGestureText="Ctrl+O">
+                                              Header="Open"
+                                              InputGestureText="Ctrl+O">
                                         <MenuItem.Icon>
                                             <TextBlock Style="{StaticResource GlyphTextStyle}"
                                                        Text="&#xE8E5;" />
@@ -75,7 +77,8 @@
                                     </MenuItem>
                                     <MenuItem Command="{Binding MenuItemCommand}"
                                               CommandParameter="Save"
-                                              Header="Save" InputGestureText="Ctrl+S">
+                                              Header="Save"
+                                              InputGestureText="Ctrl+S">
                                         <MenuItem.Icon>
                                             <TextBlock Style="{StaticResource GlyphTextStyle}"
                                                        Text="&#xE74E;" />
@@ -94,7 +97,8 @@
                                 <MenuItem Header="Edit">
                                     <MenuItem Command="{Binding MenuItemCommand}"
                                               CommandParameter="Undo"
-                                              Header="Undo" InputGestureText="Ctrl+Z">
+                                              Header="Undo"
+                                              InputGestureText="Ctrl+Z">
                                         <MenuItem.Icon>
                                             <TextBlock Style="{StaticResource GlyphTextStyle}"
                                                        Text="&#xE7A7;" />
@@ -103,7 +107,8 @@
                                     <Separator />
                                     <MenuItem Command="{Binding MenuItemCommand}"
                                               CommandParameter="Cut"
-                                              Header="Cut" InputGestureText="Ctrl+X">
+                                              Header="Cut"
+                                              InputGestureText="Ctrl+X">
                                         <MenuItem.Icon>
                                             <TextBlock Style="{StaticResource GlyphTextStyle}"
                                                        Text="&#xE8C6;" />
@@ -111,7 +116,8 @@
                                     </MenuItem>
                                     <MenuItem Command="{Binding MenuItemCommand}"
                                               CommandParameter="Copy"
-                                              Header="Copy" InputGestureText="Ctrl+C">
+                                              Header="Copy"
+                                              InputGestureText="Ctrl+C">
                                         <MenuItem.Icon>
                                             <TextBlock Style="{StaticResource GlyphTextStyle}"
                                                        Text="&#xE8C8;" />
@@ -119,7 +125,8 @@
                                     </MenuItem>
                                     <MenuItem Command="{Binding MenuItemCommand}"
                                               CommandParameter="Paste"
-                                              Header="Paste" InputGestureText="Ctrl+V">
+                                              Header="Paste"
+                                              InputGestureText="Ctrl+V">
                                         <MenuItem.Icon>
                                             <TextBlock Style="{StaticResource GlyphTextStyle}"
                                                        Text="&#xE77F;" />
@@ -128,23 +135,28 @@
                                 </MenuItem>
                                 <MenuItem Header="View">
                                     <MenuItem IsChecked="{Binding ShowStatusBar}"
-                                              Header="Status bar" IsCheckable="True" />
+                                              Header="Status bar"
+                                              IsCheckable="True" />
                                     <MenuItem IsChecked="{Binding WordWrap}"
-                                              Header="Word wrap" IsCheckable="True" />
+                                              Header="Word wrap"
+                                              IsCheckable="True" />
                                     <Separator />
                                     <MenuItem Header="Zoom">
                                         <MenuItem Command="{Binding ZoomCommand}"
                                                   CommandParameter="100"
                                                   IsChecked="{Binding Zoom, Mode=OneWay, Converter={StaticResource ParameterEqualsConverter}, ConverterParameter=100}"
-                                                  Header="100 %" IsCheckable="True" />
+                                                  Header="100 %"
+                                                  IsCheckable="True" />
                                         <MenuItem Command="{Binding ZoomCommand}"
                                                   CommandParameter="125"
                                                   IsChecked="{Binding Zoom, Mode=OneWay, Converter={StaticResource ParameterEqualsConverter}, ConverterParameter=125}"
-                                                  Header="125 %" IsCheckable="True" />
+                                                  Header="125 %"
+                                                  IsCheckable="True" />
                                         <MenuItem Command="{Binding ZoomCommand}"
                                                   CommandParameter="150"
                                                   IsChecked="{Binding Zoom, Mode=OneWay, Converter={StaticResource ParameterEqualsConverter}, ConverterParameter=150}"
-                                                  Header="150 %" IsCheckable="True" />
+                                                  Header="150 %"
+                                                  IsCheckable="True" />
                                     </MenuItem>
                                 </MenuItem>
                             </Menu>
@@ -181,19 +193,23 @@
                                             <MenuItem Command="{Binding SortByCommand}"
                                                       CommandParameter="Name"
                                                       IsChecked="{Binding SortBy, Mode=OneWay, Converter={StaticResource ParameterEqualsConverter}, ConverterParameter=Name}"
-                                                      Header="Name" IsCheckable="True" />
+                                                      Header="Name"
+                                                      IsCheckable="True" />
                                             <MenuItem Command="{Binding SortByCommand}"
                                                       CommandParameter="Date"
                                                       IsChecked="{Binding SortBy, Mode=OneWay, Converter={StaticResource ParameterEqualsConverter}, ConverterParameter=Date}"
-                                                      Header="Date" IsCheckable="True" />
+                                                      Header="Date"
+                                                      IsCheckable="True" />
                                             <MenuItem Command="{Binding SortByCommand}"
                                                       CommandParameter="Size"
                                                       IsChecked="{Binding SortBy, Mode=OneWay, Converter={StaticResource ParameterEqualsConverter}, ConverterParameter=Size}"
-                                                      Header="Size" IsCheckable="True" />
+                                                      Header="Size"
+                                                      IsCheckable="True" />
                                         </MenuItem>
                                         <Separator />
                                         <MenuItem IsChecked="{Binding ShowHiddenItems}"
-                                                  Header="Show hidden items" IsCheckable="True" />
+                                                  Header="Show hidden items"
+                                                  IsCheckable="True" />
                                     </ContextMenu>
                                 </Border.ContextMenu>
                                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"

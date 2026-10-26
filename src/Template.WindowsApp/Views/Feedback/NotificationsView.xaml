@@ -40,19 +40,23 @@
                         <StackPanel Style="{StaticResource SamplePanelStyle}">
                             <controls:InfoBar IsOpen="{Binding IsInformationalOpen}"
                                               Title="Information"
-                                              Message="A new version is available." Severity="Informational" />
+                                              Message="A new version is available."
+                                              Severity="Informational" />
                             <controls:InfoBar Margin="0,8,0,0"
                                               IsOpen="{Binding IsSuccessOpen}"
                                               Title="Success"
-                                              Message="Your changes were saved." Severity="Success" />
+                                              Message="Your changes were saved."
+                                              Severity="Success" />
                             <controls:InfoBar Margin="0,8,0,0"
                                               IsOpen="{Binding IsWarningOpen}"
                                               Title="Warning"
-                                              Message="The connection is slow." Severity="Warning" />
+                                              Message="The connection is slow."
+                                              Severity="Warning" />
                             <controls:InfoBar Margin="0,8,0,0"
                                               IsOpen="{Binding IsErrorOpen}"
                                               Title="Error"
-                                              Message="The file could not be opened." Severity="Error" />
+                                              Message="The file could not be opened."
+                                              Severity="Error" />
                             <Button Margin="0,8,0,0"
                                     Command="{Binding ReopenCommand}"
                                     Content="Reopen" />
@@ -73,7 +77,8 @@
                         <StackPanel Style="{StaticResource SamplePanelStyle}">
                             <controls:InfoBar IsOpen="{Binding IsActionOpen}"
                                               Title="Update ready"
-                                              Message="Restart to finish the update." Severity="Informational">
+                                              Message="Restart to finish the update."
+                                              Severity="Informational">
                                 <controls:InfoBar.ActionButton>
                                     <Button Command="{Binding RestartCommand}"
                                             Content="Restart" />

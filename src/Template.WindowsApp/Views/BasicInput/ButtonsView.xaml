@@ -145,15 +145,18 @@
                                         <MenuItem Command="{Binding SortByCommand}"
                                                   CommandParameter="Name"
                                                   IsChecked="{Binding SortBy, Mode=OneWay, Converter={StaticResource ParameterEqualsConverter}, ConverterParameter=Name}"
-                                                  Header="Name" IsCheckable="True" />
+                                                  Header="Name"
+                                                  IsCheckable="True" />
                                         <MenuItem Command="{Binding SortByCommand}"
                                                   CommandParameter="Date"
                                                   IsChecked="{Binding SortBy, Mode=OneWay, Converter={StaticResource ParameterEqualsConverter}, ConverterParameter=Date}"
-                                                  Header="Date" IsCheckable="True" />
+                                                  Header="Date"
+                                                  IsCheckable="True" />
                                         <MenuItem Command="{Binding SortByCommand}"
                                                   CommandParameter="Size"
                                                   IsChecked="{Binding SortBy, Mode=OneWay, Converter={StaticResource ParameterEqualsConverter}, ConverterParameter=Size}"
-                                                  Header="Size" IsCheckable="True" />
+                                                  Header="Size"
+                                                  IsCheckable="True" />
                                     </ContextMenu>
                                 </controls:DropDownButton.ContextMenu>
                             </controls:DropDownButton>

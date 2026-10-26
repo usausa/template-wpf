@@ -51,7 +51,8 @@
                         <StackPanel Style="{StaticResource SamplePanelStyle}">
                             <TreeView x:Name="DocumentTree"
                                       AutomationProperties.Name="Documents">
-                                <TreeViewItem Header="Work Documents" IsExpanded="True" IsSelected="True">
+                                <TreeViewItem Header="Work Documents"
+                                              IsExpanded="True" IsSelected="True">
                                     <TreeViewItem Header="Feature Schedule" />
                                     <TreeViewItem Header="Overall Project Plan" />
                                 </TreeViewItem>

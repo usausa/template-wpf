@@ -9,6 +9,10 @@ using Template.WindowsApp.Shell;
 // ReSharper disable once ClassNeverInstantiated.Global
 public sealed partial class SettingsViewModel : AppViewModelBase, IShellCommandProvider
 {
+    private readonly IDialogService dialogService;
+
+    private readonly NavigationMenu menu;
+
     private SettingsPage lastPage = SettingsPage.General;
 
     public IWindowManager WindowManager { get; }
@@ -39,10 +43,14 @@ public sealed partial class SettingsViewModel : AppViewModelBase, IShellCommandP
 
     public IObserveCommand ClearRecentPagesCommand { get; }
 
+    public IObserveCommand ClearFavoritePagesCommand { get; }
+
     public IObserveCommand OpenLogsCommand { get; }
 
-    public SettingsViewModel(IWindowManager windowManager, NotificationService notifications, TaskbarService taskbar)
+    public SettingsViewModel(IWindowManager windowManager, IDialogService dialogService, NavigationMenu menu, NotificationService notifications)
     {
+        this.dialogService = dialogService;
+        this.menu = menu;
         WindowManager = windowManager;
         Notifications = notifications;
 
@@ -81,12 +89,19 @@ public sealed partial class SettingsViewModel : AppViewModelBase, IShellCommandP
             windowManager.RecentCommands.Clear();
             windowManager.CommandCounts.Clear();
         });
-        ClearRecentPagesCommand = MakeDelegateCommand(() =>
-        {
-            windowManager.RecentViews.Clear();
-            taskbar.SetRecentViews([]);
-        });
+        ClearRecentPagesCommand = MakeDelegateCommand(menu.ClearRecentPages);
+        ClearFavoritePagesCommand = Observe(
+            Observable.FromEventPattern(h => menu.Changed += h, h => menu.Changed -= h),
+            MakeAsyncCommand(ClearFavoritePagesAsync, () => menu.Favorites.Items.Count > 0));
         OpenLogsCommand = MakeAsyncCommand(() => Navigator.ForwardAsync(ViewId.Logs, new NavigationParameter().WithEffect(EntranceEffect.Name)));
+    }
+
+    private async Task ClearFavoritePagesAsync()
+    {
+        if (await dialogService.ConfirmAsync("Remove all favorites?", "The pages are removed from the navigation pane, Home and the jump list.", "Remove", "Cancel").ConfigureAwait(true))
+        {
+            menu.ClearFavorites();
+        }
     }
 
     public IEnumerable<ShellCommand> GetCommands() =>
@@ -95,6 +110,7 @@ public sealed partial class SettingsViewModel : AppViewModelBase, IShellCommandP
         new("Settings:DarkTheme", "Dark theme", "Settings", "\uE790", ThemeCommand, AppTheme.Dark),
         new("Settings:SystemTheme", "System theme", "Settings", "\uE790", ThemeCommand, AppTheme.System),
         new("Settings:ClearRecentCommands", "Clear recent commands", "Settings", "\uE74D", ClearRecentCommand),
-        new("Settings:ClearRecentPages", "Clear recent pages", "Settings", "\uE74D", ClearRecentPagesCommand)
+        new("Settings:ClearRecentPages", "Clear recent pages", "Settings", "\uE74D", ClearRecentPagesCommand),
+        new("Settings:ClearFavoritePages", "Clear favorite pages", "Settings", "\uE74D", ClearFavoritePagesCommand)
     ];
 }

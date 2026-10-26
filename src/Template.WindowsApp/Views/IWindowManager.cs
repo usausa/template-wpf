@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Template.WindowsApp.Controls;
 using Template.WindowsApp.Services;
 using Template.WindowsApp.Settings;
+using Template.WindowsApp.Shell;
 using Template.WindowsApp.Views.Platform;
 
 public interface IWindowManager
@@ -20,8 +21,6 @@ public interface IWindowManager
     IList<string> RecentCommands { get; }
 
     IDictionary<string, int> CommandCounts { get; }
-
-    IList<string> RecentViews { get; }
 
     event EventHandler? WindowsChanged;
 
@@ -41,6 +40,8 @@ public sealed class WindowManager : NotificationObject, IWindowManager
     private static readonly string CurrentVersion = typeof(WindowManager).Assembly.GetName().Version?.ToString(3) ?? string.Empty;
 
     private readonly IServiceProvider provider;
+
+    private readonly NavigationMenu menu;
 
     private readonly NotificationService notifications;
 
@@ -78,13 +79,12 @@ public sealed class WindowManager : NotificationObject, IWindowManager
 
     public IDictionary<string, int> CommandCounts { get; } = new Dictionary<string, int>();
 
-    public IList<string> RecentViews { get; } = [];
-
     public event EventHandler? WindowsChanged;
 
-    public WindowManager(IServiceProvider provider, NotificationService notifications)
+    public WindowManager(IServiceProvider provider, NavigationMenu menu, NotificationService notifications)
     {
         this.provider = provider;
+        this.menu = menu;
         this.notifications = notifications;
     }
 
@@ -124,10 +124,9 @@ public sealed class WindowManager : NotificationObject, IWindowManager
                 CommandCounts[pair[..separator]] = count;
             }
         }
-        foreach (var id in (settings.RecentViews ?? string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries))
-        {
-            RecentViews.Add(id);
-        }
+        menu.Restore(
+            (settings.FavoriteViews ?? string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries),
+            (settings.RecentViews ?? string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries));
 
         if (!String.IsNullOrEmpty(settings.LastVersion) && (settings.LastVersion != CurrentVersion))
         {
@@ -189,7 +188,8 @@ public sealed class WindowManager : NotificationObject, IWindowManager
         settings.ShowsError = notifications.ShowsError;
         settings.RecentCommands = string.Join(',', RecentCommands);
         settings.CommandCounts = string.Join(',', CommandCounts.Select(static x => String.Create(CultureInfo.InvariantCulture, $"{x.Key}={x.Value}")));
-        settings.RecentViews = string.Join(',', RecentViews);
+        settings.RecentViews = string.Join(',', menu.RecentPages.Select(static x => x.Id));
+        settings.FavoriteViews = string.Join(',', menu.Favorites.Items.Select(static x => x.Id));
         settings.LastVersion = CurrentVersion;
 
         settings.Save();

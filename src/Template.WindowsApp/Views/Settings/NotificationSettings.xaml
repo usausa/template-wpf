@@ -13,12 +13,17 @@
         <TextBlock Style="{DynamicResource SubtitleTextBlockStyle}"
                    Margin="0,0,0,16"
                    Text="Notifications" />
-        <controls:SettingsCard Description="Show notifications at the bottom right of the window" Header="Pop-up notifications" HeaderIcon="&#xEA8F;">
+        <controls:SettingsCard Header="Pop-up notifications"
+                               Description="Show notifications at the bottom right of the window"
+                               HeaderIcon="&#xEA8F;">
             <controls:ToggleSwitch IsChecked="{Binding Notifications.ShowsPopups}"
                                    AutomationProperties.Name="Pop-up notifications" />
         </controls:SettingsCard>
-        <controls:SettingsCard ContentAlignment="Vertical" Description="Choose which notifications pop up" Header="Notification types" HeaderIcon="&#xE8FD;"
-                               Keywords="Information Success Warning Error">
+        <controls:SettingsCard Header="Notification types"
+                               Description="Choose which notifications pop up"
+                               HeaderIcon="&#xE8FD;"
+                               Keywords="Information Success Warning Error"
+                               ContentAlignment="Vertical">
             <StackPanel IsEnabled="{Binding Notifications.ShowsPopups}">
                 <CheckBox IsChecked="{Binding Notifications.ShowsInformational}"
                           Content="Information" />

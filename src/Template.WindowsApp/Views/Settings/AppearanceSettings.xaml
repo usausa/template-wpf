@@ -164,8 +164,11 @@
         <TextBlock Style="{DynamicResource SubtitleTextBlockStyle}"
                    Margin="0,0,0,16"
                    Text="Appearance" />
-        <controls:SettingsCard ContentAlignment="Vertical" Description="Select which app theme to display" Header="App theme" HeaderIcon="&#xE790;"
-                               Keywords="Light Dark System mode">
+        <controls:SettingsCard Header="App theme"
+                               Description="Select which app theme to display"
+                               HeaderIcon="&#xE790;"
+                               Keywords="Light Dark System mode"
+                               ContentAlignment="Vertical">
             <ListBox Style="{StaticResource ThemeChoiceListStyle}"
                      ItemsSource="{Binding Themes}"
                      SelectedItem="{Binding WindowManager.Theme}"

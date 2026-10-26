@@ -60,14 +60,14 @@
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Width="140"
-                                                DisplayMemberBinding="{Binding Name}"
-                                                Header="Name" />
+                                                Header="Name"
+                                                DisplayMemberBinding="{Binding Name}" />
                                 <GridViewColumn Width="140"
-                                                DisplayMemberBinding="{Binding Company}"
-                                                Header="Company" />
+                                                Header="Company"
+                                                DisplayMemberBinding="{Binding Company}" />
                                 <GridViewColumn Width="110"
-                                                DisplayMemberBinding="{Binding City}"
-                                                Header="City" />
+                                                Header="City"
+                                                DisplayMemberBinding="{Binding City}" />
                             </GridView>
                         </ListView.View>
                     </ListView>

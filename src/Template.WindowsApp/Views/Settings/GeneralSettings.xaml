@@ -14,11 +14,15 @@
         <TextBlock Style="{DynamicResource SubtitleTextBlockStyle}"
                    Margin="0,0,0,16"
                    Text="General" />
-        <controls:SettingsCard Description="Show the pane with labels" Header="Navigation pane" HeaderIcon="&#xE700;">
+        <controls:SettingsCard Header="Navigation pane"
+                               Description="Show the pane with labels"
+                               HeaderIcon="&#xE700;">
             <controls:ToggleSwitch IsChecked="{Binding WindowManager.IsPaneOpen}"
                                    AutomationProperties.Name="Navigation pane" />
         </controls:SettingsCard>
-        <controls:SettingsCard Description="Page to show when the app starts" Header="Start page" HeaderIcon="&#xE80F;">
+        <controls:SettingsCard Header="Start page"
+                               Description="Page to show when the app starts"
+                               HeaderIcon="&#xE80F;">
             <ComboBox Width="200"
                       AutomationProperties.Name="Start page"
                       SelectedValue="{Binding WindowManager.StartPage}"

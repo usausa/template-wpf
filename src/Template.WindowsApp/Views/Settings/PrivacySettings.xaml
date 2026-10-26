@@ -13,15 +13,26 @@
         <TextBlock Style="{DynamicResource SubtitleTextBlockStyle}"
                    Margin="0,0,0,16"
                    Text="Privacy" />
-        <controls:SettingsCard Description="Recently and frequently used commands are listed first in the command palette" Header="Recent commands" HeaderIcon="&#xE81C;">
+        <controls:SettingsCard Header="Recent commands"
+                               Description="Recently and frequently used commands are listed first in the command palette"
+                               HeaderIcon="&#xE81C;">
             <Button Command="{Binding ClearRecentCommand}"
                     Content="Clear"
                     AutomationProperties.Name="Clear recent commands" />
         </controls:SettingsCard>
-        <controls:SettingsCard Description="Recently opened pages are listed in the jump list" Header="Recent pages" HeaderIcon="&#xE823;">
+        <controls:SettingsCard Header="Recent pages"
+                               Description="Recently opened pages are listed on Home and in the jump list"
+                               HeaderIcon="&#xE823;">
             <Button Command="{Binding ClearRecentPagesCommand}"
                     Content="Clear"
                     AutomationProperties.Name="Clear recent pages" />
+        </controls:SettingsCard>
+        <controls:SettingsCard Header="Favorite pages"
+                               Description="Pages added with the star are listed in the navigation pane, on Home and in the jump list"
+                               HeaderIcon="&#xE734;">
+            <Button Command="{Binding ClearFavoritePagesCommand}"
+                    Content="Clear"
+                    AutomationProperties.Name="Clear favorite pages" />
         </controls:SettingsCard>
     </StackPanel>
 

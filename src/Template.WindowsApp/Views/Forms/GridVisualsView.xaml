@@ -47,7 +47,8 @@
                         </i:Interaction.Behaviors>
                         <DataGrid.Columns>
                             <DataGridTemplateColumn Width="112" MinWidth="112"
-                                                    Header="Server" SortMemberPath="Name">
+                                                    Header="Server"
+                                                    SortMemberPath="Name">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate DataType="{x:Type module:ServerRow}">
                                         <TextBlock Style="{StaticResource CellTextStyle}"
@@ -59,7 +60,8 @@
                             </DataGridTemplateColumn>
                             <DataGridTemplateColumn Width="120" MinWidth="120"
                                                     behaviors:DataGridSortBehavior.FirstDirection="Descending"
-                                                    Header="Status" SortMemberPath="Status">
+                                                    Header="Status"
+                                                    SortMemberPath="Status">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate DataType="{x:Type module:ServerRow}">
                                         <Border x:Name="Badge"
@@ -108,7 +110,8 @@
                             </DataGridTemplateColumn>
                             <DataGridTemplateColumn Width="160" MinWidth="160"
                                                     behaviors:DataGridSortBehavior.FirstDirection="Descending"
-                                                    Header="CPU" SortMemberPath="Cpu">
+                                                    Header="CPU"
+                                                    SortMemberPath="Cpu">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate DataType="{x:Type module:ServerRow}">
                                         <Grid Margin="8,0">
@@ -154,7 +157,8 @@
                             </DataGridTemplateColumn>
                             <DataGridTemplateColumn Width="200" MinWidth="200"
                                                     behaviors:DataGridSortBehavior.FirstDirection="Descending"
-                                                    Header="Memory" SortMemberPath="MemoryPercent">
+                                                    Header="Memory"
+                                                    SortMemberPath="MemoryPercent">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate DataType="{x:Type module:ServerRow}">
                                         <Grid Margin="8,0">
@@ -217,7 +221,8 @@
                             </DataGridTemplateColumn>
                             <DataGridTemplateColumn Width="112" MinWidth="112"
                                                     behaviors:DataGridSortBehavior.FirstDirection="Descending"
-                                                    Header="Errors" SortMemberPath="Errors">
+                                                    Header="Errors"
+                                                    SortMemberPath="Errors">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate DataType="{x:Type module:ServerRow}">
                                         <Grid Margin="8,0">
@@ -274,7 +279,8 @@
                             </DataGridTemplateColumn>
                             <DataGridTemplateColumn Width="*" MinWidth="160"
                                                     behaviors:DataGridSortBehavior.FirstDirection="Descending"
-                                                    Header="Latency" SortMemberPath="LatencyNow">
+                                                    Header="Latency"
+                                                    SortMemberPath="LatencyNow">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate DataType="{x:Type module:ServerRow}">
                                         <Grid Margin="8,0">
@@ -325,7 +331,8 @@
                             </DataGridTemplateColumn>
                             <DataGridTemplateColumn Width="104" MinWidth="104"
                                                     behaviors:DataGridSortBehavior.FirstDirection="Descending"
-                                                    Header="Uptime" SortMemberPath="Uptime">
+                                                    Header="Uptime"
+                                                    SortMemberPath="Uptime">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate DataType="{x:Type module:ServerRow}">
                                         <Border x:Name="Cell"

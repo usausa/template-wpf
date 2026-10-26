@@ -8,11 +8,13 @@ using Template.WindowsApp.Views;
 // ReSharper disable once ClassNeverInstantiated.Global
 public sealed class TaskbarService : NotificationObject, IDisposable
 {
+    private const string FavoriteCategory = "Favorites";
+
     private const string RecentCategory = "Recent";
 
     private const string ViewArgument = "--view ";
 
-    private readonly Subject<ViewId> recentViewRemoved = new();
+    private readonly Subject<ViewId> viewRemoved = new();
 
     public TaskbarItemProgressState State
     {
@@ -26,11 +28,11 @@ public sealed class TaskbarService : NotificationObject, IDisposable
         private set => SetProperty(ref field, value);
     }
 
-    public IObservable<ViewId> RecentViewRemoved => recentViewRemoved;
+    public IObservable<ViewId> ViewRemoved => viewRemoved;
 
     public void Dispose()
     {
-        recentViewRemoved.Dispose();
+        viewRemoved.Dispose();
     }
 
     public void SetProgress(double value)
@@ -45,10 +47,40 @@ public sealed class TaskbarService : NotificationObject, IDisposable
         Value = 0;
     }
 
-    public void SetRecentViews(IEnumerable<NavigationItem> items)
+    public void SetViews(IEnumerable<NavigationItem> favorites, IEnumerable<NavigationItem> recentPages)
+    {
+        var jumpList = new JumpList();
+        AddViews(jumpList, favorites, FavoriteCategory);
+        AddViews(jumpList, recentPages, RecentCategory);
+
+        var removed = new List<ViewId>();
+        void OnJumpItemsRemovedByUser(object? sender, JumpItemsRemovedEventArgs e)
+        {
+            foreach (var task in e.RemovedItems.OfType<JumpTask>())
+            {
+                if ((task.Arguments is { } arguments) &&
+                    arguments.StartsWith(ViewArgument, StringComparison.Ordinal) &&
+                    Enum.TryParse<ViewId>(arguments[ViewArgument.Length..], out var id))
+                {
+                    removed.Add(id);
+                }
+            }
+        }
+
+        jumpList.JumpItemsRemovedByUser += OnJumpItemsRemovedByUser;
+        JumpList.SetJumpList(Application.Current, jumpList);
+        jumpList.Apply();
+        jumpList.JumpItemsRemovedByUser -= OnJumpItemsRemovedByUser;
+
+        foreach (var id in removed)
+        {
+            viewRemoved.OnNext(id);
+        }
+    }
+
+    private static void AddViews(JumpList jumpList, IEnumerable<NavigationItem> items, string category)
     {
         var path = Environment.ProcessPath;
-        var jumpList = new JumpList();
         foreach (var item in items)
         {
             jumpList.JumpItems.Add(new JumpTask
@@ -58,26 +90,8 @@ public sealed class TaskbarService : NotificationObject, IDisposable
                 ApplicationPath = path,
                 IconResourcePath = path,
                 Arguments = ViewArgument + item.Id,
-                CustomCategory = RecentCategory
+                CustomCategory = category
             });
-        }
-
-        jumpList.JumpItemsRemovedByUser += OnJumpItemsRemovedByUser;
-        JumpList.SetJumpList(Application.Current, jumpList);
-        jumpList.Apply();
-        jumpList.JumpItemsRemovedByUser -= OnJumpItemsRemovedByUser;
-    }
-
-    private void OnJumpItemsRemovedByUser(object? sender, JumpItemsRemovedEventArgs e)
-    {
-        foreach (var task in e.RemovedItems.OfType<JumpTask>())
-        {
-            if ((task.Arguments is { } arguments) &&
-                arguments.StartsWith(ViewArgument, StringComparison.Ordinal) &&
-                Enum.TryParse<ViewId>(arguments[ViewArgument.Length..], out var id))
-            {
-                recentViewRemoved.OnNext(id);
-            }
         }
     }
 }

@@ -49,6 +49,10 @@ public sealed partial class HomeViewModel : AppViewModelBase
 
     public ObservableCollection<double> LevelValues { get; } = [0, 0, 0, 0];
 
+    public IReadOnlyList<NavigationItem> Favorites { get; }
+
+    public IReadOnlyList<NavigationItem> RecentPages { get; }
+
     public IReadOnlyList<SampleEntry> Samples { get; }
 
     public IObserveCommand ForwardCommand { get; }
@@ -95,6 +99,8 @@ public sealed partial class HomeViewModel : AppViewModelBase
         }
         UpdateLogEntries();
 
+        Favorites = menu.Favorites.Items;
+        RecentPages = menu.RecentPages;
         Samples = menu.Groups
             .Select(static x => new SampleEntry(x.Title, x.Icon, string.Join(" · ", x.Items.Select(static y => y.Title)), x.Items[0].Id))
             .ToList();

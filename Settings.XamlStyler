@@ -130,6 +130,7 @@
     "StartPoint, EndPoint",
 
     "Title",
+    "Header",
     "Icon",
     "Text",
     "Content",
@@ -158,6 +159,14 @@
     "GaugeWidth",
 
     "OnContent, OffContent",
+
+    "Description",
+    "HeaderIcon",
+    "Keywords",
+    "ContentAlignment",
+
+    "Message",
+    "Severity",
 
     "ToolTip",
 
