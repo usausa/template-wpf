@@ -26,22 +26,23 @@
 
 | Category | Feature |
 | --- | --- |
-| Window | Custom title bar / Snap layouts / Fluent theme (Light / Dark) / Window placement |
-| Shell | Side bar (groups) / Command palette / Recent commands / Busy indicator / Notifications |
-| Basic | Navigation / Dialog / Setting / Logging / DI (source generator) / Leak detection |
+| Window | Custom title bar / Snap layouts / Fluent theme (Light / Dark) / Window placement / Per-monitor DPI |
+| Shell | Side bar (groups, unread counts) / Back and forward / Command palette / Notifications (history) / Busy indicator / Settings (search) |
+| App | Single instance / Startup arguments / Error window / Update notice / Taskbar progress / Jump list |
+| Basic | Navigation / Dialog (in-window) / Setting / Logging / DI (source generator) / Leak detection |
 
 ## 🧩 Sample
 
 | Group | Pages |
 | --- | --- |
 | Basic input | Buttons / Choices / Text / Date & time |
-| Collections | Data grid / List & detail / Hierarchy |
-| Forms | Validation / Wizard |
+| Collections | Data grid / List & detail / Hierarchy / Messages |
+| Forms | Validation / Wizard / Editable grid / Grid visuals |
 | Feedback | Dialogs / Progress / Notifications |
-| Layout | Panels / Containers |
+| Layout | Panels / Containers / Menus & toolbars |
 | Design | Colors / Typography / Icons |
-| Graphics | Shapes & animation / Charts |
-| System | Clipboard & drag / Environment |
+| Graphics | Shapes & animation / Charts / Live data |
+| System | Windows / Clipboard & drag / Environment / Logs |
 
 ## 📝 Credits
 

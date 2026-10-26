@@ -1,10 +1,14 @@
 <Solution>
+  <Folder Name="/Test/">
+    <Project Path="tests/Template.WindowsApp.UnitTests/Template.WindowsApp.UnitTests.csproj" />
+  </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />
     <File Path=".gitattributes" />
     <File Path=".gitignore" />
     <File Path="AGENTS.md" />
     <File Path="Analyzers.ruleset" />
+    <File Path="CodeCoverage.runsettings" />
     <File Path="Directory.Build.props" />
     <File Path="Directory.Build.targets" />
     <File Path="LICENSE" />
