@@ -1,0 +1,35 @@
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
+             xmlns:module="clr-namespace:Template.WindowsApp.Views.Settings"
+             mc:Ignorable="d"
+             x:Class="Template.WindowsApp.Views.Settings.NotificationSettings"
+             d:DataContext="{d:DesignInstance Type={x:Type module:SettingsViewModel}}"
+             d:DesignWidth="800" d:DesignHeight="600">
+
+    <StackPanel Margin="0,0,0,16">
+        <TextBlock Style="{DynamicResource SubtitleTextBlockStyle}"
+                   Margin="0,0,0,16"
+                   Text="Notifications" />
+        <controls:SettingsCard Description="Show notifications at the bottom right of the window" Header="Pop-up notifications" HeaderIcon="&#xEA8F;">
+            <controls:ToggleSwitch IsChecked="{Binding Notifications.ShowsPopups}"
+                                   AutomationProperties.Name="Pop-up notifications" />
+        </controls:SettingsCard>
+        <controls:SettingsCard ContentAlignment="Vertical" Description="Choose which notifications pop up" Header="Notification types" HeaderIcon="&#xE8FD;"
+                               Keywords="Information Success Warning Error">
+            <StackPanel IsEnabled="{Binding Notifications.ShowsPopups}">
+                <CheckBox IsChecked="{Binding Notifications.ShowsInformational}"
+                          Content="Information" />
+                <CheckBox IsChecked="{Binding Notifications.ShowsSuccess}"
+                          Content="Success" />
+                <CheckBox IsChecked="{Binding Notifications.ShowsWarning}"
+                          Content="Warning" />
+                <CheckBox IsChecked="{Binding Notifications.ShowsError}"
+                          Content="Error" />
+            </StackPanel>
+        </controls:SettingsCard>
+    </StackPanel>
+
+</UserControl>

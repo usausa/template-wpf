@@ -103,7 +103,7 @@ public sealed partial class App
 
         await host.StartAsync().ConfigureAwait(true);
 
-        await host.Services.GetRequiredService<INavigator>().ForwardAsync(FindView(e.Args) ?? ViewId.Home).ConfigureAwait(true);
+        await host.Services.GetRequiredService<INavigator>().ForwardAsync(FindView(e.Args) ?? StartView()).ConfigureAwait(true);
 
         SingleInstance?.Listen(OnSecondInstance);
     }
@@ -190,6 +190,9 @@ public sealed partial class App
     //--------------------------------------------------------------------------------
     // Helper
     //--------------------------------------------------------------------------------
+
+    private ViewId StartView() =>
+        (windowManager.StartPage == StartPage.LastPage) && (windowManager.LastView is { } id) ? id : ViewId.Home;
 
     private ViewId? FindView(string[] args)
     {

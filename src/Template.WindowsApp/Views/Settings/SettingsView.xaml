@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:s="http://smart/windows"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Settings"
              mc:Ignorable="d"
@@ -11,184 +12,186 @@
              d:DataContext="{d:DesignInstance Type={x:Type module:SettingsViewModel}}"
              d:DesignWidth="800" d:DesignHeight="600">
 
+    <UserControl.InputBindings>
+        <KeyBinding Key="F"
+                    Command="{Binding FindCommand}"
+                    Modifiers="Control" />
+    </UserControl.InputBindings>
+
     <UserControl.Resources>
-        <module:ThemeTextConverter x:Key="ThemeToTextConverter" />
-        <Style x:Key="SettingIconTextStyle"
+        <Style x:Key="SettingsPageItemStyle"
+               TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Height" Value="40" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+            <Setter Property="FocusVisualStyle" Value="{DynamicResource DefaultControlFocusVisualStyle}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <Border x:Name="Selection"
+                                    Visibility="Collapsed"
+                                    Background="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                            <Border x:Name="Indicator"
+                                    Width="3" Height="16"
+                                    HorizontalAlignment="Left"
+                                    Visibility="Collapsed"
+                                    Background="{DynamicResource AccentFillColorDefaultBrush}" />
+                            <ContentPresenter VerticalAlignment="Center" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Selection" Property="Visibility" Value="Visible" />
+                                <Setter TargetName="Indicator" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="SettingsPageIconTextStyle"
                TargetType="{x:Type TextBlock}">
-            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Width" Value="48" />
             <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextAlignment" Value="Center" />
             <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
             <Setter Property="FontSize" Value="16" />
         </Style>
+        <Style x:Key="SettingsPageTitleTextStyle"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="14" />
+        </Style>
     </UserControl.Resources>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="24">
-            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0"
+              Margin="24,24,16,24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0"
+                       Style="{StaticResource PageTitleTextStyle}"
                        Text="Settings" />
-            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+            <TextBlock Grid.Row="1"
+                       Style="{StaticResource PageDescriptionTextStyle}"
                        Text="Change how the app looks and behaves." />
-
-            <StackPanel Style="{StaticResource SectionPanelStyle}">
-                <TextBlock Style="{StaticResource SectionHeaderTextStyle}"
-                           Text="Appearance" />
-                <Border Style="{StaticResource CardStyle}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="40" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0"
-                                   Style="{StaticResource SettingIconTextStyle}"
-                                   Text="&#xE771;" />
-                        <StackPanel Grid.Column="1"
-                                    Margin="8,0,16,0"
-                                    VerticalAlignment="Center">
-                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
-                                       Text="App theme" />
-                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                       Text="Select which app theme to display"
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        </StackPanel>
-                        <ComboBox Grid.Column="2"
-                                  Width="200"
-                                  VerticalAlignment="Center"
-                                  ItemsSource="{Binding Themes}"
-                                  SelectedItem="{Binding WindowManager.Theme}"
-                                  AutomationProperties.Name="App theme">
-                            <ComboBox.ItemContainerStyle>
-                                <Style TargetType="{x:Type ComboBoxItem}"
-                                       BasedOn="{StaticResource {x:Type ComboBoxItem}}">
-                                    <Setter Property="AutomationProperties.Name" Value="{Binding Converter={StaticResource ThemeToTextConverter}}" />
-                                </Style>
-                            </ComboBox.ItemContainerStyle>
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Converter={StaticResource ThemeToTextConverter}}" />
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                    </Grid>
-                </Border>
-            </StackPanel>
-
-            <StackPanel Style="{StaticResource SectionPanelStyle}">
-                <TextBlock Style="{StaticResource SectionHeaderTextStyle}"
-                           Text="Navigation" />
-                <Border Style="{StaticResource CardStyle}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="40" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0"
-                                   Style="{StaticResource SettingIconTextStyle}"
-                                   Text="&#xE700;" />
-                        <StackPanel Grid.Column="1"
-                                    Margin="8,0,16,0"
-                                    VerticalAlignment="Center">
-                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
-                                       Text="Navigation pane" />
-                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                       Text="Show the pane with labels"
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        </StackPanel>
-                        <controls:ToggleSwitch Grid.Column="2"
-                                               VerticalAlignment="Center"
-                                               IsChecked="{Binding WindowManager.IsPaneOpen}"
-                                               AutomationProperties.Name="Navigation pane" />
-                    </Grid>
-                </Border>
-            </StackPanel>
-
-            <StackPanel Style="{StaticResource SectionPanelStyle}">
-                <TextBlock Style="{StaticResource SectionHeaderTextStyle}"
-                           Text="Command palette" />
-                <Border Style="{StaticResource CardStyle}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="40" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0"
-                                   Style="{StaticResource SettingIconTextStyle}"
-                                   Text="&#xE81C;" />
-                        <StackPanel Grid.Column="1"
-                                    Margin="8,0,16,0"
-                                    VerticalAlignment="Center">
-                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
-                                       Text="Recent commands" />
-                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                       Text="Recently and frequently used commands are listed first"
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        </StackPanel>
-                        <Button Grid.Column="2"
-                                VerticalAlignment="Center"
-                                Command="{Binding ClearRecentCommand}"
-                                Content="Clear" />
-                    </Grid>
-                </Border>
-            </StackPanel>
-
-            <StackPanel Style="{StaticResource SectionPanelStyle}">
-                <TextBlock Style="{StaticResource SectionHeaderTextStyle}"
-                           Text="Taskbar" />
-                <Border Style="{StaticResource CardStyle}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="40" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0"
-                                   Style="{StaticResource SettingIconTextStyle}"
-                                   Text="&#xE823;" />
-                        <StackPanel Grid.Column="1"
-                                    Margin="8,0,16,0"
-                                    VerticalAlignment="Center">
-                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
-                                       Text="Recent pages" />
-                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                       Text="Recently opened pages are listed in the jump list"
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        </StackPanel>
-                        <Button Grid.Column="2"
-                                VerticalAlignment="Center"
-                                Command="{Binding ClearRecentPagesCommand}"
-                                Content="Clear"
-                                AutomationProperties.Name="Clear recent pages" />
-                    </Grid>
-                </Border>
-            </StackPanel>
-
-            <StackPanel Style="{StaticResource SectionPanelStyle}">
-                <TextBlock Style="{StaticResource SectionHeaderTextStyle}"
-                           Text="About" />
-                <Border Style="{StaticResource CardStyle}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="40" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0"
-                                   Style="{StaticResource SettingIconTextStyle}"
+            <TextBox Grid.Row="2"
+                     controls:TextBoxHelper.PlaceholderText="Search settings (Ctrl+F)"
+                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Delay=300}"
+                     AutomationProperties.Name="Search settings">
+                <TextBox.InputBindings>
+                    <KeyBinding Key="Escape"
+                                Command="{Binding ClearSearchCommand}" />
+                </TextBox.InputBindings>
+                <i:Interaction.Triggers>
+                    <s:EventRequestTrigger Request="{Binding FindRequest}">
+                        <s:SetFocusAction />
+                        <s:SelectAllTextAction />
+                    </s:EventRequestTrigger>
+                </i:Interaction.Triggers>
+            </TextBox>
+            <ListBox Grid.Row="3"
+                     Margin="0,16,0,0" Padding="0"
+                     Background="Transparent"
+                     BorderThickness="0"
+                     AutomationProperties.Name="Settings pages"
+                     ItemContainerStyle="{StaticResource SettingsPageItemStyle}"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                     SelectedValue="{Binding SelectedPage}"
+                     SelectedValuePath="Tag">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <DockPanel LastChildFill="False" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBoxItem DockPanel.Dock="Top"
+                             AutomationProperties.Name="General"
+                             Tag="{x:Static module:SettingsPage.General}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource SettingsPageIconTextStyle}"
+                                   Text="&#xE713;" />
+                        <TextBlock Style="{StaticResource SettingsPageTitleTextStyle}"
+                                   Text="General" />
+                    </StackPanel>
+                </ListBoxItem>
+                <ListBoxItem DockPanel.Dock="Top"
+                             AutomationProperties.Name="Appearance"
+                             Tag="{x:Static module:SettingsPage.Appearance}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource SettingsPageIconTextStyle}"
+                                   Text="&#xE790;" />
+                        <TextBlock Style="{StaticResource SettingsPageTitleTextStyle}"
+                                   Text="Appearance" />
+                    </StackPanel>
+                </ListBoxItem>
+                <ListBoxItem DockPanel.Dock="Top"
+                             AutomationProperties.Name="Notifications"
+                             Tag="{x:Static module:SettingsPage.Notifications}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource SettingsPageIconTextStyle}"
+                                   Text="&#xEA8F;" />
+                        <TextBlock Style="{StaticResource SettingsPageTitleTextStyle}"
+                                   Text="Notifications" />
+                    </StackPanel>
+                </ListBoxItem>
+                <ListBoxItem DockPanel.Dock="Top"
+                             AutomationProperties.Name="Privacy"
+                             Tag="{x:Static module:SettingsPage.Privacy}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource SettingsPageIconTextStyle}"
+                                   Text="&#xE72E;" />
+                        <TextBlock Style="{StaticResource SettingsPageTitleTextStyle}"
+                                   Text="Privacy" />
+                    </StackPanel>
+                </ListBoxItem>
+                <ListBoxItem DockPanel.Dock="Bottom"
+                             AutomationProperties.Name="About"
+                             Tag="{x:Static module:SettingsPage.About}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource SettingsPageIconTextStyle}"
                                    Text="&#xE946;" />
-                        <StackPanel Grid.Column="1"
-                                    Margin="8,0,0,0"
-                                    VerticalAlignment="Center">
-                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
-                                       Text="{Binding ApplicationName}" />
-                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                       Text="{Binding VersionText}"
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        </StackPanel>
-                    </Grid>
-                </Border>
-            </StackPanel>
-        </StackPanel>
-    </ScrollViewer>
+                        <TextBlock Style="{StaticResource SettingsPageTitleTextStyle}"
+                                   Text="About" />
+                    </StackPanel>
+                </ListBoxItem>
+            </ListBox>
+        </Grid>
+
+        <ScrollViewer Grid.Column="1"
+                      HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+            <Grid Margin="8,24,24,24">
+                <controls:SettingsPanel x:Name="Pages"
+                                        Query="{Binding SearchText}"
+                                        SelectedPage="{Binding SelectedPage}">
+                    <module:GeneralSettings controls:SettingsPanel.Page="{x:Static module:SettingsPage.General}" />
+                    <module:AppearanceSettings controls:SettingsPanel.Page="{x:Static module:SettingsPage.Appearance}" />
+                    <module:NotificationSettings controls:SettingsPanel.Page="{x:Static module:SettingsPage.Notifications}" />
+                    <module:PrivacySettings controls:SettingsPanel.Page="{x:Static module:SettingsPage.Privacy}" />
+                    <module:AboutSettings controls:SettingsPanel.Page="{x:Static module:SettingsPage.About}" />
+                </controls:SettingsPanel>
+                <StackPanel Visibility="{Binding HasNoResults, ElementName=Pages, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock Style="{DynamicResource SubtitleTextBlockStyle}"
+                               Text="No results" />
+                    <TextBlock Margin="0,8,0,0"
+                               Text="Try different words, or clear the search to see all settings."
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
 
 </UserControl>

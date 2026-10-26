@@ -1,0 +1,26 @@
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
+             xmlns:module="clr-namespace:Template.WindowsApp.Views.Settings"
+             mc:Ignorable="d"
+             x:Class="Template.WindowsApp.Views.Settings.AboutSettings"
+             d:DataContext="{d:DesignInstance Type={x:Type module:SettingsViewModel}}"
+             d:DesignWidth="800" d:DesignHeight="600">
+
+    <StackPanel Margin="0,0,0,16">
+        <TextBlock Style="{DynamicResource SubtitleTextBlockStyle}"
+                   Margin="0,0,0,16"
+                   Text="About" />
+        <controls:SettingsCard Description="{Binding VersionText}"
+                               Header="{Binding ApplicationName}"
+                               HeaderIcon="&#xE946;" Keywords="Version" />
+        <controls:SettingsCard Description="Messages that the app has written while running" Header="Logs" HeaderIcon="&#xE9A4;" Keywords="Troubleshooting">
+            <TextBlock>
+                <Hyperlink Command="{Binding OpenLogsCommand}">View logs</Hyperlink>
+            </TextBlock>
+        </controls:SettingsCard>
+    </StackPanel>
+
+</UserControl>

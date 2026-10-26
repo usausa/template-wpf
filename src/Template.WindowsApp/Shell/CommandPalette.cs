@@ -179,7 +179,7 @@ public sealed class CommandPalette : NotificationObject
             score += wordScore;
         }
 
-        return (score, MakeRuns(title, marks));
+        return (score, HighlightRun.Split(title, marks));
     }
 
     private static int MatchTitle(string title, string word, bool[] marks)
@@ -229,20 +229,4 @@ public sealed class CommandPalette : NotificationObject
 
     private static bool IsWordStart(string title, int index) =>
         (index == 0) || !Char.IsLetterOrDigit(title[index - 1]);
-
-    private static List<HighlightRun> MakeRuns(string title, bool[] marks)
-    {
-        var runs = new List<HighlightRun>();
-        var start = 0;
-        for (var i = 1; i <= title.Length; i++)
-        {
-            if ((i == title.Length) || (marks[i] != marks[start]))
-            {
-                runs.Add(new HighlightRun(title[start..i], marks[start]));
-                start = i;
-            }
-        }
-
-        return runs;
-    }
 }

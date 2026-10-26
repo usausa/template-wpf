@@ -62,6 +62,61 @@ public sealed class WindowSettings : ApplicationSettingsBase
     }
 
     [UserScopedSetting]
+    [DefaultSettingValue("Home")]
+    public string StartPage
+    {
+        get => (string)this[nameof(StartPage)];
+        set => this[nameof(StartPage)] = value;
+    }
+
+    [UserScopedSetting]
+    public string? LastView
+    {
+        get => (string?)this[nameof(LastView)];
+        set => this[nameof(LastView)] = value;
+    }
+
+    [UserScopedSetting]
+    [DefaultSettingValue("True")]
+    public bool ShowsPopups
+    {
+        get => (bool)this[nameof(ShowsPopups)];
+        set => this[nameof(ShowsPopups)] = value;
+    }
+
+    [UserScopedSetting]
+    [DefaultSettingValue("True")]
+    public bool ShowsInformational
+    {
+        get => (bool)this[nameof(ShowsInformational)];
+        set => this[nameof(ShowsInformational)] = value;
+    }
+
+    [UserScopedSetting]
+    [DefaultSettingValue("True")]
+    public bool ShowsSuccess
+    {
+        get => (bool)this[nameof(ShowsSuccess)];
+        set => this[nameof(ShowsSuccess)] = value;
+    }
+
+    [UserScopedSetting]
+    [DefaultSettingValue("True")]
+    public bool ShowsWarning
+    {
+        get => (bool)this[nameof(ShowsWarning)];
+        set => this[nameof(ShowsWarning)] = value;
+    }
+
+    [UserScopedSetting]
+    [DefaultSettingValue("True")]
+    public bool ShowsError
+    {
+        get => (bool)this[nameof(ShowsError)];
+        set => this[nameof(ShowsError)] = value;
+    }
+
+    [UserScopedSetting]
     [DefaultSettingValue("True")]
     public bool UpgradeRequired
     {

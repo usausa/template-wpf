@@ -856,4 +856,73 @@
         </Setter>
     </Style>
 
+    <!-- ================================================================================ -->
+    <!-- Settings card -->
+    <!-- ================================================================================ -->
+
+    <Style TargetType="{x:Type controls:SettingsCard}">
+        <Setter Property="Margin" Value="0,0,0,8" />
+        <Setter Property="Padding" Value="16" />
+        <Setter Property="Background" Value="{DynamicResource CardBackgroundFillColorDefaultBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource CardStrokeColorDefaultBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:SettingsCard}">
+                    <Border Padding="{TemplateBinding Padding}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="2">
+                        <DockPanel>
+                            <ContentPresenter x:Name="ContentHost"
+                                              DockPanel.Dock="Right"
+                                              Margin="16,0,0,0"
+                                              VerticalAlignment="Center" />
+                            <DockPanel VerticalAlignment="Center">
+                                <TextBlock DockPanel.Dock="Left"
+                                           Width="40"
+                                           VerticalAlignment="Center"
+                                           TextAlignment="Center"
+                                           Text="{TemplateBinding HeaderIcon}"
+                                           FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                                           FontSize="16" />
+                                <StackPanel Margin="8,0,0,0"
+                                            VerticalAlignment="Center">
+                                    <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                               controls:TextBlockHelper.Runs="{TemplateBinding HeaderRuns}"
+                                               TextWrapping="Wrap" />
+                                    <TextBlock x:Name="DescriptionText"
+                                               Style="{DynamicResource CaptionTextBlockStyle}"
+                                               controls:TextBlockHelper.Runs="{TemplateBinding DescriptionRuns}"
+                                               TextWrapping="Wrap"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                </StackPanel>
+                            </DockPanel>
+                        </DockPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="ContentAlignment" Value="Vertical">
+                            <Setter TargetName="ContentHost" Property="DockPanel.Dock" Value="Bottom" />
+                            <Setter TargetName="ContentHost" Property="Margin" Value="48,12,0,0" />
+                            <Setter TargetName="ContentHost" Property="HorizontalAlignment" Value="Left" />
+                        </Trigger>
+                        <Trigger Property="Description" Value="{x:Null}">
+                            <Setter TargetName="DescriptionText" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="Content" Value="{x:Null}">
+                            <Setter TargetName="ContentHost" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMatch" Value="False">
+                <Setter Property="Visibility" Value="Collapsed" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
 </ResourceDictionary>

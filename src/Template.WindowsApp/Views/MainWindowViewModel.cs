@@ -138,6 +138,7 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
         if (id is { } value)
         {
             history.Visit(value);
+            WindowManager.LastView = value;
         }
 
         if (AddRecentView(id) || !recentViewsApplied)

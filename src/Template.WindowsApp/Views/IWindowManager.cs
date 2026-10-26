@@ -13,6 +13,10 @@ public interface IWindowManager
 
     AppTheme Theme { get; set; }
 
+    StartPage StartPage { get; set; }
+
+    ViewId? LastView { get; set; }
+
     IList<string> RecentCommands { get; }
 
     IDictionary<string, int> CommandCounts { get; }
@@ -62,6 +66,14 @@ public sealed class WindowManager : NotificationObject, IWindowManager
         }
     }
 
+    public StartPage StartPage
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public ViewId? LastView { get; set; }
+
     public IList<string> RecentCommands { get; } = [];
 
     public IDictionary<string, int> CommandCounts { get; } = new Dictionary<string, int>();
@@ -93,6 +105,13 @@ public sealed class WindowManager : NotificationObject, IWindowManager
         }
         IsPaneOpen = settings.IsPaneOpen;
         Theme = Enum.TryParse<AppTheme>(settings.Theme, out var theme) ? theme : AppTheme.Light;
+        StartPage = Enum.TryParse<StartPage>(settings.StartPage, out var startPage) ? startPage : StartPage.Home;
+        LastView = Enum.TryParse<ViewId>(settings.LastView, out var lastView) && Enum.IsDefined(lastView) ? lastView : null;
+        notifications.ShowsPopups = settings.ShowsPopups;
+        notifications.ShowsInformational = settings.ShowsInformational;
+        notifications.ShowsSuccess = settings.ShowsSuccess;
+        notifications.ShowsWarning = settings.ShowsWarning;
+        notifications.ShowsError = settings.ShowsError;
         foreach (var id in (settings.RecentCommands ?? string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries))
         {
             RecentCommands.Add(id);
@@ -161,6 +180,13 @@ public sealed class WindowManager : NotificationObject, IWindowManager
         };
         settings.IsPaneOpen = IsPaneOpen;
         settings.Theme = Theme.ToString();
+        settings.StartPage = StartPage.ToString();
+        settings.LastView = LastView?.ToString();
+        settings.ShowsPopups = notifications.ShowsPopups;
+        settings.ShowsInformational = notifications.ShowsInformational;
+        settings.ShowsSuccess = notifications.ShowsSuccess;
+        settings.ShowsWarning = notifications.ShowsWarning;
+        settings.ShowsError = notifications.ShowsError;
         settings.RecentCommands = string.Join(',', RecentCommands);
         settings.CommandCounts = string.Join(',', CommandCounts.Select(static x => String.Create(CultureInfo.InvariantCulture, $"{x.Key}={x.Value}")));
         settings.RecentViews = string.Join(',', RecentViews);

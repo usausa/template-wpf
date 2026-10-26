@@ -1,0 +1,34 @@
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
+             xmlns:views="clr-namespace:Template.WindowsApp.Views"
+             xmlns:module="clr-namespace:Template.WindowsApp.Views.Settings"
+             mc:Ignorable="d"
+             x:Class="Template.WindowsApp.Views.Settings.GeneralSettings"
+             d:DataContext="{d:DesignInstance Type={x:Type module:SettingsViewModel}}"
+             d:DesignWidth="800" d:DesignHeight="600">
+
+    <StackPanel Margin="0,0,0,16">
+        <TextBlock Style="{DynamicResource SubtitleTextBlockStyle}"
+                   Margin="0,0,0,16"
+                   Text="General" />
+        <controls:SettingsCard Description="Show the pane with labels" Header="Navigation pane" HeaderIcon="&#xE700;">
+            <controls:ToggleSwitch IsChecked="{Binding WindowManager.IsPaneOpen}"
+                                   AutomationProperties.Name="Navigation pane" />
+        </controls:SettingsCard>
+        <controls:SettingsCard Description="Page to show when the app starts" Header="Start page" HeaderIcon="&#xE80F;">
+            <ComboBox Width="200"
+                      AutomationProperties.Name="Start page"
+                      SelectedValue="{Binding WindowManager.StartPage}"
+                      SelectedValuePath="Tag">
+                <ComboBoxItem Content="Home"
+                              Tag="{x:Static views:StartPage.Home}" />
+                <ComboBoxItem Content="Last opened page"
+                              Tag="{x:Static views:StartPage.LastPage}" />
+            </ComboBox>
+        </controls:SettingsCard>
+    </StackPanel>
+
+</UserControl>

@@ -1,0 +1,176 @@
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
+             xmlns:views="clr-namespace:Template.WindowsApp.Views"
+             xmlns:module="clr-namespace:Template.WindowsApp.Views.Settings"
+             mc:Ignorable="d"
+             x:Class="Template.WindowsApp.Views.Settings.AppearanceSettings"
+             d:DataContext="{d:DesignInstance Type={x:Type module:SettingsViewModel}}"
+             d:DesignWidth="800" d:DesignHeight="600">
+
+    <UserControl.Resources>
+        <module:ThemeTextConverter x:Key="ThemeToTextConverter" />
+        <ControlTemplate x:Key="LightThemePreviewTemplate"
+                         TargetType="{x:Type ContentControl}">
+            <Grid Width="120" Height="80"
+                  Background="#F3F3F3">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="12" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="28" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Rectangle Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                           Fill="#005FB8" />
+                <Rectangle Grid.Row="1" Grid.Column="0"
+                           Fill="#FFFFFF" />
+                <StackPanel Grid.Row="1" Grid.Column="1"
+                            Margin="8,8,8,0">
+                    <Rectangle Width="40" Height="6"
+                               HorizontalAlignment="Left"
+                               Fill="#1A1A1A" />
+                    <Rectangle Height="16"
+                               Margin="0,6,0,0"
+                               Fill="#FFFFFF" />
+                    <Rectangle Height="16"
+                               Margin="0,4,0,0"
+                               Fill="#FFFFFF" />
+                </StackPanel>
+            </Grid>
+        </ControlTemplate>
+        <ControlTemplate x:Key="DarkThemePreviewTemplate"
+                         TargetType="{x:Type ContentControl}">
+            <Grid Width="120" Height="80"
+                  Background="#202020">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="12" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="28" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Rectangle Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                           Fill="#60CDFF" />
+                <Rectangle Grid.Row="1" Grid.Column="0"
+                           Fill="#2D2D2D" />
+                <StackPanel Grid.Row="1" Grid.Column="1"
+                            Margin="8,8,8,0">
+                    <Rectangle Width="40" Height="6"
+                               HorizontalAlignment="Left"
+                               Fill="#FFFFFF" />
+                    <Rectangle Height="16"
+                               Margin="0,6,0,0"
+                               Fill="#2D2D2D" />
+                    <Rectangle Height="16"
+                               Margin="0,4,0,0"
+                               Fill="#2D2D2D" />
+                </StackPanel>
+            </Grid>
+        </ControlTemplate>
+        <DataTemplate x:Key="ThemeChoiceTemplate"
+                      DataType="{x:Type views:AppTheme}">
+            <Grid>
+                <ContentControl x:Name="LightPreview"
+                                Template="{StaticResource LightThemePreviewTemplate}" />
+                <ContentControl x:Name="DarkPreview"
+                                Visibility="Collapsed"
+                                Template="{StaticResource DarkThemePreviewTemplate}" />
+            </Grid>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding}"
+                             Value="{x:Static views:AppTheme.Dark}">
+                    <Setter TargetName="LightPreview" Property="Visibility" Value="Collapsed" />
+                    <Setter TargetName="DarkPreview" Property="Visibility" Value="Visible" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding}"
+                             Value="{x:Static views:AppTheme.System}">
+                    <Setter TargetName="DarkPreview" Property="Visibility" Value="Visible" />
+                    <Setter TargetName="DarkPreview" Property="Clip">
+                        <Setter.Value>
+                            <RectangleGeometry Rect="60,0,60,80" />
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+        <Style x:Key="ThemeChoiceItemStyle"
+               TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Margin" Value="0,0,12,0" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+            <Setter Property="FocusVisualStyle" Value="{DynamicResource DefaultControlFocusVisualStyle}" />
+            <Setter Property="AutomationProperties.Name" Value="{Binding Converter={StaticResource ThemeToTextConverter}}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <StackPanel Background="{TemplateBinding Background}">
+                            <Border x:Name="Frame"
+                                    Padding="2"
+                                    BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                                    BorderThickness="1">
+                                <ContentPresenter />
+                            </Border>
+                            <TextBlock x:Name="Label"
+                                       Margin="0,8,0,0"
+                                       HorizontalAlignment="Center"
+                                       Text="{Binding Converter={StaticResource ThemeToTextConverter}}" />
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Frame" Property="BorderBrush" Value="{DynamicResource ControlStrongStrokeColorDefaultBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Frame" Property="Padding" Value="1" />
+                                <Setter TargetName="Frame" Property="BorderBrush" Value="{DynamicResource AccentFillColorDefaultBrush}" />
+                                <Setter TargetName="Frame" Property="BorderThickness" Value="2" />
+                                <Setter TargetName="Label" Property="FontWeight" Value="SemiBold" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ThemeChoiceListStyle"
+               TargetType="{x:Type ListBox}">
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="ItemContainerStyle" Value="{StaticResource ThemeChoiceItemStyle}" />
+            <Setter Property="ItemTemplate" Value="{StaticResource ThemeChoiceTemplate}" />
+            <Setter Property="ItemsPanel">
+                <Setter.Value>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBox}">
+                        <ItemsPresenter />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <StackPanel Margin="0,0,0,16">
+        <TextBlock Style="{DynamicResource SubtitleTextBlockStyle}"
+                   Margin="0,0,0,16"
+                   Text="Appearance" />
+        <controls:SettingsCard ContentAlignment="Vertical" Description="Select which app theme to display" Header="App theme" HeaderIcon="&#xE790;"
+                               Keywords="Light Dark System mode">
+            <ListBox Style="{StaticResource ThemeChoiceListStyle}"
+                     ItemsSource="{Binding Themes}"
+                     SelectedItem="{Binding WindowManager.Theme}"
+                     AutomationProperties.Name="App theme" />
+        </controls:SettingsCard>
+    </StackPanel>
+
+</UserControl>

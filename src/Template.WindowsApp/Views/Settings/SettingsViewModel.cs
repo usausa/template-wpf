@@ -2,13 +2,18 @@ namespace Template.WindowsApp.Views.Settings;
 
 using System.Runtime.InteropServices;
 
+using Template.WindowsApp.Extender;
 using Template.WindowsApp.Services;
 using Template.WindowsApp.Shell;
 
 // ReSharper disable once ClassNeverInstantiated.Global
-public sealed class SettingsViewModel : AppViewModelBase, IShellCommandProvider
+public sealed partial class SettingsViewModel : AppViewModelBase, IShellCommandProvider
 {
+    private SettingsPage lastPage = SettingsPage.General;
+
     public IWindowManager WindowManager { get; }
+
+    public NotificationService Notifications { get; }
 
     public IReadOnlyList<AppTheme> Themes { get; } = [AppTheme.Light, AppTheme.Dark, AppTheme.System];
 
@@ -16,20 +21,60 @@ public sealed class SettingsViewModel : AppViewModelBase, IShellCommandProvider
 
     public string VersionText { get; }
 
+    [ObservableProperty]
+    public partial SettingsPage? SelectedPage { get; set; }
+
+    [ObservableProperty]
+    public partial string SearchText { get; set; }
+
+    public EventRequest FindRequest { get; } = new();
+
+    public IObserveCommand FindCommand { get; }
+
+    public IObserveCommand ClearSearchCommand { get; }
+
     public IObserveCommand ThemeCommand { get; }
 
     public IObserveCommand ClearRecentCommand { get; }
 
     public IObserveCommand ClearRecentPagesCommand { get; }
 
-    public SettingsViewModel(IWindowManager windowManager, TaskbarService taskbar)
+    public IObserveCommand OpenLogsCommand { get; }
+
+    public SettingsViewModel(IWindowManager windowManager, NotificationService notifications, TaskbarService taskbar)
     {
         WindowManager = windowManager;
+        Notifications = notifications;
 
         var name = typeof(SettingsViewModel).Assembly.GetName();
         ApplicationName = name.Name ?? string.Empty;
         VersionText = $"Version {name.Version?.ToString(3)} · {RuntimeInformation.FrameworkDescription}";
 
+        SelectedPage = SettingsPage.General;
+        SearchText = string.Empty;
+
+        SubscribeSearchText(x =>
+        {
+            if (String.IsNullOrWhiteSpace(x))
+            {
+                SelectedPage ??= lastPage;
+            }
+            else if (SelectedPage is { } page)
+            {
+                lastPage = page;
+                SelectedPage = null;
+            }
+        });
+        SubscribeSelectedPage(x =>
+        {
+            if (x is not null)
+            {
+                SearchText = string.Empty;
+            }
+        });
+
+        FindCommand = MakeDelegateCommand(FindRequest.Request);
+        ClearSearchCommand = MakeDelegateCommand(() => SearchText = string.Empty, () => SearchText.Length > 0);
         ThemeCommand = MakeDelegateCommand<AppTheme>(x => windowManager.Theme = x);
         ClearRecentCommand = MakeDelegateCommand(() =>
         {
@@ -41,6 +86,7 @@ public sealed class SettingsViewModel : AppViewModelBase, IShellCommandProvider
             windowManager.RecentViews.Clear();
             taskbar.SetRecentViews([]);
         });
+        OpenLogsCommand = MakeAsyncCommand(() => Navigator.ForwardAsync(ViewId.Logs, new NavigationParameter().WithEffect(EntranceEffect.Name)));
     }
 
     public IEnumerable<ShellCommand> GetCommands() =>

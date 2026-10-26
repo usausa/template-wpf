@@ -25,26 +25,67 @@ public sealed class NotificationService : NotificationObject
         private set => SetProperty(ref field, value);
     }
 
+    public bool ShowsPopups
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public bool ShowsInformational
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public bool ShowsSuccess
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public bool ShowsWarning
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public bool ShowsError
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
     public NotificationService(TimeProvider timeProvider)
     {
         this.timeProvider = timeProvider;
+
+        ShowsPopups = true;
+        ShowsInformational = true;
+        ShowsSuccess = true;
+        ShowsWarning = true;
+        ShowsError = true;
     }
 
     public void Show(InfoBarSeverity severity, string title, string message)
     {
         var notification = new Notification(severity, title, message, timeProvider.GetLocalNow().DateTime);
-        Items.Add(notification);
-        while (Items.Count > MaxCount)
-        {
-            Items.RemoveAt(0);
-        }
-
         History.Insert(0, notification);
         while (History.Count > HistoryCount)
         {
             History.RemoveAt(History.Count - 1);
         }
         UnreadCount = Math.Min(UnreadCount + 1, History.Count);
+
+        if (!ShowsPopups || !Shows(severity))
+        {
+            return;
+        }
+
+        Items.Add(notification);
+        while (Items.Count > MaxCount)
+        {
+            Items.RemoveAt(0);
+        }
 
         var timer = new DispatcherTimer { Interval = Duration };
         timer.Tick += (_, _) =>
@@ -56,6 +97,15 @@ public sealed class NotificationService : NotificationObject
     }
 
     public void Close(Notification notification) => Items.Remove(notification);
+
+    private bool Shows(InfoBarSeverity severity) =>
+        severity switch
+        {
+            InfoBarSeverity.Success => ShowsSuccess,
+            InfoBarSeverity.Warning => ShowsWarning,
+            InfoBarSeverity.Error => ShowsError,
+            _ => ShowsInformational
+        };
 
     public void MarkAllAsRead() => UnreadCount = 0;
 
