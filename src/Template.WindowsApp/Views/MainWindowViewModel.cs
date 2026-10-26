@@ -10,7 +10,7 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
 {
     private const int RecentViewCount = 5;
 
-    private readonly ILogger<MainWindowViewModel> logger;
+    private readonly NavigationHistory history = new();
 
     private IDisposable? navigatingBusy;
 
@@ -33,11 +33,16 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
     [ObservableProperty]
     public partial bool IsNavigating { get; set; }
 
+    [ObservableProperty]
+    public partial bool IsNotificationsOpen { get; set; }
+
     public IObserveCommand ForwardCommand { get; }
 
-    public IObserveCommand ToggleGroupCommand { get; }
+    public IObserveCommand GoBackCommand { get; }
 
-    public IObserveCommand ExecuteCommand { get; }
+    public IObserveCommand GoForwardCommand { get; }
+
+    public IObserveCommand ToggleGroupCommand { get; }
 
     public IObserveCommand ToggleNavigationCommand { get; }
 
@@ -51,16 +56,21 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
 
     public IObserveCommand CloseNotificationCommand { get; }
 
+    public IObserveCommand ShowNotificationsCommand { get; }
+
+    public IObserveCommand CloseNotificationsCommand { get; }
+
+    public IObserveCommand ClearNotificationsCommand { get; }
+
     public MainWindowViewModel(
-        ILogger<MainWindowViewModel> logger,
         IWindowManager windowManager,
         INavigator navigator,
         NavigationMenu menu,
         DialogHost dialogs,
         NotificationService notifications,
-        TaskbarService taskbar)
+        TaskbarService taskbar,
+        ConversationService conversations)
     {
-        this.logger = logger;
         WindowManager = windowManager;
         Navigator = navigator;
         Menu = menu;
@@ -70,14 +80,26 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
         Palette = new CommandPalette(windowManager.RecentCommands, windowManager.CommandCounts);
 
         ForwardCommand = MakeAsyncCommand<ViewId>(CommandMode.Simple, x => Equals(Navigator.CurrentViewId, x) ? Task.CompletedTask : Navigator.ForwardAsync(x, new NavigationParameter().WithEffect(EntranceEffect.Name)), _ => !BusyState.IsBusy || IsNavigating);
+        GoBackCommand = MakeAsyncCommand(CommandMode.Simple, () => MoveAsync(-1), () => history.CanGoBack && CanMove());
+        GoForwardCommand = MakeAsyncCommand(CommandMode.Simple, () => MoveAsync(1), () => history.CanGoForward && CanMove());
         ToggleGroupCommand = MakeDelegateCommand<NavigationGroup>(ToggleGroup);
-        ExecuteCommand = MakeAsyncCommand(Execute, () => !BusyState.IsBusy);
         ToggleNavigationCommand = MakeDelegateCommand(() => WindowManager.IsPaneOpen = !WindowManager.IsPaneOpen);
         OpenPaletteCommand = MakeDelegateCommand(CommandMode.Simple, OpenPalette);
         ClosePaletteCommand = MakeDelegateCommand(CommandMode.Simple, Palette.Close);
         MovePaletteCommand = MakeDelegateCommand<CommandPaletteMove>(CommandMode.Simple, Palette.Move);
         ExecutePaletteCommand = MakeDelegateCommand<CommandCandidate?>(CommandMode.Simple, ExecutePalette);
         CloseNotificationCommand = MakeDelegateCommand<Notification>(CommandMode.Simple, Notifications.Close);
+        ShowNotificationsCommand = MakeDelegateCommand(CommandMode.Simple, () => IsNotificationsOpen = true);
+        CloseNotificationsCommand = MakeDelegateCommand(CommandMode.Simple, () => IsNotificationsOpen = false, () => IsNotificationsOpen);
+        ClearNotificationsCommand = MakeDelegateCommand(CommandMode.Simple, Notifications.ClearHistory, () => Notifications.History.Count > 0);
+
+        SubscribeIsNotificationsOpen(x =>
+        {
+            if (x)
+            {
+                Notifications.MarkAllAsRead();
+            }
+        });
 
         // Busy while navigating
         Disposables.Add(Observable.FromEventPattern<EventArgs>(h => Navigator.ExecutingChanged += h, h => Navigator.ExecutingChanged -= h)
@@ -86,6 +108,9 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
         Disposables.Add(Observable
             .FromEventPattern<NavigationEventArgs>(h => Navigator.Navigated += h, h => Navigator.Navigated -= h)
             .Subscribe(x => OnNavigated(x.EventArgs.Context.ToId as ViewId?)));
+
+        // Unread messages
+        Disposables.Add(conversations.UnreadCount.Subscribe(x => Menu.SetBadge(ViewId.Messages, x)));
 
         // Jump list
         Disposables.Add(Taskbar.RecentViewRemoved.Subscribe(x => WindowManager.RecentViews.Remove(x.ToString())));
@@ -109,6 +134,11 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
     private void OnNavigated(ViewId? id)
     {
         Menu.Select(id);
+
+        if (id is { } value)
+        {
+            history.Visit(value);
+        }
 
         if (AddRecentView(id) || !recentViewsApplied)
         {
@@ -141,6 +171,25 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
         return true;
     }
 
+    private bool CanMove() => !BusyState.IsBusy && (Dialogs.Current is null);
+
+    private async Task MoveAsync(int offset)
+    {
+        if (history.Begin(offset) is not { } id)
+        {
+            return;
+        }
+
+        try
+        {
+            await Navigator.ForwardAsync(id, new NavigationParameter().WithEffect(EntranceEffect.Name)).ConfigureAwait(true);
+        }
+        finally
+        {
+            history.End();
+        }
+    }
+
     private void ToggleGroup(NavigationGroup group)
     {
         if (WindowManager.IsPaneOpen)
@@ -157,7 +206,9 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
     private List<ShellCommand> CollectCommands()
     {
         var commands = Menu.EnumerateItems().Select(x => new ShellCommand($"View:{x.Id}", x.Title, "View", x.Icon, ForwardCommand, x.Id)).ToList();
-        commands.Add(new ShellCommand("Window:Execute", "Execute", "Window", "\uE768", ExecuteCommand));
+        commands.Add(new ShellCommand("Window:GoBack", "Go back", "Window", "\uE72B", GoBackCommand));
+        commands.Add(new ShellCommand("Window:GoForward", "Go forward", "Window", "\uE72A", GoForwardCommand));
+        commands.Add(new ShellCommand("Window:ShowNotifications", "Show notifications", "Window", "\uEA8F", ShowNotificationsCommand));
         commands.Add(new ShellCommand("Window:ToggleNavigation", "Toggle navigation", "Window", "\uE700", ToggleNavigationCommand));
         if (Navigator.CurrentTarget is IShellCommandProvider provider)
         {
@@ -181,14 +232,5 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
         {
             target.Command.Execute(target.Parameter);
         }
-    }
-
-    private async Task Execute()
-    {
-        logger.InfoExecuteStart();
-
-        await Task.Delay(3000).ConfigureAwait(true);
-
-        logger.InfoExecuteEnd();
     }
 }

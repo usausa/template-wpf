@@ -38,14 +38,6 @@ internal static partial class Log
     [LoggerMessage(Level = LogLevel.Warning, Message = "Unknown view. view=[{view}]")]
     public static partial void WarnUnknownView(this ILogger logger, string view);
 
-    // Startup
-
-    [LoggerMessage(Level = LogLevel.Information, Message = "Execute start.")]
-    public static partial void InfoExecuteStart(this ILogger logger);
-
-    [LoggerMessage(Level = LogLevel.Information, Message = "Execute end.")]
-    public static partial void InfoExecuteEnd(this ILogger logger);
-
     // Navigation
 
     [LoggerMessage(Level = LogLevel.Warning, Message = "Leak suspected. target=[{target}]")]

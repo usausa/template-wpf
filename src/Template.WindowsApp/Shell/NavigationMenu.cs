@@ -123,4 +123,20 @@ public sealed class NavigationMenu
             }
         }
     }
+
+    public void SetBadge(ViewId id, int count)
+    {
+        foreach (var item in EnumerateItems())
+        {
+            if (item.Id == id)
+            {
+                item.Badge = count;
+            }
+        }
+
+        foreach (var group in Groups)
+        {
+            group.Badge = group.Items.Sum(static x => x.Badge);
+        }
+    }
 }

@@ -1,4 +1,4 @@
-namespace Template.WindowsApp.Views.Collections;
+namespace Template.WindowsApp.Services;
 
 public enum ConversationKind
 {

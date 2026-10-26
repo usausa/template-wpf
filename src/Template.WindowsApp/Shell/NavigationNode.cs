@@ -1,10 +1,13 @@
 namespace Template.WindowsApp.Shell;
 
-public abstract class NavigationNode : ObservableObject
+public abstract partial class NavigationNode : ObservableObject
 {
     public string Title { get; }
 
     public string Icon { get; }
+
+    [ObservableProperty]
+    public partial int Badge { get; set; }
 
     protected NavigationNode(string title, string icon)
     {
