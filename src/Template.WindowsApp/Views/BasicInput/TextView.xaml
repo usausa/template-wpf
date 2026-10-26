@@ -17,7 +17,7 @@
             <TextBlock Style="{StaticResource PageTitleTextStyle}"
                        Text="Text" />
             <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
-                       Text="Text boxes, password boxes, number boxes and rich text." />
+                       Text="Text boxes, password boxes, number boxes, auto-suggest boxes and rich text." />
 
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -26,6 +26,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -157,6 +158,103 @@
                         </StackPanel>
                         <TextBlock Style="{StaticResource SampleResultTextStyle}"
                                    Text="{Binding Number, StringFormat='Value: {0}', TargetNullValue='Value: none'}" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="3" Grid.Column="0"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="AutoSuggestBox" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Suggestions while you type."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <controls:AutoSuggestBox Width="320"
+                                                     HorizontalAlignment="Left"
+                                                     ItemsSource="{Binding CitySuggestions}"
+                                                     Text="{Binding CityText}"
+                                                     PlaceholderText="Type a city"
+                                                     NoResultsText="No results found"
+                                                     QuerySubmittedCommand="{Binding SubmitCityCommand}"
+                                                     AutomationProperties.Name="City">
+                                <controls:AutoSuggestBox.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type module:CitySuggestion}">
+                                        <TextBlock controls:TextBlockHelper.Runs="{Binding NameRuns}"
+                                                   TextTrimming="CharacterEllipsis" />
+                                    </DataTemplate>
+                                </controls:AutoSuggestBox.ItemTemplate>
+                            </controls:AutoSuggestBox>
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding SelectedCity, StringFormat='Selected: {0}', TargetNullValue='Selected: none'}" />
+                    </StackPanel>
+                </Border>
+                <Border Grid.Row="3" Grid.Column="2"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="Search box" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Press Enter or the search button to find a customer."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <controls:AutoSuggestBox Width="320"
+                                                     HorizontalAlignment="Left"
+                                                     ItemsSource="{Binding CustomerSuggestions}"
+                                                     Text="{Binding CustomerText}"
+                                                     PlaceholderText="Search customers"
+                                                     QueryIcon="&#xE721;"
+                                                     NoResultsText="No results found"
+                                                     QuerySubmittedCommand="{Binding SubmitCustomerCommand}"
+                                                     AutomationProperties.Name="Customer">
+                                <controls:AutoSuggestBox.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type module:CustomerSuggestion}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0"
+                                                       controls:TextBlockHelper.Runs="{Binding NameRuns}"
+                                                       VerticalAlignment="Center"
+                                                       TextTrimming="CharacterEllipsis" />
+                                            <TextBlock Grid.Column="1"
+                                                       controls:TextBlockHelper.Runs="{Binding CompanyRuns}"
+                                                       Margin="12,0,0,0"
+                                                       VerticalAlignment="Center"
+                                                       FontSize="12"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </controls:AutoSuggestBox.ItemTemplate>
+                            </controls:AutoSuggestBox>
+                        </StackPanel>
+                        <TextBlock>
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}"
+                                       BasedOn="{StaticResource SampleResultTextStyle}">
+                                    <Setter Property="Text">
+                                        <Setter.Value>
+                                            <MultiBinding StringFormat="Customer: {0} · {1} · {2}">
+                                                <Binding Path="SelectedCustomer.Name"
+                                                         FallbackValue="-" />
+                                                <Binding Path="SelectedCustomer.Company"
+                                                         FallbackValue="-" />
+                                                <Binding Path="SelectedCustomer.City"
+                                                         FallbackValue="-" />
+                                            </MultiBinding>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedCustomer}"
+                                                     Value="{x:Null}">
+                                            <Setter Property="Text" Value="{Binding CustomerQuery, StringFormat='No customer matches \'{0}\'', TargetNullValue='Customer: none'}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
                     </StackPanel>
                 </Border>
             </Grid>

@@ -925,6 +925,10 @@
         </Style.Triggers>
     </Style>
 
+    <!-- ================================================================================ -->
+    <!-- Removable tag -->
+    <!-- ================================================================================ -->
+
     <Style TargetType="{x:Type controls:RemovableTag}">
         <Setter Property="Padding" Value="10,0,0,0" />
         <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
@@ -957,6 +961,10 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <!-- ================================================================================ -->
+    <!-- Tab view -->
+    <!-- ================================================================================ -->
 
     <Style x:Key="TabViewButtonStyle"
            TargetType="{x:Type Button}">
@@ -1117,6 +1125,147 @@
                             <Setter TargetName="HeaderPresenter" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="PART_CloseButton" Property="Visibility" Value="Collapsed" />
                         </MultiDataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ================================================================================ -->
+    <!-- Auto-suggest box -->
+    <!-- ================================================================================ -->
+
+    <Style x:Key="AutoSuggestBoxQueryButtonStyle"
+           TargetType="{x:Type Button}">
+        <Setter Property="Width" Value="32" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Background" Value="{DynamicResource TextControlButtonBackground}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextControlButtonForeground}" />
+        <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource TextControlButtonBackgroundPointerOver}" />
+                            <Setter Property="Foreground" Value="{DynamicResource TextControlButtonForegroundPointerOver}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource TextControlButtonBackgroundPressed}" />
+                            <Setter Property="Foreground" Value="{DynamicResource TextControlButtonForegroundPressed}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="AutoSuggestBoxItemStyle"
+           TargetType="{x:Type ListBoxItem}">
+        <Setter Property="MinHeight" Value="36" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Padding" Value="12,0,12,0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Grid Background="{TemplateBinding Background}">
+                        <Border x:Name="Selection"
+                                Visibility="Collapsed"
+                                Background="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                        <Border x:Name="Indicator"
+                                Width="3" Height="16"
+                                HorizontalAlignment="Left"
+                                Visibility="Collapsed"
+                                Background="{DynamicResource AccentFillColorDefaultBrush}" />
+                        <ContentPresenter Margin="{TemplateBinding Padding}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="Center" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Selection" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="Indicator" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type controls:AutoSuggestBox}">
+        <Setter Property="MinWidth" Value="120" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:AutoSuggestBox}">
+                    <Grid>
+                        <TextBox x:Name="PART_TextBox"
+                                 Style="{DynamicResource DefaultTextBoxBaseStyle}"
+                                 controls:TextBoxHelper.PlaceholderText="{TemplateBinding PlaceholderText}"
+                                 Padding="10,5,38,6"
+                                 AutomationProperties.Name="{TemplateBinding AutomationProperties.Name}" />
+                        <Button x:Name="PART_QueryButton"
+                                Style="{StaticResource AutoSuggestBoxQueryButtonStyle}"
+                                Margin="0,1,1,2"
+                                HorizontalAlignment="Right"
+                                Content="{TemplateBinding QueryIcon}"
+                                AutomationProperties.Name="Search" />
+                        <Popup x:Name="PART_Popup"
+                               IsOpen="{Binding IsSuggestionListOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                               AllowsTransparency="True" Placement="Bottom"
+                               PlacementTarget="{Binding ElementName=PART_TextBox}">
+                            <Border Width="{Binding ActualWidth, ElementName=PART_TextBox}"
+                                    Background="{DynamicResource FlyoutBackground}"
+                                    BorderBrush="{DynamicResource FlyoutBorderBrush}"
+                                    BorderThickness="1">
+                                <Grid>
+                                    <ListBox x:Name="PART_SuggestionsList"
+                                             MaxHeight="320"
+                                             Padding="0"
+                                             ItemsSource="{TemplateBinding ItemsSource}"
+                                             ItemTemplate="{TemplateBinding ItemTemplate}"
+                                             Focusable="False"
+                                             Background="Transparent"
+                                             BorderThickness="0"
+                                             ItemContainerStyle="{StaticResource AutoSuggestBoxItemStyle}"
+                                             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                        <ListBox.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel />
+                                            </ItemsPanelTemplate>
+                                        </ListBox.ItemsPanel>
+                                    </ListBox>
+                                    <TextBlock x:Name="NoResults"
+                                               Margin="12,8,12,8"
+                                               Visibility="Collapsed"
+                                               Text="{TemplateBinding NoResultsText}"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                </Grid>
+                            </Border>
+                        </Popup>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="QueryIcon" Value="{x:Null}">
+                            <Setter TargetName="PART_TextBox" Property="Padding" Value="10,5,6,6" />
+                            <Setter TargetName="PART_QueryButton" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="HasItems" Value="False" SourceName="PART_SuggestionsList">
+                            <Setter TargetName="PART_SuggestionsList" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="NoResults" Property="Visibility" Value="Visible" />
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

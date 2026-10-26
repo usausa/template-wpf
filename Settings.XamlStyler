@@ -180,6 +180,11 @@
     "ReservedWidth",
     "MoveCommand",
 
+    "PlaceholderText",
+    "QueryIcon",
+    "NoResultsText",
+    "QuerySubmittedCommand",
+
     "ToolTip",
 
     "*",
