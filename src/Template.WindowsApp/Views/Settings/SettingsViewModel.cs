@@ -47,7 +47,9 @@ public sealed partial class SettingsViewModel : AppViewModelBase, IShellCommandP
 
     public IObserveCommand OpenLogsCommand { get; }
 
-    public SettingsViewModel(IWindowManager windowManager, IDialogService dialogService, NavigationMenu menu, NotificationService notifications)
+    public IObserveCommand CopyVersionCommand { get; }
+
+    public SettingsViewModel(IWindowManager windowManager, IDialogService dialogService, IClipboardService clipboardService, NavigationMenu menu, NotificationService notifications)
     {
         this.dialogService = dialogService;
         this.menu = menu;
@@ -55,8 +57,15 @@ public sealed partial class SettingsViewModel : AppViewModelBase, IShellCommandP
         Notifications = notifications;
 
         var name = typeof(SettingsViewModel).Assembly.GetName();
+        var version = name.Version?.ToString(3);
         ApplicationName = name.Name ?? string.Empty;
-        VersionText = $"Version {name.Version?.ToString(3)} · {RuntimeInformation.FrameworkDescription}";
+        VersionText = $"Version {version} · {RuntimeInformation.FrameworkDescription}";
+        var versionInfo = $"""
+            {ApplicationName}
+            Version: {version}
+            OS: {RuntimeInformation.OSDescription}
+            .NET: {RuntimeInformation.FrameworkDescription}
+            """;
 
         SelectedPage = SettingsPage.General;
         SearchText = string.Empty;
@@ -94,6 +103,7 @@ public sealed partial class SettingsViewModel : AppViewModelBase, IShellCommandP
             Observable.FromEventPattern(h => menu.Changed += h, h => menu.Changed -= h),
             MakeAsyncCommand(ClearFavoritePagesAsync, () => menu.Favorites.Items.Count > 0));
         OpenLogsCommand = MakeAsyncCommand(() => Navigator.ForwardAsync(ViewId.Logs, new NavigationParameter().WithEffect(EntranceEffect.Name)));
+        CopyVersionCommand = MakeDelegateCommand(() => clipboardService.SetText(versionInfo));
     }
 
     private async Task ClearFavoritePagesAsync()
@@ -111,6 +121,7 @@ public sealed partial class SettingsViewModel : AppViewModelBase, IShellCommandP
         new("Settings:SystemTheme", "System theme", "Settings", "\uE790", ThemeCommand, AppTheme.System),
         new("Settings:ClearRecentCommands", "Clear recent commands", "Settings", "\uE74D", ClearRecentCommand),
         new("Settings:ClearRecentPages", "Clear recent pages", "Settings", "\uE74D", ClearRecentPagesCommand),
-        new("Settings:ClearFavoritePages", "Clear favorite pages", "Settings", "\uE74D", ClearFavoritePagesCommand)
+        new("Settings:ClearFavoritePages", "Clear favorite pages", "Settings", "\uE74D", ClearFavoritePagesCommand),
+        new("Settings:CopyVersionInfo", "Copy version info", "Settings", "\uE8C8", CopyVersionCommand)
     ];
 }

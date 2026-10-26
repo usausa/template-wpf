@@ -8,6 +8,7 @@
                     xmlns:shell="clr-namespace:Template.WindowsApp.Shell"
                     xmlns:behaviors="clr-namespace:Template.WindowsApp.Behaviors"
                     xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
+                    xmlns:helpers="clr-namespace:Template.WindowsApp.Helpers"
                     xmlns:services="clr-namespace:Template.WindowsApp.Services"
                     xmlns:views="clr-namespace:Template.WindowsApp.Views"
                     xmlns:dialogs="clr-namespace:Template.WindowsApp.Views.Dialogs"
@@ -22,6 +23,8 @@
                     ShowIconOnTitleBar="False">
 
     <controls:AppWindow.Resources>
+        <helpers:CountBadgeImageConverter x:Key="CountBadgeImageConverter" />
+
         <DataTemplate DataType="{x:Type dialogs:MessageDialogViewModel}">
             <dialogs:MessageDialogView />
         </DataTemplate>
@@ -393,7 +396,8 @@
     </controls:AppWindow.InputBindings>
 
     <controls:AppWindow.TaskbarItemInfo>
-        <TaskbarItemInfo ProgressState="{Binding Taskbar.State}"
+        <TaskbarItemInfo Overlay="{Binding Notifications.UnreadCount, Converter={StaticResource CountBadgeImageConverter}}"
+                         ProgressState="{Binding Taskbar.State}"
                          ProgressValue="{Binding Taskbar.Value}" />
     </controls:AppWindow.TaskbarItemInfo>
 

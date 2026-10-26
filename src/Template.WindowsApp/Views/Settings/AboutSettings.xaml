@@ -16,7 +16,11 @@
         <controls:SettingsCard Header="{Binding ApplicationName}"
                                Description="{Binding VersionText}"
                                HeaderIcon="&#xE946;"
-                               Keywords="Version" />
+                               Keywords="Version">
+            <Button Command="{Binding CopyVersionCommand}"
+                    Content="Copy"
+                    AutomationProperties.Name="Copy version info" />
+        </controls:SettingsCard>
         <controls:SettingsCard Header="Logs"
                                Description="Messages that the app has written while running"
                                HeaderIcon="&#xE9A4;"
