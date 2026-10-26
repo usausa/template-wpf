@@ -20,6 +20,16 @@ public sealed class NavigationMenu
     public IReadOnlyList<NavigationNode> Items { get; } =
     [
         new NavigationGroup(
+            "Fundamentals",
+            "\uE8F1",
+            [
+                new(ViewId.ResourcesStyles, "Resources & styles", "\uEE56"),
+                new(ViewId.Binding, "Binding", "\uE71B"),
+                new(ViewId.Templates, "Templates", "\uE7C3"),
+                new(ViewId.CustomControls, "Custom controls", "\uEA86"),
+                new(ViewId.ScratchPad, "Scratch pad", "\uE943")
+            ]),
+        new NavigationGroup(
             "Basic input",
             "\uE961",
             [

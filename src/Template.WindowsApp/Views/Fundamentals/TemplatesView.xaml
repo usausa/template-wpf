@@ -1,0 +1,242 @@
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:s="http://smart/windows"
+             xmlns:module="clr-namespace:Template.WindowsApp.Views.Fundamentals"
+             mc:Ignorable="d"
+             x:Class="Template.WindowsApp.Views.Fundamentals.TemplatesView"
+             s:DataContextResolver.Type="{x:Type module:TemplatesViewModel}"
+             d:DataContext="{d:DesignInstance Type={x:Type module:TemplatesViewModel}}"
+             d:DesignWidth="800" d:DesignHeight="600">
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24">
+            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+                       Text="Templates" />
+            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+                       Text="Change how items and controls look with templates." />
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Grid.Column="0"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="ItemTemplate" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Show each item of a list with a DataTemplate."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <ComboBox Width="240"
+                                      HorizontalAlignment="Left"
+                                      ItemsSource="{Binding Swatches}"
+                                      SelectedItem="{Binding SelectedSwatch}"
+                                      AutomationProperties.Name="Color">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type module:SwatchEntry}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Rectangle Width="16" Height="16"
+                                                       VerticalAlignment="Center">
+                                                <Rectangle.Fill>
+                                                    <SolidColorBrush Color="{Binding Color}" />
+                                                </Rectangle.Fill>
+                                            </Rectangle>
+                                            <TextBlock Margin="8,0,0,0"
+                                                       VerticalAlignment="Center"
+                                                       Text="{Binding Name}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding SelectedSwatch.Name, StringFormat='Selected: {0}', FallbackValue='Selected: -'}" />
+                    </StackPanel>
+                </Border>
+                <Border Grid.Row="0" Grid.Column="2"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="ItemsPanelTemplate" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Lay out the items of a list with another panel."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <ListBox Width="320"
+                                     HorizontalAlignment="Left"
+                                     ItemsSource="{Binding Tags}"
+                                     SelectedItem="{Binding SelectedTag}"
+                                     AutomationProperties.Name="Tags" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel />
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                            </ListBox>
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding SelectedTag, StringFormat='Selected: {0}', TargetNullValue='Selected: -'}" />
+                    </StackPanel>
+                </Border>
+                <Border Grid.Row="1" Grid.Column="0"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="ControlTemplate" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Give a control a whole new look and keep how it works."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <Button Width="240"
+                                    HorizontalAlignment="Left"
+                                    Command="{Binding PressCommand}"
+                                    Content="Press the new look"
+                                    Background="{DynamicResource SubtleFillColorSecondaryBrush}"
+                                    BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border x:Name="Root"
+                                                Padding="12"
+                                                Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="1">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center"
+                                                           Text="&#xE7C3;"
+                                                           FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                                                           FontSize="20"
+                                                           Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
+                                                <ContentPresenter Margin="12,0,0,0"
+                                                                  VerticalAlignment="Center" />
+                                            </StackPanel>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Root" Property="Background" Value="{DynamicResource SubtleFillColorTertiaryBrush}" />
+                                            </Trigger>
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Root" Property="BorderBrush" Value="{DynamicResource AccentFillColorDefaultBrush}" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding PressCount, StringFormat='Pressed: {0} times'}" />
+                    </StackPanel>
+                </Border>
+                <Border Grid.Row="1" Grid.Column="2"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="Templates by data type" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Each kind of item gets its own DataTemplate from its type."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <ItemsControl ItemsSource="{Binding Items}"
+                                          Focusable="False">
+                                <ItemsControl.Resources>
+                                    <DataTemplate DataType="{x:Type module:NoteItem}">
+                                        <StackPanel Orientation="Horizontal"
+                                                    Margin="0,0,0,8">
+                                            <TextBlock VerticalAlignment="Center"
+                                                       Text="&#xE70B;"
+                                                       FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                                                       FontSize="16" />
+                                            <TextBlock Margin="8,0,0,0"
+                                                       VerticalAlignment="Center"
+                                                       Text="{Binding Text}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                    <DataTemplate DataType="{x:Type module:TaskItem}">
+                                        <CheckBox Margin="0,0,0,8"
+                                                  IsChecked="{Binding IsDone, Mode=OneWay}"
+                                                  IsHitTestVisible="False"
+                                                  Content="{Binding Text}" />
+                                    </DataTemplate>
+                                    <DataTemplate DataType="{x:Type module:LinkItem}">
+                                        <StackPanel Orientation="Horizontal"
+                                                    Margin="0,0,0,8">
+                                            <TextBlock VerticalAlignment="Center"
+                                                       Text="&#xE71B;"
+                                                       FontFamily="{DynamicResource SymbolThemeFontFamily}"
+                                                       FontSize="16" />
+                                            <TextBlock Margin="8,0,0,0"
+                                                       VerticalAlignment="Center"
+                                                       Text="{Binding Text}"
+                                                       Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
+                                            <TextBlock Margin="8,0,0,0"
+                                                       VerticalAlignment="Center"
+                                                       Text="{Binding Address}"
+                                                       FontFamily="{StaticResource CodeFontFamily}"
+                                                       FontSize="12"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.Resources>
+                            </ItemsControl>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Row="2" Grid.Column="0"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="DataTemplateSelector" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Pick a template for each item with your own rule."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <ItemsControl ItemsSource="{Binding Temperatures}"
+                                          Focusable="False">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplateSelector>
+                                    <module:TemperatureTemplateSelector HotThreshold="30">
+                                        <module:TemperatureTemplateSelector.NormalTemplate>
+                                            <DataTemplate>
+                                                <Border Margin="0,0,8,8" Padding="12,6"
+                                                        Background="{DynamicResource SubtleFillColorSecondaryBrush}">
+                                                    <TextBlock Text="{Binding StringFormat='{}{0} °C'}" />
+                                                </Border>
+                                            </DataTemplate>
+                                        </module:TemperatureTemplateSelector.NormalTemplate>
+                                        <module:TemperatureTemplateSelector.HotTemplate>
+                                            <DataTemplate>
+                                                <Border Margin="0,0,8,8" Padding="12,6"
+                                                        Background="{DynamicResource AccentFillColorDefaultBrush}">
+                                                    <TextBlock Text="{Binding StringFormat='{}{0} °C'}"
+                                                               FontWeight="SemiBold"
+                                                               Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+                                                </Border>
+                                            </DataTemplate>
+                                        </module:TemperatureTemplateSelector.HotTemplate>
+                                    </module:TemperatureTemplateSelector>
+                                </ItemsControl.ItemTemplateSelector>
+                            </ItemsControl>
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="30 °C and above use the hot template" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

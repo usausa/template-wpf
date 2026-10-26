@@ -1,0 +1,135 @@
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:s="http://smart/windows"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
+             xmlns:module="clr-namespace:Template.WindowsApp.Views.Fundamentals"
+             mc:Ignorable="d"
+             x:Class="Template.WindowsApp.Views.Fundamentals.CustomControlsView"
+             s:DataContextResolver.Type="{x:Type module:CustomControlsViewModel}"
+             d:DataContext="{d:DesignInstance Type={x:Type module:CustomControlsViewModel}}"
+             d:DesignWidth="800" d:DesignHeight="600">
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24">
+            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+                       Text="Custom controls" />
+            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+                       Text="Build reusable parts as user controls and templated controls." />
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Grid.Column="0"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="UserControl" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Put controls together into one part with its own properties."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <module:ProfileTile Glyph="&#xE790;"
+                                                DisplayName="Aiko Tanaka"
+                                                Role="Designer" />
+                            <module:ProfileTile Margin="0,8,0,0"
+                                                Glyph="&#xE943;"
+                                                DisplayName="Ben Carter"
+                                                Role="Developer" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Row="0" Grid.Column="2"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="Templated control" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="A control whose look comes from its style in Themes/Generic.xaml."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <ItemsControl ItemsSource="{Binding Tags}"
+                                          Focusable="False">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <controls:RemovableTag Margin="0,0,8,8"
+                                                               Text="{Binding}"
+                                                               RemoveCommand="{Binding DataContext.RemoveTagCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
+                                                               RemoveCommandParameter="{Binding}" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <Button Margin="0,4,0,0"
+                                    Command="{Binding ResetTagsCommand}"
+                                    Content="Reset tags" />
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding Tags.Count, StringFormat='Tags: {0}'}" />
+                    </StackPanel>
+                </Border>
+                <Border Grid.Row="1" Grid.Column="0"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="Attached property" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Add a property to a control from outside, like the placeholder of this box."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <TextBox Width="240"
+                                     controls:TextBoxHelper.AllowedCharacters="[0-9-]" controls:TextBoxHelper.PlaceholderText="Postal code"
+                                     HorizontalAlignment="Left"
+                                     Text="{Binding PostalCode, UpdateSourceTrigger=PropertyChanged}"
+                                     AutomationProperties.Name="Postal code" />
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding PostalCode, StringFormat='Postal code: {0}'}" />
+                    </StackPanel>
+                </Border>
+                <Border Grid.Row="1" Grid.Column="2"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="Behavior" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Run a command from any event with an EventTrigger and InvokeCommandAction."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <Border Width="240" Height="56"
+                                    HorizontalAlignment="Left"
+                                    Background="{DynamicResource SubtleFillColorSecondaryBrush}"
+                                    BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                                    BorderThickness="1">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseEnter">
+                                        <i:InvokeCommandAction Command="{Binding EnterCommand}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                           Text="Point at this box" />
+                            </Border>
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding EnterCount, StringFormat='Pointed: {0} times'}" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

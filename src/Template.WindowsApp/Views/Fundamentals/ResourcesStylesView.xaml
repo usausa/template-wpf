@@ -1,0 +1,239 @@
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:s="http://smart/windows"
+             xmlns:module="clr-namespace:Template.WindowsApp.Views.Fundamentals"
+             mc:Ignorable="d"
+             x:Class="Template.WindowsApp.Views.Fundamentals.ResourcesStylesView"
+             s:DataContextResolver.Type="{x:Type module:ResourcesStylesViewModel}"
+             d:DataContext="{d:DesignInstance Type={x:Type module:ResourcesStylesViewModel}}"
+             d:DesignWidth="800" d:DesignHeight="600">
+
+    <UserControl.Resources>
+        <s:MapToTextConverter x:Key="OnOffConverter">
+            <s:MapToTextConverter.Entries>
+                <s:MapToTextEntry Key="{s:Bool True}"
+                                  Value="On" />
+                <s:MapToTextEntry Key="{s:Bool False}"
+                                  Value="Off" />
+            </s:MapToTextConverter.Entries>
+        </s:MapToTextConverter>
+        <Style x:Key="SwatchStyle"
+               TargetType="{x:Type Border}">
+            <Setter Property="Width" Value="40" />
+            <Setter Property="Height" Value="24" />
+            <Setter Property="BorderBrush" Value="{DynamicResource CardStrokeColorDefaultBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+        <Style x:Key="KeyTextStyle"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="12,0,0,0" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontFamily" Value="{StaticResource CodeFontFamily}" />
+            <Setter Property="FontSize" Value="12" />
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24">
+            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+                       Text="Resources &amp; styles" />
+            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+                       Text="Resources, styles and triggers that keep the look consistent." />
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Grid.Column="0"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="Resources" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Define brushes once and use them with StaticResource."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <StackPanel.Resources>
+                                <SolidColorBrush x:Key="SampleDarkBrush"
+                                                 Color="{StaticResource ChartBlueDarkColor}" />
+                                <SolidColorBrush x:Key="SampleBrush"
+                                                 Color="{StaticResource ChartBlueColor}" />
+                                <SolidColorBrush x:Key="SampleLightBrush"
+                                                 Color="{StaticResource ChartBlueLightColor}" />
+                            </StackPanel.Resources>
+                            <StackPanel Orientation="Horizontal">
+                                <Border Style="{StaticResource SwatchStyle}"
+                                        Background="{StaticResource SampleDarkBrush}" />
+                                <TextBlock Style="{StaticResource KeyTextStyle}"
+                                           Text="SampleDarkBrush" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="0,8,0,0">
+                                <Border Style="{StaticResource SwatchStyle}"
+                                        Background="{StaticResource SampleBrush}" />
+                                <TextBlock Style="{StaticResource KeyTextStyle}"
+                                           Text="SampleBrush" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="0,8,0,0">
+                                <Border Style="{StaticResource SwatchStyle}"
+                                        Background="{StaticResource SampleLightBrush}" />
+                                <TextBlock Style="{StaticResource KeyTextStyle}"
+                                           Text="SampleLightBrush" />
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Row="0" Grid.Column="2"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="Theme resources" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="DynamicResource follows the light and dark themes."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Style="{StaticResource SwatchStyle}"
+                                        Background="{DynamicResource AccentFillColorDefaultBrush}" />
+                                <TextBlock Style="{StaticResource KeyTextStyle}"
+                                           Text="AccentFillColorDefaultBrush" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="0,8,0,0">
+                                <Border Style="{StaticResource SwatchStyle}"
+                                        Background="{DynamicResource TextFillColorPrimaryBrush}" />
+                                <TextBlock Style="{StaticResource KeyTextStyle}"
+                                           Text="TextFillColorPrimaryBrush" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="0,8,0,0">
+                                <Border Style="{StaticResource SwatchStyle}"
+                                        Background="{DynamicResource SolidBackgroundFillColorBaseBrush}" />
+                                <TextBlock Style="{StaticResource KeyTextStyle}"
+                                           Text="SolidBackgroundFillColorBaseBrush" />
+                            </StackPanel>
+                            <Button Margin="0,12,0,0"
+                                    Command="{Binding SwitchThemeCommand}"
+                                    Content="Switch theme" />
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding WindowManager.Theme, StringFormat='Theme: {0}'}" />
+                    </StackPanel>
+                </Border>
+                <Border Grid.Row="1" Grid.Column="0"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="Style with a key" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="A named style based on the default button style."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}"
+                                    Orientation="Horizontal">
+                            <StackPanel.Resources>
+                                <Style x:Key="SampleButtonStyle"
+                                       TargetType="{x:Type Button}"
+                                       BasedOn="{StaticResource {x:Type Button}}">
+                                    <Setter Property="Padding" Value="20,6" />
+                                    <Setter Property="FontWeight" Value="SemiBold" />
+                                    <Setter Property="Foreground" Value="{DynamicResource AccentTextFillColorPrimaryBrush}" />
+                                </Style>
+                            </StackPanel.Resources>
+                            <Button Command="{Binding PressCommand}"
+                                    CommandParameter="Default"
+                                    Content="Default" />
+                            <Button Style="{StaticResource SampleButtonStyle}"
+                                    Margin="8,0,0,0"
+                                    Command="{Binding PressCommand}"
+                                    CommandParameter="Styled"
+                                    Content="Styled" />
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding Pressed, StringFormat='Pressed: {0}', TargetNullValue='Pressed: -'}" />
+                    </StackPanel>
+                </Border>
+                <Border Grid.Row="1" Grid.Column="2"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="Implicit style" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="A style without a key applies to every TextBlock in the panel."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <StackPanel.Resources>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Margin" Value="0,0,0,4" />
+                                    <Setter Property="FontFamily" Value="{StaticResource CodeFontFamily}" />
+                                    <Setter Property="Foreground" Value="{DynamicResource AccentTextFillColorPrimaryBrush}" />
+                                </Style>
+                            </StackPanel.Resources>
+                            <TextBlock Text="Every TextBlock" />
+                            <TextBlock Text="in this panel" />
+                            <TextBlock Text="uses the same style" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Row="2" Grid.Column="0"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="Triggers" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="Change the look when a property or a value changes."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <CheckBox IsChecked="{Binding IsHighlighted}"
+                                      Content="Highlight" />
+                            <Border Width="240"
+                                    Margin="0,8,0,0" Padding="12,8"
+                                    HorizontalAlignment="Left">
+                                <Border.Style>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="{DynamicResource SubtleFillColorTertiaryBrush}" />
+                                            </Trigger>
+                                            <DataTrigger Binding="{Binding IsHighlighted}"
+                                                         Value="True">
+                                                <Setter Property="Background" Value="{DynamicResource AccentFillColorDefaultBrush}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <TextBlock Text="Point at me or check Highlight">
+                                    <TextBlock.Style>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsHighlighted}"
+                                                             Value="True">
+                                                    <Setter Property="Foreground" Value="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Border>
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding IsHighlighted, Converter={StaticResource OnOffConverter}, StringFormat='Highlight: {0}'}" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

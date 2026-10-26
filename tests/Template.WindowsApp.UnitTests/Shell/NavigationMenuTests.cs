@@ -30,7 +30,7 @@ public sealed class NavigationMenuTests
 
         // Assert
         Assert.DoesNotContain(menu.Favorites, groups);
-        Assert.Equal(8, groups.Count);
+        Assert.Equal(9, groups.Count);
     }
 
     [Fact]

@@ -8,6 +8,7 @@ using Template.WindowsApp.Mocks;
 using Template.WindowsApp.Services;
 using Template.WindowsApp.Shell;
 
+[Collection(ViewModelTestGroup.Name)]
 public sealed class SettingsViewModelTests
 {
     [Fact]

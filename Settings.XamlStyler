@@ -134,6 +134,7 @@
     "Icon",
     "Text",
     "Content",
+    "Glyph",
     "ImageSource",
 
     "FontFamily, FontSize, FontWeight, FontStyle",
@@ -167,6 +168,9 @@
 
     "Message",
     "Severity",
+
+    "DisplayName",
+    "Role",
 
     "ToolTip",
 

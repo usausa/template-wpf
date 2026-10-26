@@ -3,6 +3,11 @@ namespace Template.WindowsApp.Views;
 public enum ViewId
 {
     Home,
+    ResourcesStyles,
+    Binding,
+    Templates,
+    CustomControls,
+    ScratchPad,
     Buttons,
     Choices,
     Text,
