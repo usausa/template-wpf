@@ -385,9 +385,8 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="MenuGlyphStyle"
-               TargetType="{x:Type TextBlock}">
-            <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+        <Style x:Key="MenuEmojiStyle"
+               TargetType="{x:Type controls:EmojiIcon}">
             <Setter Property="FontSize" Value="16" />
         </Style>
         <ContextMenu x:Key="ReactionMenu"
@@ -398,32 +397,32 @@
                       CommandParameter="{Binding PlacementTarget.(FrameworkElement.DataContext), RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
                       Header="Like">
                 <MenuItem.Icon>
-                    <TextBlock Style="{StaticResource MenuGlyphStyle}"
-                               Text="&#xE8E1;" />
+                    <controls:EmojiIcon Style="{StaticResource MenuEmojiStyle}"
+                                        Glyph="&#x1F44D;" />
                 </MenuItem.Icon>
             </MenuItem>
             <MenuItem Command="{Binding HeartCommand}"
                       CommandParameter="{Binding PlacementTarget.(FrameworkElement.DataContext), RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
                       Header="Heart">
                 <MenuItem.Icon>
-                    <TextBlock Style="{StaticResource MenuGlyphStyle}"
-                               Text="&#xEB51;" />
+                    <controls:EmojiIcon Style="{StaticResource MenuEmojiStyle}"
+                                        Glyph="&#x2764;&#xFE0F;" />
                 </MenuItem.Icon>
             </MenuItem>
             <MenuItem Command="{Binding AcceptCommand}"
                       CommandParameter="{Binding PlacementTarget.(FrameworkElement.DataContext), RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
                       Header="Accept">
                 <MenuItem.Icon>
-                    <TextBlock Style="{StaticResource MenuGlyphStyle}"
-                               Text="&#xE8FB;" />
+                    <controls:EmojiIcon Style="{StaticResource MenuEmojiStyle}"
+                                        Glyph="&#x2705;" />
                 </MenuItem.Icon>
             </MenuItem>
             <MenuItem Command="{Binding LaughCommand}"
                       CommandParameter="{Binding PlacementTarget.(FrameworkElement.DataContext), RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
                       Header="Laugh">
                 <MenuItem.Icon>
-                    <TextBlock Style="{StaticResource MenuGlyphStyle}"
-                               Text="&#xE899;" />
+                    <controls:EmojiIcon Style="{StaticResource MenuEmojiStyle}"
+                                        Glyph="&#x1F604;" />
                 </MenuItem.Icon>
             </MenuItem>
         </ContextMenu>
@@ -499,11 +498,10 @@
                     Command="{Binding DataContext.ToggleReactionCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
                     CommandParameter="{Binding}">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock x:Name="Glyph"
-                               VerticalAlignment="Center"
-                               Text="&#xE8E1;"
-                               FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                               FontSize="12" />
+                    <controls:EmojiIcon x:Name="Glyph"
+                                        VerticalAlignment="Center"
+                                        Glyph="&#x1F44D;"
+                                        FontSize="14" />
                     <TextBlock Margin="6,0,0,0"
                                VerticalAlignment="Center"
                                Text="{Binding Count}"
@@ -513,15 +511,15 @@
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding Kind}"
                              Value="Heart">
-                    <Setter TargetName="Glyph" Property="Text" Value="&#xEB51;" />
+                    <Setter TargetName="Glyph" Property="Glyph" Value="&#x2764;&#xFE0F;" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Kind}"
                              Value="Accept">
-                    <Setter TargetName="Glyph" Property="Text" Value="&#xE8FB;" />
+                    <Setter TargetName="Glyph" Property="Glyph" Value="&#x2705;" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Kind}"
                              Value="Laugh">
-                    <Setter TargetName="Glyph" Property="Text" Value="&#xE899;" />
+                    <Setter TargetName="Glyph" Property="Glyph" Value="&#x1F604;" />
                 </DataTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>

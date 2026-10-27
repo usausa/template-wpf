@@ -12,7 +12,7 @@ public sealed class NavigationMenu
 
     public IReadOnlyList<NavigationItem> HeaderItems { get; } =
     [
-        new(ViewId.Home, "Home", "\uE80F")
+        new(ViewId.Home, "Home", "\uE80F", "\U0001F3E0")
     ];
 
     public NavigationGroup Favorites { get; }
@@ -22,87 +22,96 @@ public sealed class NavigationMenu
         new NavigationGroup(
             "Fundamentals",
             "\uE8F1",
+            "\U0001F9F1",
             [
-                new(ViewId.ResourcesStyles, "Resources & styles", "\uEE56"),
-                new(ViewId.Binding, "Binding", "\uE71B"),
-                new(ViewId.Templates, "Templates", "\uE7C3"),
-                new(ViewId.CustomControls, "Custom controls", "\uEA86"),
-                new(ViewId.ScratchPad, "Scratch pad", "\uE943")
+                new(ViewId.ResourcesStyles, "Resources & styles", "\uEE56", "\U0001F9F0"),
+                new(ViewId.Binding, "Binding", "\uE71B", "\U0001F517"),
+                new(ViewId.Templates, "Templates", "\uE7C3", "\U0001F9E9"),
+                new(ViewId.CustomControls, "Custom controls", "\uEA86", "\U0001F39B\uFE0F"),
+                new(ViewId.ScratchPad, "Scratch pad", "\uE943", "\U0001F4DD")
             ]),
         new NavigationGroup(
             "Basic input",
             "\uE961",
+            "\u2328\uFE0F",
             [
-                new(ViewId.Buttons, "Buttons", "\uEDA4"),
-                new(ViewId.Choices, "Choices", "\uE73A"),
-                new(ViewId.Text, "Text", "\uE8D2"),
-                new(ViewId.DateTime, "Date & time", "\uEC92")
+                new(ViewId.Buttons, "Buttons", "\uEDA4", "\U0001F518"),
+                new(ViewId.Choices, "Choices", "\uE73A", "\u2611\uFE0F"),
+                new(ViewId.Text, "Text", "\uE8D2", "\U0001F524"),
+                new(ViewId.DateTime, "Date & time", "\uEC92", "\U0001F4C5")
             ]),
         new NavigationGroup(
             "Collections",
             "\uE8A9",
+            "\U0001F5C2\uFE0F",
             [
-                new(ViewId.DataGrid, "Data grid", "\uE80A"),
-                new(ViewId.ListDetail, "List & detail", "\uE779"),
-                new(ViewId.Hierarchy, "Hierarchy", "\uEABB"),
-                new(ViewId.Messages, "Messages", "\uE8F2")
+                new(ViewId.DataGrid, "Data grid", "\uE80A", "\U0001F4CB"),
+                new(ViewId.ListDetail, "List & detail", "\uE779", "\U0001F4C7"),
+                new(ViewId.Hierarchy, "Hierarchy", "\uEABB", "\U0001F333"),
+                new(ViewId.Messages, "Messages", "\uE8F2", "\U0001F4AC")
             ]),
         new NavigationGroup(
             "Forms",
             "\uF0E3",
+            "\U0001F9FE",
             [
-                new(ViewId.Validation, "Validation", "\uE930"),
-                new(ViewId.Wizard, "Wizard", "\uEF90"),
-                new(ViewId.EditableGrid, "Editable grid", "\uEF60"),
-                new(ViewId.GridVisuals, "Grid visuals", "\uF404")
+                new(ViewId.Validation, "Validation", "\uE930", "\u2705"),
+                new(ViewId.Wizard, "Wizard", "\uEF90", "\U0001F9D9"),
+                new(ViewId.EditableGrid, "Editable grid", "\uEF60", "\u270F\uFE0F"),
+                new(ViewId.GridVisuals, "Grid visuals", "\uF404", "\U0001F4CA")
             ]),
         new NavigationGroup(
             "Feedback",
             "\uE946",
+            "\U0001F514",
             [
-                new(ViewId.Dialogs, "Dialogs", "\uE737"),
-                new(ViewId.Progress, "Progress", "\uF16A"),
-                new(ViewId.Notifications, "Notifications", "\uEA8F")
+                new(ViewId.Dialogs, "Dialogs", "\uE737", "\U0001F5E8\uFE0F"),
+                new(ViewId.Progress, "Progress", "\uF16A", "\u23F3"),
+                new(ViewId.Notifications, "Notifications", "\uEA8F", "\U0001F4E3")
             ]),
         new NavigationGroup(
             "Layout",
             "\uECA5",
+            "\U0001F4D0",
             [
-                new(ViewId.Panels, "Panels", "\uE8A1"),
-                new(ViewId.Containers, "Containers", "\uE90C"),
-                new(ViewId.MenusToolbars, "Menus & toolbars", "\uEDE3"),
-                new(ViewId.Tabs, "Tabs", "\uE89A")
+                new(ViewId.Panels, "Panels", "\uE8A1", "\U0001F532"),
+                new(ViewId.Containers, "Containers", "\uE90C", "\U0001F4E6"),
+                new(ViewId.MenusToolbars, "Menus & toolbars", "\uEDE3", "\U0001F6E0\uFE0F"),
+                new(ViewId.Tabs, "Tabs", "\uE89A", "\U0001F4D1")
             ]),
         new NavigationGroup(
             "Design",
             "\uEB3C",
+            "\U0001F3A8",
             [
-                new(ViewId.Colors, "Colors", "\uE790"),
-                new(ViewId.Typography, "Typography", "\uE8E9"),
-                new(ViewId.Icons, "Icons", "\uED58")
+                new(ViewId.Colors, "Colors", "\uE790", "\U0001F308"),
+                new(ViewId.Typography, "Typography", "\uE8E9", "\U0001F520"),
+                new(ViewId.Icons, "Icons", "\uED58", "\U0001F523")
             ]),
         new NavigationGroup(
             "Graphics",
             "\uEC87",
+            "\U0001F5BC\uFE0F",
             [
-                new(ViewId.ShapesAnimation, "Shapes & animation", "\uF158"),
-                new(ViewId.Charts, "Charts", "\uE9D2"),
-                new(ViewId.LiveData, "Live data", "\uE93E")
+                new(ViewId.ShapesAnimation, "Shapes & animation", "\uF158", "\U0001F537"),
+                new(ViewId.Charts, "Charts", "\uE9D2", "\U0001F4C8"),
+                new(ViewId.LiveData, "Live data", "\uE93E", "\U0001F4E1")
             ]),
         new NavigationGroup(
             "System",
             "\uE770",
+            "\U0001F5A5\uFE0F",
             [
-                new(ViewId.Windows, "Windows", "\uE78B"),
-                new(ViewId.ClipboardDrag, "Clipboard & drag", "\uE77F"),
-                new(ViewId.Environment, "Environment", "\uE9D9"),
-                new(ViewId.Logs, "Logs", "\uE9A4")
+                new(ViewId.Windows, "Windows", "\uE78B", "\U0001FA9F"),
+                new(ViewId.ClipboardDrag, "Clipboard & drag", "\uE77F", "\U0001F4CE"),
+                new(ViewId.Environment, "Environment", "\uE9D9", "\U0001F30D"),
+                new(ViewId.Logs, "Logs", "\uE9A4", "\U0001F4DC")
             ])
     ];
 
     public IReadOnlyList<NavigationItem> FooterItems { get; } =
     [
-        new(ViewId.Settings, "Settings", "\uE713")
+        new(ViewId.Settings, "Settings", "\uE713", "\u2699\uFE0F")
     ];
 
     public IReadOnlyList<NavigationItem> RecentPages => recentItems;
@@ -113,7 +122,7 @@ public sealed class NavigationMenu
 
     public NavigationMenu()
     {
-        Favorites = new NavigationGroup("Favorites", "\uE734", favoriteItems)
+        Favorites = new NavigationGroup("Favorites", "\uE734", "\u2B50", favoriteItems)
         {
             IsExpanded = true
         };
@@ -188,7 +197,7 @@ public sealed class NavigationMenu
         {
             if (favorites.Contains(item.Id.ToString()))
             {
-                favoriteItems.Add(new NavigationItem(item.Id, item.Title, item.Icon));
+                favoriteItems.Add(new NavigationItem(item.Id, item.Title, item.Icon, item.Emoji));
             }
         }
 
@@ -222,7 +231,7 @@ public sealed class NavigationMenu
         {
             if (item.Id == id)
             {
-                favoriteItems.Insert(index, new NavigationItem(item.Id, item.Title, item.Icon));
+                favoriteItems.Insert(index, new NavigationItem(item.Id, item.Title, item.Icon, item.Emoji));
                 RaiseChanged();
                 return;
             }

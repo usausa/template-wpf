@@ -58,9 +58,16 @@
                                 <Border Style="{StaticResource CardStyle}"
                                         Margin="0,0,8,8">
                                     <StackPanel>
-                                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                                   Text="{Binding Title}"
-                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <controls:EmojiIcon VerticalAlignment="Center"
+                                                                Glyph="{Binding Emoji}"
+                                                                FontSize="16" />
+                                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                                       Margin="6,0,0,0"
+                                                       VerticalAlignment="Center"
+                                                       Text="{Binding Title}"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                        </StackPanel>
                                         <TextBlock Style="{DynamicResource TitleTextBlockStyle}"
                                                    Text="{Binding Value}" />
                                         <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
@@ -139,10 +146,9 @@
                                                 CommandParameter="{Binding Id}"
                                                 AutomationProperties.Name="{Binding Title}">
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock VerticalAlignment="Center"
-                                                           Text="{Binding Icon}"
-                                                           FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                                           FontSize="16" />
+                                                <controls:EmojiIcon VerticalAlignment="Center"
+                                                                    Glyph="{Binding Emoji}"
+                                                                    FontSize="16" />
                                                 <TextBlock Margin="8,0,0,0"
                                                            VerticalAlignment="Center"
                                                            Text="{Binding Title}" />
@@ -184,10 +190,9 @@
                                                 CommandParameter="{Binding Id}"
                                                 AutomationProperties.Name="{Binding Title}">
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock VerticalAlignment="Center"
-                                                           Text="{Binding Icon}"
-                                                           FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                                           FontSize="16" />
+                                                <controls:EmojiIcon VerticalAlignment="Center"
+                                                                    Glyph="{Binding Emoji}"
+                                                                    FontSize="16" />
                                                 <TextBlock Margin="8,0,0,0"
                                                            VerticalAlignment="Center"
                                                            Text="{Binding Title}" />
@@ -239,11 +244,10 @@
                                             <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0"
-                                                   VerticalAlignment="Center"
-                                                   Text="{Binding Icon}"
-                                                   FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                                   FontSize="24" />
+                                        <controls:EmojiIcon Grid.Column="0"
+                                                            VerticalAlignment="Center"
+                                                            Glyph="{Binding Emoji}"
+                                                            FontSize="24" />
                                         <StackPanel Grid.Column="1"
                                                     Margin="16,0,0,0"
                                                     VerticalAlignment="Center">

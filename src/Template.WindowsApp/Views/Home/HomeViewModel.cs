@@ -69,12 +69,12 @@ public sealed partial class HomeViewModel : AppViewModelBase
 
         Message = greetService.MakeMessage();
 
-        uptime = new Summary("Uptime", string.Empty, String.Create(CultureInfo.CurrentCulture, $"Since {monitor.StartTime:HH:mm}"));
-        memory = new Summary("Memory", string.Empty, string.Empty);
-        logEntries = new Summary("Log entries", string.Empty, string.Empty);
+        uptime = new Summary("\u23F1\uFE0F", "Uptime", string.Empty, String.Create(CultureInfo.CurrentCulture, $"Since {monitor.StartTime:HH:mm}"));
+        memory = new Summary("\U0001F9E0", "Memory", string.Empty, string.Empty);
+        logEntries = new Summary("\U0001F4DC", "Log entries", string.Empty, string.Empty);
         Summaries =
         [
-            new Summary("Version", typeof(HomeViewModel).Assembly.GetName().Version?.ToString(3) ?? string.Empty, RuntimeInformation.FrameworkDescription),
+            new Summary("\U0001F3F7\uFE0F", "Version", typeof(HomeViewModel).Assembly.GetName().Version?.ToString(3) ?? string.Empty, RuntimeInformation.FrameworkDescription),
             uptime,
             memory,
             logEntries
@@ -102,7 +102,7 @@ public sealed partial class HomeViewModel : AppViewModelBase
         Favorites = menu.Favorites.Items;
         RecentPages = menu.RecentPages;
         Samples = menu.Groups
-            .Select(static x => new SampleEntry(x.Title, x.Icon, string.Join(" · ", x.Items.Select(static y => y.Title)), x.Items[0].Id))
+            .Select(static x => new SampleEntry(x.Title, x.Emoji, string.Join(" · ", x.Items.Select(static y => y.Title)), x.Items[0].Id))
             .ToList();
         ForwardCommand = MakeAsyncCommand<ViewId>(x => Navigator.ForwardAsync(x, new NavigationParameter().WithEffect(EntranceEffect.Name)));
     }

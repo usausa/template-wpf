@@ -5,6 +5,7 @@
              xmlns:s="http://smart/windows"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:behaviors="clr-namespace:Template.WindowsApp.Behaviors"
+             xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Collections"
              mc:Ignorable="d"
              x:Class="Template.WindowsApp.Views.Collections.HierarchyView"
@@ -13,11 +14,10 @@
              d:DesignWidth="800" d:DesignHeight="600">
 
     <UserControl.Resources>
-        <Style x:Key="NodeIconTextStyle"
-               TargetType="{x:Type TextBlock}">
+        <Style x:Key="NodeIconStyle"
+               TargetType="{x:Type controls:EmojiIcon}">
             <Setter Property="Margin" Value="0,0,8,0" />
             <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
             <Setter Property="FontSize" Value="16" />
         </Style>
     </UserControl.Resources>
@@ -93,8 +93,8 @@
                                     <HierarchicalDataTemplate ItemsSource="{Binding Teams}"
                                                               DataType="{x:Type module:Department}">
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Style="{StaticResource NodeIconTextStyle}"
-                                                       Text="&#xE731;" />
+                                            <controls:EmojiIcon Style="{StaticResource NodeIconStyle}"
+                                                                Glyph="&#x1F3E2;" />
                                             <TextBlock VerticalAlignment="Center"
                                                        Text="{Binding Name}" />
                                         </StackPanel>
@@ -102,16 +102,16 @@
                                     <HierarchicalDataTemplate ItemsSource="{Binding Members}"
                                                               DataType="{x:Type module:Team}">
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Style="{StaticResource NodeIconTextStyle}"
-                                                       Text="&#xE716;" />
+                                            <controls:EmojiIcon Style="{StaticResource NodeIconStyle}"
+                                                                Glyph="&#x1F465;" />
                                             <TextBlock VerticalAlignment="Center"
                                                        Text="{Binding Name}" />
                                         </StackPanel>
                                     </HierarchicalDataTemplate>
                                     <DataTemplate DataType="{x:Type module:Member}">
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Style="{StaticResource NodeIconTextStyle}"
-                                                       Text="&#xE77B;" />
+                                            <controls:EmojiIcon Style="{StaticResource NodeIconStyle}"
+                                                                Glyph="&#x1F9D1;&#x200D;&#x1F4BC;" />
                                             <TextBlock VerticalAlignment="Center"
                                                        Text="{Binding Name}" />
                                         </StackPanel>
@@ -154,9 +154,9 @@
                                     <HierarchicalDataTemplate ItemsSource="{Binding Children}"
                                                               DataType="{x:Type module:FolderNode}">
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock x:Name="FolderIcon"
-                                                       Style="{StaticResource NodeIconTextStyle}"
-                                                       Text="&#xE8B7;" />
+                                            <controls:EmojiIcon x:Name="FolderIcon"
+                                                                Style="{StaticResource NodeIconStyle}"
+                                                                Glyph="&#x1F4C1;" />
                                             <TextBlock x:Name="FolderName"
                                                        VerticalAlignment="Center"
                                                        Text="{Binding Name}" />

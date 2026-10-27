@@ -10,8 +10,8 @@ public sealed partial class NavigationGroup : NavigationNode
     [ObservableProperty]
     public partial bool IsChildSelected { get; set; }
 
-    public NavigationGroup(string title, string icon, IReadOnlyList<NavigationItem> items)
-        : base(title, icon)
+    public NavigationGroup(string title, string icon, string emoji, IReadOnlyList<NavigationItem> items)
+        : base(title, icon, emoji)
     {
         Items = items;
     }

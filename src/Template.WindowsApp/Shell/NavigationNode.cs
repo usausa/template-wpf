@@ -6,12 +6,15 @@ public abstract partial class NavigationNode : ObservableObject
 
     public string Icon { get; }
 
+    public string Emoji { get; }
+
     [ObservableProperty]
     public partial int Badge { get; set; }
 
-    protected NavigationNode(string title, string icon)
+    protected NavigationNode(string title, string icon, string emoji)
     {
         Title = title;
         Icon = icon;
+        Emoji = emoji;
     }
 }
