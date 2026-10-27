@@ -22,6 +22,7 @@
             <CornerRadius x:Key="ControlCornerRadius">0</CornerRadius>
             <CornerRadius x:Key="OverlayCornerRadius">0</CornerRadius>
             <CornerRadius x:Key="PopupCornerRadius">0</CornerRadius>
+            <Thickness x:Key="DataGridColumnHeaderPadding">12,0,0,0</Thickness>
             <FontFamily x:Key="CodeFontFamily">Cascadia Mono, Consolas</FontFamily>
 
             <!-- ================================================================================ -->
@@ -184,8 +185,9 @@
             <Style x:Key="DataGridCellStyle"
                    TargetType="{x:Type DataGridCell}">
                 <Setter Property="MinHeight" Value="32" />
+                <Setter Property="Padding" Value="10,0" />
                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
                 <Setter Property="BorderThickness" Value="0" />
                 <Setter Property="OverridesDefaultStyle" Value="True" />
                 <Setter Property="FocusVisualStyle" Value="{DynamicResource DataGridCellFocusVisual}" />
@@ -197,7 +199,9 @@
                                   SnapsToDevicePixels="True">
                                 <Border x:Name="Border"
                                         Background="Transparent" />
-                                <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                <ContentPresenter Margin="{TemplateBinding Padding}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                                 <Border x:Name="FocusBorder"
                                         IsHitTestVisible="False"
                                         BorderBrush="Transparent" BorderThickness="1" />
@@ -208,6 +212,8 @@
                                     <Setter Property="Foreground" Value="{DynamicResource DataGridRowSelectedForegroundThemeBrush}" />
                                 </Trigger>
                                 <Trigger Property="IsEditing" Value="True">
+                                    <Setter Property="Padding" Value="0" />
+                                    <Setter Property="VerticalContentAlignment" Value="Stretch" />
                                     <Setter TargetName="Border" Property="Background" Value="{DynamicResource ControlSolidFillColorDefaultBrush}" />
                                     <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
                                 </Trigger>
@@ -226,6 +232,8 @@
                 <Setter Property="Background" Value="{DynamicResource TextControlBackgroundFocused}" />
                 <Setter Property="Foreground" Value="{DynamicResource TextControlForegroundFocused}" />
                 <Setter Property="CaretBrush" Value="{DynamicResource TextControlForegroundFocused}" />
+                <Setter Property="Padding" Value="10,0" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
             </Style>
 
             <Style x:Key="DataGridEditingComboBoxStyle"

@@ -35,6 +35,11 @@
                TargetType="{x:Type TextBlock}">
             <Setter Property="Margin" Value="0,0,0,8" />
         </Style>
+        <Style x:Key="ServerCellStyle"
+               TargetType="{x:Type DataGridCell}"
+               BasedOn="{StaticResource DataGridCellStyle}">
+            <Setter Property="Padding" Value="0" />
+        </Style>
         <Style x:Key="CellTextStyle"
                TargetType="{x:Type TextBlock}">
             <Setter Property="VerticalAlignment" Value="Center" />
@@ -79,7 +84,7 @@
                               ItemsSource="{Binding Items}"
                               SelectionMode="Single"
                               AutoGenerateColumns="False" AutomationProperties.Name="Servers" CanUserAddRows="False" CanUserDeleteRows="False"
-                              CellStyle="{StaticResource DataGridCellStyle}"
+                              CellStyle="{StaticResource ServerCellStyle}"
                               HeadersVisibility="Column" IsReadOnly="True" MinRowHeight="40" RowDetailsVisibilityMode="VisibleWhenSelected"
                               SelectionUnit="FullRow">
                         <i:Interaction.Behaviors>
@@ -97,7 +102,8 @@
                                                     <Expander Padding="0"
                                                               IsExpanded="True">
                                                         <Expander.Header>
-                                                            <StackPanel Orientation="Horizontal">
+                                                            <StackPanel Orientation="Horizontal"
+                                                                        Margin="12,0,0,0">
                                                                 <TextBlock Text="{Binding Name}"
                                                                            FontWeight="SemiBold" />
                                                                 <TextBlock Margin="16,0,0,0"
@@ -218,7 +224,7 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate DataType="{x:Type sample:ServerRow}">
                                         <TextBlock Style="{StaticResource CellTextStyle}"
-                                                   Margin="8,0"
+                                                   Margin="12,0"
                                                    Text="{Binding Name}"
                                                    FontFamily="{StaticResource CodeFontFamily}" />
                                     </DataTemplate>
@@ -231,7 +237,7 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate DataType="{x:Type sample:ServerRow}">
                                         <Border x:Name="Badge"
-                                                Margin="8,0" Padding="6,2,8,2"
+                                                Margin="12,0" Padding="6,2,8,2"
                                                 HorizontalAlignment="Left" VerticalAlignment="Center"
                                                 Background="{DynamicResource SystemFillColorSuccessBackgroundBrush}">
                                             <StackPanel Orientation="Horizontal">
@@ -280,7 +286,7 @@
                                                     SortMemberPath="Cpu">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate DataType="{x:Type sample:ServerRow}">
-                                        <Grid Margin="8,0">
+                                        <Grid Margin="12,0">
                                             <Grid x:Name="Content">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*" />
@@ -327,7 +333,7 @@
                                                     SortMemberPath="MemoryPercent">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate DataType="{x:Type sample:ServerRow}">
-                                        <Grid Margin="8,0">
+                                        <Grid Margin="12,0">
                                             <Grid x:Name="Content"
                                                   Background="Transparent">
                                                 <Grid.ColumnDefinitions>
@@ -391,7 +397,7 @@
                                                     SortMemberPath="Errors">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate DataType="{x:Type sample:ServerRow}">
-                                        <Grid Margin="8,0">
+                                        <Grid Margin="12,0">
                                             <StackPanel x:Name="Content"
                                                         Orientation="Horizontal"
                                                         HorizontalAlignment="Right">
@@ -449,7 +455,7 @@
                                                     SortMemberPath="LatencyNow">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate DataType="{x:Type sample:ServerRow}">
-                                        <Grid Margin="8,0">
+                                        <Grid Margin="12,0">
                                             <Grid x:Name="Content"
                                                   Background="Transparent">
                                                 <Grid.ColumnDefinitions>
@@ -505,7 +511,7 @@
                                                 Background="Transparent">
                                             <TextBlock x:Name="Value"
                                                        Style="{StaticResource CellTextStyle}"
-                                                       Margin="8,0"
+                                                       Margin="12,0"
                                                        HorizontalAlignment="Right"
                                                        Text="{Binding Uptime, StringFormat={}{0:0.00}%}" />
                                         </Border>

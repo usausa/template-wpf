@@ -74,7 +74,7 @@
                TargetType="{x:Type Border}"
                BasedOn="{StaticResource SmallCountBadgeStyle}"
                d:DataContext="{d:DesignInstance Type={x:Type shell:NavigationNode}}">
-            <Setter Property="Margin" Value="26,6,0,0" />
+            <Setter Property="Margin" Value="18,6,0,0" />
             <Setter Property="HorizontalAlignment" Value="Left" />
             <Setter Property="VerticalAlignment" Value="Top" />
             <Setter Property="Visibility" Value="Collapsed" />
@@ -205,7 +205,7 @@
             <Setter Property="Height" Value="40" />
             <Setter Property="MinWidth" Value="0" />
             <Setter Property="MinHeight" Value="0" />
-            <Setter Property="Padding" Value="0" />
+            <Setter Property="Padding" Value="8,0,0,0" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
@@ -223,7 +223,7 @@
                                     Background="{DynamicResource AccentFillColorDefaultBrush}" />
                             <Grid Margin="{TemplateBinding Padding}">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="48" />
+                                    <ColumnDefinition Width="32" />
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
@@ -239,6 +239,7 @@
                                 <TextBlock Grid.Column="1"
                                            VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis"
+                                           Visibility="{Binding DataContext.WindowManager.IsPaneOpen, RelativeSource={RelativeSource AncestorType={x:Type Window}}, Converter={StaticResource BoolToVisibilityConverter}}"
                                            Text="{Binding Title}"
                                            FontSize="14" />
                                 <Border Grid.Column="2"
@@ -273,7 +274,7 @@
         <Style x:Key="SideBarChildButtonStyle"
                TargetType="{x:Type Button}"
                BasedOn="{StaticResource SideBarButtonStyle}">
-            <Setter Property="Padding" Value="31,0,0,0" />
+            <Setter Property="Padding" Value="39,0,0,0" />
         </Style>
 
         <Style x:Key="SideBarGroupButtonStyle"
@@ -564,9 +565,9 @@
                                     ToolTip="{Binding Title}"
                                     AutomationProperties.Name="{Binding Title}"
                                     ToolTipService.IsEnabled="{Binding DataContext.WindowManager.IsPaneOpen, RelativeSource={RelativeSource AncestorType={x:Type Window}}, Converter={StaticResource ReverseConverter}}">
-                                <Grid>
+                                <Grid Margin="8,0,0,0">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="48" />
+                                        <ColumnDefinition Width="32" />
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="40" />
                                     </Grid.ColumnDefinitions>

@@ -37,7 +37,6 @@
         <Style x:Key="NumberCellTextStyle"
                TargetType="{x:Type TextBlock}"
                BasedOn="{StaticResource CellTextStyle}">
-            <Setter Property="Margin" Value="0,0,8,0" />
             <Setter Property="HorizontalAlignment" Value="Right" />
         </Style>
         <Style x:Key="CodeEditingStyle"
@@ -103,7 +102,9 @@
                               SnapsToDevicePixels="True">
                             <Border x:Name="Border"
                                     Background="Transparent" />
-                            <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            <ContentPresenter Margin="{TemplateBinding Padding}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                             <Polygon x:Name="ChangedMark"
                                      HorizontalAlignment="Left" VerticalAlignment="Top"
                                      Visibility="Collapsed"
@@ -125,6 +126,8 @@
                                 <Setter Property="Foreground" Value="{DynamicResource DataGridRowSelectedForegroundThemeBrush}" />
                             </Trigger>
                             <Trigger Property="IsEditing" Value="True">
+                                <Setter Property="Padding" Value="0" />
+                                <Setter Property="VerticalContentAlignment" Value="Stretch" />
                                 <Setter TargetName="Border" Property="Background" Value="{DynamicResource ControlSolidFillColorDefaultBrush}" />
                                 <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
                             </Trigger>
