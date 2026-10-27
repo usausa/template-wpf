@@ -1,9 +1,9 @@
 namespace Template.WindowsApp.Views.Forms;
 
-using Template.WindowsApp.Views.Dialogs;
+using Template.WindowsApp.Models.Sample;
 
 [ObservableGeneratorOption(Reactive = true, ViewModel = true)]
-public sealed partial class BulkChangeDialogViewModel : DialogViewModelBase
+public sealed partial class BulkChangeDialogViewModel : AppDialogViewModelBase
 {
     public string Title { get; init; } = string.Empty;
 

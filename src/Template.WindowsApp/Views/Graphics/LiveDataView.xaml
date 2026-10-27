@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:s="http://smart/windows"
              xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
+             xmlns:sample="clr-namespace:Template.WindowsApp.Models.Sample"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Graphics"
              mc:Ignorable="d"
              x:Class="Template.WindowsApp.Views.Graphics.LiveDataView"
@@ -93,7 +94,7 @@
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="{x:Type module:LiveSensor}">
+                        <DataTemplate DataType="{x:Type sample:LiveSensor}">
                             <Border Style="{StaticResource CardStyle}"
                                     Margin="0,0,8,8">
                                 <Grid>
@@ -170,7 +171,7 @@
                                                         Maximum="{Binding Maximum}"
                                                         Fill="{StaticResource ChartBlueSuperLightBrush}"
                                                         Stroke="{StaticResource ChartBlueBrush}"
-                                                        Capacity="{x:Static module:LiveSensor.Capacity}"
+                                                        Capacity="{x:Static sample:LiveSensor.Capacity}"
                                                         GridBrush="{DynamicResource DividerStrokeColorDefaultBrush}"
                                                         Values="{Binding Values}" />
                                 </Grid>

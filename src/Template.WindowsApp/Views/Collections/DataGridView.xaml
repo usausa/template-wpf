@@ -6,7 +6,8 @@
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:behaviors="clr-namespace:Template.WindowsApp.Behaviors"
              xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
-             xmlns:helpers="clr-namespace:Template.WindowsApp.Helpers"
+             xmlns:converters="clr-namespace:Template.WindowsApp.Converters"
+             xmlns:models="clr-namespace:Template.WindowsApp.Models"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Collections"
              mc:Ignorable="d"
              x:Class="Template.WindowsApp.Views.Collections.DataGridView"
@@ -15,12 +16,12 @@
              d:DesignWidth="800" d:DesignHeight="600">
 
     <UserControl.Resources>
-        <helpers:CurrencyConverter x:Key="CurrencyConverter" />
-        <helpers:ShortDateConverter x:Key="ShortDateConverter" />
+        <converters:CurrencyConverter x:Key="CurrencyConverter" />
+        <converters:ShortDateConverter x:Key="ShortDateConverter" />
         <Style x:Key="ColumnMenuItemStyle"
                TargetType="{x:Type MenuItem}"
                BasedOn="{StaticResource {x:Type MenuItem}}"
-               d:DataContext="{d:DesignInstance Type={x:Type behaviors:DataGridColumnSetting}}">
+               d:DataContext="{d:DesignInstance Type={x:Type models:DataGridColumnSetting}}">
             <Setter Property="Header" Value="{Binding Header}" />
             <Setter Property="IsCheckable" Value="True" />
             <Setter Property="IsChecked" Value="{Binding IsVisible}" />
@@ -51,7 +52,7 @@
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBox Width="240"
-                                 controls:TextBoxHelper.PlaceholderText="Search"
+                                 behaviors:TextBoxOption.PlaceholderText="Search"
                                  Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
                                  AutomationProperties.Name="Search" />
                         <controls:DropDownButton Margin="16,0,0,0"

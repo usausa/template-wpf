@@ -4,8 +4,8 @@ using System.Runtime.InteropServices;
 
 using NSubstitute;
 
+using Template.WindowsApp.Components;
 using Template.WindowsApp.Mocks;
-using Template.WindowsApp.Services;
 using Template.WindowsApp.Shell;
 
 [Collection(ViewModelTestGroup.Name)]
@@ -15,7 +15,7 @@ public sealed class SettingsViewModelTests
     public void CopyVersionWritesNameVersionOsAndRuntime()
     {
         // Arrange
-        var clipboard = Substitute.For<IClipboardService>();
+        var clipboard = Substitute.For<IClipboard>();
         var copied = string.Empty;
         clipboard.When(static x => x.SetText(Arg.Any<string>())).Do(x => copied = x.Arg<string>());
         using var viewModel = MakeViewModel(clipboard);
@@ -35,7 +35,7 @@ public sealed class SettingsViewModelTests
     public void PaletteHasCopyVersionInfo()
     {
         // Arrange
-        using var viewModel = MakeViewModel(Substitute.For<IClipboardService>());
+        using var viewModel = MakeViewModel(Substitute.For<IClipboard>());
 
         // Act
         var command = viewModel.GetCommands().Single(static x => x.Id == "Settings:CopyVersionInfo");
@@ -45,11 +45,11 @@ public sealed class SettingsViewModelTests
         Assert.Same(viewModel.CopyVersionCommand, command.Command);
     }
 
-    private static SettingsViewModel MakeViewModel(IClipboardService clipboard) =>
+    private static SettingsViewModel MakeViewModel(IClipboard clipboard) =>
         new(
             Substitute.For<IWindowManager>(),
-            Substitute.For<IDialogService>(),
+            Substitute.For<IDialog>(),
             clipboard,
             new NavigationMenu(),
-            new NotificationService(new FixedTimeProvider(new DateTimeOffset(2026, 10, 26, 12, 0, 0, TimeSpan.Zero))));
+            new NotificationCenter(new FixedTimeProvider(new DateTimeOffset(2026, 10, 26, 12, 0, 0, TimeSpan.Zero))));
 }

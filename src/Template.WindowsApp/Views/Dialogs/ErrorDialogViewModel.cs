@@ -1,6 +1,6 @@
 namespace Template.WindowsApp.Views.Dialogs;
 
-using Template.WindowsApp.Services;
+using Template.WindowsApp.Components;
 
 [ObservableGeneratorOption(Reactive = true, ViewModel = true)]
 public sealed partial class ErrorDialogViewModel : ExtendViewModelBase
@@ -15,16 +15,16 @@ public sealed partial class ErrorDialogViewModel : ExtendViewModelBase
 
     public IObserveCommand OpenLogFolderCommand { get; }
 
-    public ErrorDialogViewModel(IClipboardService clipboardService, IExplorerService explorerService)
+    public ErrorDialogViewModel(IClipboard clipboard, IExplorerLauncher explorerLauncher)
     {
         Details = string.Empty;
 
-        CopyCommand = MakeDelegateCommand(() => clipboardService.SetText(Details));
+        CopyCommand = MakeDelegateCommand(() => clipboard.SetText(Details));
         OpenLogFolderCommand = MakeDelegateCommand(() =>
         {
             if (LogFolder is { } folder)
             {
-                explorerService.Open(folder);
+                explorerLauncher.Open(folder);
             }
         }, () => LogFolder is not null);
     }

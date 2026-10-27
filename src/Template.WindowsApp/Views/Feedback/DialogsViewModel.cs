@@ -1,6 +1,6 @@
 namespace Template.WindowsApp.Views.Feedback;
 
-using Template.WindowsApp.Services;
+using Template.WindowsApp.Components;
 using Template.WindowsApp.Shell;
 
 // ReSharper disable once ClassNeverInstantiated.Global
@@ -46,7 +46,7 @@ public sealed partial class DialogsViewModel : AppViewModelBase, IShellCommandPr
 
     public IObserveCommand UnhandledExceptionCommand { get; }
 
-    public DialogsViewModel(IDialogService dialogService)
+    public DialogsViewModel(IDialog dialog)
     {
         ConfirmResult = string.Empty;
         InputResult = string.Empty;
@@ -55,20 +55,20 @@ public sealed partial class DialogsViewModel : AppViewModelBase, IShellCommandPr
         SaveFileResult = string.Empty;
         SelectFolderResult = string.Empty;
 
-        ConfirmCommand = MakeAsyncCommand(async () => ConfirmResult = await dialogService.ConfirmAsync("Are you sure?").ConfigureAwait(true) ? "Yes" : "No");
-        NotifyCommand = MakeAsyncCommand(() => dialogService.NotifyAsync("This is a notification."));
+        ConfirmCommand = MakeAsyncCommand(async () => ConfirmResult = await dialog.ConfirmAsync("Are you sure?").ConfigureAwait(true) ? "Yes" : "No");
+        NotifyCommand = MakeAsyncCommand(() => dialog.NotifyAsync("This is a notification."));
         InputCommand = MakeAsyncCommand(async () =>
         {
-            var value = await dialogService.InputAsync("Input value", InputResult).ConfigureAwait(true);
+            var value = await dialog.InputAsync("Input value", InputResult).ConfigureAwait(true);
             if (value is not null)
             {
                 InputResult = value;
             }
         });
-        ProgressCommand = MakeAsyncCommand(async () => ProgressResult = await dialogService.ProgressAsync("Working", "Please wait while the task runs.", RunTaskAsync).ConfigureAwait(true) ? "Completed" : Canceled);
-        OpenFileCommand = MakeDelegateCommand(() => OpenFileResult = dialogService.OpenFile() ?? Canceled);
-        SaveFileCommand = MakeDelegateCommand(() => SaveFileResult = dialogService.SaveFile("sample.txt") ?? Canceled);
-        SelectFolderCommand = MakeDelegateCommand(() => SelectFolderResult = dialogService.SelectFolder() ?? Canceled);
+        ProgressCommand = MakeAsyncCommand(async () => ProgressResult = await dialog.ProgressAsync("Working", "Please wait while the task runs.", RunTaskAsync).ConfigureAwait(true) ? "Completed" : Canceled);
+        OpenFileCommand = MakeDelegateCommand(() => OpenFileResult = dialog.OpenFile() ?? Canceled);
+        SaveFileCommand = MakeDelegateCommand(() => SaveFileResult = dialog.SaveFile("sample.txt") ?? Canceled);
+        SelectFolderCommand = MakeDelegateCommand(() => SelectFolderResult = dialog.SelectFolder() ?? Canceled);
         UnhandledExceptionCommand = MakeDelegateCommand(static () => throw new InvalidOperationException("This is a sample exception."));
     }
 

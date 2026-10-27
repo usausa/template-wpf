@@ -5,7 +5,7 @@
                     xmlns:s="http://smart/windows"
                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                     xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
-                    xmlns:helpers="clr-namespace:Template.WindowsApp.Helpers"
+                    xmlns:converters="clr-namespace:Template.WindowsApp.Converters"
                     xmlns:module="clr-namespace:Template.WindowsApp.Views.Platform"
                     mc:Ignorable="d"
                     x:Class="Template.WindowsApp.Views.Platform.SampleWindow"
@@ -34,8 +34,8 @@
     <controls:AppWindow.ResizeMode>
         <Binding Path="IsResizable">
             <Binding.Converter>
-                <helpers:BoolToResizeModeConverter TrueValue="CanResize"
-                                                   FalseValue="CanMinimize" />
+                <converters:BoolToResizeModeConverter TrueValue="CanResize"
+                                                      FalseValue="CanMinimize" />
             </Binding.Converter>
         </Binding>
     </controls:AppWindow.ResizeMode>

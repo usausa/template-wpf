@@ -1,8 +1,24 @@
 namespace Template.WindowsApp.Views.Layout;
 
-using Template.WindowsApp.Behaviors;
 using Template.WindowsApp.Controls;
+using Template.WindowsApp.Models;
 using Template.WindowsApp.Shell;
+
+public sealed partial class DocumentTab : ObservableObject
+{
+    public string Title { get; }
+
+    [ObservableProperty]
+    public partial string Text { get; set; }
+
+    public DocumentTab(string title, string text)
+    {
+        Title = title;
+        Text = text;
+    }
+
+    public override string ToString() => Title;
+}
 
 // ReSharper disable once ClassNeverInstantiated.Global
 public sealed partial class TabsViewModel : AppViewModelBase, IShellCommandProvider

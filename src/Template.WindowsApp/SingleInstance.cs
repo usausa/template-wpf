@@ -3,8 +3,6 @@ namespace Template.WindowsApp;
 using System.Diagnostics;
 using System.IO.Pipes;
 
-using Template.WindowsApp.Controls;
-
 public sealed class SingleInstance : IDisposable
 {
     private const int ConnectTimeout = 5000;

@@ -6,7 +6,7 @@
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:behaviors="clr-namespace:Template.WindowsApp.Behaviors"
              xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
-             xmlns:helpers="clr-namespace:Template.WindowsApp.Helpers"
+             xmlns:converters="clr-namespace:Template.WindowsApp.Converters"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.BasicInput"
              mc:Ignorable="d"
              x:Class="Template.WindowsApp.Views.BasicInput.DateTimeView"
@@ -15,7 +15,7 @@
              d:DesignWidth="800" d:DesignHeight="600">
 
     <UserControl.Resources>
-        <helpers:ShortDateConverter x:Key="ShortDateConverter" />
+        <converters:ShortDateConverter x:Key="ShortDateConverter" />
     </UserControl.Resources>
 
     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">

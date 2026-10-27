@@ -93,7 +93,7 @@
                                   SelectedItem="{Binding Level}"
                                   AutomationProperties.Name="Level" />
                         <TextBox Grid.Column="1"
-                                 controls:TextBoxHelper.PlaceholderText="Search"
+                                 behaviors:TextBoxOption.PlaceholderText="Search"
                                  Margin="8,0,0,0"
                                  Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
                                  AutomationProperties.Name="Search" />

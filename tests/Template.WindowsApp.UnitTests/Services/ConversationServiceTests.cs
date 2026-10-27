@@ -1,6 +1,7 @@
 namespace Template.WindowsApp.Services;
 
 using Template.WindowsApp.Mocks;
+using Template.WindowsApp.Models.Sample;
 
 public sealed class ConversationServiceTests
 {

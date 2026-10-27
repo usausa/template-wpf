@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:s="http://smart/windows"
              xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
+             xmlns:sample="clr-namespace:Template.WindowsApp.Models.Sample"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Design"
              mc:Ignorable="d"
              x:Class="Template.WindowsApp.Views.Design.ColorsView"
@@ -45,7 +46,7 @@
             <ItemsControl ItemsSource="{Binding SelectedCategory.Groups}"
                           Focusable="False">
                 <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="{x:Type module:ColorGroup}">
+                    <DataTemplate DataType="{x:Type sample:ColorGroup}">
                         <StackPanel Style="{StaticResource SectionPanelStyle}">
                             <TextBlock Style="{StaticResource SectionHeaderTextStyle}"
                                        Text="{Binding Title}" />
@@ -53,7 +54,7 @@
                                 <ItemsControl ItemsSource="{Binding Entries}"
                                               Focusable="False">
                                     <ItemsControl.ItemTemplate>
-                                        <DataTemplate DataType="{x:Type module:ColorEntry}">
+                                        <DataTemplate DataType="{x:Type sample:ColorEntry}">
                                             <Grid Margin="0,4">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="32" />

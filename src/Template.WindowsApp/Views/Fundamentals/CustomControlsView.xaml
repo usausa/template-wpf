@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:s="http://smart/windows"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:behaviors="clr-namespace:Template.WindowsApp.Behaviors"
              xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Fundamentals"
              mc:Ignorable="d"
@@ -39,13 +40,13 @@
                                    Text="Put controls together into one part with its own properties."
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
                         <StackPanel Style="{StaticResource SamplePanelStyle}">
-                            <module:ProfileTile Glyph="&#xE790;"
-                                                DisplayName="Aiko Tanaka"
-                                                Role="Designer" />
-                            <module:ProfileTile Margin="0,8,0,0"
-                                                Glyph="&#xE943;"
-                                                DisplayName="Ben Carter"
-                                                Role="Developer" />
+                            <controls:ProfileTile Glyph="&#xE790;"
+                                                  DisplayName="Aiko Tanaka"
+                                                  Role="Designer" />
+                            <controls:ProfileTile Margin="0,8,0,0"
+                                                  Glyph="&#xE943;"
+                                                  DisplayName="Ben Carter"
+                                                  Role="Developer" />
                         </StackPanel>
                     </StackPanel>
                 </Border>
@@ -92,7 +93,7 @@
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
                         <StackPanel Style="{StaticResource SamplePanelStyle}">
                             <TextBox Width="240"
-                                     controls:TextBoxHelper.AllowedCharacters="[0-9-]" controls:TextBoxHelper.PlaceholderText="Postal code"
+                                     behaviors:TextBoxOption.AllowedCharacters="[0-9-]" behaviors:TextBoxOption.PlaceholderText="Postal code"
                                      HorizontalAlignment="Left"
                                      Text="{Binding PostalCode, UpdateSourceTrigger=PropertyChanged}"
                                      AutomationProperties.Name="Postal code" />

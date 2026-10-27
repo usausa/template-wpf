@@ -2,7 +2,7 @@ namespace Template.WindowsApp.Views.Fundamentals;
 
 using NSubstitute;
 
-using Template.WindowsApp.Services;
+using Template.WindowsApp.Components;
 
 [Collection(ViewModelTestGroup.Name)]
 public sealed class ScratchPadViewModelTests
@@ -11,7 +11,7 @@ public sealed class ScratchPadViewModelTests
     public void LoadDrawsTheTypedText()
     {
         // Arrange
-        using var viewModel = new ScratchPadViewModel(Substitute.For<IDialogService>());
+        using var viewModel = new ScratchPadViewModel(Substitute.For<IDialog>());
         viewModel.OnActivated();
         viewModel.Text = "<Button Content=\"OK\" />";
 
@@ -28,7 +28,7 @@ public sealed class ScratchPadViewModelTests
     public void ResetAsksFirst(bool accepted)
     {
         // Arrange
-        var dialogService = Substitute.For<IDialogService>();
+        var dialogService = Substitute.For<IDialog>();
         dialogService.ConfirmAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(accepted);
         using var viewModel = new ScratchPadViewModel(dialogService);
         viewModel.OnActivated();

@@ -2,8 +2,9 @@ namespace Template.WindowsApp.Views.Collections;
 
 using NSubstitute;
 
-using Template.WindowsApp.Behaviors;
+using Template.WindowsApp.Models;
 using Template.WindowsApp.Settings;
+using Template.WindowsApp.Shell;
 
 [Collection(ViewModelTestGroup.Name)]
 public sealed class DataGridViewModelTests

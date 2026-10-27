@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:s="http://smart/windows"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:behaviors="clr-namespace:Template.WindowsApp.Behaviors"
              xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.BasicInput"
              mc:Ignorable="d"
@@ -42,7 +43,7 @@
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
                         <StackPanel Style="{StaticResource SamplePanelStyle}">
                             <TextBox Width="320"
-                                     controls:TextBoxHelper.PlaceholderText="Type here"
+                                     behaviors:TextBoxOption.PlaceholderText="Type here"
                                      HorizontalAlignment="Left"
                                      Text="{Binding SingleLineText, UpdateSourceTrigger=PropertyChanged}"
                                      AutomationProperties.Name="Single-line text" />
@@ -63,7 +64,7 @@
                         <StackPanel Style="{StaticResource SamplePanelStyle}">
                             <PasswordBox x:Name="PasswordInput"
                                          Width="320"
-                                         controls:PasswordBoxHelper.IsCapsLockWarningEnabled="True" controls:PasswordBoxHelper.IsRevealButtonEnabled="True"
+                                         behaviors:PasswordBoxOption.IsCapsLockWarningEnabled="True" behaviors:PasswordBoxOption.IsRevealButtonEnabled="True"
                                          HorizontalAlignment="Left"
                                          AutomationProperties.Name="Password">
                                 <i:Interaction.Triggers>
@@ -180,7 +181,7 @@
                                                      AutomationProperties.Name="City">
                                 <controls:AutoSuggestBox.ItemTemplate>
                                     <DataTemplate DataType="{x:Type module:CitySuggestion}">
-                                        <TextBlock controls:TextBlockHelper.Runs="{Binding NameRuns}"
+                                        <TextBlock behaviors:TextBlockOption.Runs="{Binding NameRuns}"
                                                    TextTrimming="CharacterEllipsis" />
                                     </DataTemplate>
                                 </controls:AutoSuggestBox.ItemTemplate>
@@ -216,11 +217,11 @@
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Grid.Column="0"
-                                                       controls:TextBlockHelper.Runs="{Binding NameRuns}"
+                                                       behaviors:TextBlockOption.Runs="{Binding NameRuns}"
                                                        VerticalAlignment="Center"
                                                        TextTrimming="CharacterEllipsis" />
                                             <TextBlock Grid.Column="1"
-                                                       controls:TextBlockHelper.Runs="{Binding CompanyRuns}"
+                                                       behaviors:TextBlockOption.Runs="{Binding CompanyRuns}"
                                                        Margin="12,0,0,0"
                                                        VerticalAlignment="Center"
                                                        FontSize="12"

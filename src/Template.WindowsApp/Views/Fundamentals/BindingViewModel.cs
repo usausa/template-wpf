@@ -2,6 +2,11 @@ namespace Template.WindowsApp.Views.Fundamentals;
 
 using Template.WindowsApp.Shell;
 
+public sealed record PersonEntry(string Name, string Role)
+{
+    public override string ToString() => Name;
+}
+
 // ReSharper disable once ClassNeverInstantiated.Global
 public sealed partial class BindingViewModel : AppViewModelBase, IShellCommandProvider
 {

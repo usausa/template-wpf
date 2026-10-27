@@ -1,6 +1,6 @@
 namespace Template.WindowsApp.Views.BasicInput;
 
-using Template.WindowsApp.Controls;
+using Template.WindowsApp.Models;
 
 [Collection(ViewModelTestGroup.Name)]
 public sealed class TextViewModelTests

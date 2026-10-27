@@ -7,6 +7,8 @@ using BunnyTail.XamlProperty;
 
 using Microsoft.Xaml.Behaviors;
 
+using Template.WindowsApp.Models;
+
 public sealed partial class TabReorderBehavior : Behavior<TabControl>
 {
     private const string IndexFormat = "Template.WindowsApp.TabIndex";

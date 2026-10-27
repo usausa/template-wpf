@@ -46,9 +46,11 @@
     "xmlns:services",
 
     "xmlns:state",
+    "xmlns:settings",
 
     "xmlns:models",
     "xmlns:entity",
+    "xmlns:sample",
 
     "xmlns:views",
     "xmlns:dialogs",

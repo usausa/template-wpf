@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:s="http://smart/windows"
-             xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
+             xmlns:behaviors="clr-namespace:Template.WindowsApp.Behaviors"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Fundamentals"
              mc:Ignorable="d"
              x:Class="Template.WindowsApp.Views.Fundamentals.BindingView"
@@ -136,11 +136,11 @@
                         <StackPanel Style="{StaticResource SamplePanelStyle}"
                                     Orientation="Horizontal">
                             <TextBox Width="116"
-                                     controls:TextBoxHelper.PlaceholderText="First name"
+                                     behaviors:TextBoxOption.PlaceholderText="First name"
                                      Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"
                                      AutomationProperties.Name="First name" />
                             <TextBox Width="116"
-                                     controls:TextBoxHelper.PlaceholderText="Last name"
+                                     behaviors:TextBoxOption.PlaceholderText="Last name"
                                      Margin="8,0,0,0"
                                      Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}"
                                      AutomationProperties.Name="Last name" />

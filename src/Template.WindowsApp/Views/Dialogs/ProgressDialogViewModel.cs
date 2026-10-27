@@ -1,7 +1,7 @@
 namespace Template.WindowsApp.Views.Dialogs;
 
 [ObservableGeneratorOption(Reactive = true, ViewModel = true)]
-public sealed partial class ProgressDialogViewModel : DialogViewModelBase
+public sealed partial class ProgressDialogViewModel : AppDialogViewModelBase
 {
     private readonly CancellationTokenSource cancellation = new();
 

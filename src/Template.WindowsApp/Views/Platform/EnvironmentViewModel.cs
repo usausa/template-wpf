@@ -5,8 +5,8 @@ using System.Runtime.InteropServices;
 
 using Microsoft.Extensions.Hosting;
 
-using Template.WindowsApp.Controls;
-using Template.WindowsApp.Services;
+using Template.WindowsApp.Components;
+using Template.WindowsApp.Models;
 using Template.WindowsApp.Shell;
 
 // ReSharper disable once ClassNeverInstantiated.Global
@@ -38,8 +38,8 @@ public sealed partial class EnvironmentViewModel : AppViewModelBase, IShellComma
     public EnvironmentViewModel(
         TimeProvider timeProvider,
         IHostEnvironment hostEnvironment,
-        IClipboardService clipboardService,
-        IExplorerService explorerService)
+        IClipboard clipboard,
+        IExplorerLauncher explorerLauncher)
     {
         SystemSection = new EnvironmentSection(
             "Operating system",
@@ -95,10 +95,10 @@ public sealed partial class EnvironmentViewModel : AppViewModelBase, IShellComma
         CopyAllCommand = MakeDelegateCommand(() =>
         {
             EnvironmentSection[] sections = [SystemSection, RuntimeSection, DisplaySection, CultureSection, PathSection];
-            clipboardService.SetText(MakeText(sections));
+            clipboard.SetText(MakeText(sections));
             Copied = $"{sections.Sum(static x => x.Entries.Count)} values";
         });
-        OpenCommand = MakeDelegateCommand<string>(explorerService.Open);
+        OpenCommand = MakeDelegateCommand<string>(explorerLauncher.Open);
     }
 
     private static string FormatPixels(double width, double height, double scale) =>

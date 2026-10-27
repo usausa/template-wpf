@@ -6,6 +6,8 @@
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:behaviors="clr-namespace:Template.WindowsApp.Behaviors"
              xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
+             xmlns:converters="clr-namespace:Template.WindowsApp.Converters"
+             xmlns:sample="clr-namespace:Template.WindowsApp.Models.Sample"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Forms"
              mc:Ignorable="d"
              x:Class="Template.WindowsApp.Views.Forms.GridVisualsView"
@@ -14,7 +16,7 @@
              d:DesignWidth="800" d:DesignHeight="600">
 
     <UserControl.Resources>
-        <module:ServerGroupSummaryConverter x:Key="GroupSummaryConverter" />
+        <converters:ServerGroupSummaryConverter x:Key="GroupSummaryConverter" />
         <s:MapToTextConverter x:Key="GroupByToPropertyConverter"
                               DefaultValue="">
             <s:MapToTextConverter.Entries>
@@ -113,7 +115,7 @@
                             </GroupStyle>
                         </DataGrid.GroupStyle>
                         <DataGrid.RowDetailsTemplate>
-                            <DataTemplate DataType="{x:Type module:ServerRow}">
+                            <DataTemplate DataType="{x:Type sample:ServerRow}">
                                 <Grid Margin="16,8,16,16">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
@@ -214,7 +216,7 @@
                                                     Header="Server"
                                                     SortMemberPath="Name">
                                 <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate DataType="{x:Type module:ServerRow}">
+                                    <DataTemplate DataType="{x:Type sample:ServerRow}">
                                         <TextBlock Style="{StaticResource CellTextStyle}"
                                                    Margin="8,0"
                                                    Text="{Binding Name}"
@@ -227,7 +229,7 @@
                                                     Header="Status"
                                                     SortMemberPath="Status">
                                 <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate DataType="{x:Type module:ServerRow}">
+                                    <DataTemplate DataType="{x:Type sample:ServerRow}">
                                         <Border x:Name="Badge"
                                                 Margin="8,0" Padding="6,2,8,2"
                                                 HorizontalAlignment="Left" VerticalAlignment="Center"
@@ -277,7 +279,7 @@
                                                     Header="CPU"
                                                     SortMemberPath="Cpu">
                                 <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate DataType="{x:Type module:ServerRow}">
+                                    <DataTemplate DataType="{x:Type sample:ServerRow}">
                                         <Grid Margin="8,0">
                                             <Grid x:Name="Content">
                                                 <Grid.ColumnDefinitions>
@@ -324,7 +326,7 @@
                                                     Header="Memory"
                                                     SortMemberPath="MemoryPercent">
                                 <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate DataType="{x:Type module:ServerRow}">
+                                    <DataTemplate DataType="{x:Type sample:ServerRow}">
                                         <Grid Margin="8,0">
                                             <Grid x:Name="Content"
                                                   Background="Transparent">
@@ -388,7 +390,7 @@
                                                     Header="Errors"
                                                     SortMemberPath="Errors">
                                 <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate DataType="{x:Type module:ServerRow}">
+                                    <DataTemplate DataType="{x:Type sample:ServerRow}">
                                         <Grid Margin="8,0">
                                             <StackPanel x:Name="Content"
                                                         Orientation="Horizontal"
@@ -446,7 +448,7 @@
                                                     Header="Latency"
                                                     SortMemberPath="LatencyNow">
                                 <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate DataType="{x:Type module:ServerRow}">
+                                    <DataTemplate DataType="{x:Type sample:ServerRow}">
                                         <Grid Margin="8,0">
                                             <Grid x:Name="Content"
                                                   Background="Transparent">
@@ -498,7 +500,7 @@
                                                     Header="Uptime"
                                                     SortMemberPath="Uptime">
                                 <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate DataType="{x:Type module:ServerRow}">
+                                    <DataTemplate DataType="{x:Type sample:ServerRow}">
                                         <Border x:Name="Cell"
                                                 Background="Transparent">
                                             <TextBlock x:Name="Value"

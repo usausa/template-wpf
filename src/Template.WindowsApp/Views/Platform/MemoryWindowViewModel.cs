@@ -1,11 +1,11 @@
 namespace Template.WindowsApp.Views.Platform;
 
-using Template.WindowsApp.Services;
+using Template.WindowsApp.Components;
 
 [ObservableGeneratorOption(Reactive = true, ViewModel = true)]
 public sealed partial class MemoryWindowViewModel : ExtendViewModelBase
 {
-    private readonly ProcessMonitorService monitor;
+    private readonly ProcessMonitor processMonitor;
 
     [ObservableProperty]
     public partial string Memory { get; set; }
@@ -14,31 +14,31 @@ public sealed partial class MemoryWindowViewModel : ExtendViewModelBase
     public partial string PeakMemory { get; set; }
 
     public IReadOnlyList<string> MemoryLabels { get; } =
-        Enumerable.Range(0, ProcessMonitorService.Capacity)
-            .Select(static x => x == 0 ? "60 s ago" : x == ProcessMonitorService.Capacity - 1 ? "Now" : string.Empty)
+        Enumerable.Range(0, ProcessMonitor.Capacity)
+            .Select(static x => x == 0 ? "60 s ago" : x == ProcessMonitor.Capacity - 1 ? "Now" : string.Empty)
             .ToArray();
 
     public ObservableCollection<double> MemoryValues { get; } = [];
 
-    public MemoryWindowViewModel(ProcessMonitorService monitor)
+    public MemoryWindowViewModel(ProcessMonitor processMonitor)
     {
-        this.monitor = monitor;
+        this.processMonitor = processMonitor;
 
         Memory = string.Empty;
         PeakMemory = string.Empty;
 
-        foreach (var value in monitor.Snapshot())
+        foreach (var value in processMonitor.Snapshot())
         {
             MemoryValues.Add(value);
         }
         Update();
-        Disposables.Add(monitor.Sampled.Subscribe(OnSampled));
+        Disposables.Add(processMonitor.Sampled.Subscribe(OnSampled));
     }
 
     private void OnSampled(double value)
     {
         MemoryValues.Add(value);
-        if (MemoryValues.Count > ProcessMonitorService.Capacity)
+        if (MemoryValues.Count > ProcessMonitor.Capacity)
         {
             MemoryValues.RemoveAt(0);
         }
@@ -47,7 +47,7 @@ public sealed partial class MemoryWindowViewModel : ExtendViewModelBase
 
     private void Update()
     {
-        Memory = String.Create(CultureInfo.CurrentCulture, $"{monitor.Memory:0} MB");
-        PeakMemory = String.Create(CultureInfo.CurrentCulture, $"Peak {monitor.PeakMemory:0} MB");
+        Memory = String.Create(CultureInfo.CurrentCulture, $"{processMonitor.Memory:0} MB");
+        PeakMemory = String.Create(CultureInfo.CurrentCulture, $"Peak {processMonitor.PeakMemory:0} MB");
     }
 }

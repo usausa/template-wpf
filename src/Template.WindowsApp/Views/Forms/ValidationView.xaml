@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:s="http://smart/windows"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:helpers="clr-namespace:Template.WindowsApp.Helpers"
+             xmlns:views="clr-namespace:Template.WindowsApp.Views"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Forms"
              mc:Ignorable="d"
              x:Class="Template.WindowsApp.Views.Forms.ValidationView"
@@ -174,7 +174,7 @@
                                             <Binding Path="RuleEmail"
                                                      UpdateSourceTrigger="PropertyChanged">
                                                 <Binding.ValidationRules>
-                                                    <helpers:EmailValidationRule ErrorMessage="Invalid email format" />
+                                                    <views:EmailValidationRule ErrorMessage="Invalid email format" />
                                                 </Binding.ValidationRules>
                                             </Binding>
                                         </TextBox.Text>
@@ -199,8 +199,8 @@
                                             <Binding Path="Quantity"
                                                      UpdateSourceTrigger="PropertyChanged">
                                                 <Binding.ValidationRules>
-                                                    <helpers:RangeValidationRule Minimum="1" Maximum="100"
-                                                                                 ErrorMessage="Must be from 1 to 100" />
+                                                    <views:RangeValidationRule Minimum="1" Maximum="100"
+                                                                               ErrorMessage="Must be from 1 to 100" />
                                                 </Binding.ValidationRules>
                                             </Binding>
                                         </TextBox.Text>

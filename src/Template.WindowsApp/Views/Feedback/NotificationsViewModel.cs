@@ -1,13 +1,13 @@
 namespace Template.WindowsApp.Views.Feedback;
 
-using Template.WindowsApp.Controls;
-using Template.WindowsApp.Services;
+using Template.WindowsApp.Components;
+using Template.WindowsApp.Models;
 using Template.WindowsApp.Shell;
 
 // ReSharper disable once ClassNeverInstantiated.Global
 public sealed partial class NotificationsViewModel : AppViewModelBase, IShellCommandProvider
 {
-    private readonly NotificationService notificationService;
+    private readonly NotificationCenter notificationCenter;
 
     [ObservableProperty]
     public partial bool IsInformationalOpen { get; set; }
@@ -50,9 +50,9 @@ public sealed partial class NotificationsViewModel : AppViewModelBase, IShellCom
 
     public IObserveCommand ShowCommand { get; }
 
-    public NotificationsViewModel(NotificationService notificationService)
+    public NotificationsViewModel(NotificationCenter notificationCenter)
     {
-        this.notificationService = notificationService;
+        this.notificationCenter = notificationCenter;
 
         Reopen();
         Severity = InfoBarSeverity.Success;
@@ -82,7 +82,7 @@ public sealed partial class NotificationsViewModel : AppViewModelBase, IShellCom
 
     private void Show()
     {
-        notificationService.Show(Severity, "Notification", "This notification closes after 5 seconds.");
+        notificationCenter.Show(Severity, "Notification", "This notification closes after 5 seconds.");
         ShownCount++;
     }
 

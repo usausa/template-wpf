@@ -1,7 +1,7 @@
 namespace Template.WindowsApp.Views.Dialogs;
 
 [ObservableGeneratorOption(Reactive = true, ViewModel = true)]
-public sealed partial class InputDialogViewModel : DialogViewModelBase
+public sealed partial class InputDialogViewModel : AppDialogViewModelBase
 {
     public string Title { get; init; } = string.Empty;
 

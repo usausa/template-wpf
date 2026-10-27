@@ -6,6 +6,7 @@
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:behaviors="clr-namespace:Template.WindowsApp.Behaviors"
              xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
+             xmlns:sample="clr-namespace:Template.WindowsApp.Models.Sample"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Collections"
              mc:Ignorable="d"
              x:Class="Template.WindowsApp.Views.Collections.HierarchyView"
@@ -91,7 +92,7 @@
                                 </TreeView.ItemContainerStyle>
                                 <TreeView.Resources>
                                     <HierarchicalDataTemplate ItemsSource="{Binding Teams}"
-                                                              DataType="{x:Type module:Department}">
+                                                              DataType="{x:Type sample:Department}">
                                         <StackPanel Orientation="Horizontal">
                                             <controls:EmojiIcon Style="{StaticResource NodeIconStyle}"
                                                                 Glyph="&#x1F3E2;" />
@@ -100,7 +101,7 @@
                                         </StackPanel>
                                     </HierarchicalDataTemplate>
                                     <HierarchicalDataTemplate ItemsSource="{Binding Members}"
-                                                              DataType="{x:Type module:Team}">
+                                                              DataType="{x:Type sample:Team}">
                                         <StackPanel Orientation="Horizontal">
                                             <controls:EmojiIcon Style="{StaticResource NodeIconStyle}"
                                                                 Glyph="&#x1F465;" />
@@ -108,7 +109,7 @@
                                                        Text="{Binding Name}" />
                                         </StackPanel>
                                     </HierarchicalDataTemplate>
-                                    <DataTemplate DataType="{x:Type module:Member}">
+                                    <DataTemplate DataType="{x:Type sample:Member}">
                                         <StackPanel Orientation="Horizontal">
                                             <controls:EmojiIcon Style="{StaticResource NodeIconStyle}"
                                                                 Glyph="&#x1F9D1;&#x200D;&#x1F4BC;" />
@@ -152,7 +153,7 @@
                                 </TreeView.ItemContainerStyle>
                                 <TreeView.Resources>
                                     <HierarchicalDataTemplate ItemsSource="{Binding Children}"
-                                                              DataType="{x:Type module:FolderNode}">
+                                                              DataType="{x:Type sample:FolderNode}">
                                         <StackPanel Orientation="Horizontal">
                                             <controls:EmojiIcon x:Name="FolderIcon"
                                                                 Style="{StaticResource NodeIconStyle}"

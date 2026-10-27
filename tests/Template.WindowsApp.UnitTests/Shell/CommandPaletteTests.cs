@@ -4,7 +4,7 @@ using System.Windows.Input;
 
 using NSubstitute;
 
-using Template.WindowsApp.Controls;
+using Template.WindowsApp.Models;
 
 public sealed class CommandPaletteTests
 {

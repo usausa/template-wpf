@@ -2,6 +2,17 @@ namespace Template.WindowsApp.Views.Fundamentals;
 
 using Template.WindowsApp.Shell;
 
+public sealed record TaskItem(string Text, bool IsDone);
+
+public sealed record NoteItem(string Text);
+
+public sealed record LinkItem(string Text, string Address);
+
+public sealed record SwatchEntry(string Name, Color Color)
+{
+    public override string ToString() => Name;
+}
+
 // ReSharper disable once ClassNeverInstantiated.Global
 public sealed partial class TemplatesViewModel : AppViewModelBase, IShellCommandProvider
 {

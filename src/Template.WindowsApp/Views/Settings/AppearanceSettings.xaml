@@ -3,7 +3,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
-             xmlns:views="clr-namespace:Template.WindowsApp.Views"
+             xmlns:converters="clr-namespace:Template.WindowsApp.Converters"
+             xmlns:settings="clr-namespace:Template.WindowsApp.Settings"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Settings"
              mc:Ignorable="d"
              x:Class="Template.WindowsApp.Views.Settings.AppearanceSettings"
@@ -11,7 +12,7 @@
              d:DesignWidth="800" d:DesignHeight="600">
 
     <UserControl.Resources>
-        <module:ThemeTextConverter x:Key="ThemeToTextConverter" />
+        <converters:ThemeTextConverter x:Key="ThemeToTextConverter" />
         <ControlTemplate x:Key="LightThemePreviewTemplate"
                          TargetType="{x:Type ContentControl}">
             <Grid Width="120" Height="80"
@@ -73,7 +74,7 @@
             </Grid>
         </ControlTemplate>
         <DataTemplate x:Key="ThemeChoiceTemplate"
-                      DataType="{x:Type views:AppTheme}">
+                      DataType="{x:Type settings:AppTheme}">
             <Grid>
                 <ContentControl x:Name="LightPreview"
                                 Template="{StaticResource LightThemePreviewTemplate}" />
@@ -83,12 +84,12 @@
             </Grid>
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding}"
-                             Value="{x:Static views:AppTheme.Dark}">
+                             Value="{x:Static settings:AppTheme.Dark}">
                     <Setter TargetName="LightPreview" Property="Visibility" Value="Collapsed" />
                     <Setter TargetName="DarkPreview" Property="Visibility" Value="Visible" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding}"
-                             Value="{x:Static views:AppTheme.System}">
+                             Value="{x:Static settings:AppTheme.System}">
                     <Setter TargetName="DarkPreview" Property="Visibility" Value="Visible" />
                     <Setter TargetName="DarkPreview" Property="Clip">
                         <Setter.Value>

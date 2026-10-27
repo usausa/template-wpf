@@ -2,7 +2,8 @@ namespace Template.WindowsApp.Views.Platform;
 
 using System.Windows.Media.Imaging;
 
-using Template.WindowsApp.Services;
+using Template.WindowsApp.Components;
+using Template.WindowsApp.Models;
 using Template.WindowsApp.Shell;
 
 // ReSharper disable once ClassNeverInstantiated.Global
@@ -25,7 +26,7 @@ public sealed partial class ClipboardDragViewModel : AppViewModelBase, IShellCom
 
     private static readonly string[] SizeUnits = ["bytes", "KB", "MB", "GB"];
 
-    private readonly IClipboardService clipboardService;
+    private readonly IClipboard clipboard;
 
     public BitmapSource SampleImage { get; } = MakeSampleImage();
 
@@ -79,9 +80,9 @@ public sealed partial class ClipboardDragViewModel : AppViewModelBase, IShellCom
 
     public IObserveCommand DropTextCommand { get; }
 
-    public ClipboardDragViewModel(IClipboardService clipboardService)
+    public ClipboardDragViewModel(IClipboard clipboard)
     {
-        this.clipboardService = clipboardService;
+        this.clipboard = clipboard;
 
         Text = "Hello, clipboard!";
         Formats = string.Empty;
@@ -144,16 +145,16 @@ public sealed partial class ClipboardDragViewModel : AppViewModelBase, IShellCom
 
     private void CopyText()
     {
-        clipboardService.SetText(Text);
+        clipboard.SetText(Text);
         TextResult = $"Copied {CountCharacters(Text)}";
         Refresh();
     }
 
     private void PasteText()
     {
-        if (clipboardService.ContainsText())
+        if (clipboard.ContainsText())
         {
-            Text = clipboardService.GetText();
+            Text = clipboard.GetText();
             TextResult = $"Pasted {CountCharacters(Text)}";
         }
         else
@@ -164,29 +165,29 @@ public sealed partial class ClipboardDragViewModel : AppViewModelBase, IShellCom
 
     private void CopyImage()
     {
-        clipboardService.SetImage(SampleImage);
+        clipboard.SetImage(SampleImage);
         Refresh();
     }
 
     private void PasteImage()
     {
-        PastedImage = clipboardService.ContainsImage() ? clipboardService.GetImage() : null;
+        PastedImage = clipboard.ContainsImage() ? clipboard.GetImage() : null;
         PastedSize = PastedImage is { } image ? $"{image.PixelWidth} × {image.PixelHeight}" : "none";
     }
 
     private void Refresh()
     {
-        HasText = clipboardService.ContainsText();
-        HasImage = clipboardService.ContainsImage();
-        HasFiles = clipboardService.ContainsFileDropList();
-        HasAudio = clipboardService.ContainsAudio();
-        var formats = clipboardService.GetFormats();
+        HasText = clipboard.ContainsText();
+        HasImage = clipboard.ContainsImage();
+        HasFiles = clipboard.ContainsFileDropList();
+        HasAudio = clipboard.ContainsAudio();
+        var formats = clipboard.GetFormats();
         Formats = formats.Count > 0 ? String.Join(", ", formats) : "-";
     }
 
     private void Clear()
     {
-        clipboardService.Clear();
+        clipboard.Clear();
         Refresh();
     }
 

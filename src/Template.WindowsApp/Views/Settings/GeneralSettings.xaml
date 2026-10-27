@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
-             xmlns:views="clr-namespace:Template.WindowsApp.Views"
+             xmlns:settings="clr-namespace:Template.WindowsApp.Settings"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Settings"
              mc:Ignorable="d"
              x:Class="Template.WindowsApp.Views.Settings.GeneralSettings"
@@ -28,9 +28,9 @@
                       SelectedValue="{Binding WindowManager.StartPage}"
                       SelectedValuePath="Tag">
                 <ComboBoxItem Content="Home"
-                              Tag="{x:Static views:StartPage.Home}" />
+                              Tag="{x:Static settings:StartPage.Home}" />
                 <ComboBoxItem Content="Last opened page"
-                              Tag="{x:Static views:StartPage.LastPage}" />
+                              Tag="{x:Static settings:StartPage.LastPage}" />
             </ComboBox>
         </controls:SettingsCard>
     </StackPanel>

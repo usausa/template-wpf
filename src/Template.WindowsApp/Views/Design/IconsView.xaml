@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:s="http://smart/windows"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
+             xmlns:behaviors="clr-namespace:Template.WindowsApp.Behaviors"
+             xmlns:sample="clr-namespace:Template.WindowsApp.Models.Sample"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Design"
              mc:Ignorable="d"
              x:Class="Template.WindowsApp.Views.Design.IconsView"
@@ -49,7 +50,7 @@
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0">
                         <TextBox Width="320"
-                                 controls:TextBoxHelper.PlaceholderText="Search icons (Ctrl+F)"
+                                 behaviors:TextBoxOption.PlaceholderText="Search icons (Ctrl+F)"
                                  HorizontalAlignment="Left"
                                  Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Delay=300}"
                                  AutomationProperties.Name="Search icons">
@@ -95,7 +96,7 @@
                             </Style>
                         </ListBox.ItemContainerStyle>
                         <ListBox.ItemTemplate>
-                            <DataTemplate DataType="{x:Type module:IconEntry}">
+                            <DataTemplate DataType="{x:Type sample:IconEntry}">
                                 <StackPanel Width="80" Height="72">
                                     <TextBlock Margin="0,12,0,0"
                                                HorizontalAlignment="Center"
@@ -153,7 +154,7 @@
                     <ContentControl Focusable="False"
                                     Content="{Binding SelectedIcon}">
                         <ContentControl.Resources>
-                            <DataTemplate DataType="{x:Type module:IconEntry}">
+                            <DataTemplate DataType="{x:Type sample:IconEntry}">
                                 <StackPanel>
                                     <Border Width="96" Height="96"
                                             HorizontalAlignment="Left"

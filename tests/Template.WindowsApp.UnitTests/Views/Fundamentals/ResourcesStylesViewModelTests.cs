@@ -2,6 +2,9 @@ namespace Template.WindowsApp.Views.Fundamentals;
 
 using NSubstitute;
 
+using Template.WindowsApp.Settings;
+using Template.WindowsApp.Shell;
+
 [Collection(ViewModelTestGroup.Name)]
 public sealed class ResourcesStylesViewModelTests
 {

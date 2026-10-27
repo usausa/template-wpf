@@ -1,5 +1,6 @@
 namespace Template.WindowsApp.Views.Collections;
 
+using Template.WindowsApp.Models.Sample;
 using Template.WindowsApp.Services;
 using Template.WindowsApp.Shell;
 

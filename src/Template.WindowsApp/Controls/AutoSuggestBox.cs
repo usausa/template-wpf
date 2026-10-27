@@ -5,6 +5,8 @@ using System.Windows.Controls.Primitives;
 
 using BunnyTail.XamlProperty;
 
+using Template.WindowsApp.Models;
+
 [TemplatePart(Name = TextBoxPartName, Type = typeof(TextBox))]
 [TemplatePart(Name = SuggestionsListPartName, Type = typeof(ListBox))]
 [TemplatePart(Name = QueryButtonPartName, Type = typeof(ButtonBase))]

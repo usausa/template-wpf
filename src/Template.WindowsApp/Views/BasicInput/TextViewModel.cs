@@ -1,7 +1,22 @@
 namespace Template.WindowsApp.Views.BasicInput;
 
-using Template.WindowsApp.Controls;
+using Template.WindowsApp.Models;
 using Template.WindowsApp.Shell;
+
+public sealed record CustomerEntry(string Name, string Company, string City)
+{
+    public override string ToString() => Name;
+}
+
+public sealed record CustomerSuggestion(CustomerEntry Customer, IReadOnlyList<HighlightRun> NameRuns, IReadOnlyList<HighlightRun> CompanyRuns)
+{
+    public override string ToString() => Customer.Name;
+}
+
+public sealed record CitySuggestion(string Name, IReadOnlyList<HighlightRun> NameRuns)
+{
+    public override string ToString() => Name;
+}
 
 // ReSharper disable once ClassNeverInstantiated.Global
 public sealed partial class TextViewModel : AppViewModelBase, IShellCommandProvider

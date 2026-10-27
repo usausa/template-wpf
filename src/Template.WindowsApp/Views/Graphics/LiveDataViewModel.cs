@@ -1,5 +1,6 @@
 namespace Template.WindowsApp.Views.Graphics;
 
+using Template.WindowsApp.Models.Sample;
 using Template.WindowsApp.Shell;
 
 // ReSharper disable once ClassNeverInstantiated.Global
@@ -49,13 +50,13 @@ public sealed partial class LiveDataViewModel : AppViewModelBase, IShellCommandP
 
     public LiveDataViewModel()
     {
-        humidity = new LiveSensor("Humidity", "%", 45, 0.2, 30, 60, "0.0");
+        humidity = SensorSample.LoadHumidity();
         Sensors =
         [
-            new LiveSensor("Temperature", "°C", 23, 0.05, 20, 26, "0.0"),
+            SensorSample.LoadTemperature(),
             humidity,
-            new LiveSensor("Pressure", "hPa", 1013, 0.1, 1005, 1020, "0.0"),
-            new LiveSensor("Vibration", "mm/s", 2, 0.05, 0, 4, "0.00")
+            SensorSample.LoadPressure(),
+            SensorSample.LoadVibration()
         ];
         SelectedRate = 100;
         IsLimited = true;

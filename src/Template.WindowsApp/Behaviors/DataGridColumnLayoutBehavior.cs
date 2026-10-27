@@ -8,6 +8,8 @@ using BunnyTail.XamlProperty;
 
 using Microsoft.Xaml.Behaviors;
 
+using Template.WindowsApp.Models;
+
 public sealed partial class DataGridColumnLayoutBehavior : Behavior<DataGrid>
 {
     private const string LeftGripperName = "PART_LeftHeaderGripper";

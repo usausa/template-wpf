@@ -2,6 +2,43 @@ namespace Template.WindowsApp.Views.Forms;
 
 using Template.WindowsApp.Shell;
 
+public enum WizardPlan
+{
+    Basic,
+    Standard,
+    Premium
+}
+
+public enum WizardStep
+{
+    Plan,
+    Details,
+    Confirm
+}
+
+public enum WizardStepState
+{
+    Upcoming,
+    Current,
+    Done
+}
+
+public sealed partial class WizardStepItem : ObservableObject
+{
+    public WizardStep Step { get; }
+
+    public int Number { get; }
+
+    [ObservableProperty]
+    public partial WizardStepState State { get; set; }
+
+    public WizardStepItem(WizardStep step, int number)
+    {
+        Step = step;
+        Number = number;
+    }
+}
+
 // ReSharper disable once ClassNeverInstantiated.Global
 public sealed partial class WizardViewModel : AppViewModelBase, IShellCommandProvider
 {

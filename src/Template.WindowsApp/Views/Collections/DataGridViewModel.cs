@@ -1,6 +1,7 @@
 namespace Template.WindowsApp.Views.Collections;
 
-using Template.WindowsApp.Behaviors;
+using Template.WindowsApp.Models;
+using Template.WindowsApp.Models.Sample;
 using Template.WindowsApp.Settings;
 using Template.WindowsApp.Shell;
 
@@ -13,28 +14,13 @@ public sealed partial class DataGridViewModel : AppViewModelBase, IShellCommandP
 
     private const int FrozenCount = 2;
 
-    private static readonly string[][] ProductNames =
-    [
-        ["Keyboard", "Mouse", "Monitor", "Headset", "Webcam", "Docking station", "Router", "Printer", "Scanner", "Speaker"],
-        ["Office suite", "Antivirus", "Photo editor", "Video editor", "Backup tool", "PDF editor", "Password manager", "VPN client", "Code editor", "Database tool"],
-        ["Installation", "Data migration", "Cloud backup", "Network setup", "Security audit", "Repair", "Recycling", "Consulting", "Hosting", "Monitoring"],
-        ["Basic support", "Standard support", "Premium support", "Extended warranty", "Remote assistance", "On-site visit", "Priority line", "Health check", "Upgrade plan", "Replacement plan"],
-        ["Excel course", "Word course", "Security course", "Cloud course", "Network course", "Python course", "SQL course", "Design course", "Project course", "Leadership course"]
-    ];
-
-    private static readonly string[] Suppliers = ["Contoso", "Fabrikam", "Northwind Traders", "Litware", "Proseware", "Adventure Works"];
-
-    private static readonly string[] Warehouses = ["Tokyo", "Osaka", "Nagoya", "Fukuoka"];
-
-    private static readonly DateTime LastUpdate = new(2026, 10, 1);
-
     private readonly IWindowManager windowManager;
 
     private List<Product> products;
 
     private int pageIndex;
 
-    public static IReadOnlyList<string> Categories { get; } = ["Hardware", "Software", "Services", "Support", "Training"];
+    public static IReadOnlyList<string> Categories { get; } = ProductSample.LoadCategories();
 
     public ObservableCollection<Product> Items { get; } = [];
 
@@ -82,7 +68,7 @@ public sealed partial class DataGridViewModel : AppViewModelBase, IShellCommandP
     public DataGridViewModel(IWindowManager windowManager)
     {
         this.windowManager = windowManager;
-        products = MakeProducts();
+        products = [.. ProductSample.LoadProducts()];
         SearchText = string.Empty;
         IsFrozen = true;
         RestoreLayout();
@@ -101,29 +87,6 @@ public sealed partial class DataGridViewModel : AppViewModelBase, IShellCommandP
         ResetColumnsCommand = MakeDelegateCommand(ResetColumns);
 
         ShowPage(0);
-    }
-
-    private static List<Product> MakeProducts()
-    {
-        var list = new List<Product>();
-        for (var c = 0; c < Categories.Count; c++)
-        {
-            for (var i = 0; i < ProductNames[c].Length; i++)
-            {
-                var index = list.Count;
-                list.Add(new Product(
-                    $"P-{index + 1:D3}",
-                    ProductNames[c][i],
-                    Categories[c],
-                    Suppliers[((index * 5) + c) % Suppliers.Length],
-                    Warehouses[index % Warehouses.Length],
-                    ((c + 1) * 20) + (((i * 7) % 10) * 12.5m),
-                    c < 2 ? ((i * 37) + (c * 11)) % 120 : null,
-                    LastUpdate.AddDays(-((index * 13) % 60)),
-                    index % 7 != 6));
-            }
-        }
-        return list;
     }
 
     private void ShowPage(int index)
@@ -208,7 +171,7 @@ public sealed partial class DataGridViewModel : AppViewModelBase, IShellCommandP
 
     private void Reset()
     {
-        products = MakeProducts();
+        products = [.. ProductSample.LoadProducts()];
         SearchText = string.Empty;
         Sort = null;
         ShowPage(0);

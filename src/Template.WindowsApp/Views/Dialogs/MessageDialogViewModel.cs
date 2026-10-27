@@ -1,6 +1,6 @@
 namespace Template.WindowsApp.Views.Dialogs;
 
-public sealed class MessageDialogViewModel : DialogViewModelBase
+public sealed class MessageDialogViewModel : AppDialogViewModelBase
 {
     public string Title { get; init; } = string.Empty;
 

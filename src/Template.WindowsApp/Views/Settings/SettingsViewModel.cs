@@ -2,14 +2,24 @@ namespace Template.WindowsApp.Views.Settings;
 
 using System.Runtime.InteropServices;
 
+using Template.WindowsApp.Components;
 using Template.WindowsApp.Extender;
-using Template.WindowsApp.Services;
+using Template.WindowsApp.Settings;
 using Template.WindowsApp.Shell;
+
+public enum SettingsPage
+{
+    General,
+    Appearance,
+    Notifications,
+    Privacy,
+    About
+}
 
 // ReSharper disable once ClassNeverInstantiated.Global
 public sealed partial class SettingsViewModel : AppViewModelBase, IShellCommandProvider
 {
-    private readonly IDialogService dialogService;
+    private readonly IDialog dialog;
 
     private readonly NavigationMenu menu;
 
@@ -17,7 +27,7 @@ public sealed partial class SettingsViewModel : AppViewModelBase, IShellCommandP
 
     public IWindowManager WindowManager { get; }
 
-    public NotificationService Notifications { get; }
+    public NotificationCenter Notifications { get; }
 
     public IReadOnlyList<AppTheme> Themes { get; } = [AppTheme.Light, AppTheme.Dark, AppTheme.System];
 
@@ -49,12 +59,12 @@ public sealed partial class SettingsViewModel : AppViewModelBase, IShellCommandP
 
     public IObserveCommand CopyVersionCommand { get; }
 
-    public SettingsViewModel(IWindowManager windowManager, IDialogService dialogService, IClipboardService clipboardService, NavigationMenu menu, NotificationService notifications)
+    public SettingsViewModel(IWindowManager windowManager, IDialog dialog, IClipboard clipboard, NavigationMenu menu, NotificationCenter notificationCenter)
     {
-        this.dialogService = dialogService;
+        this.dialog = dialog;
         this.menu = menu;
         WindowManager = windowManager;
-        Notifications = notifications;
+        Notifications = notificationCenter;
 
         var name = typeof(SettingsViewModel).Assembly.GetName();
         var version = name.Version?.ToString(3);
@@ -103,12 +113,12 @@ public sealed partial class SettingsViewModel : AppViewModelBase, IShellCommandP
             Observable.FromEventPattern(h => menu.Changed += h, h => menu.Changed -= h),
             MakeAsyncCommand(ClearFavoritePagesAsync, () => menu.Favorites.Items.Count > 0));
         OpenLogsCommand = MakeAsyncCommand(() => Navigator.ForwardAsync(ViewId.Logs, new NavigationParameter().WithEffect(EntranceEffect.Name)));
-        CopyVersionCommand = MakeDelegateCommand(() => clipboardService.SetText(versionInfo));
+        CopyVersionCommand = MakeDelegateCommand(() => clipboard.SetText(versionInfo));
     }
 
     private async Task ClearFavoritePagesAsync()
     {
-        if (await dialogService.ConfirmAsync("Remove all favorites?", "The pages are removed from the navigation pane, Home and the jump list.", "Remove", "Cancel").ConfigureAwait(true))
+        if (await dialog.ConfirmAsync("Remove all favorites?", "The pages are removed from the navigation pane, Home and the jump list.", "Remove", "Cancel").ConfigureAwait(true))
         {
             menu.ClearFavorites();
         }

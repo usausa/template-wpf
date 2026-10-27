@@ -14,8 +14,8 @@ using Rester;
 
 using Serilog;
 
+using Template.WindowsApp.Components;
 using Template.WindowsApp.Extender;
-using Template.WindowsApp.Services;
 using Template.WindowsApp.Settings;
 using Template.WindowsApp.Shell;
 using Template.WindowsApp.Views;
@@ -43,7 +43,7 @@ public static partial class ApplicationExtensions
         builder.Services.AddSerilog((services, options) =>
         {
             options.ReadFrom.Configuration(builder.Configuration);
-            options.WriteTo.Sink(services.GetRequiredService<MemoryLogService>());
+            options.WriteTo.Sink(services.GetRequiredService<MemoryLogSink>());
         });
 
         return builder;
@@ -78,18 +78,24 @@ public static partial class ApplicationExtensions
         // Rest
         RestConfig.Default.UseJsonSerializer(static config =>
         {
-            config.Converters.Add(new Template.WindowsApp.Helpers.DateTimeConverter());
+            config.Converters.Add(new Template.WindowsApp.Helpers.Json.DateTimeConverter());
             config.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
             config.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
         });
 
         builder.Services.AddHttpClient();
 
+        // Components
+        builder.Services.AddSingleton<MemoryLogSink>();
+        builder.Services.AddSingleton<IDialog, Dialog>();
+        builder.Services.AddSingleton<NotificationCenter>();
+        builder.Services.AddSingleton<IClipboard, SystemClipboard>();
+        builder.Services.AddSingleton<IExplorerLauncher, ExplorerLauncher>();
+        builder.Services.AddSingleton<TaskbarManager>();
+        builder.Services.AddSingleton<ProcessMonitor>();
+
         // Service
         builder.Services.AddServices();
-        builder.Services.AddSingleton<IDialogService, DialogService>();
-        builder.Services.AddSingleton<IClipboardService, ClipboardService>();
-        builder.Services.AddSingleton<IExplorerService, ExplorerService>();
 
         // Window
         builder.Services.AddSingleton<IWindowManager, WindowManager>();

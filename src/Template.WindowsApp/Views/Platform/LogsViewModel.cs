@@ -2,7 +2,7 @@ namespace Template.WindowsApp.Views.Platform;
 
 using Serilog.Events;
 
-using Template.WindowsApp.Services;
+using Template.WindowsApp.Components;
 using Template.WindowsApp.Shell;
 
 // ReSharper disable once ClassNeverInstantiated.Global
@@ -58,15 +58,15 @@ public sealed partial class LogsViewModel : AppViewModelBase, IShellCommandProvi
 
     public LogsViewModel(
         ILogger<LogsViewModel> logger,
-        IClipboardService clipboardService,
-        MemoryLogService logService)
+        IClipboard clipboard,
+        MemoryLogSink memoryLogSink)
     {
         Level = AllLevels;
         SearchText = string.Empty;
         AutoScroll = true;
 
-        Disposables.Add(logService.Added.ObserveOnDispatcher().Subscribe(Add));
-        foreach (var entry in logService.Snapshot())
+        Disposables.Add(memoryLogSink.Added.ObserveOnDispatcher().Subscribe(Add));
+        foreach (var entry in memoryLogSink.Snapshot())
         {
             Items.Add(entry);
             lastSequence = entry.Sequence;
@@ -79,10 +79,10 @@ public sealed partial class LogsViewModel : AppViewModelBase, IShellCommandProvi
         SubscribeSearchText(_ => Refresh());
         SubscribeSelectedEntry(x => Details = x is null ? null : x.Exception is null ? x.Message : $"{x.Message}{Environment.NewLine}{x.Exception}");
 
-        CopyCommand = MakeDelegateCommand(() => clipboardService.SetText(MakeText()), () => ShownCount > 0);
+        CopyCommand = MakeDelegateCommand(() => clipboard.SetText(MakeText()), () => ShownCount > 0);
         ClearCommand = MakeDelegateCommand(() =>
         {
-            logService.Clear();
+            memoryLogSink.Clear();
             Items.Clear();
             UpdateCounts();
         }, () => TotalCount > 0);
@@ -98,7 +98,7 @@ public sealed partial class LogsViewModel : AppViewModelBase, IShellCommandProvi
 
         lastSequence = entry.Sequence;
         Items.Add(entry);
-        if (Items.Count > MemoryLogService.Capacity)
+        if (Items.Count > MemoryLogSink.Capacity)
         {
             Items.RemoveAt(0);
         }

@@ -1,7 +1,8 @@
 namespace Template.WindowsApp.Views.Forms;
 
-using Template.WindowsApp.Controls;
-using Template.WindowsApp.Services;
+using Template.WindowsApp.Components;
+using Template.WindowsApp.Models;
+using Template.WindowsApp.Models.Sample;
 using Template.WindowsApp.Shell;
 
 // ReSharper disable once ClassNeverInstantiated.Global
@@ -13,11 +14,11 @@ public sealed partial class EditableGridViewModel : AppViewModelBase, IShellComm
 
     private readonly TimeProvider timeProvider;
 
-    private readonly IDialogService dialogService;
+    private readonly IDialog dialog;
 
-    private readonly IClipboardService clipboardService;
+    private readonly IClipboard clipboard;
 
-    private readonly NotificationService notificationService;
+    private readonly NotificationCenter notificationCenter;
 
     private readonly SynchronizationContext? synchronizationContext;
 
@@ -72,15 +73,15 @@ public sealed partial class EditableGridViewModel : AppViewModelBase, IShellComm
 
     public IObserveCommand ExportCommand { get; }
 
-    public EditableGridViewModel(TimeProvider timeProvider, IDialogService dialogService, IClipboardService clipboardService, NotificationService notificationService)
+    public EditableGridViewModel(TimeProvider timeProvider, IDialog dialog, IClipboard clipboard, NotificationCenter notificationCenter)
     {
         this.timeProvider = timeProvider;
-        this.dialogService = dialogService;
-        this.clipboardService = clipboardService;
-        this.notificationService = notificationService;
+        this.dialog = dialog;
+        this.clipboard = clipboard;
+        this.notificationCenter = notificationCenter;
         synchronizationContext = SynchronizationContext.Current;
 
-        saved = MakeLines(timeProvider.GetLocalNow().Date);
+        saved = [.. OrderSample.LoadLines(timeProvider.GetLocalNow().Date)];
         Summary = string.Empty;
 
         AddCommand = MakeDelegateCommand(AddRow);
@@ -107,29 +108,13 @@ public sealed partial class EditableGridViewModel : AppViewModelBase, IShellComm
             return true;
         }
 
-        var choice = await dialogService.AskSaveChangesAsync(LeaveMessage(), (ErrorCount == 0) && !Lines.Any(static x => x.IsEditing)).ConfigureAwait(true);
+        var choice = await dialog.AskSaveChangesAsync(LeaveMessage(), (ErrorCount == 0) && !Lines.Any(static x => x.IsEditing)).ConfigureAwait(true);
         if (choice == SaveChoice.Save)
         {
             Save();
         }
         return choice != SaveChoice.Cancel;
     }
-
-    private static List<OrderLineValues> MakeLines(DateTime today) =>
-    [
-        new("AB-1001", "Laptop stand", 2, 45.00m, 0, today.AddDays(8), OrderStatus.Confirmed, string.Empty),
-        new("AB-1002", "USB-C hub", 3, 29.90m, 10, today.AddDays(8), OrderStatus.Confirmed, string.Empty),
-        new("CD-2001", "Monitor 27 inch", 1, 329.00m, 0, today.AddDays(11), OrderStatus.Draft, string.Empty),
-        new("CD-2002", "Monitor arm", 1, 89.00m, 0, today.AddDays(11), OrderStatus.Draft, string.Empty),
-        new("EF-3001", "Keyboard", 10, 49.00m, 25, today.AddDays(16), OrderStatus.Draft, "Volume discount"),
-        new("EF-3002", "Mouse", 10, 25.00m, 15, today.AddDays(16), OrderStatus.Draft, string.Empty),
-        new("GH-4001", "Headset", 3, 79.00m, 0, today.AddDays(-5), OrderStatus.Shipped, "Delivered"),
-        new("GH-4002", "Webcam", 3, 59.00m, 0, today.AddDays(-5), OrderStatus.Shipped, string.Empty),
-        new("JK-5001", "Docking station", 2, 189.00m, 10, today.AddDays(18), OrderStatus.Confirmed, string.Empty),
-        new("JK-5002", "Cable set", 20, 4.50m, 0, today.AddDays(18), OrderStatus.Confirmed, string.Empty),
-        new("LM-6001", "Desk lamp", 4, 35.00m, 0, today.AddDays(21), OrderStatus.Draft, string.Empty),
-        new("LM-6002", "Chair mat", 2, 39.00m, 0, today.AddDays(21), OrderStatus.Draft, string.Empty)
-    ];
 
     private static string Plural(int count, string one, string many) =>
         String.Create(CultureInfo.CurrentCulture, $"{count:N0} {(count == 1 ? one : many)}");
@@ -252,7 +237,7 @@ public sealed partial class EditableGridViewModel : AppViewModelBase, IShellComm
 
     private async Task RevertAsync()
     {
-        if (await dialogService.ConfirmAsync("Discard all changes?", "All rows go back to how they were when you last saved.", "Discard", "Cancel").ConfigureAwait(true))
+        if (await dialog.ConfirmAsync("Discard all changes?", "All rows go back to how they were when you last saved.", "Discard", "Cancel").ConfigureAwait(true))
         {
             CancelRequest.Request();
             Load();
@@ -292,13 +277,13 @@ public sealed partial class EditableGridViewModel : AppViewModelBase, IShellComm
             return;
         }
 
-        using var dialog = new BulkChangeDialogViewModel
+        using var change = new BulkChangeDialogViewModel
         {
             Title = $"Change {Plural(lines.Count, "row", "rows")}"
         };
-        if (await dialogService.ShowAsync(dialog).ConfigureAwait(true))
+        if (await dialog.ShowAsync(change).ConfigureAwait(true))
         {
-            ApplyChange(lines, dialog.Status, dialog.Delivery, (int?)dialog.Discount);
+            ApplyChange(lines, change.Status, change.Delivery, (int?)change.Discount);
         }
     }
 
@@ -329,7 +314,7 @@ public sealed partial class EditableGridViewModel : AppViewModelBase, IShellComm
             return;
         }
 
-        var path = dialogService.SaveFile("order-lines.csv", "CSV files (*.csv)|*.csv|All files (*.*)|*.*");
+        var path = dialog.SaveFile("order-lines.csv", "CSV files (*.csv)|*.csv|All files (*.*)|*.*");
         if (path is null)
         {
             return;
@@ -338,26 +323,26 @@ public sealed partial class EditableGridViewModel : AppViewModelBase, IShellComm
         try
         {
             File.WriteAllText(path, OrderLineCsv.Format(Lines.Select(static x => x.Values)), new UTF8Encoding(true));
-            notificationService.Show(InfoBarSeverity.Success, "Exported", $"{Plural(Lines.Count, "row", "rows")} to {Path.GetFileName(path)}");
+            notificationCenter.Show(InfoBarSeverity.Success, "Exported", $"{Plural(Lines.Count, "row", "rows")} to {Path.GetFileName(path)}");
         }
         catch (IOException ex)
         {
-            notificationService.Show(InfoBarSeverity.Error, "Export failed", ex.Message);
+            notificationCenter.Show(InfoBarSeverity.Error, "Export failed", ex.Message);
         }
         catch (UnauthorizedAccessException ex)
         {
-            notificationService.Show(InfoBarSeverity.Error, "Export failed", ex.Message);
+            notificationCenter.Show(InfoBarSeverity.Error, "Export failed", ex.Message);
         }
     }
 
     private void Paste(IReadOnlyList<string> keys)
     {
-        if ((CurrentItem is not OrderLine start) || !clipboardService.ContainsText())
+        if ((CurrentItem is not OrderLine start) || !clipboard.ContainsText())
         {
             return;
         }
 
-        var rows = clipboardService.GetText().Split(LineSeparators, StringSplitOptions.None);
+        var rows = clipboard.GetText().Split(LineSeparators, StringSplitOptions.None);
         var count = (rows.Length > 0) && (rows[^1].Length == 0) ? rows.Length - 1 : rows.Length;
         var index = Lines.IndexOf(start);
         var rejected = 0;

@@ -4,8 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:s="http://smart/windows"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
-             xmlns:helpers="clr-namespace:Template.WindowsApp.Helpers"
+             xmlns:behaviors="clr-namespace:Template.WindowsApp.Behaviors"
+             xmlns:converters="clr-namespace:Template.WindowsApp.Converters"
+             xmlns:sample="clr-namespace:Template.WindowsApp.Models.Sample"
+             xmlns:views="clr-namespace:Template.WindowsApp.Views"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Forms"
              mc:Ignorable="d"
              x:Class="Template.WindowsApp.Views.Forms.EditableGridView"
@@ -14,8 +16,8 @@
              d:DesignWidth="800" d:DesignHeight="600">
 
     <UserControl.Resources>
-        <helpers:ShortDateConverter x:Key="ShortDateConverter" />
-        <module:OrderLineCellConverter x:Key="CellConverter" />
+        <converters:ShortDateConverter x:Key="ShortDateConverter" />
+        <converters:OrderLineCellConverter x:Key="CellConverter" />
         <DataTemplate x:Key="IconTextTemplate">
             <StackPanel Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center"
@@ -43,7 +45,7 @@
                BasedOn="{StaticResource DataGridEditingTextBoxStyle}">
             <Setter Property="MaxLength" Value="10" />
             <Setter Property="CharacterCasing" Value="Upper" />
-            <Setter Property="controls:TextBoxHelper.AllowedCharacters" Value="[A-Za-z0-9-]" />
+            <Setter Property="behaviors:TextBoxOption.AllowedCharacters" Value="[A-Za-z0-9-]" />
         </Style>
         <Style x:Key="DescriptionEditingStyle"
                TargetType="{x:Type TextBox}"
@@ -54,7 +56,7 @@
                TargetType="{x:Type TextBox}"
                BasedOn="{StaticResource DataGridEditingTextBoxStyle}">
             <Setter Property="TextAlignment" Value="Right" />
-            <Setter Property="controls:TextBoxHelper.AllowedCharacters" Value="[0-9]" />
+            <Setter Property="behaviors:TextBoxOption.AllowedCharacters" Value="[0-9]" />
         </Style>
         <Style x:Key="QuantityEditingStyle"
                TargetType="{x:Type TextBox}"
@@ -65,7 +67,7 @@
                TargetType="{x:Type TextBox}"
                BasedOn="{StaticResource NumberEditingStyle}">
             <Setter Property="MaxLength" Value="8" />
-            <Setter Property="controls:TextBoxHelper.AllowedCharacters" Value="[0-9.]" />
+            <Setter Property="behaviors:TextBoxOption.AllowedCharacters" Value="[0-9.]" />
         </Style>
         <Style x:Key="DiscountEditingStyle"
                TargetType="{x:Type TextBox}"
@@ -80,7 +82,7 @@
         <Style x:Key="LineCellStyle"
                TargetType="{x:Type DataGridCell}"
                BasedOn="{StaticResource DataGridCellStyle}"
-               d:DataContext="{d:DesignInstance Type={x:Type module:OrderLine}}">
+               d:DataContext="{d:DesignInstance Type={x:Type sample:OrderLine}}">
             <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
             <Setter Property="ToolTip">
                 <Setter.Value>
@@ -167,9 +169,9 @@
         <Style x:Key="LineRowStyle"
                TargetType="{x:Type DataGridRow}"
                BasedOn="{StaticResource DefaultDataGridRowStyle}"
-               d:DataContext="{d:DesignInstance Type={x:Type module:OrderLine}}">
+               d:DataContext="{d:DesignInstance Type={x:Type sample:OrderLine}}">
             <Setter Property="Header" Value="{Binding}" />
-            <Setter Property="module:EditableGridBehavior.IsReadOnly" Value="{Binding IsLocked}" />
+            <Setter Property="behaviors:EditableGridBehavior.IsReadOnly" Value="{Binding IsLocked}" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsLocked}"
                              Value="True">
@@ -191,7 +193,7 @@
             </Setter>
         </Style>
         <DataTemplate x:Key="LineRowHeaderTemplate"
-                      DataType="{x:Type module:OrderLine}">
+                      DataType="{x:Type sample:OrderLine}">
             <TextBlock x:Name="Mark"
                        Width="16"
                        TextAlignment="Center"
@@ -316,14 +318,14 @@
                                         Command="{Binding DeleteCommand}" />
                         </DataGrid.InputBindings>
                         <DataGrid.RowValidationRules>
-                            <module:OrderLineValidationRule ValidationStep="UpdatedValue" />
+                            <views:OrderLineValidationRule ValidationStep="UpdatedValue" />
                         </DataGrid.RowValidationRules>
                         <i:Interaction.Behaviors>
-                            <module:EditableGridBehavior CancelRequest="{Binding CancelRequest}"
-                                                         CommitRequest="{Binding CommitRequest}"
-                                                         EditRequest="{Binding EditRequest}"
-                                                         PasteCommand="{Binding PasteCommand}"
-                                                         SelectedRows="{Binding SelectedRows, Mode=OneWayToSource}" />
+                            <behaviors:EditableGridBehavior CancelRequest="{Binding CancelRequest}"
+                                                            CommitRequest="{Binding CommitRequest}"
+                                                            EditRequest="{Binding EditRequest}"
+                                                            PasteCommand="{Binding PasteCommand}"
+                                                            SelectedRows="{Binding SelectedRows, Mode=OneWayToSource}" />
                         </i:Interaction.Behaviors>
                         <DataGrid.Columns>
                             <DataGridTextColumn Width="96" MinWidth="96"
@@ -365,13 +367,13 @@
                                                     ClipboardContentBinding="{Binding Delivery, Converter={StaticResource ShortDateConverter}}"
                                                     SortMemberPath="Delivery">
                                 <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate DataType="{x:Type module:OrderLine}">
+                                    <DataTemplate DataType="{x:Type sample:OrderLine}">
                                         <TextBlock Style="{StaticResource CellTextStyle}"
                                                    Text="{Binding Delivery, Converter={StaticResource ShortDateConverter}}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
-                                    <DataTemplate DataType="{x:Type module:OrderLine}">
+                                    <DataTemplate DataType="{x:Type sample:OrderLine}">
                                         <DatePicker AutomationProperties.Name="Delivery"
                                                     SelectedDate="{Binding Delivery, UpdateSourceTrigger=PropertyChanged}" />
                                     </DataTemplate>

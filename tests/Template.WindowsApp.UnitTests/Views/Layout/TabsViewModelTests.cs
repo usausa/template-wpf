@@ -1,6 +1,6 @@
 namespace Template.WindowsApp.Views.Layout;
 
-using Template.WindowsApp.Behaviors;
+using Template.WindowsApp.Models;
 
 [Collection(ViewModelTestGroup.Name)]
 public sealed class TabsViewModelTests

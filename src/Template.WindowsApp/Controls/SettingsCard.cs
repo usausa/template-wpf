@@ -5,6 +5,8 @@ using System.Windows.Controls;
 
 using BunnyTail.XamlProperty;
 
+using Template.WindowsApp.Models;
+
 public sealed partial class SettingsCard : ContentControl
 {
     private const CompareOptions MatchOptions = CompareOptions.IgnoreCase | CompareOptions.IgnoreKanaType | CompareOptions.IgnoreWidth;

@@ -45,7 +45,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Views\Design\Icons.json" />
+    <EmbeddedResource Include="Models\Sample\Icons.json" />
   </ItemGroup>
 
   <ItemGroup>

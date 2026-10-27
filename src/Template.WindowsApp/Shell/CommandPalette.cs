@@ -1,6 +1,6 @@
 namespace Template.WindowsApp.Shell;
 
-using Template.WindowsApp.Controls;
+using Template.WindowsApp.Models;
 
 public enum CommandPaletteMove
 {

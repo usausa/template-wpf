@@ -4,8 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:s="http://smart/windows"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:behaviors="clr-namespace:Template.WindowsApp.Behaviors"
              xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
-             xmlns:services="clr-namespace:Template.WindowsApp.Services"
+             xmlns:sample="clr-namespace:Template.WindowsApp.Models.Sample"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Collections"
              mc:Ignorable="d"
              x:Class="Template.WindowsApp.Views.Collections.MessagesView"
@@ -37,7 +38,7 @@
 
         <Style x:Key="AvatarStyle"
                TargetType="{x:Type Border}"
-               d:DataContext="{d:DesignInstance Type={x:Type services:Person}}">
+               d:DataContext="{d:DesignInstance Type={x:Type sample:Person}}">
             <Setter Property="Width" Value="32" />
             <Setter Property="Height" Value="32" />
             <Setter Property="Background" Value="{StaticResource AvatarPurpleBrush}" />
@@ -77,7 +78,7 @@
         </Style>
         <Style x:Key="PresenceStyle"
                TargetType="{x:Type Border}"
-               d:DataContext="{d:DesignInstance Type={x:Type services:Person}}">
+               d:DataContext="{d:DesignInstance Type={x:Type sample:Person}}">
             <Setter Property="Width" Value="12" />
             <Setter Property="Height" Value="12" />
             <Setter Property="Margin" Value="0,0,-4,-4" />
@@ -101,7 +102,7 @@
             <Setter Property="Margin" Value="0,0,-3,-3" />
         </Style>
         <DataTemplate x:Key="AvatarTemplate"
-                      DataType="{x:Type services:Person}">
+                      DataType="{x:Type sample:Person}">
             <Grid>
                 <Border Style="{StaticResource AvatarStyle}">
                     <TextBlock Style="{StaticResource AvatarTextStyle}"
@@ -111,7 +112,7 @@
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="ListAvatarTemplate"
-                      DataType="{x:Type services:Person}">
+                      DataType="{x:Type sample:Person}">
             <Grid>
                 <Border Style="{StaticResource SmallAvatarStyle}">
                     <TextBlock Style="{StaticResource SmallAvatarTextStyle}"
@@ -121,7 +122,7 @@
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="ReplierTemplate"
-                      DataType="{x:Type services:Person}">
+                      DataType="{x:Type sample:Person}">
             <Border Style="{StaticResource SmallAvatarStyle}"
                     Margin="0,0,2,0">
                 <TextBlock Style="{StaticResource SmallAvatarTextStyle}"
@@ -164,7 +165,7 @@
         </Style>
         <Style x:Key="ConversationItemStyle"
                TargetType="{x:Type ListBoxItem}"
-               d:DataContext="{d:DesignInstance Type={x:Type services:Conversation}}">
+               d:DataContext="{d:DesignInstance Type={x:Type sample:Conversation}}">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
@@ -209,7 +210,7 @@
             </Style.Triggers>
         </Style>
         <DataTemplate x:Key="ConversationTemplate"
-                      DataType="{x:Type services:Conversation}">
+                      DataType="{x:Type sample:Conversation}">
             <Grid x:Name="Row"
                   Height="32">
                 <Grid.ColumnDefinitions>
@@ -277,7 +278,7 @@
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
         </Style>
         <DataTemplate x:Key="ConversationHeaderTemplate"
-                      DataType="{x:Type services:Conversation}">
+                      DataType="{x:Type sample:Conversation}">
             <Grid>
                 <StackPanel x:Name="Channel">
                     <TextBlock Style="{StaticResource HeaderTitleTextStyle}"
@@ -294,7 +295,7 @@
                 <ContentControl Focusable="False"
                                 Content="{Binding Person}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type services:Person}">
+                        <DataTemplate DataType="{x:Type sample:Person}">
                             <StackPanel>
                                 <TextBlock Style="{StaticResource HeaderTitleTextStyle}"
                                            Text="{Binding Name}" />
@@ -328,7 +329,7 @@
             </DataTemplate.Triggers>
         </DataTemplate>
         <DataTemplate x:Key="ThreadCaptionTemplate"
-                      DataType="{x:Type services:Conversation}">
+                      DataType="{x:Type sample:Conversation}">
             <TextBlock x:Name="Caption"
                        Style="{StaticResource HeaderCaptionTextStyle}"
                        Text="{Binding Name, StringFormat='# {0}'}" />
@@ -438,7 +439,7 @@
         </Style>
         <Style x:Key="ReactionButtonStyle"
                TargetType="{x:Type Button}"
-               d:DataContext="{d:DesignInstance Type={x:Type services:Reaction}}">
+               d:DataContext="{d:DesignInstance Type={x:Type sample:Reaction}}">
             <Setter Property="Margin" Value="0,6,6,0" />
             <Setter Property="Padding" Value="8,3" />
             <Setter Property="BorderThickness" Value="1" />
@@ -493,7 +494,7 @@
             </Style.Triggers>
         </Style>
         <DataTemplate x:Key="ReactionTemplate"
-                      DataType="{x:Type services:Reaction}">
+                      DataType="{x:Type sample:Reaction}">
             <Button Style="{StaticResource ReactionButtonStyle}"
                     Command="{Binding DataContext.ToggleReactionCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
                     CommandParameter="{Binding}">
@@ -537,7 +538,7 @@
         </Style>
         <Style x:Key="ReplyCountTextStyle"
                TargetType="{x:Type TextBlock}"
-               d:DataContext="{d:DesignInstance Type={x:Type services:Message}}">
+               d:DataContext="{d:DesignInstance Type={x:Type sample:Message}}">
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="FontSize" Value="12" />
             <Setter Property="Text" Value="{Binding Replies.Count, StringFormat='{}{0} replies'}" />
@@ -550,7 +551,7 @@
         </Style>
         <Style x:Key="ReplySummaryButtonStyle"
                TargetType="{x:Type Button}"
-               d:DataContext="{d:DesignInstance Type={x:Type services:Message}}">
+               d:DataContext="{d:DesignInstance Type={x:Type sample:Message}}">
             <Setter Property="Margin" Value="-4,4,0,0" />
             <Setter Property="Padding" Value="4,2" />
             <Setter Property="HorizontalAlignment" Value="Left" />
@@ -654,7 +655,7 @@
             <Setter Property="BorderBrush" Value="{DynamicResource CardStrokeColorDefaultBrush}" />
             <Setter Property="Background" Value="{DynamicResource ControlFillColorDefaultBrush}" />
         </Style>
-        <DataTemplate DataType="{x:Type services:Attachment}">
+        <DataTemplate DataType="{x:Type sample:Attachment}">
             <Border Style="{StaticResource AttachmentStyle}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock VerticalAlignment="Center"
@@ -673,7 +674,7 @@
             </Border>
         </DataTemplate>
         <DataTemplate x:Key="MessageContentTemplate"
-                      DataType="{x:Type services:Message}">
+                      DataType="{x:Type sample:Message}">
             <StackPanel>
                 <TextBlock Style="{StaticResource MessageTextStyle}"
                            Text="{Binding Text}" />
@@ -684,7 +685,7 @@
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="MessageTemplate"
-                      DataType="{x:Type services:Message}">
+                      DataType="{x:Type sample:Message}">
             <StackPanel>
                 <Grid x:Name="DateSeparator"
                       Margin="16,12,16,6"
@@ -812,7 +813,7 @@
             </DataTemplate.Triggers>
         </DataTemplate>
         <DataTemplate x:Key="ThreadRootTemplate"
-                      DataType="{x:Type services:Message}">
+                      DataType="{x:Type sample:Message}">
             <Grid x:Name="Row"
                   Background="Transparent">
                 <Grid Margin="16,6,16,2">
@@ -856,7 +857,7 @@
             </DataTemplate.Triggers>
         </DataTemplate>
         <DataTemplate x:Key="ReplyTemplate"
-                      DataType="{x:Type services:Message}">
+                      DataType="{x:Type sample:Message}">
             <Grid x:Name="Row"
                   Background="Transparent">
                 <Grid x:Name="Body"
@@ -932,11 +933,11 @@
                TargetType="{x:Type TextBox}"
                BasedOn="{StaticResource ComposerTextBoxStyle}"
                d:DataContext="{d:DesignInstance Type={x:Type module:MessagesViewModel}}">
-            <Setter Property="controls:TextBoxHelper.PlaceholderText" Value="{Binding Selected.Name, StringFormat='Message #{0}', FallbackValue=''}" />
+            <Setter Property="behaviors:TextBoxOption.PlaceholderText" Value="{Binding Selected.Name, StringFormat='Message #{0}', FallbackValue=''}" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Selected.Kind, FallbackValue=Channel}"
                              Value="Direct">
-                    <Setter Property="controls:TextBoxHelper.PlaceholderText" Value="{Binding Selected.Name, StringFormat='Message {0}', FallbackValue=''}" />
+                    <Setter Property="behaviors:TextBoxOption.PlaceholderText" Value="{Binding Selected.Name, StringFormat='Message {0}', FallbackValue=''}" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -1126,7 +1127,7 @@
                                           Margin="16,8,16,4">
                                         <Grid.Style>
                                             <Style TargetType="{x:Type Grid}"
-                                                   d:DataContext="{d:DesignInstance Type={x:Type services:Message}}">
+                                                   d:DataContext="{d:DesignInstance Type={x:Type sample:Message}}">
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding Replies.Count}"
                                                                  Value="0">
@@ -1159,7 +1160,7 @@
                                 </Grid.ColumnDefinitions>
                                 <TextBox Grid.Column="0"
                                          Style="{StaticResource ComposerTextBoxStyle}"
-                                         controls:TextBoxHelper.PlaceholderText="Reply…"
+                                         behaviors:TextBoxOption.PlaceholderText="Reply…"
                                          Text="{Binding ReplyDraft, UpdateSourceTrigger=PropertyChanged}"
                                          AutomationProperties.Name="Reply">
                                     <TextBox.InputBindings>

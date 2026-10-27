@@ -1,6 +1,6 @@
 namespace Template.WindowsApp.Views.Design;
 
-using Template.WindowsApp.Services;
+using Template.WindowsApp.Components;
 
 // ReSharper disable once ClassNeverInstantiated.Global
 public sealed partial class TypographyViewModel : AppViewModelBase
@@ -10,11 +10,11 @@ public sealed partial class TypographyViewModel : AppViewModelBase
 
     public IObserveCommand CopyCommand { get; }
 
-    public TypographyViewModel(IClipboardService clipboardService)
+    public TypographyViewModel(IClipboard clipboard)
     {
         CopyCommand = MakeDelegateCommand<string>(x =>
         {
-            clipboardService.SetText(x);
+            clipboard.SetText(x);
             Copied = x;
         });
     }

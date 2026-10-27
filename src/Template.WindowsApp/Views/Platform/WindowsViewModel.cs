@@ -1,6 +1,6 @@
 namespace Template.WindowsApp.Views.Platform;
 
-using Template.WindowsApp.Services;
+using Template.WindowsApp.Components;
 using Template.WindowsApp.Shell;
 
 // ReSharper disable once ClassNeverInstantiated.Global
@@ -17,7 +17,7 @@ public sealed partial class WindowsViewModel : AppViewModelBase, IShellCommandPr
 
     public IObserveCommand CompactOverlayCommand { get; }
 
-    public WindowsViewModel(IWindowManager windowManager, ProcessMonitorService monitor)
+    public WindowsViewModel(IWindowManager windowManager, ProcessMonitor processMonitor)
     {
         this.windowManager = windowManager;
 
@@ -29,7 +29,7 @@ public sealed partial class WindowsViewModel : AppViewModelBase, IShellCommandPr
         {
             if (!windowManager.Activate(WindowId.Memory))
             {
-                windowManager.Show(WindowId.Memory, new MemoryWindowViewModel(monitor));
+                windowManager.Show(WindowId.Memory, new MemoryWindowViewModel(processMonitor));
             }
         });
 

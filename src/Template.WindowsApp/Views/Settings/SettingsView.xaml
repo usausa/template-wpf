@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:s="http://smart/windows"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:behaviors="clr-namespace:Template.WindowsApp.Behaviors"
              xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Settings"
              mc:Ignorable="d"
@@ -90,7 +91,7 @@
                        Style="{StaticResource PageDescriptionTextStyle}"
                        Text="Change how the app looks and behaves." />
             <TextBox Grid.Row="2"
-                     controls:TextBoxHelper.PlaceholderText="Search settings (Ctrl+F)"
+                     behaviors:TextBoxOption.PlaceholderText="Search settings (Ctrl+F)"
                      Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Delay=300}"
                      AutomationProperties.Name="Search settings">
                 <TextBox.InputBindings>

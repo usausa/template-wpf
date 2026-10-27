@@ -1,22 +1,20 @@
 namespace Template.WindowsApp.Views.Design;
 
-using System.Text.Json;
 using System.Text.RegularExpressions;
 
-using Template.WindowsApp.Services;
+using Template.WindowsApp.Components;
+using Template.WindowsApp.Models.Sample;
 
 // ReSharper disable once ClassNeverInstantiated.Global
 public sealed partial class IconsViewModel : AppViewModelBase
 {
     private const int PageSize = 200;
 
-    private const string ResourceName = "Template.WindowsApp.Views.Design.Icons.json";
-
-    private static readonly Lazy<IconEntry[]> AllIcons = new(LoadIcons);
+    private static readonly Lazy<IconEntry[]> AllIcons = new(IconSample.LoadIcons);
 
     private static readonly char[] TermSeparators = [' ', '+'];
 
-    private readonly IClipboardService clipboardService;
+    private readonly IClipboard clipboard;
 
     private IconEntry[] matches = [];
 
@@ -61,9 +59,9 @@ public sealed partial class IconsViewModel : AppViewModelBase
 
     public IObserveCommand FindCommand { get; }
 
-    public IconsViewModel(IClipboardService clipboardService)
+    public IconsViewModel(IClipboard clipboard)
     {
-        this.clipboardService = clipboardService;
+        this.clipboard = clipboard;
 
         SearchText = string.Empty;
         Items = [];
@@ -80,12 +78,6 @@ public sealed partial class IconsViewModel : AppViewModelBase
         FindCommand = MakeDelegateCommand(FindRequest.Request);
 
         Filter();
-    }
-
-    private static IconEntry[] LoadIcons()
-    {
-        using var stream = typeof(IconsViewModel).Assembly.GetManifestResourceStream(ResourceName)!;
-        return JsonSerializer.Deserialize<IconEntry[]>(stream) ?? [];
     }
 
     [GeneratedRegex(@"\s*\|\s*")]
@@ -117,7 +109,7 @@ public sealed partial class IconsViewModel : AppViewModelBase
 
     private void Copy(string text)
     {
-        clipboardService.SetText(text);
+        clipboard.SetText(text);
         Copied = text;
     }
 

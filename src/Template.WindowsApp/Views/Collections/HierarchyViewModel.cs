@@ -1,47 +1,16 @@
 namespace Template.WindowsApp.Views.Collections;
 
+using Template.WindowsApp.Models.Sample;
 using Template.WindowsApp.Shell;
 
 // ReSharper disable once ClassNeverInstantiated.Global
 public sealed partial class HierarchyViewModel : AppViewModelBase, IShellCommandProvider
 {
-    private const int LeafDepth = 2;
-
     private static readonly TimeSpan LoadDelay = TimeSpan.FromMilliseconds(500);
 
-    private static readonly string[] SubfolderNames = ["Archive", "Drafts", "Shared"];
+    public IReadOnlyList<Department> Departments { get; } = OrganizationSample.LoadDepartments();
 
-    private static readonly Dictionary<string, string[]> FolderNames = new()
-    {
-        ["Projects"] = ["Alpha", "Beta", "Gamma"],
-        ["Documents"] = ["Contracts", "Invoices", "Reports"],
-        ["Pictures"] = ["2024", "2025", "2026"]
-    };
-
-    public IReadOnlyList<Department> Departments { get; } =
-    [
-        new("Sales",
-        [
-            new("Team A", [new("Emma Wilson"), new("Liam Chen")]),
-            new("Team B", [new("Olivia Martinez"), new("Noah Johnson")])
-        ]),
-        new("Engineering",
-        [
-            new("Platform", [new("Ava Brown"), new("Ethan Davis")]),
-            new("Apps", [new("Sophia Garcia"), new("Mason Miller")])
-        ]),
-        new("Support",
-        [
-            new("Customer care", [new("Isabella Lee"), new("Lucas Anderson")])
-        ])
-    ];
-
-    public IReadOnlyList<FolderNode> Folders { get; } =
-    [
-        new("Projects", 0, true),
-        new("Documents", 0, true),
-        new("Pictures", 0, true)
-    ];
+    public IReadOnlyList<FolderNode> Folders { get; } = FolderSample.LoadRoots();
 
     [ObservableProperty]
     public partial object? SelectedNode { get; set; }
@@ -78,10 +47,9 @@ public sealed partial class HierarchyViewModel : AppViewModelBase, IShellCommand
         await Task.Delay(LoadDelay).ConfigureAwait(true);
 
         folder.Children.Clear();
-        var depth = folder.Depth + 1;
-        foreach (var name in folder.Depth == 0 ? FolderNames[folder.Name] : SubfolderNames)
+        foreach (var child in FolderSample.LoadChildren(folder))
         {
-            folder.Children.Add(new FolderNode(name, depth, depth < LeafDepth));
+            folder.Children.Add(child);
         }
 
         LoadedCount++;

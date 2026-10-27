@@ -1,6 +1,6 @@
 namespace Template.WindowsApp.Views.Fundamentals;
 
-using Template.WindowsApp.Services;
+using Template.WindowsApp.Components;
 using Template.WindowsApp.Shell;
 
 // ReSharper disable once ClassNeverInstantiated.Global
@@ -17,7 +17,7 @@ public sealed partial class ScratchPadViewModel : AppViewModelBase, IShellComman
         </StackPanel>
         """;
 
-    private readonly IDialogService dialogService;
+    private readonly IDialog dialog;
 
     [ObservableProperty]
     public partial string Text { get; set; }
@@ -29,9 +29,9 @@ public sealed partial class ScratchPadViewModel : AppViewModelBase, IShellComman
 
     public IObserveCommand ResetCommand { get; }
 
-    public ScratchPadViewModel(IDialogService dialogService)
+    public ScratchPadViewModel(IDialog dialog)
     {
-        this.dialogService = dialogService;
+        this.dialog = dialog;
 
         Text = DefaultXaml;
         LoadedXaml = DefaultXaml;
@@ -42,7 +42,7 @@ public sealed partial class ScratchPadViewModel : AppViewModelBase, IShellComman
 
     private async Task ResetAsync()
     {
-        if (await dialogService.ConfirmAsync("Reset the markup?", "The markup in the editor is replaced with the first example.", "Reset", "Cancel").ConfigureAwait(true))
+        if (await dialog.ConfirmAsync("Reset the markup?", "The markup in the editor is replaced with the first example.", "Reset", "Cancel").ConfigureAwait(true))
         {
             Text = DefaultXaml;
             LoadedXaml = DefaultXaml;

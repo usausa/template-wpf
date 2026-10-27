@@ -1,5 +1,6 @@
 namespace Template.WindowsApp.Views.Fundamentals;
 
+using Template.WindowsApp.Settings;
 using Template.WindowsApp.Shell;
 
 // ReSharper disable once ClassNeverInstantiated.Global

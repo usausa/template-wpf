@@ -8,6 +8,8 @@ using Microsoft.Extensions.Hosting;
 
 using Smart.Mvvm.Resolver;
 
+using Template.WindowsApp.Settings;
+using Template.WindowsApp.Shell;
 using Template.WindowsApp.Views;
 using Template.WindowsApp.Views.Dialogs;
 

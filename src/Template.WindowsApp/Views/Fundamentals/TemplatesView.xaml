@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:s="http://smart/windows"
+             xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Fundamentals"
              mc:Ignorable="d"
              x:Class="Template.WindowsApp.Views.Fundamentals.TemplatesView"
@@ -208,16 +209,16 @@
                                     </ItemsPanelTemplate>
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplateSelector>
-                                    <module:TemperatureTemplateSelector HotThreshold="30">
-                                        <module:TemperatureTemplateSelector.NormalTemplate>
+                                    <controls:TemperatureTemplateSelector HotThreshold="30">
+                                        <controls:TemperatureTemplateSelector.NormalTemplate>
                                             <DataTemplate>
                                                 <Border Margin="0,0,8,8" Padding="12,6"
                                                         Background="{DynamicResource SubtleFillColorSecondaryBrush}">
                                                     <TextBlock Text="{Binding StringFormat='{}{0} °C'}" />
                                                 </Border>
                                             </DataTemplate>
-                                        </module:TemperatureTemplateSelector.NormalTemplate>
-                                        <module:TemperatureTemplateSelector.HotTemplate>
+                                        </controls:TemperatureTemplateSelector.NormalTemplate>
+                                        <controls:TemperatureTemplateSelector.HotTemplate>
                                             <DataTemplate>
                                                 <Border Margin="0,0,8,8" Padding="12,6"
                                                         Background="{DynamicResource AccentFillColorDefaultBrush}">
@@ -226,8 +227,8 @@
                                                                Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
                                                 </Border>
                                             </DataTemplate>
-                                        </module:TemperatureTemplateSelector.HotTemplate>
-                                    </module:TemperatureTemplateSelector>
+                                        </controls:TemperatureTemplateSelector.HotTemplate>
+                                    </controls:TemperatureTemplateSelector>
                                 </ItemsControl.ItemTemplateSelector>
                             </ItemsControl>
                         </StackPanel>

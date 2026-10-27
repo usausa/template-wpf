@@ -1,7 +1,15 @@
 namespace Template.WindowsApp.Views.Feedback;
 
-using Template.WindowsApp.Services;
+using Template.WindowsApp.Components;
 using Template.WindowsApp.Shell;
+
+public enum TaskState
+{
+    Ready,
+    Running,
+    Completed,
+    Canceled
+}
 
 // ReSharper disable once ClassNeverInstantiated.Global
 public sealed partial class ProgressViewModel : AppViewModelBase, IShellCommandProvider
@@ -14,7 +22,7 @@ public sealed partial class ProgressViewModel : AppViewModelBase, IShellCommandP
 
     private static readonly TimeSpan BusyDuration = TimeSpan.FromSeconds(3);
 
-    private readonly TaskbarService taskbar;
+    private readonly TaskbarManager taskbarManager;
 
     private Action? cancel;
 
@@ -36,9 +44,9 @@ public sealed partial class ProgressViewModel : AppViewModelBase, IShellCommandP
 
     public IObserveCommand CancelCommand { get; }
 
-    public ProgressViewModel(TaskbarService taskbar)
+    public ProgressViewModel(TaskbarManager taskbarManager)
     {
-        this.taskbar = taskbar;
+        this.taskbarManager = taskbarManager;
 
         Value = InitialValue;
 
@@ -55,14 +63,14 @@ public sealed partial class ProgressViewModel : AppViewModelBase, IShellCommandP
         cancel = source.Cancel;
         TaskProgress = 0;
         TaskState = TaskState.Running;
-        taskbar.SetProgress(0);
+        taskbarManager.SetProgress(0);
         try
         {
             for (var i = 1; i <= TaskSteps; i++)
             {
                 await Task.Delay(TaskInterval, source.Token).ConfigureAwait(true);
                 TaskProgress = i * 100 / TaskSteps;
-                taskbar.SetProgress(TaskProgress / 100d);
+                taskbarManager.SetProgress(TaskProgress / 100d);
             }
 
             TaskState = TaskState.Completed;
@@ -74,7 +82,7 @@ public sealed partial class ProgressViewModel : AppViewModelBase, IShellCommandP
         finally
         {
             cancel = null;
-            taskbar.Clear();
+            taskbarManager.Clear();
         }
     }
 

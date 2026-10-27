@@ -6,6 +6,8 @@ using System.Windows.Controls.Primitives;
 
 using BunnyTail.XamlProperty;
 
+using Template.WindowsApp.Models;
+
 public sealed partial class InfoBar : Control
 {
     private ButtonBase? closeButton;

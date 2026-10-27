@@ -6,6 +6,8 @@ using System.Windows.Controls.Primitives;
 
 using BunnyTail.XamlProperty;
 
+using Template.WindowsApp.Models;
+
 [TemplatePart(Name = ScrollViewerPartName, Type = typeof(ScrollViewer))]
 [TemplatePart(Name = AddButtonPartName, Type = typeof(ButtonBase))]
 public sealed partial class TabView : TabControl
