@@ -94,7 +94,7 @@
                                            Style="{DynamicResource BodyStrongTextBlockStyle}"
                                            Text="Memory, last 60 seconds" />
                                 <controls:LineChart Grid.Row="1"
-                                                    MinHeight="140"
+                                                    MinHeight="80"
                                                     Margin="0,16,0,0"
                                                     Fill="{StaticResource ChartBlueSuperLightBrush}"
                                                     Stroke="{StaticResource ChartBlueBrush}"
@@ -116,7 +116,7 @@
                                            Style="{DynamicResource BodyStrongTextBlockStyle}"
                                            Text="Log entries by level" />
                                 <controls:BarChart Grid.Row="1"
-                                                   MinHeight="140"
+                                                   MinHeight="80"
                                                    Margin="0,16,0,0"
                                                    Fill="{StaticResource ChartBlueBrush}"
                                                    LabelBrush="{DynamicResource TextFillColorSecondaryBrush}"

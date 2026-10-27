@@ -18,7 +18,7 @@
                     s:DataContextResolver.Type="{x:Type application:MainWindowViewModel}"
                     d:DataContext="{d:DesignInstance Type={x:Type application:MainWindowViewModel}}"
                     Width="1280" Height="960" MinWidth="1024" MinHeight="768"
-                    Title="MainWindow"
+                    Title="Template"
                     Icon="App.ico"
                     OverlayContent="{Binding Dialogs.Current}"
                     ShowIconOnTitleBar="False">
