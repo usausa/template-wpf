@@ -53,6 +53,16 @@
 | Data | SQLite |
 | Network | Web API |
 
-# 📝 Credits
+# 📦 My Libraries
 
-Icon names and codes in Models/Sample/Icons.json are from [Segoe Fluent Icons font](https://learn.microsoft.com/windows/apps/design/iconography/segoe-fluent-icons-font) by Microsoft, licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), and converted to JSON.
+| Library | Description |
+| --- | --- |
+| [Usa.Smart.Mvvm](https://github.com/usausa/Smart-Net-Mvvm) | MVVM |
+| [Usa.Smart.Reactive](https://github.com/usausa/Smart-Net-Reactive) | Reactive Extensions helpers |
+| [Usa.Smart.Navigation](https://github.com/usausa/Smart-Net-Navigation) | Navigation |
+| [Usa.Smart.Windows](https://github.com/usausa/Smart-Net-Windows) | WPF MVVM helpers |
+| [Usa.Smart.Data.Accessor](https://github.com/usausa/Smart-Net-Data-Accessor) | Source generator based data accessor |
+| [Usa.Smart.Mapper](https://github.com/usausa/Smart-Net-Mapper) | Object mapper |
+| [Rester](https://github.com/usausa/Rester) | HttpClient extensions |
+| [BunnyTail.DependencyInjection](https://github.com/usausa/bunnytail-dependency-injection) | Source generator based DI |
+| [BunnyTail.XamlProperty.Wpf](https://github.com/usausa/bunnytail-xaml-property) | DependencyProperty generator |
