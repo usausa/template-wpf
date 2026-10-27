@@ -1,0 +1,267 @@
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:s="http://smart/windows"
+             xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
+             xmlns:module="clr-namespace:Template.WindowsApp.Views.Features"
+             mc:Ignorable="d"
+             x:Class="Template.WindowsApp.Views.Features.WebApiView"
+             s:DataContextResolver.Type="{x:Type module:WebApiViewModel}"
+             d:DataContext="{d:DesignInstance Type={x:Type module:WebApiViewModel}}"
+             d:DesignWidth="800" d:DesignHeight="600">
+
+    <UserControl.Resources>
+        <Style x:Key="TitleCellTextStyle"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{x:Static DataGridTextColumn.DefaultElementStyle}">
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        </Style>
+        <Style x:Key="NumberCellTextStyle"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{x:Static DataGridTextColumn.DefaultElementStyle}">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+        <Style x:Key="RequestCellTextStyle"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{x:Static DataGridTextColumn.DefaultElementStyle}"
+               d:DataContext="{d:DesignInstance Type={x:Type module:RequestEntry}}">
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsError}" Value="True" />
+                        <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}" Value="False" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+                </MultiDataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="RequestPathCellTextStyle"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource RequestCellTextStyle}">
+            <Setter Property="FontFamily" Value="{StaticResource CodeFontFamily}" />
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        </Style>
+        <Style x:Key="RequestNumberCellTextStyle"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource RequestCellTextStyle}">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <Grid Height="{Binding ViewportHeight, RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}}"
+              MinHeight="840">
+            <Grid Margin="24">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
+                           Style="{StaticResource PageTitleTextStyle}"
+                           Text="Web API" />
+                <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+                           Style="{StaticResource PageDescriptionTextStyle}"
+                           Text="Call a public REST API with Rester: page through posts, read one, and send create, update and delete requests." />
+
+                <Border Grid.Row="2" Grid.Column="0"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="Posts" />
+                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="GET /posts, 10 at a time. The total comes from the X-Total-Count header."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                            <DataGrid MinHeight="354"
+                                      ItemsSource="{Binding Posts}"
+                                      SelectedItem="{Binding SelectedPost}"
+                                      SelectionMode="Single"
+                                      AutoGenerateColumns="False" AutomationProperties.Name="Posts" CanUserAddRows="False" CanUserDeleteRows="False"
+                                      CanUserSortColumns="False"
+                                      CellStyle="{StaticResource DataGridCellStyle}"
+                                      HeadersVisibility="Column" IsReadOnly="True">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Width="64"
+                                                        Binding="{Binding Id}"
+                                                        Header="Id"
+                                                        ElementStyle="{StaticResource NumberCellTextStyle}" />
+                                    <DataGridTextColumn Width="*"
+                                                        Binding="{Binding Title}"
+                                                        Header="Title"
+                                                        ElementStyle="{StaticResource TitleCellTextStyle}" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <Grid Margin="0,8,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0"
+                                           Style="{DynamicResource BodyTextBlockStyle}"
+                                           VerticalAlignment="Center">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0}–{1} of {2}">
+                                            <Binding Path="RangeStart" />
+                                            <Binding Path="RangeEnd" />
+                                            <Binding Path="TotalCount" />
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <Button Grid.Column="1"
+                                        Style="{StaticResource IconButtonStyle}"
+                                        Command="{Binding PreviousCommand}"
+                                        Content="&#xE76B;"
+                                        ToolTip="Previous page"
+                                        AutomationProperties.Name="Previous page" />
+                                <Button Grid.Column="2"
+                                        Style="{StaticResource IconButtonStyle}"
+                                        Margin="8,0,0,0"
+                                        Command="{Binding NextCommand}"
+                                        Content="&#xE76C;"
+                                        ToolTip="Next page"
+                                        AutomationProperties.Name="Next page" />
+                            </Grid>
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding ListResult, StringFormat='Last: {0}', TargetNullValue='Last: -'}" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="2" Grid.Column="2"
+                        Style="{StaticResource CardStyle}">
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Top"
+                                   Style="{DynamicResource BodyTextBlockStyle}"
+                                   Text="Post" />
+                        <TextBlock DockPanel.Dock="Top"
+                                   Style="{DynamicResource CaptionTextBlockStyle}"
+                                   Text="GET, POST, PUT, PATCH and DELETE /posts/{id}."
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <TextBlock DockPanel.Dock="Bottom"
+                                   Style="{StaticResource SampleResultTextStyle}"
+                                   Text="{Binding PostResult, StringFormat='Last: {0}', TargetNullValue='Last: -'}" />
+                        <StackPanel DockPanel.Dock="Bottom"
+                                    Orientation="Horizontal"
+                                    Margin="0,16,0,0">
+                            <Button Command="{Binding CreateCommand}"
+                                    Content="Create" />
+                            <Button Margin="8,0,0,0"
+                                    Command="{Binding UpdateCommand}"
+                                    Content="Update" />
+                            <Button Margin="8,0,0,0"
+                                    Command="{Binding PatchCommand}"
+                                    Content="Patch" />
+                            <Button Margin="8,0,0,0"
+                                    Command="{Binding DeleteCommand}"
+                                    Content="Delete" />
+                        </StackPanel>
+                        <Grid Margin="0,16,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <StackPanel Grid.Row="0">
+                                <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                           Text="Id" />
+                                <StackPanel Orientation="Horizontal">
+                                    <controls:NumberBox Width="120"
+                                                        Value="{Binding Id}"
+                                                        Minimum="0" Maximum="999"
+                                                        AutomationProperties.Name="Id" />
+                                    <Button Margin="8,0,0,0"
+                                            Command="{Binding GetCommand}"
+                                            Content="Get" />
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1"
+                                        Margin="0,16,0,0">
+                                <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                           Text="Title" />
+                                <TextBox Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"
+                                         AutomationProperties.Name="Title" />
+                            </StackPanel>
+                            <TextBlock Grid.Row="2"
+                                       Style="{StaticResource FieldLabelTextStyle}"
+                                       Margin="0,16,0,4"
+                                       Text="Body" />
+                            <TextBox Grid.Row="3"
+                                     MinHeight="64"
+                                     VerticalContentAlignment="Top"
+                                     TextWrapping="Wrap"
+                                     VerticalScrollBarVisibility="Auto"
+                                     Text="{Binding Body, UpdateSourceTrigger=PropertyChanged}"
+                                     AcceptsReturn="True" AutomationProperties.Name="Body" />
+                        </Grid>
+                    </DockPanel>
+                </Border>
+
+                <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"
+                        Style="{StaticResource CardStyle}">
+                    <DockPanel>
+                        <Grid DockPanel.Dock="Top">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                           Text="Requests" />
+                                <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
+                                           Text="{Binding BaseAddress, StringFormat='Requests to {0}. The server answers with fake results and saves nothing.'}"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                            </StackPanel>
+                            <Button Grid.Column="1"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding ClearCommand}"
+                                    Content="Clear" />
+                        </Grid>
+                        <DataGrid MinHeight="96"
+                                  Margin="0,16,0,0"
+                                  ItemsSource="{Binding Requests}"
+                                  SelectionMode="Single"
+                                  AutoGenerateColumns="False" AutomationProperties.Name="Requests" CanUserAddRows="False" CanUserDeleteRows="False"
+                                  CanUserSortColumns="False"
+                                  CellStyle="{StaticResource DataGridCellStyle}"
+                                  HeadersVisibility="Column" IsReadOnly="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Width="96"
+                                                    Binding="{Binding Time, StringFormat=HH:mm:ss}"
+                                                    Header="Time"
+                                                    ElementStyle="{StaticResource RequestCellTextStyle}" />
+                                <DataGridTextColumn Width="96"
+                                                    Binding="{Binding Method}"
+                                                    Header="Method"
+                                                    ElementStyle="{StaticResource RequestCellTextStyle}" />
+                                <DataGridTextColumn Width="*"
+                                                    Binding="{Binding Path}"
+                                                    Header="Path"
+                                                    ElementStyle="{StaticResource RequestPathCellTextStyle}" />
+                                <DataGridTextColumn Width="200"
+                                                    Binding="{Binding Status}"
+                                                    Header="Status"
+                                                    ElementStyle="{StaticResource RequestCellTextStyle}" />
+                                <DataGridTextColumn Width="96"
+                                                    Binding="{Binding Milliseconds, StringFormat=N0}"
+                                                    Header="ms"
+                                                    ElementStyle="{StaticResource RequestNumberCellTextStyle}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </Border>
+            </Grid>
+        </Grid>
+    </ScrollViewer>
+
+</UserControl>

@@ -31,6 +31,7 @@
 | App | Single instance / Startup arguments / Error window / Update notice / Taskbar progress and badge / Jump list |
 | Basic | Navigation / Dialog (in-window) / Setting / Logging / DI (source generator) / Leak detection / Color emoji / Unit tests |
 | Data | SQLite |
+| Network | Web API |
 
 ## 🧩 Sample
 
@@ -44,7 +45,8 @@
 | Layout | Panels / Containers / Menus & toolbars / Tabs |
 | Design | Colors / Typography / Icons |
 | Graphics | Shapes & animation / Charts / Live data |
-| System | Windows / Clipboard & drag / Environment / Database / Logs |
+| Features | Database / Web API |
+| Platform | Windows / Clipboard & drag / Environment / Logs |
 
 ## 📝 Credits
 

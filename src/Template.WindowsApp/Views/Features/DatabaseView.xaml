@@ -3,9 +3,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:s="http://smart/windows"
-             xmlns:module="clr-namespace:Template.WindowsApp.Views.Platform"
+             xmlns:module="clr-namespace:Template.WindowsApp.Views.Features"
              mc:Ignorable="d"
-             x:Class="Template.WindowsApp.Views.Platform.DatabaseView"
+             x:Class="Template.WindowsApp.Views.Features.DatabaseView"
              s:DataContextResolver.Type="{x:Type module:DatabaseViewModel}"
              d:DataContext="{d:DesignInstance Type={x:Type module:DatabaseViewModel}}"
              d:DesignWidth="800" d:DesignHeight="600">

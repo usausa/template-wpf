@@ -1,6 +1,8 @@
 namespace Template.WindowsApp;
 
+using System.Net.Http.Headers;
 using System.Text.Encodings.Web;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
 
@@ -21,6 +23,7 @@ using Smart.Data.Accessor.Attributes;
 
 using Template.WindowsApp.Components;
 using Template.WindowsApp.Extender;
+using Template.WindowsApp.Services;
 using Template.WindowsApp.Settings;
 using Template.WindowsApp.Shell;
 using Template.WindowsApp.Views;
@@ -83,12 +86,27 @@ public static partial class ApplicationExtensions
         // Rest
         RestConfig.Default.UseJsonSerializer(static config =>
         {
+            config.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+            config.PropertyNameCaseInsensitive = true;
             config.Converters.Add(new Template.WindowsApp.Helpers.Json.DateTimeConverter());
             config.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
             config.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
         });
 
-        builder.Services.AddHttpClient();
+        var apiAddress = new Uri(builder.Configuration["Api:BaseAddress"]!);
+        builder.Services
+            .AddHttpClient(ApiNames.Default, client =>
+            {
+                client.BaseAddress = apiAddress;
+                client.Timeout = TimeSpan.FromSeconds(30);
+                client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
+                client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
+            })
+            .ConfigurePrimaryHttpMessageHandler(static () => new SocketsHttpHandler
+            {
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
+                PooledConnectionLifetime = TimeSpan.FromMinutes(1)
+            });
 
         // Components
         builder.Services.AddSingleton<MemoryLogSink>();

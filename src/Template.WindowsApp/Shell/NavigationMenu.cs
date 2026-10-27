@@ -98,14 +98,21 @@ public sealed class NavigationMenu
                 new(ViewId.LiveData, "Live data", "\uE93E", "\U0001F4E1")
             ]),
         new NavigationGroup(
-            "System",
+            "Features",
+            "\uE71D",
+            "\U0001F527",
+            [
+                new(ViewId.Database, "Database", "\uE965", "\U0001F5C4\uFE0F"),
+                new(ViewId.WebApi, "Web API", "\uE774", "\U0001F310")
+            ]),
+        new NavigationGroup(
+            "Platform",
             "\uE770",
             "\U0001F5A5\uFE0F",
             [
                 new(ViewId.Windows, "Windows", "\uE78B", "\U0001FA9F"),
                 new(ViewId.ClipboardDrag, "Clipboard & drag", "\uE77F", "\U0001F4CE"),
                 new(ViewId.Environment, "Environment", "\uE9D9", "\U0001F30D"),
-                new(ViewId.Database, "Database", "\uE965", "\U0001F5C4\uFE0F"),
                 new(ViewId.Logs, "Logs", "\uE9A4", "\U0001F4DC")
             ])
     ];

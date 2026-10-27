@@ -33,10 +33,11 @@ public enum ViewId
     ShapesAnimation,
     Charts,
     LiveData,
+    Database,
+    WebApi,
     Windows,
     ClipboardDrag,
     Environment,
-    Database,
     Logs,
     Settings
 }

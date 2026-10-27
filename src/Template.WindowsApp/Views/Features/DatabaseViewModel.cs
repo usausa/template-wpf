@@ -1,4 +1,4 @@
-namespace Template.WindowsApp.Views.Platform;
+namespace Template.WindowsApp.Views.Features;
 
 using Template.WindowsApp.Components;
 using Template.WindowsApp.Models.Entity;
