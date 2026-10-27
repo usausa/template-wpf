@@ -105,6 +105,7 @@ public sealed class NavigationMenu
                 new(ViewId.Windows, "Windows", "\uE78B", "\U0001FA9F"),
                 new(ViewId.ClipboardDrag, "Clipboard & drag", "\uE77F", "\U0001F4CE"),
                 new(ViewId.Environment, "Environment", "\uE9D9", "\U0001F30D"),
+                new(ViewId.Database, "Database", "\uE965", "\U0001F5C4\uFE0F"),
                 new(ViewId.Logs, "Logs", "\uE9A4", "\U0001F4DC")
             ])
     ];

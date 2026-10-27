@@ -1,7 +1,9 @@
 namespace Template.WindowsApp.Views.Collections;
 
 using Template.WindowsApp.Models;
+using Template.WindowsApp.Models.Entity;
 using Template.WindowsApp.Models.Sample;
+using Template.WindowsApp.Services;
 using Template.WindowsApp.Settings;
 using Template.WindowsApp.Shell;
 
@@ -16,13 +18,13 @@ public sealed partial class DataGridViewModel : AppViewModelBase, IShellCommandP
 
     private readonly IWindowManager windowManager;
 
-    private List<Product> products;
+    private readonly DataService dataService;
 
     private int pageIndex;
 
     public static IReadOnlyList<string> Categories { get; } = ProductSample.LoadCategories();
 
-    public ObservableCollection<Product> Items { get; } = [];
+    public ObservableCollection<ProductEntity> Items { get; } = [];
 
     public IReadOnlyList<DataGridColumnSetting> Columns { get; } =
     [
@@ -65,10 +67,12 @@ public sealed partial class DataGridViewModel : AppViewModelBase, IShellCommandP
 
     public IObserveCommand ResetColumnsCommand { get; }
 
-    public DataGridViewModel(IWindowManager windowManager)
+    public IObserveCommand UpdateCommand { get; }
+
+    public DataGridViewModel(IWindowManager windowManager, DataService dataService)
     {
         this.windowManager = windowManager;
-        products = [.. ProductSample.LoadProducts()];
+        this.dataService = dataService;
         SearchText = string.Empty;
         IsFrozen = true;
         RestoreLayout();
@@ -83,54 +87,52 @@ public sealed partial class DataGridViewModel : AppViewModelBase, IShellCommandP
 
         PreviousCommand = MakeDelegateCommand(() => ShowPage(pageIndex - 1), () => pageIndex > 0);
         NextCommand = MakeDelegateCommand(() => ShowPage(pageIndex + 1), () => RangeEnd < TotalCount);
-        ResetCommand = MakeDelegateCommand(Reset);
+        ResetCommand = MakeAsyncCommand(ResetAsync);
         ResetColumnsCommand = MakeDelegateCommand(ResetColumns);
+        UpdateCommand = MakeAsyncCommand<ProductEntity>(UpdateAsync);
 
         ShowPage(0);
     }
 
     private void ShowPage(int index)
     {
-        var rows = Query().ToList();
+        var (sort, desc) = SortKey();
+        TotalCount = (int)dataService.CountProducts(SearchText);
         pageIndex = index;
         Items.Clear();
-        foreach (var product in rows.Skip(index * PageSize).Take(PageSize))
+        foreach (var product in dataService.QueryProducts(SearchText, sort, desc, index * PageSize, PageSize))
         {
             Items.Add(product);
         }
 
-        TotalCount = rows.Count;
         RangeStart = Items.Count > 0 ? (index * PageSize) + 1 : 0;
         RangeEnd = (index * PageSize) + Items.Count;
     }
 
-    private IEnumerable<Product> Query()
+    private (ProductSort Sort, bool Desc) SortKey()
     {
-        var query = products.Where(Matches);
         if (Sort is not { } sort)
         {
-            return query;
+            return (ProductSort.Code, false);
         }
 
-        Func<Product, object?> key = sort.PropertyName switch
+        var key = sort.PropertyName switch
         {
-            nameof(Product.Name) => static x => x.Name,
-            nameof(Product.Category) => static x => x.Category,
-            nameof(Product.Supplier) => static x => x.Supplier,
-            nameof(Product.Warehouse) => static x => x.Warehouse,
-            nameof(Product.Updated) => static x => x.Updated,
-            nameof(Product.Price) => static x => x.Price,
-            nameof(Product.Stock) => static x => x.Stock,
-            nameof(Product.IsActive) => static x => x.IsActive,
-            _ => static x => x.Code
+            nameof(ProductEntity.Name) => ProductSort.Name,
+            nameof(ProductEntity.Category) => ProductSort.Category,
+            nameof(ProductEntity.Supplier) => ProductSort.Supplier,
+            nameof(ProductEntity.Warehouse) => ProductSort.Warehouse,
+            nameof(ProductEntity.Updated) => ProductSort.Updated,
+            nameof(ProductEntity.Price) => ProductSort.Price,
+            nameof(ProductEntity.Stock) => ProductSort.Stock,
+            nameof(ProductEntity.IsActive) => ProductSort.IsActive,
+            _ => ProductSort.Code
         };
-        return sort.Direction == ListSortDirection.Ascending ? query.OrderBy(key) : query.OrderByDescending(key);
+        return (key, sort.Direction == ListSortDirection.Descending);
     }
 
-    private bool Matches(Product product) =>
-        (SearchText.Length == 0) ||
-        product.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
-        product.Code.Contains(SearchText, StringComparison.OrdinalIgnoreCase);
+    private Task UpdateAsync(ProductEntity product) =>
+        dataService.UpdateProductAsync(product).AsTask();
 
     private void RestoreLayout()
     {
@@ -169,9 +171,9 @@ public sealed partial class DataGridViewModel : AppViewModelBase, IShellCommandP
         IsFrozen = true;
     }
 
-    private void Reset()
+    private async Task ResetAsync()
     {
-        products = [.. ProductSample.LoadProducts()];
+        await dataService.ResetProductsAsync().ConfigureAwait(true);
         SearchText = string.Empty;
         Sort = null;
         ShowPage(0);

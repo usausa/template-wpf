@@ -6,6 +6,8 @@ using System.Text.Unicode;
 
 using BunnyTail.DependencyInjection;
 
+using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
@@ -13,6 +15,9 @@ using Microsoft.Extensions.Options;
 using Rester;
 
 using Serilog;
+
+using Smart.Data;
+using Smart.Data.Accessor.Attributes;
 
 using Template.WindowsApp.Components;
 using Template.WindowsApp.Extender;
@@ -94,6 +99,11 @@ public static partial class ApplicationExtensions
         builder.Services.AddSingleton<TaskbarManager>();
         builder.Services.AddSingleton<ProcessMonitor>();
 
+        // Data
+        var connectionString = builder.Configuration.GetConnectionString("Default");
+        builder.Services.AddSingleton<IDbProvider>(new DelegateDbProvider(() => new SqliteConnection(connectionString)));
+        builder.Services.AddDataAccessors();
+
         // Service
         builder.Services.AddServices();
 
@@ -115,6 +125,13 @@ public static partial class ApplicationExtensions
 
     [ViewSource]
     public static partial IEnumerable<KeyValuePair<ViewId, Type>> ViewSource();
+
+    //--------------------------------------------------------------------------------
+    // Data
+    //--------------------------------------------------------------------------------
+
+    [DataAccessorRegistration]
+    public static partial IServiceCollection AddDataAccessors(this IServiceCollection services);
 
     //--------------------------------------------------------------------------------
     // Service

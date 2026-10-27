@@ -7,6 +7,7 @@ using NSubstitute;
 using Template.WindowsApp.Components;
 using Template.WindowsApp.Mocks;
 using Template.WindowsApp.Models.Sample;
+using Template.WindowsApp.Services;
 
 [Collection(ViewModelTestGroup.Name)]
 public sealed class EditableGridViewModelTests
@@ -14,9 +15,10 @@ public sealed class EditableGridViewModelTests
     private static readonly FixedTimeProvider Time = new(new DateTimeOffset(2026, 10, 26, 12, 0, 0, TimeSpan.Zero));
 
     [Fact]
-    public void ChangeSetsFieldsOnSelectedRowsExceptShipped()
+    public async Task ChangeSetsFieldsOnSelectedRowsExceptShipped()
     {
         // Arrange
+        using var database = await TestDatabase.CreateAsync(Time);
         var title = string.Empty;
         var dialog = Substitute.For<IDialog>();
         dialog.ShowAsync(Arg.Any<AppDialogViewModelBase>()).Returns(x =>
@@ -27,7 +29,7 @@ public sealed class EditableGridViewModelTests
             change.Discount = 5;
             return Task.FromResult(true);
         });
-        using var viewModel = MakeViewModel(dialog, new NotificationCenter(Time));
+        using var viewModel = MakeViewModel(dialog, new NotificationCenter(Time), database.DataService);
         viewModel.OnActivated();
         viewModel.SelectedRows = [viewModel.Lines[2], viewModel.Lines[3], viewModel.Lines[6]];
 
@@ -44,16 +46,17 @@ public sealed class EditableGridViewModelTests
     }
 
     [Fact]
-    public void ChangeCanceledKeepsRows()
+    public async Task ChangeCanceledKeepsRows()
     {
         // Arrange
+        using var database = await TestDatabase.CreateAsync(Time);
         var dialog = Substitute.For<IDialog>();
         dialog.ShowAsync(Arg.Any<AppDialogViewModelBase>()).Returns(x =>
         {
             ((BulkChangeDialogViewModel)x[0]).Status = OrderStatus.Confirmed;
             return Task.FromResult(false);
         });
-        using var viewModel = MakeViewModel(dialog, new NotificationCenter(Time));
+        using var viewModel = MakeViewModel(dialog, new NotificationCenter(Time), database.DataService);
         viewModel.OnActivated();
         viewModel.SelectedRows = [viewModel.Lines[2]];
 
@@ -66,10 +69,11 @@ public sealed class EditableGridViewModelTests
     }
 
     [Fact]
-    public void ChangeNeedsRowThatIsNotShipped()
+    public async Task ChangeNeedsRowThatIsNotShipped()
     {
         // Arrange
-        using var viewModel = MakeViewModel(Substitute.For<IDialog>(), new NotificationCenter(Time));
+        using var database = await TestDatabase.CreateAsync(Time);
+        using var viewModel = MakeViewModel(Substitute.For<IDialog>(), new NotificationCenter(Time), database.DataService);
         viewModel.OnActivated();
 
         // Act
@@ -84,14 +88,15 @@ public sealed class EditableGridViewModelTests
     }
 
     [Fact]
-    public void ExportWritesCsvAndNotifies()
+    public async Task ExportWritesCsvAndNotifies()
     {
         // Arrange
+        using var database = await TestDatabase.CreateAsync(Time);
         var path = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid():N}.csv");
         var dialog = Substitute.For<IDialog>();
         dialog.SaveFile(Arg.Any<string?>(), Arg.Any<string?>()).Returns(path);
         var notificationCenter = new NotificationCenter(Time);
-        using var viewModel = MakeViewModel(dialog, notificationCenter);
+        using var viewModel = MakeViewModel(dialog, notificationCenter, database.DataService);
         viewModel.OnActivated();
 
         try
@@ -100,8 +105,8 @@ public sealed class EditableGridViewModelTests
             viewModel.ExportCommand.Execute(null);
 
             // Assert
-            var bytes = File.ReadAllBytes(path);
-            var lines = File.ReadAllLines(path);
+            var bytes = await File.ReadAllBytesAsync(path, TestContext.Current.CancellationToken);
+            var lines = await File.ReadAllLinesAsync(path, TestContext.Current.CancellationToken);
             Assert.Equal([0xEF, 0xBB, 0xBF], bytes.Take(3));
             Assert.Equal(13, lines.Length);
             Assert.StartsWith("Item code,Description,", lines[0], StringComparison.Ordinal);
@@ -117,13 +122,14 @@ public sealed class EditableGridViewModelTests
     }
 
     [Fact]
-    public void ExportCanceledWritesNothing()
+    public async Task ExportCanceledWritesNothing()
     {
         // Arrange
+        using var database = await TestDatabase.CreateAsync(Time);
         var dialog = Substitute.For<IDialog>();
         dialog.SaveFile(Arg.Any<string?>(), Arg.Any<string?>()).Returns((string?)null);
         var notificationCenter = new NotificationCenter(Time);
-        using var viewModel = MakeViewModel(dialog, notificationCenter);
+        using var viewModel = MakeViewModel(dialog, notificationCenter, database.DataService);
         viewModel.OnActivated();
 
         // Act
@@ -133,6 +139,25 @@ public sealed class EditableGridViewModelTests
         Assert.Empty(notificationCenter.History);
     }
 
-    private static EditableGridViewModel MakeViewModel(IDialog dialog, NotificationCenter notificationCenter) =>
-        new(Time, dialog, Substitute.For<IClipboard>(), notificationCenter);
+    [Fact]
+    public async Task SaveWritesLinesToDatabase()
+    {
+        // Arrange
+        using var database = await TestDatabase.CreateAsync(Time);
+        using var viewModel = MakeViewModel(Substitute.For<IDialog>(), new NotificationCenter(Time), database.DataService);
+        viewModel.OnActivated();
+
+        // Act
+        viewModel.Lines[2].Quantity = 5;
+        viewModel.SaveCommand.Execute(null);
+        using var reopened = MakeViewModel(Substitute.For<IDialog>(), new NotificationCenter(Time), database.DataService);
+
+        // Assert
+        Assert.Equal("No changes", viewModel.Summary);
+        Assert.Equal(5, reopened.Lines[2].Quantity);
+        Assert.Equal(12, reopened.Lines.Count);
+    }
+
+    private static EditableGridViewModel MakeViewModel(IDialog dialog, NotificationCenter notificationCenter, DataService dataService) =>
+        new(Time, dialog, Substitute.For<IClipboard>(), notificationCenter, dataService);
 }

@@ -2,6 +2,8 @@ namespace Template.WindowsApp.Models.Sample;
 
 using System.Text.RegularExpressions;
 
+using Template.WindowsApp.Models.Entity;
+
 //--------------------------------------------------------------------------------
 // Enum
 //--------------------------------------------------------------------------------
@@ -429,19 +431,19 @@ public static class OrderLineCsv
 
 public static class OrderSample
 {
-    public static IReadOnlyList<OrderLineValues> LoadLines(DateTime today) =>
+    public static IReadOnlyList<OrderLineEntity> LoadLines(DateTime today) =>
     [
-        new("AB-1001", "Laptop stand", 2, 45.00m, 0, today.AddDays(8), OrderStatus.Confirmed, string.Empty),
-        new("AB-1002", "USB-C hub", 3, 29.90m, 10, today.AddDays(8), OrderStatus.Confirmed, string.Empty),
-        new("CD-2001", "Monitor 27 inch", 1, 329.00m, 0, today.AddDays(11), OrderStatus.Draft, string.Empty),
-        new("CD-2002", "Monitor arm", 1, 89.00m, 0, today.AddDays(11), OrderStatus.Draft, string.Empty),
-        new("EF-3001", "Keyboard", 10, 49.00m, 25, today.AddDays(16), OrderStatus.Draft, "Volume discount"),
-        new("EF-3002", "Mouse", 10, 25.00m, 15, today.AddDays(16), OrderStatus.Draft, string.Empty),
-        new("GH-4001", "Headset", 3, 79.00m, 0, today.AddDays(-5), OrderStatus.Shipped, "Delivered"),
-        new("GH-4002", "Webcam", 3, 59.00m, 0, today.AddDays(-5), OrderStatus.Shipped, string.Empty),
-        new("JK-5001", "Docking station", 2, 189.00m, 10, today.AddDays(18), OrderStatus.Confirmed, string.Empty),
-        new("JK-5002", "Cable set", 20, 4.50m, 0, today.AddDays(18), OrderStatus.Confirmed, string.Empty),
-        new("LM-6001", "Desk lamp", 4, 35.00m, 0, today.AddDays(21), OrderStatus.Draft, string.Empty),
-        new("LM-6002", "Chair mat", 2, 39.00m, 0, today.AddDays(21), OrderStatus.Draft, string.Empty)
+        new() { LineNo = 1, Code = "AB-1001", Description = "Laptop stand", Quantity = 2, UnitPrice = 45.00m, Discount = 0, Delivery = today.AddDays(8), Status = OrderStatus.Confirmed, Note = string.Empty },
+        new() { LineNo = 2, Code = "AB-1002", Description = "USB-C hub", Quantity = 3, UnitPrice = 29.90m, Discount = 10, Delivery = today.AddDays(8), Status = OrderStatus.Confirmed, Note = string.Empty },
+        new() { LineNo = 3, Code = "CD-2001", Description = "Monitor 27 inch", Quantity = 1, UnitPrice = 329.00m, Discount = 0, Delivery = today.AddDays(11), Status = OrderStatus.Draft, Note = string.Empty },
+        new() { LineNo = 4, Code = "CD-2002", Description = "Monitor arm", Quantity = 1, UnitPrice = 89.00m, Discount = 0, Delivery = today.AddDays(11), Status = OrderStatus.Draft, Note = string.Empty },
+        new() { LineNo = 5, Code = "EF-3001", Description = "Keyboard", Quantity = 10, UnitPrice = 49.00m, Discount = 25, Delivery = today.AddDays(16), Status = OrderStatus.Draft, Note = "Volume discount" },
+        new() { LineNo = 6, Code = "EF-3002", Description = "Mouse", Quantity = 10, UnitPrice = 25.00m, Discount = 15, Delivery = today.AddDays(16), Status = OrderStatus.Draft, Note = string.Empty },
+        new() { LineNo = 7, Code = "GH-4001", Description = "Headset", Quantity = 3, UnitPrice = 79.00m, Discount = 0, Delivery = today.AddDays(-5), Status = OrderStatus.Shipped, Note = "Delivered" },
+        new() { LineNo = 8, Code = "GH-4002", Description = "Webcam", Quantity = 3, UnitPrice = 59.00m, Discount = 0, Delivery = today.AddDays(-5), Status = OrderStatus.Shipped, Note = string.Empty },
+        new() { LineNo = 9, Code = "JK-5001", Description = "Docking station", Quantity = 2, UnitPrice = 189.00m, Discount = 10, Delivery = today.AddDays(18), Status = OrderStatus.Confirmed, Note = string.Empty },
+        new() { LineNo = 10, Code = "JK-5002", Description = "Cable set", Quantity = 20, UnitPrice = 4.50m, Discount = 0, Delivery = today.AddDays(18), Status = OrderStatus.Confirmed, Note = string.Empty },
+        new() { LineNo = 11, Code = "LM-6001", Description = "Desk lamp", Quantity = 4, UnitPrice = 35.00m, Discount = 0, Delivery = today.AddDays(21), Status = OrderStatus.Draft, Note = string.Empty },
+        new() { LineNo = 12, Code = "LM-6002", Description = "Chair mat", Quantity = 2, UnitPrice = 39.00m, Discount = 0, Delivery = today.AddDays(21), Status = OrderStatus.Draft, Note = string.Empty }
     ];
 }

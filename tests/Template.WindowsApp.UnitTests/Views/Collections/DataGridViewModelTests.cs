@@ -1,7 +1,10 @@
 namespace Template.WindowsApp.Views.Collections;
 
+using System.ComponentModel;
+
 using NSubstitute;
 
+using Template.WindowsApp.Mocks;
 using Template.WindowsApp.Models;
 using Template.WindowsApp.Settings;
 using Template.WindowsApp.Shell;
@@ -9,11 +12,14 @@ using Template.WindowsApp.Shell;
 [Collection(ViewModelTestGroup.Name)]
 public sealed class DataGridViewModelTests
 {
+    private static readonly FixedTimeProvider Time = new(new DateTimeOffset(2026, 10, 26, 12, 0, 0, TimeSpan.Zero));
+
     [Fact]
-    public void FreezesCodeAndNameByDefault()
+    public async Task FreezesCodeAndNameByDefault()
     {
         // Arrange
-        using var viewModel = new DataGridViewModel(MakeWindowManager([]));
+        using var database = await TestDatabase.CreateAsync(Time);
+        using var viewModel = new DataGridViewModel(MakeWindowManager([]), database.DataService);
 
         // Assert
         Assert.True(viewModel.IsFrozen);
@@ -22,11 +28,12 @@ public sealed class DataGridViewModelTests
     }
 
     [Fact]
-    public void UnfreezingClearsFrozenColumns()
+    public async Task UnfreezingClearsFrozenColumns()
     {
         // Arrange
+        using var database = await TestDatabase.CreateAsync(Time);
         var layouts = new Dictionary<string, GridLayout>();
-        using var viewModel = new DataGridViewModel(MakeWindowManager(layouts));
+        using var viewModel = new DataGridViewModel(MakeWindowManager(layouts), database.DataService);
 
         // Act
         viewModel.IsFrozen = false;
@@ -37,11 +44,12 @@ public sealed class DataGridViewModelTests
     }
 
     [Fact]
-    public void SavesColumnChanges()
+    public async Task SavesColumnChanges()
     {
         // Arrange
+        using var database = await TestDatabase.CreateAsync(Time);
         var layouts = new Dictionary<string, GridLayout>();
-        using var viewModel = new DataGridViewModel(MakeWindowManager(layouts));
+        using var viewModel = new DataGridViewModel(MakeWindowManager(layouts), database.DataService);
 
         // Act
         Column(viewModel, "Supplier").IsVisible = false;
@@ -56,9 +64,10 @@ public sealed class DataGridViewModelTests
     }
 
     [Fact]
-    public void RestoresSavedLayout()
+    public async Task RestoresSavedLayout()
     {
         // Arrange
+        using var database = await TestDatabase.CreateAsync(Time);
         var layouts = new Dictionary<string, GridLayout>
         {
             ["Products"] = new()
@@ -75,7 +84,7 @@ public sealed class DataGridViewModelTests
         };
 
         // Act
-        using var viewModel = new DataGridViewModel(MakeWindowManager(layouts));
+        using var viewModel = new DataGridViewModel(MakeWindowManager(layouts), database.DataService);
 
         // Assert
         Assert.False(viewModel.IsFrozen);
@@ -86,11 +95,12 @@ public sealed class DataGridViewModelTests
     }
 
     [Fact]
-    public void ResetColumnsRestoresDefaults()
+    public async Task ResetColumnsRestoresDefaults()
     {
         // Arrange
+        using var database = await TestDatabase.CreateAsync(Time);
         var layouts = new Dictionary<string, GridLayout>();
-        using var viewModel = new DataGridViewModel(MakeWindowManager(layouts));
+        using var viewModel = new DataGridViewModel(MakeWindowManager(layouts), database.DataService);
         viewModel.OnActivated();
         viewModel.IsFrozen = false;
         Column(viewModel, "Category").IsVisible = false;
@@ -104,6 +114,66 @@ public sealed class DataGridViewModelTests
         Assert.All(viewModel.Columns, static x => Assert.True(x.IsVisible && (x.Width is null)));
         Assert.Equal(2, layouts["Products"].FrozenColumnCount);
         Assert.All(layouts["Products"].Columns, static x => Assert.True(x.IsVisible && (x.Width is null)));
+    }
+
+    [Fact]
+    public async Task ShowsFirstPageFromDatabase()
+    {
+        // Arrange
+        using var database = await TestDatabase.CreateAsync(Time);
+
+        // Act
+        using var viewModel = new DataGridViewModel(MakeWindowManager([]), database.DataService);
+
+        // Assert
+        Assert.Equal(50, viewModel.TotalCount);
+        Assert.Equal(15, viewModel.Items.Count);
+        Assert.Equal((1, 15), (viewModel.RangeStart, viewModel.RangeEnd));
+        Assert.Equal("P-001", viewModel.Items[0].Code);
+    }
+
+    [Fact]
+    public async Task SearchSortAndPageUseDatabase()
+    {
+        // Arrange
+        using var database = await TestDatabase.CreateAsync(Time);
+        using var viewModel = new DataGridViewModel(MakeWindowManager([]), database.DataService);
+        viewModel.OnActivated();
+
+        // Act
+        viewModel.SearchText = "editor";
+        var found = viewModel.Items.Select(static x => x.Name).ToArray();
+        viewModel.SearchText = string.Empty;
+        viewModel.Sort = new SortDescription("Price", ListSortDirection.Descending);
+        var highest = viewModel.Items[0].Price;
+        viewModel.NextCommand.Execute(null);
+
+        // Assert
+        Assert.Equal(["Photo editor", "Video editor", "PDF editor", "Code editor"], found);
+        Assert.Equal(Math.Max(highest, viewModel.Items[0].Price), highest);
+        Assert.Equal((16, 30), (viewModel.RangeStart, viewModel.RangeEnd));
+    }
+
+    [Fact]
+    public async Task EditIsSavedAndResetRestoresSample()
+    {
+        // Arrange
+        using var database = await TestDatabase.CreateAsync(Time);
+        using var viewModel = new DataGridViewModel(MakeWindowManager([]), database.DataService);
+        viewModel.OnActivated();
+        var product = viewModel.Items[0];
+
+        // Act
+        product.Name = "Ergonomic keyboard";
+        viewModel.UpdateCommand.Execute(product);
+        using var reopened = new DataGridViewModel(MakeWindowManager([]), database.DataService);
+        var saved = reopened.Items[0].Name;
+        viewModel.ResetCommand.Execute(null);
+        using var reset = new DataGridViewModel(MakeWindowManager([]), database.DataService);
+
+        // Assert
+        Assert.Equal("Ergonomic keyboard", saved);
+        Assert.Equal("Keyboard", reset.Items[0].Name);
     }
 
     private static IWindowManager MakeWindowManager(Dictionary<string, GridLayout> layouts)

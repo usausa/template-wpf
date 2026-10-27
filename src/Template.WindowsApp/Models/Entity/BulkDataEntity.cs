@@ -1,0 +1,26 @@
+namespace Template.WindowsApp.Models.Entity;
+
+using Smart.Data.Accessor.Attributes;
+
+[Name("BulkData")]
+public sealed class BulkDataEntity
+{
+    [Key(1)]
+    public string Key1 { get; set; } = default!;
+
+    [Key(2)]
+    public string Key2 { get; set; } = default!;
+
+    [Key(3)]
+    public string Key3 { get; set; } = default!;
+
+    public int Value1 { get; set; }
+
+    public int Value2 { get; set; }
+
+    public int Value3 { get; set; }
+
+    public int Value4 { get; set; }
+
+    public int Value5 { get; set; }
+}

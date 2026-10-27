@@ -2,12 +2,14 @@ namespace Template.WindowsApp;
 
 using System.Runtime.InteropServices;
 
+using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using Smart.Mvvm.Resolver;
 
+using Template.WindowsApp.Services;
 using Template.WindowsApp.Settings;
 using Template.WindowsApp.Shell;
 using Template.WindowsApp.Views;
@@ -99,6 +101,12 @@ public sealed partial class App
     // ReSharper disable once AsyncVoidEventHandlerMethod
     protected override async void OnStartup(StartupEventArgs e)
     {
+        if (!await InitializeDataAsync().ConfigureAwait(true))
+        {
+            Shutdown();
+            return;
+        }
+
         var mainWindow = windowManager.Load();
         mainWindow.Closed += OnMainWindowClosed;
         MainWindow = mainWindow;
@@ -126,6 +134,21 @@ public sealed partial class App
     protected override void OnExit(ExitEventArgs e)
     {
         host.Dispose();
+    }
+
+    private async ValueTask<bool> InitializeDataAsync()
+    {
+        try
+        {
+            await host.Services.GetRequiredService<DataService>().InitializeAsync().ConfigureAwait(true);
+            return true;
+        }
+        catch (Exception ex) when (ex is SqliteException or IOException or UnauthorizedAccessException)
+        {
+            log.ErrorDatabaseInitializeFailed(ex);
+            ShowErrorDialog(ex);
+            return false;
+        }
     }
 
     //--------------------------------------------------------------------------------
@@ -156,7 +179,11 @@ public sealed partial class App
     private void ShowError(Exception ex)
     {
         log.ErrorUnknownException(ex);
+        ShowErrorDialog(ex);
+    }
 
+    private void ShowErrorDialog(Exception ex)
+    {
         if (showingError)
         {
             return;

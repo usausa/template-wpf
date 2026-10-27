@@ -80,6 +80,7 @@
                         <i:Interaction.Behaviors>
                             <behaviors:DataGridSortBehavior Sort="{Binding Sort}" />
                             <behaviors:CommitEditOnLostFocusBehavior />
+                            <behaviors:DataGridRowCommitBehavior Command="{Binding UpdateCommand}" />
                             <behaviors:DataGridColumnLayoutBehavior Columns="{Binding Columns}" />
                         </i:Interaction.Behaviors>
                         <DataGrid.Columns>

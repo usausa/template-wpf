@@ -1,9 +1,30 @@
 namespace Template.WindowsApp.Views.Forms;
 
+using Smart.Mapper;
+
 using Template.WindowsApp.Components;
 using Template.WindowsApp.Models;
+using Template.WindowsApp.Models.Entity;
 using Template.WindowsApp.Models.Sample;
+using Template.WindowsApp.Services;
 using Template.WindowsApp.Shell;
+
+//--------------------------------------------------------------------------------
+// Mapper
+//--------------------------------------------------------------------------------
+
+public static partial class EditableGridViewModelMapper
+{
+    [Mapper]
+    public static partial OrderLineValues ToValues(this OrderLineEntity source);
+
+    [Mapper]
+    public static partial OrderLineEntity ToEntity(this OrderLineValues source);
+}
+
+//--------------------------------------------------------------------------------
+// ViewModel
+//--------------------------------------------------------------------------------
 
 // ReSharper disable once ClassNeverInstantiated.Global
 public sealed partial class EditableGridViewModel : AppViewModelBase, IShellCommandProvider, IConfirmRequestAsync
@@ -19,6 +40,8 @@ public sealed partial class EditableGridViewModel : AppViewModelBase, IShellComm
     private readonly IClipboard clipboard;
 
     private readonly NotificationCenter notificationCenter;
+
+    private readonly DataService dataService;
 
     private readonly SynchronizationContext? synchronizationContext;
 
@@ -73,22 +96,23 @@ public sealed partial class EditableGridViewModel : AppViewModelBase, IShellComm
 
     public IObserveCommand ExportCommand { get; }
 
-    public EditableGridViewModel(TimeProvider timeProvider, IDialog dialog, IClipboard clipboard, NotificationCenter notificationCenter)
+    public EditableGridViewModel(TimeProvider timeProvider, IDialog dialog, IClipboard clipboard, NotificationCenter notificationCenter, DataService dataService)
     {
         this.timeProvider = timeProvider;
         this.dialog = dialog;
         this.clipboard = clipboard;
         this.notificationCenter = notificationCenter;
+        this.dataService = dataService;
         synchronizationContext = SynchronizationContext.Current;
 
-        saved = [.. OrderSample.LoadLines(timeProvider.GetLocalNow().Date)];
+        saved = LoadSaved();
         Summary = string.Empty;
 
         AddCommand = MakeDelegateCommand(AddRow);
         DuplicateCommand = MakeDelegateCommand(Duplicate, () => SelectedLines().Count > 0);
         DeleteCommand = MakeDelegateCommand(Delete, () => SelectedLines().Any(static x => !x.IsLocked));
         RevertCommand = MakeAsyncCommand(RevertAsync, () => HasChanges);
-        SaveCommand = MakeDelegateCommand(Save, () => HasChanges && (ErrorCount == 0));
+        SaveCommand = MakeAsyncCommand(SaveAsync, () => HasChanges && (ErrorCount == 0));
         PasteCommand = MakeDelegateCommand<IReadOnlyList<string>>(Paste);
         ChangeCommand = MakeAsyncCommand(ChangeAsync, () => SelectedLines().Any(static x => !x.IsLocked));
         ExportCommand = MakeDelegateCommand(Export);
@@ -111,13 +135,16 @@ public sealed partial class EditableGridViewModel : AppViewModelBase, IShellComm
         var choice = await dialog.AskSaveChangesAsync(LeaveMessage(), (ErrorCount == 0) && !Lines.Any(static x => x.IsEditing)).ConfigureAwait(true);
         if (choice == SaveChoice.Save)
         {
-            Save();
+            await SaveAsync().ConfigureAwait(true);
         }
         return choice != SaveChoice.Cancel;
     }
 
     private static string Plural(int count, string one, string many) =>
         String.Create(CultureInfo.CurrentCulture, $"{count:N0} {(count == 1 ? one : many)}");
+
+    private List<OrderLineValues> LoadSaved() =>
+        [.. dataService.QueryOrderLines().Select(static x => x.ToValues())];
 
     private void Load()
     {
@@ -240,11 +267,12 @@ public sealed partial class EditableGridViewModel : AppViewModelBase, IShellComm
         if (await dialog.ConfirmAsync("Discard all changes?", "All rows go back to how they were when you last saved.", "Discard", "Cancel").ConfigureAwait(true))
         {
             CancelRequest.Request();
+            saved = LoadSaved();
             Load();
         }
     }
 
-    private void Save()
+    private async Task SaveAsync()
     {
         if (!CommitEdits())
         {
@@ -260,7 +288,14 @@ public sealed partial class EditableGridViewModel : AppViewModelBase, IShellComm
             return;
         }
 
-        saved = Lines.Select(static x => x.Values).ToList();
+        var values = Lines.Select(static x => x.Values).ToList();
+        await dataService.ReplaceOrderLinesAsync(values.Select(static (x, i) =>
+        {
+            var entity = x.ToEntity();
+            entity.LineNo = i + 1;
+            return entity;
+        })).ConfigureAwait(true);
+        saved = values;
         foreach (var line in Lines)
         {
             line.AcceptChanges();

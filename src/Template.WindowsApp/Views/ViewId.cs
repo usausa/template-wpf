@@ -36,6 +36,7 @@ public enum ViewId
     Windows,
     ClipboardDrag,
     Environment,
+    Database,
     Logs,
     Settings
 }

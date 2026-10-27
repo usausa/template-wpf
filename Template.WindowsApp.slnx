@@ -2,6 +2,9 @@
   <Folder Name="/Test/">
     <Project Path="tests/Template.WindowsApp.UnitTests/Template.WindowsApp.UnitTests.csproj" />
   </Folder>
+  <Folder Name="/Application/">
+    <Project Path="src/Template.WindowsApp/Template.WindowsApp.csproj" />
+  </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />
     <File Path=".gitattributes" />
@@ -16,5 +19,4 @@
     <File Path="Settings.XamlStyler" />
     <File Path="Template.WindowsApp.sln.DotSettings" />
   </Folder>
-  <Project Path="src/Template.WindowsApp/Template.WindowsApp.csproj" DefaultStartup="true" />
 </Solution>

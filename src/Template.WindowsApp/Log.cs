@@ -30,6 +30,9 @@ internal static partial class Log
     [LoggerMessage(Level = LogLevel.Error, Message = "Unobserved task exception.")]
     public static partial void ErrorUnobservedTaskException(this ILogger logger, Exception ex);
 
+    [LoggerMessage(Level = LogLevel.Error, Message = "Database initialize failed.")]
+    public static partial void ErrorDatabaseInitializeFailed(this ILogger logger, Exception ex);
+
     // Instance
 
     [LoggerMessage(Level = LogLevel.Information, Message = "Second instance started. args=[{args}]")]

@@ -1,51 +1,6 @@
 namespace Template.WindowsApp.Models.Sample;
 
-//--------------------------------------------------------------------------------
-// Data
-//--------------------------------------------------------------------------------
-
-public sealed partial class Product : ObservableObject
-{
-    public string Code { get; }
-
-    public string Supplier { get; }
-
-    public string Warehouse { get; }
-
-    public DateTime Updated { get; }
-
-    [ObservableProperty]
-    public partial string Name { get; set; }
-
-    [ObservableProperty]
-    public partial string Category { get; set; }
-
-    [ObservableProperty]
-    public partial decimal Price { get; set; }
-
-    [ObservableProperty]
-    public partial int? Stock { get; set; }
-
-    [ObservableProperty]
-    public partial bool IsActive { get; set; }
-
-    public Product(string code, string name, string category, string supplier, string warehouse, decimal price, int? stock, DateTime updated, bool isActive)
-    {
-        Code = code;
-        Supplier = supplier;
-        Warehouse = warehouse;
-        Updated = updated;
-        Name = name;
-        Category = category;
-        Price = price;
-        Stock = stock;
-        IsActive = isActive;
-    }
-}
-
-//--------------------------------------------------------------------------------
-// Sample
-//--------------------------------------------------------------------------------
+using Template.WindowsApp.Models.Entity;
 
 public static class ProductSample
 {
@@ -68,24 +23,26 @@ public static class ProductSample
 
     public static IReadOnlyList<string> LoadCategories() => Categories;
 
-    public static IReadOnlyList<Product> LoadProducts()
+    public static IReadOnlyList<ProductEntity> LoadProducts()
     {
-        var list = new List<Product>();
+        var list = new List<ProductEntity>();
         for (var c = 0; c < Categories.Length; c++)
         {
             for (var i = 0; i < ProductNames[c].Length; i++)
             {
                 var index = list.Count;
-                list.Add(new Product(
-                    $"P-{index + 1:D3}",
-                    ProductNames[c][i],
-                    Categories[c],
-                    Suppliers[((index * 5) + c) % Suppliers.Length],
-                    Warehouses[index % Warehouses.Length],
-                    ((c + 1) * 20) + (((i * 7) % 10) * 12.5m),
-                    c < 2 ? ((i * 37) + (c * 11)) % 120 : null,
-                    LastUpdate.AddDays(-((index * 13) % 60)),
-                    index % 7 != 6));
+                list.Add(new ProductEntity
+                {
+                    Code = $"P-{index + 1:D3}",
+                    Name = ProductNames[c][i],
+                    Category = Categories[c],
+                    Supplier = Suppliers[((index * 5) + c) % Suppliers.Length],
+                    Warehouse = Warehouses[index % Warehouses.Length],
+                    Price = ((c + 1) * 20) + (((i * 7) % 10) * 12.5m),
+                    Stock = c < 2 ? ((i * 37) + (c * 11)) % 120 : null,
+                    Updated = LastUpdate.AddDays(-((index * 13) % 60)),
+                    IsActive = index % 7 != 6
+                });
             }
         }
         return list;
