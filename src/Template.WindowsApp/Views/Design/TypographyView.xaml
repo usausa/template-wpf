@@ -13,14 +13,14 @@
     <UserControl.Resources>
         <Style x:Key="HeaderCellTextStyle"
                TargetType="{x:Type TextBlock}"
-               BasedOn="{StaticResource PageTextStyle}">
+               BasedOn="{StaticResource PageTextBlockBase}">
             <Setter Property="Margin" Value="0,0,16,8" />
             <Setter Property="FontSize" Value="{DynamicResource CaptionTextBlockFontSize}" />
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
         </Style>
         <Style x:Key="ValueCellTextStyle"
                TargetType="{x:Type TextBlock}"
-               BasedOn="{StaticResource PageTextStyle}">
+               BasedOn="{StaticResource PageTextBlockBase}">
             <Setter Property="Margin" Value="0,0,16,0" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="FontSize" Value="{DynamicResource CaptionTextBlockFontSize}" />
@@ -32,18 +32,18 @@
         </Style>
     </UserControl.Resources>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="24">
-            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+    <ScrollViewer Style="{StaticResource RootScroll}">
+        <StackPanel Style="{StaticResource PageStack}">
+            <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Typography" />
-            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+            <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
                        Text="Text styles of the Fluent theme." />
 
-            <TextBlock Style="{StaticResource SampleResultTextStyle}"
+            <TextBlock Style="{StaticResource SampleResultTextBlock}"
                        Margin="0,0,0,16"
                        Text="{Binding Copied, StringFormat='Copied: {0}', TargetNullValue='Copied: -'}" />
 
-            <Border Style="{StaticResource CardStyle}">
+            <Border Style="{StaticResource CardBorder}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -89,7 +89,7 @@
                                Style="{StaticResource KeyCellTextStyle}"
                                Text="CaptionTextBlockStyle" />
                     <Button Grid.Row="1" Grid.Column="4"
-                            Style="{StaticResource IconButtonStyle}"
+                            Style="{StaticResource IconButton}"
                             Command="{Binding CopyCommand}"
                             CommandParameter="CaptionTextBlockStyle"
                             Content="&#xE8C8;"
@@ -110,7 +110,7 @@
                                Style="{StaticResource KeyCellTextStyle}"
                                Text="BodyTextBlockStyle" />
                     <Button Grid.Row="2" Grid.Column="4"
-                            Style="{StaticResource IconButtonStyle}"
+                            Style="{StaticResource IconButton}"
                             Command="{Binding CopyCommand}"
                             CommandParameter="BodyTextBlockStyle"
                             Content="&#xE8C8;"
@@ -131,7 +131,7 @@
                                Style="{StaticResource KeyCellTextStyle}"
                                Text="BodyStrongTextBlockStyle" />
                     <Button Grid.Row="3" Grid.Column="4"
-                            Style="{StaticResource IconButtonStyle}"
+                            Style="{StaticResource IconButton}"
                             Command="{Binding CopyCommand}"
                             CommandParameter="BodyStrongTextBlockStyle"
                             Content="&#xE8C8;"
@@ -152,7 +152,7 @@
                                Style="{StaticResource KeyCellTextStyle}"
                                Text="SubtitleTextBlockStyle" />
                     <Button Grid.Row="4" Grid.Column="4"
-                            Style="{StaticResource IconButtonStyle}"
+                            Style="{StaticResource IconButton}"
                             Command="{Binding CopyCommand}"
                             CommandParameter="SubtitleTextBlockStyle"
                             Content="&#xE8C8;"
@@ -173,7 +173,7 @@
                                Style="{StaticResource KeyCellTextStyle}"
                                Text="TitleTextBlockStyle" />
                     <Button Grid.Row="5" Grid.Column="4"
-                            Style="{StaticResource IconButtonStyle}"
+                            Style="{StaticResource IconButton}"
                             Command="{Binding CopyCommand}"
                             CommandParameter="TitleTextBlockStyle"
                             Content="&#xE8C8;"
@@ -194,7 +194,7 @@
                                Style="{StaticResource KeyCellTextStyle}"
                                Text="TitleLargeTextBlockStyle" />
                     <Button Grid.Row="6" Grid.Column="4"
-                            Style="{StaticResource IconButtonStyle}"
+                            Style="{StaticResource IconButton}"
                             Command="{Binding CopyCommand}"
                             CommandParameter="TitleLargeTextBlockStyle"
                             Content="&#xE8C8;"
@@ -215,7 +215,7 @@
                                Style="{StaticResource KeyCellTextStyle}"
                                Text="DisplayTextBlockStyle" />
                     <Button Grid.Row="7" Grid.Column="4"
-                            Style="{StaticResource IconButtonStyle}"
+                            Style="{StaticResource IconButton}"
                             Command="{Binding CopyCommand}"
                             CommandParameter="DisplayTextBlockStyle"
                             Content="&#xE8C8;"

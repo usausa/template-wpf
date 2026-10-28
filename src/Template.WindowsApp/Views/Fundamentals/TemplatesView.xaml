@@ -11,11 +11,11 @@
              d:DataContext="{d:DesignInstance Type={x:Type module:TemplatesViewModel}}"
              d:DesignWidth="800" d:DesignHeight="600">
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="24">
-            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+    <ScrollViewer Style="{StaticResource RootScroll}">
+        <StackPanel Style="{StaticResource PageStack}">
+            <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Templates" />
-            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+            <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
                        Text="Change how items and controls look with templates." />
 
             <Grid>
@@ -31,14 +31,13 @@
                 </Grid.RowDefinitions>
 
                 <Border Grid.Row="0" Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="ItemTemplate" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Show each item of a list with a DataTemplate."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Show each item of a list with a DataTemplate." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <ComboBox Width="240"
                                       HorizontalAlignment="Left"
                                       ItemsSource="{Binding Swatches}"
@@ -61,19 +60,18 @@
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding SelectedSwatch.Name, StringFormat='Selected: {0}', FallbackValue='Selected: -'}" />
                     </StackPanel>
                 </Border>
                 <Border Grid.Row="0" Grid.Column="2"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="ItemsPanelTemplate" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Lay out the items of a list with another panel."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Lay out the items of a list with another panel." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <ListBox Width="320"
                                      HorizontalAlignment="Left"
                                      ItemsSource="{Binding Tags}"
@@ -86,19 +84,18 @@
                                 </ListBox.ItemsPanel>
                             </ListBox>
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding SelectedTag, StringFormat='Selected: {0}', TargetNullValue='Selected: -'}" />
                     </StackPanel>
                 </Border>
                 <Border Grid.Row="1" Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="ControlTemplate" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Give a control a whole new look and keep how it works."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Give a control a whole new look and keep how it works." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <Button Width="240"
                                     HorizontalAlignment="Left"
                                     Command="{Binding PressCommand}"
@@ -134,19 +131,18 @@
                                 </Button.Template>
                             </Button>
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding PressCount, StringFormat='Pressed: {0} times'}" />
                     </StackPanel>
                 </Border>
                 <Border Grid.Row="1" Grid.Column="2"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="Templates by data type" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Each kind of item gets its own DataTemplate from its type."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Each kind of item gets its own DataTemplate from its type." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <ItemsControl ItemsSource="{Binding Items}"
                                           Focusable="False">
                                 <ItemsControl.Resources>
@@ -193,14 +189,13 @@
                     </StackPanel>
                 </Border>
                 <Border Grid.Row="2" Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="DataTemplateSelector" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Pick a template for each item with your own rule."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Pick a template for each item with your own rule." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <ItemsControl ItemsSource="{Binding Temperatures}"
                                           Focusable="False">
                                 <ItemsControl.ItemsPanel>
@@ -232,7 +227,7 @@
                                 </ItemsControl.ItemTemplateSelector>
                             </ItemsControl>
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="30 °C and above use the hot template" />
                     </StackPanel>
                 </Border>

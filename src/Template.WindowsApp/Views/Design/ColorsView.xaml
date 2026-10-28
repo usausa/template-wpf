@@ -12,11 +12,11 @@
              d:DataContext="{d:DesignInstance Type={x:Type module:ColorsViewModel}}"
              d:DesignWidth="800" d:DesignHeight="600">
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="24">
-            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+    <ScrollViewer Style="{StaticResource RootScroll}">
+        <StackPanel Style="{StaticResource PageStack}">
+            <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Colors" />
-            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+            <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
                        Text="Theme brushes and their resource names." />
 
             <Grid Margin="0,0,0,16">
@@ -37,7 +37,7 @@
                     </ComboBox.ItemContainerStyle>
                 </ComboBox>
                 <TextBlock Grid.Column="1"
-                           Style="{StaticResource SampleResultTextStyle}"
+                           Style="{StaticResource SampleResultTextBlock}"
                            Margin="16,0,0,0"
                            VerticalAlignment="Center"
                            Text="{Binding Copied, StringFormat='Copied: {0}', TargetNullValue='Copied: -'}" />
@@ -47,10 +47,10 @@
                           Focusable="False">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="{x:Type sample:ColorGroup}">
-                        <StackPanel Style="{StaticResource SectionPanelStyle}">
-                            <TextBlock Style="{StaticResource SectionHeaderTextStyle}"
+                        <StackPanel Style="{StaticResource SectionPanel}">
+                            <TextBlock Style="{StaticResource SectionHeaderTextBlock}"
                                        Text="{Binding Title}" />
-                            <Border Style="{StaticResource CardStyle}">
+                            <Border Style="{StaticResource CardBorder}">
                                 <ItemsControl ItemsSource="{Binding Entries}"
                                               Focusable="False">
                                     <ItemsControl.ItemTemplate>
@@ -68,18 +68,17 @@
                                                                       BorderThickness="1"
                                                                       BrushKey="{Binding Key}" />
                                                 <TextBlock Grid.Column="1"
-                                                           Style="{DynamicResource BodyTextBlockStyle}"
+                                                           Style="{StaticResource CardTitleTextBlock}"
                                                            Margin="16,0"
                                                            VerticalAlignment="Center"
                                                            Text="{Binding Name}" />
                                                 <TextBlock Grid.Column="2"
-                                                           Style="{DynamicResource CaptionTextBlockStyle}"
+                                                           Style="{StaticResource CardCaptionTextBlock}"
                                                            Margin="0,0,16,0"
                                                            VerticalAlignment="Center"
-                                                           Text="{Binding Key}"
-                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                                           Text="{Binding Key}" />
                                                 <Button Grid.Column="3"
-                                                        Style="{StaticResource IconButtonStyle}"
+                                                        Style="{StaticResource IconButton}"
                                                         Command="{Binding DataContext.CopyCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
                                                         CommandParameter="{Binding Key}"
                                                         Content="&#xE8C8;"

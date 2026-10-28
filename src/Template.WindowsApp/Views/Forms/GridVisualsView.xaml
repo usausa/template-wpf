@@ -37,7 +37,7 @@
         </Style>
         <Style x:Key="ServerCellStyle"
                TargetType="{x:Type DataGridCell}"
-               BasedOn="{StaticResource DataGridCellStyle}">
+               BasedOn="{StaticResource DataGridCell}">
             <Setter Property="Padding" Value="0" />
         </Style>
         <Style x:Key="CellTextStyle"
@@ -53,15 +53,15 @@
         </Style>
     </UserControl.Resources>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
+    <ScrollViewer Style="{StaticResource RootScroll}"
                   Focusable="False">
-        <StackPanel Margin="24">
-            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+        <StackPanel Style="{StaticResource PageStack}">
+            <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Grid visuals" />
-            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+            <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
                        Text="Show the state of each server in the cells with badges, bars, progress, colors and small trend lines, group the servers and open a row for details." />
 
-            <Border Style="{StaticResource CardStyle}">
+            <Border Style="{StaticResource CardBorder}">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Margin="0,0,12,0"

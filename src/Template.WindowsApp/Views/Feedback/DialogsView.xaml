@@ -28,17 +28,17 @@
         </Style>
     </UserControl.Resources>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="24">
-            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+    <ScrollViewer Style="{StaticResource RootScroll}">
+        <StackPanel Style="{StaticResource PageStack}">
+            <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Dialogs" />
-            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+            <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
                        Text="Show in-window, file and error dialogs." />
 
-            <StackPanel Style="{StaticResource SectionPanelStyle}">
-                <TextBlock Style="{StaticResource SectionHeaderTextStyle}"
+            <StackPanel Style="{StaticResource SectionPanel}">
+                <TextBlock Style="{StaticResource SectionHeaderTextBlock}"
                            Text="In-window dialogs" />
-                <Border Style="{StaticResource CardStyle}">
+                <Border Style="{StaticResource CardBorder}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -47,11 +47,10 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0"
                                     VerticalAlignment="Center">
-                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                            <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                        Text="Confirm" />
-                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                       Text="Ask yes or no."
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                            <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                       Text="Ask yes or no." />
                         </StackPanel>
                         <TextBlock Grid.Column="1"
                                    Style="{StaticResource ResultTextStyle}"
@@ -62,7 +61,7 @@
                                 AutomationProperties.Name="Run Confirm" />
                     </Grid>
                 </Border>
-                <Border Style="{StaticResource CardStyle}">
+                <Border Style="{StaticResource CardBorder}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -70,11 +69,10 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0"
                                     VerticalAlignment="Center">
-                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                            <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                        Text="Notify" />
-                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                       Text="Show a message."
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                            <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                       Text="Show a message." />
                         </StackPanel>
                         <Button Grid.Column="1"
                                 Style="{StaticResource RunButtonStyle}"
@@ -82,7 +80,7 @@
                                 AutomationProperties.Name="Run Notify" />
                     </Grid>
                 </Border>
-                <Border Style="{StaticResource CardStyle}">
+                <Border Style="{StaticResource CardBorder}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -91,11 +89,10 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0"
                                     VerticalAlignment="Center">
-                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                            <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                        Text="Input" />
-                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                       Text="Enter a value."
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                            <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                       Text="Enter a value." />
                         </StackPanel>
                         <TextBlock Grid.Column="1"
                                    Style="{StaticResource ResultTextStyle}"
@@ -106,7 +103,7 @@
                                 AutomationProperties.Name="Run Input" />
                     </Grid>
                 </Border>
-                <Border Style="{StaticResource CardStyle}">
+                <Border Style="{StaticResource CardBorder}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -115,11 +112,10 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0"
                                     VerticalAlignment="Center">
-                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                            <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                        Text="Progress" />
-                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                       Text="Run a task and show its progress."
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                            <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                       Text="Run a task and show its progress." />
                         </StackPanel>
                         <TextBlock Grid.Column="1"
                                    Style="{StaticResource ResultTextStyle}"
@@ -132,10 +128,10 @@
                 </Border>
             </StackPanel>
 
-            <StackPanel Style="{StaticResource SectionPanelStyle}">
-                <TextBlock Style="{StaticResource SectionHeaderTextStyle}"
+            <StackPanel Style="{StaticResource SectionPanel}">
+                <TextBlock Style="{StaticResource SectionHeaderTextBlock}"
                            Text="Files" />
-                <Border Style="{StaticResource CardStyle}">
+                <Border Style="{StaticResource CardBorder}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -144,11 +140,10 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0"
                                     VerticalAlignment="Center">
-                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                            <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                        Text="Open file" />
-                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                       Text="Pick a file to open."
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                            <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                       Text="Pick a file to open." />
                         </StackPanel>
                         <TextBlock Grid.Column="1"
                                    Style="{StaticResource ResultTextStyle}"
@@ -160,7 +155,7 @@
                                 AutomationProperties.Name="Run Open file" />
                     </Grid>
                 </Border>
-                <Border Style="{StaticResource CardStyle}">
+                <Border Style="{StaticResource CardBorder}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -169,11 +164,10 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0"
                                     VerticalAlignment="Center">
-                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                            <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                        Text="Save file" />
-                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                       Text="Pick a file to save."
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                            <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                       Text="Pick a file to save." />
                         </StackPanel>
                         <TextBlock Grid.Column="1"
                                    Style="{StaticResource ResultTextStyle}"
@@ -185,7 +179,7 @@
                                 AutomationProperties.Name="Run Save file" />
                     </Grid>
                 </Border>
-                <Border Style="{StaticResource CardStyle}">
+                <Border Style="{StaticResource CardBorder}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -194,11 +188,10 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0"
                                     VerticalAlignment="Center">
-                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                            <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                        Text="Select folder" />
-                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                       Text="Pick a folder."
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                            <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                       Text="Pick a folder." />
                         </StackPanel>
                         <TextBlock Grid.Column="1"
                                    Style="{StaticResource ResultTextStyle}"
@@ -212,10 +205,10 @@
                 </Border>
             </StackPanel>
 
-            <StackPanel Style="{StaticResource SectionPanelStyle}">
-                <TextBlock Style="{StaticResource SectionHeaderTextStyle}"
+            <StackPanel Style="{StaticResource SectionPanel}">
+                <TextBlock Style="{StaticResource SectionHeaderTextBlock}"
                            Text="Errors" />
-                <Border Style="{StaticResource CardStyle}">
+                <Border Style="{StaticResource CardBorder}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -223,11 +216,10 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0"
                                     VerticalAlignment="Center">
-                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                            <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                        Text="Unhandled exception" />
-                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                       Text="Throw an exception to show the error window."
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                            <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                       Text="Throw an exception to show the error window." />
                         </StackPanel>
                         <Button Grid.Column="1"
                                 Style="{StaticResource RunButtonStyle}"

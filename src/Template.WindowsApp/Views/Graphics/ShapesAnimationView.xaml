@@ -81,11 +81,11 @@
         </s:EventRequestTrigger>
     </i:Interaction.Triggers>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="24">
-            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+    <ScrollViewer Style="{StaticResource RootScroll}">
+        <StackPanel Style="{StaticResource PageStack}">
+            <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Shapes &amp; animation" />
-            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+            <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
                        Text="Shapes, gradients, transforms and easing." />
 
             <Grid>
@@ -100,13 +100,12 @@
                 </Grid.RowDefinitions>
 
                 <Border Grid.Row="0" Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="Shapes" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Rectangle, ellipse, line, polygon and path."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Rectangle, ellipse, line, polygon and path." />
                         <UniformGrid Columns="5"
                                      Margin="0,16,0,0">
                             <StackPanel>
@@ -161,13 +160,12 @@
                 </Border>
 
                 <Border Grid.Row="0" Grid.Column="2"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="Gradients" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Linear and radial gradient brushes."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Linear and radial gradient brushes." />
                         <Grid Margin="0,16,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
@@ -203,14 +201,13 @@
                 </Border>
 
                 <Border Grid.Row="1" Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="Transforms" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Rotate and scale a shape."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Rotate and scale a shape." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <Grid Width="240" Height="160"
                                   HorizontalAlignment="Left">
                                 <Path Width="56" Height="56"
@@ -226,7 +223,7 @@
                                 </Path>
                             </Grid>
                             <StackPanel Margin="0,16,0,0">
-                                <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                            Text="Rotate" />
                                 <Slider Width="240"
                                         HorizontalAlignment="Left"
@@ -235,7 +232,7 @@
                                         AutomationProperties.Name="Rotate" IsSnapToTickEnabled="True" TickFrequency="1" />
                             </StackPanel>
                             <StackPanel Margin="0,16,0,0">
-                                <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                            Text="Scale" />
                                 <Slider Width="240"
                                         HorizontalAlignment="Left"
@@ -244,7 +241,7 @@
                                         AutomationProperties.Name="Scale" IsSnapToTickEnabled="True" TickFrequency="0.1" />
                             </StackPanel>
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}">
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}">
                             <TextBlock.Text>
                                 <MultiBinding StringFormat="Angle: {0:0} · Scale: {1:0.##}">
                                     <Binding Path="Angle" />
@@ -256,14 +253,13 @@
                 </Border>
 
                 <Border Grid.Row="1" Grid.Column="2"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="Easing" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="The same move with different easing functions."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="The same move with different easing functions." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="80" />

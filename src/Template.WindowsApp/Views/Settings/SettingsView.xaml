@@ -85,10 +85,10 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0"
-                       Style="{StaticResource PageTitleTextStyle}"
+                       Style="{StaticResource PageTitleTextBlock}"
                        Text="Settings" />
             <TextBlock Grid.Row="1"
-                       Style="{StaticResource PageDescriptionTextStyle}"
+                       Style="{StaticResource PageDescriptionTextBlock}"
                        Text="Change how the app looks and behaves." />
             <TextBox Grid.Row="2"
                      behaviors:TextBoxOption.PlaceholderText="Search settings (Ctrl+F)"

@@ -40,9 +40,9 @@
         </Style>
     </UserControl.Resources>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+    <ScrollViewer Style="{StaticResource RootScroll}">
         <Grid MinHeight="{Binding ViewportHeight, RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}}">
-            <Grid Margin="24">
+            <Grid Style="{StaticResource PageGrid}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -51,10 +51,10 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="0"
-                           Style="{StaticResource PageTitleTextStyle}"
+                           Style="{StaticResource PageTitleTextBlock}"
                            Text="Charts" />
                 <TextBlock Grid.Row="1"
-                           Style="{StaticResource PageDescriptionTextStyle}"
+                           Style="{StaticResource PageDescriptionTextBlock}"
                            Text="Line, bar and donut charts drawn in code." />
 
                 <Button Grid.Row="2"
@@ -75,7 +75,7 @@
                     </Grid.RowDefinitions>
 
                     <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
-                            Style="{StaticResource CardStyle}">
+                            Style="{StaticResource CardBorder}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -83,12 +83,11 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Row="0"
-                                       Style="{DynamicResource BodyTextBlockStyle}"
+                                       Style="{StaticResource CardTitleTextBlock}"
                                        Text="Line" />
                             <TextBlock Grid.Row="1"
-                                       Style="{DynamicResource CaptionTextBlockStyle}"
-                                       Text="Monthly values over a year."
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                       Style="{StaticResource CardCaptionTextBlock}"
+                                       Text="Monthly values over a year." />
                             <controls:LineChart Grid.Row="2"
                                                 MinHeight="160"
                                                 Margin="0,16,0,0"
@@ -102,7 +101,7 @@
                     </Border>
 
                     <Border Grid.Row="1" Grid.Column="0"
-                            Style="{StaticResource CardStyle}">
+                            Style="{StaticResource CardBorder}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -110,12 +109,11 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Row="0"
-                                       Style="{DynamicResource BodyTextBlockStyle}"
+                                       Style="{StaticResource CardTitleTextBlock}"
                                        Text="Bar" />
                             <TextBlock Grid.Row="1"
-                                       Style="{DynamicResource CaptionTextBlockStyle}"
-                                       Text="Values by category."
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                       Style="{StaticResource CardCaptionTextBlock}"
+                                       Text="Values by category." />
                             <controls:BarChart Grid.Row="2"
                                                MinHeight="160"
                                                Margin="0,16,0,0"
@@ -127,7 +125,7 @@
                     </Border>
 
                     <Border Grid.Row="1" Grid.Column="2"
-                            Style="{StaticResource CardStyle}">
+                            Style="{StaticResource CardBorder}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -135,12 +133,11 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Row="0"
-                                       Style="{DynamicResource BodyTextBlockStyle}"
+                                       Style="{StaticResource CardTitleTextBlock}"
                                        Text="Donut" />
                             <TextBlock Grid.Row="1"
-                                       Style="{DynamicResource CaptionTextBlockStyle}"
-                                       Text="Shares of the total, with a legend."
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                       Style="{StaticResource CardCaptionTextBlock}"
+                                       Text="Shares of the total, with a legend." />
                             <Grid Grid.Row="2"
                                   Margin="0,16,0,0">
                                 <Grid.ColumnDefinitions>

@@ -45,11 +45,11 @@
         </DataTemplate>
     </UserControl.Resources>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="24">
-            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+    <ScrollViewer Style="{StaticResource RootScroll}">
+        <StackPanel Style="{StaticResource PageStack}">
+            <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Panels" />
-            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+            <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
                        Text="Grid, StackPanel, WrapPanel, DockPanel and UniformGrid." />
 
             <Grid>
@@ -65,13 +65,12 @@
                 </Grid.RowDefinitions>
 
                 <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="Grid" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Rows and columns, with cells that span."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Rows and columns, with cells that span." />
                         <Grid Height="108"
                               Margin="0,16,0,0">
                             <Grid.RowDefinitions>
@@ -124,14 +123,13 @@
                 </Border>
 
                 <Border Grid.Row="1" Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="StackPanel" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Stacks items in one direction."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}"
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Stacks items in one direction." />
+                        <StackPanel Style="{StaticResource SampleStack}"
                                     Orientation="Horizontal">
                             <RadioButton IsChecked="{Binding Orientation, Converter={StaticResource ParameterEqualsConverter}, ConverterParameter=Vertical}"
                                          Content="Vertical" />
@@ -149,20 +147,19 @@
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                         </ItemsControl>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding Orientation, StringFormat='Orientation: {0}'}" />
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Row="1" Grid.Column="2"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="WrapPanel" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Wraps items onto the next line."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Wraps items onto the next line." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <Slider Width="240"
                                     HorizontalAlignment="Left"
                                     Value="{Binding WrapWidth}"
@@ -181,19 +178,18 @@
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                         </ItemsControl>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding WrapWidth, StringFormat='Width: {0}'}" />
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Row="2" Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="DockPanel" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Docks items to the edges and fills the rest."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Docks items to the edges and fills the rest." />
                         <DockPanel Height="160"
                                    Margin="0,16,0,0">
                             <Border DockPanel.Dock="Top"
@@ -229,14 +225,13 @@
                 </Border>
 
                 <Border Grid.Row="2" Grid.Column="2"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="UniformGrid" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Cells of the same size."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Cells of the same size." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <Slider Width="240"
                                     HorizontalAlignment="Left"
                                     Value="{Binding Columns}"
@@ -253,7 +248,7 @@
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                         </ItemsControl>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding Columns, StringFormat='Columns: {0}'}" />
                     </StackPanel>
                 </Border>

@@ -12,9 +12,9 @@
              d:DataContext="{d:DesignInstance Type={x:Type module:LiveDataViewModel}}"
              d:DesignWidth="800" d:DesignHeight="600">
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+    <ScrollViewer Style="{StaticResource RootScroll}">
         <Grid MinHeight="{Binding ViewportHeight, RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}}">
-            <Grid Margin="24">
+            <Grid Style="{StaticResource PageGrid}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -23,14 +23,14 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="0"
-                           Style="{StaticResource PageTitleTextStyle}"
+                           Style="{StaticResource PageTitleTextBlock}"
                            Text="Live data" />
                 <TextBlock Grid.Row="1"
-                           Style="{StaticResource PageDescriptionTextStyle}"
+                           Style="{StaticResource PageDescriptionTextBlock}"
                            Text="Values that keep streaming in, drawn at a limited rate, with streams that stop marked." />
 
                 <Border Grid.Row="2"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -95,7 +95,7 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="{x:Type sample:LiveSensor}">
-                            <Border Style="{StaticResource CardStyle}"
+                            <Border Style="{StaticResource CardBorder}"
                                     Margin="0,0,8,8">
                                 <Grid>
                                     <Grid.RowDefinitions>

@@ -17,7 +17,7 @@
     <UserControl.Resources>
         <Style x:Key="LogCellStyle"
                TargetType="{x:Type DataGridCell}"
-               BasedOn="{StaticResource DataGridCellStyle}">
+               BasedOn="{StaticResource DataGridCell}">
             <Setter Property="MinHeight" Value="24" />
         </Style>
         <Style x:Key="LogCellTextStyle"
@@ -55,20 +55,20 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid Margin="24">
+    <Grid Style="{StaticResource PageGrid}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0"
-                   Style="{StaticResource PageTitleTextStyle}"
+                   Style="{StaticResource PageTitleTextBlock}"
                    Text="Logs" />
         <TextBlock Grid.Row="1"
-                   Style="{StaticResource PageDescriptionTextStyle}"
+                   Style="{StaticResource PageDescriptionTextBlock}"
                    Text="Recent log entries of this app." />
         <Border Grid.Row="2"
-                Style="{StaticResource CardStyle}">
+                Style="{StaticResource CardBorder}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />

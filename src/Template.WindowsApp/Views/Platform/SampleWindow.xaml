@@ -46,15 +46,15 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+    <ScrollViewer Style="{StaticResource RootScroll}">
         <StackPanel Margin="24,16,24,24">
-            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+            <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
                        Text="Change how this window behaves." />
 
-            <StackPanel Style="{StaticResource SectionPanelStyle}">
-                <TextBlock Style="{StaticResource SectionHeaderTextStyle}"
+            <StackPanel Style="{StaticResource SectionPanel}">
+                <TextBlock Style="{StaticResource SectionHeaderTextBlock}"
                            Text="Window" />
-                <Border Style="{StaticResource CardStyle}">
+                <Border Style="{StaticResource CardBorder}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="40" />
@@ -67,11 +67,10 @@
                         <StackPanel Grid.Column="1"
                                     Margin="8,0,16,0"
                                     VerticalAlignment="Center">
-                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                            <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                        Text="Always on top" />
-                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                       Text="Keep this window above other windows"
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                            <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                       Text="Keep this window above other windows" />
                         </StackPanel>
                         <controls:ToggleSwitch Grid.Column="2"
                                                VerticalAlignment="Center"
@@ -79,7 +78,7 @@
                                                AutomationProperties.Name="Always on top" />
                     </Grid>
                 </Border>
-                <Border Style="{StaticResource CardStyle}">
+                <Border Style="{StaticResource CardBorder}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="40" />
@@ -92,11 +91,10 @@
                         <StackPanel Grid.Column="1"
                                     Margin="8,0,16,0"
                                     VerticalAlignment="Center">
-                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                            <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                        Text="Resizable" />
-                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                       Text="Let this window be resized and maximized"
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                            <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                       Text="Let this window be resized and maximized" />
                         </StackPanel>
                         <controls:ToggleSwitch Grid.Column="2"
                                                VerticalAlignment="Center"
@@ -104,7 +102,7 @@
                                                AutomationProperties.Name="Resizable" />
                     </Grid>
                 </Border>
-                <Border Style="{StaticResource CardStyle}">
+                <Border Style="{StaticResource CardBorder}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="40" />
@@ -117,11 +115,10 @@
                         <StackPanel Grid.Column="1"
                                     Margin="8,0,16,0"
                                     VerticalAlignment="Center">
-                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                            <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                        Text="Show in taskbar" />
-                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                       Text="Show a button for this window on the taskbar"
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                            <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                       Text="Show a button for this window on the taskbar" />
                         </StackPanel>
                         <controls:ToggleSwitch Grid.Column="2"
                                                VerticalAlignment="Center"
@@ -129,7 +126,7 @@
                                                AutomationProperties.Name="Show in taskbar" />
                     </Grid>
                 </Border>
-                <Border Style="{StaticResource CardStyle}">
+                <Border Style="{StaticResource CardBorder}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="40" />
@@ -142,11 +139,10 @@
                         <StackPanel Grid.Column="1"
                                     Margin="8,0,16,0"
                                     VerticalAlignment="Center">
-                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                            <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                        Text="Title bar icon" />
-                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                       Text="Show the app icon on the title bar"
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                            <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                       Text="Show the app icon on the title bar" />
                         </StackPanel>
                         <controls:ToggleSwitch Grid.Column="2"
                                                VerticalAlignment="Center"
@@ -156,10 +152,10 @@
                 </Border>
             </StackPanel>
 
-            <StackPanel Style="{StaticResource SectionPanelStyle}">
-                <TextBlock Style="{StaticResource SectionHeaderTextStyle}"
+            <StackPanel Style="{StaticResource SectionPanel}">
+                <TextBlock Style="{StaticResource SectionHeaderTextBlock}"
                            Text="Status" />
-                <Border Style="{StaticResource CardStyle}">
+                <Border Style="{StaticResource CardBorder}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="96" />

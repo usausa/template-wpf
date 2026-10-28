@@ -49,10 +49,10 @@
         </Style>
     </UserControl.Resources>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+    <ScrollViewer Style="{StaticResource RootScroll}">
         <Grid Height="{Binding ViewportHeight, RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}}"
               MinHeight="840">
-            <Grid Margin="24">
+            <Grid Style="{StaticResource PageGrid}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="8" />
@@ -66,28 +66,27 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
-                           Style="{StaticResource PageTitleTextStyle}"
+                           Style="{StaticResource PageTitleTextBlock}"
                            Text="Web API" />
                 <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
-                           Style="{StaticResource PageDescriptionTextStyle}"
+                           Style="{StaticResource PageDescriptionTextBlock}"
                            Text="Call a public REST API with Rester: page through posts, read one, and send create, update and delete requests." />
 
                 <Border Grid.Row="2" Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="Posts" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="GET /posts, 10 at a time. The total comes from the X-Total-Count header."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="GET /posts, 10 at a time. The total comes from the X-Total-Count header." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <DataGrid MinHeight="354"
                                       ItemsSource="{Binding Posts}"
                                       SelectedItem="{Binding SelectedPost}"
                                       SelectionMode="Single"
                                       AutoGenerateColumns="False" AutomationProperties.Name="Posts" CanUserAddRows="False" CanUserDeleteRows="False"
                                       CanUserSortColumns="False"
-                                      CellStyle="{StaticResource DataGridCellStyle}"
+                                      CellStyle="{StaticResource DataGridCell}"
                                       HeadersVisibility="Column" IsReadOnly="True">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Width="64"
@@ -118,13 +117,13 @@
                                     </TextBlock.Text>
                                 </TextBlock>
                                 <Button Grid.Column="1"
-                                        Style="{StaticResource IconButtonStyle}"
+                                        Style="{StaticResource IconButton}"
                                         Command="{Binding PreviousCommand}"
                                         Content="&#xE76B;"
                                         ToolTip="Previous page"
                                         AutomationProperties.Name="Previous page" />
                                 <Button Grid.Column="2"
-                                        Style="{StaticResource IconButtonStyle}"
+                                        Style="{StaticResource IconButton}"
                                         Margin="8,0,0,0"
                                         Command="{Binding NextCommand}"
                                         Content="&#xE76C;"
@@ -132,23 +131,22 @@
                                         AutomationProperties.Name="Next page" />
                             </Grid>
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding ListResult, StringFormat='Last: {0}', TargetNullValue='Last: -'}" />
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Row="2" Grid.Column="2"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <DockPanel>
                         <TextBlock DockPanel.Dock="Top"
-                                   Style="{DynamicResource BodyTextBlockStyle}"
+                                   Style="{StaticResource CardTitleTextBlock}"
                                    Text="Post" />
                         <TextBlock DockPanel.Dock="Top"
-                                   Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="GET, POST, PUT, PATCH and DELETE /posts/{id}."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                   Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="GET, POST, PUT, PATCH and DELETE /posts/{id}." />
                         <TextBlock DockPanel.Dock="Bottom"
-                                   Style="{StaticResource SampleResultTextStyle}"
+                                   Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding PostResult, StringFormat='Last: {0}', TargetNullValue='Last: -'}" />
                         <StackPanel DockPanel.Dock="Bottom"
                                     Orientation="Horizontal"
@@ -173,7 +171,7 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <StackPanel Grid.Row="0">
-                                <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                            Text="Id" />
                                 <StackPanel Orientation="Horizontal">
                                     <controls:NumberBox Width="120"
@@ -187,13 +185,13 @@
                             </StackPanel>
                             <StackPanel Grid.Row="1"
                                         Margin="0,16,0,0">
-                                <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                            Text="Title" />
                                 <TextBox Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"
                                          AutomationProperties.Name="Title" />
                             </StackPanel>
                             <TextBlock Grid.Row="2"
-                                       Style="{StaticResource FieldLabelTextStyle}"
+                                       Style="{StaticResource FieldLabelTextBlock}"
                                        Margin="0,16,0,4"
                                        Text="Body" />
                             <TextBox Grid.Row="3"
@@ -208,7 +206,7 @@
                 </Border>
 
                 <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <DockPanel>
                         <Grid DockPanel.Dock="Top">
                             <Grid.ColumnDefinitions>
@@ -216,11 +214,10 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="0">
-                                <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                                <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                            Text="Requests" />
-                                <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                           Text="{Binding BaseAddress, StringFormat='Requests to {0}. The server answers with fake results and saves nothing.'}"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                           Text="{Binding BaseAddress, StringFormat='Requests to {0}. The server answers with fake results and saves nothing.'}" />
                             </StackPanel>
                             <Button Grid.Column="1"
                                     VerticalAlignment="Center"
@@ -233,7 +230,7 @@
                                   SelectionMode="Single"
                                   AutoGenerateColumns="False" AutomationProperties.Name="Requests" CanUserAddRows="False" CanUserDeleteRows="False"
                                   CanUserSortColumns="False"
-                                  CellStyle="{StaticResource DataGridCellStyle}"
+                                  CellStyle="{StaticResource DataGridCell}"
                                   HeadersVisibility="Column" IsReadOnly="True">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Width="96"

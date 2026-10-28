@@ -19,9 +19,9 @@
         </ItemsPanelTemplate>
     </UserControl.Resources>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+    <ScrollViewer Style="{StaticResource RootScroll}">
         <Grid MinHeight="{Binding ViewportHeight, RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}}">
-            <Grid Margin="24">
+            <Grid Style="{StaticResource PageGrid}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -31,14 +31,14 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="0"
-                           Style="{StaticResource PageTitleTextStyle}"
+                           Style="{StaticResource PageTitleTextBlock}"
                            Text="Home" />
                 <TextBlock Grid.Row="1"
-                           Style="{StaticResource PageDescriptionTextStyle}"
+                           Style="{StaticResource PageDescriptionTextBlock}"
                            Text="{Binding Message}" />
 
                 <Grid Grid.Row="2"
-                      Style="{StaticResource SectionPanelStyle}">
+                      Style="{StaticResource SectionPanel}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
@@ -55,7 +55,7 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="{x:Type module:Summary}">
-                                <Border Style="{StaticResource CardStyle}"
+                                <Border Style="{StaticResource CardBorder}"
                                         Margin="0,0,8,8">
                                     <StackPanel>
                                         <StackPanel Orientation="Horizontal">
@@ -83,7 +83,7 @@
                     <UniformGrid Grid.Row="1"
                                  Rows="1"
                                  Margin="0,0,-8,0">
-                        <Border Style="{StaticResource CardStyle}"
+                        <Border Style="{StaticResource CardBorder}"
                                 Margin="0,0,8,8">
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -105,7 +105,7 @@
                                                     Values="{Binding MemoryValues}" />
                             </Grid>
                         </Border>
-                        <Border Style="{StaticResource CardStyle}"
+                        <Border Style="{StaticResource CardBorder}"
                                 Margin="0,0,8,8">
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -130,7 +130,7 @@
                 <UniformGrid Grid.Row="3"
                              Rows="1"
                              Margin="0,0,-8,8">
-                    <Border Style="{StaticResource CardStyle}"
+                    <Border Style="{StaticResource CardBorder}"
                             Margin="0,0,8,0">
                         <StackPanel>
                             <TextBlock Style="{DynamicResource BodyStrongTextBlockStyle}"
@@ -174,7 +174,7 @@
                             </TextBlock>
                         </StackPanel>
                     </Border>
-                    <Border Style="{StaticResource CardStyle}"
+                    <Border Style="{StaticResource CardBorder}"
                             Margin="0,0,8,0">
                         <StackPanel>
                             <TextBlock Style="{DynamicResource BodyStrongTextBlockStyle}"
@@ -221,8 +221,8 @@
                 </UniformGrid>
 
                 <StackPanel Grid.Row="4"
-                            Style="{StaticResource SectionPanelStyle}">
-                    <TextBlock Style="{StaticResource SectionHeaderTextStyle}"
+                            Style="{StaticResource SectionPanel}">
+                    <TextBlock Style="{StaticResource SectionHeaderTextBlock}"
                                Text="Samples" />
                     <ItemsControl Margin="0,0,-8,0"
                                   ItemsSource="{Binding Samples}"
@@ -234,7 +234,7 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="{x:Type module:SampleEntry}">
-                                <Button Style="{StaticResource CardButtonStyle}"
+                                <Button Style="{StaticResource CardButton}"
                                         Margin="0,0,8,8"
                                         Command="{Binding DataContext.ForwardCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
                                         CommandParameter="{Binding Id}"

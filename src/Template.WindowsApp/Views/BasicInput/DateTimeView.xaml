@@ -18,11 +18,11 @@
         <converters:ShortDateConverter x:Key="ShortDateConverter" />
     </UserControl.Resources>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="24">
-            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+    <ScrollViewer Style="{StaticResource RootScroll}">
+        <StackPanel Style="{StaticResource PageStack}">
+            <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Date &amp; time" />
-            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+            <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
                        Text="Date and time pickers and calendars." />
 
             <Grid>
@@ -38,33 +38,31 @@
                 </Grid.RowDefinitions>
 
                 <Border Grid.Row="0" Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="DatePicker" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Pick a date from a drop-down calendar."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Pick a date from a drop-down calendar." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <DatePicker Width="240"
                                         HorizontalAlignment="Left"
                                         AutomationProperties.Name="Date"
                                         SelectedDate="{Binding Date}" />
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding Date, Converter={StaticResource ShortDateConverter}, StringFormat='Selected: {0}', TargetNullValue='Selected: -'}" />
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Row="0" Grid.Column="2"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="Limits" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Only the next 30 days can be picked."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Only the next 30 days can be picked." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <DatePicker Width="240"
                                         HorizontalAlignment="Left"
                                         AutomationProperties.Name="Limited date"
@@ -77,38 +75,36 @@
                                 </i:Interaction.Behaviors>
                             </DatePicker>
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding LimitedDate, Converter={StaticResource ShortDateConverter}, StringFormat='Selected: {0}', TargetNullValue='Selected: -'}" />
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Row="1" Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="Calendar" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Select a day on a calendar."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Select a day on a calendar." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <Calendar HorizontalAlignment="Left"
                                       AutomationProperties.Name="Calendar"
                                       SelectedDate="{Binding CalendarDate}" />
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding CalendarDate, Converter={StaticResource ShortDateConverter}, StringFormat='Selected: {0}', TargetNullValue='Selected: -'}" />
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Row="1" Grid.Column="2"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="Date range" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Select a range of days."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Select a range of days." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <Calendar x:Name="RangeCalendar"
                                       HorizontalAlignment="Left"
                                       SelectionMode="SingleRange"
@@ -128,7 +124,7 @@
                         <TextBlock>
                             <TextBlock.Style>
                                 <Style TargetType="{x:Type TextBlock}"
-                                       BasedOn="{StaticResource SampleResultTextStyle}">
+                                       BasedOn="{StaticResource SampleResultTextBlock}">
                                     <Setter Property="Text">
                                         <Setter.Value>
                                             <MultiBinding StringFormat="Selected: {0} – {1} ({2} days)">
@@ -157,37 +153,35 @@
                 </Border>
 
                 <Border Grid.Row="2" Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="TimePicker" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Pick a time from a drop-down list."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Pick a time from a drop-down list." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <controls:TimePicker Width="240"
                                                  AutomationProperties.Name="Time"
                                                  SelectedTime="{Binding Time}" />
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding Time, StringFormat='Selected: {0:hh\\:mm}', TargetNullValue='Selected: -'}" />
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Row="2" Grid.Column="2"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="Minute increment" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Minutes go up in steps of 15."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Minutes go up in steps of 15." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <controls:TimePicker Width="240"
                                                  AutomationProperties.Name="Step time" MinuteIncrement="15"
                                                  SelectedTime="{Binding StepTime}" />
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding StepTime, StringFormat='Selected: {0:hh\\:mm}', TargetNullValue='Selected: -'}" />
                     </StackPanel>
                 </Border>

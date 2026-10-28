@@ -10,7 +10,7 @@
              d:DataContext="{d:DesignInstance Type={x:Type module:ListDetailViewModel}}"
              d:DesignWidth="800" d:DesignHeight="600">
 
-    <Grid Margin="24">
+    <Grid Style="{StaticResource PageGrid}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -18,10 +18,10 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0"
-                   Style="{StaticResource PageTitleTextStyle}"
+                   Style="{StaticResource PageTitleTextBlock}"
                    Text="List &amp; detail" />
         <TextBlock Grid.Row="1"
-                   Style="{StaticResource PageDescriptionTextStyle}"
+                   Style="{StaticResource PageDescriptionTextBlock}"
                    Text="Select a customer to view and edit the details." />
 
         <Grid Grid.Row="2">
@@ -31,7 +31,7 @@
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0"
-                    Style="{StaticResource CardStyle}"
+                    Style="{StaticResource CardBorder}"
                     Margin="0,0,16,8">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -40,12 +40,12 @@
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0"
                                 Orientation="Horizontal">
-                        <Button Style="{StaticResource IconButtonStyle}"
+                        <Button Style="{StaticResource IconButton}"
                                 Command="{Binding AddCommand}"
                                 Content="&#xE710;"
                                 ToolTip="Add"
                                 AutomationProperties.Name="Add" />
-                        <Button Style="{StaticResource IconButtonStyle}"
+                        <Button Style="{StaticResource IconButton}"
                                 Margin="8,0,0,0"
                                 Command="{Binding DeleteCommand}"
                                 Content="&#xE74D;"
@@ -75,34 +75,34 @@
             </Border>
 
             <Border Grid.Column="1"
-                    Style="{StaticResource CardStyle}">
+                    Style="{StaticResource CardBorder}">
                 <StackPanel IsEnabled="{Binding SelectedCustomer, Converter={s:NullToBool Invert=True}}">
                     <StackPanel>
-                        <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                        <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                    Text="Name" />
                         <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                                  AutomationProperties.Name="Name" />
                     </StackPanel>
                     <StackPanel Margin="0,16,0,0">
-                        <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                        <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                    Text="Company" />
                         <TextBox Text="{Binding Company, UpdateSourceTrigger=PropertyChanged}"
                                  AutomationProperties.Name="Company" />
                     </StackPanel>
                     <StackPanel Margin="0,16,0,0">
-                        <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                        <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                    Text="Email" />
                         <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
                                  AutomationProperties.Name="Email" />
                     </StackPanel>
                     <StackPanel Margin="0,16,0,0">
-                        <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                        <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                    Text="Phone" />
                         <TextBox Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}"
                                  AutomationProperties.Name="Phone" />
                     </StackPanel>
                     <StackPanel Margin="0,16,0,0">
-                        <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                        <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                    Text="City" />
                         <TextBox Text="{Binding City, UpdateSourceTrigger=PropertyChanged}"
                                  AutomationProperties.Name="City" />

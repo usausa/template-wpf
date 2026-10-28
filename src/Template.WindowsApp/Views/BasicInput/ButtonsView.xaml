@@ -15,11 +15,11 @@
         <s:ParameterEqualsConverter x:Key="ParameterEqualsConverter" />
     </UserControl.Resources>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="24">
-            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+    <ScrollViewer Style="{StaticResource RootScroll}">
+        <StackPanel Style="{StaticResource PageStack}">
+            <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Buttons" />
-            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+            <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
                        Text="Buttons, repeat buttons, toggle buttons, icon buttons, drop-down buttons and split buttons." />
 
             <Grid>
@@ -35,14 +35,13 @@
                 </Grid.RowDefinitions>
 
                 <Border Grid.Row="0" Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="Button" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Standard, accent and disabled buttons."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}"
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Standard, accent and disabled buttons." />
+                        <StackPanel Style="{StaticResource SampleStack}"
                                     Orientation="Horizontal">
                             <Button Command="{Binding ClickCommand}"
                                     Content="Standard" />
@@ -54,69 +53,66 @@
                                     IsEnabled="False"
                                     Content="Disabled" />
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding ClickCount, StringFormat='Clicked {0} times'}" />
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Row="0" Grid.Column="2"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="RepeatButton" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Repeats the command while pressed."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Repeats the command while pressed." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <RepeatButton Command="{Binding RepeatCommand}"
                                           Content="Hold to repeat" />
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding RepeatCount, StringFormat='Count: {0}'}" />
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Row="1" Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="ToggleButton" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Switches between on and off."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Switches between on and off." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <ToggleButton IsChecked="{Binding IsToggled}"
                                           Content="Toggle" />
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding IsToggled, Converter={s:BoolToText True=On, False=Off}, StringFormat='State: {0}'}" />
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Row="1" Grid.Column="2"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="Icon buttons" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Buttons with a glyph and a tooltip."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}"
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Buttons with a glyph and a tooltip." />
+                        <StackPanel Style="{StaticResource SampleStack}"
                                     Orientation="Horizontal">
-                            <Button Style="{StaticResource IconButtonStyle}"
+                            <Button Style="{StaticResource IconButton}"
                                     Command="{Binding PressCommand}"
                                     CommandParameter="Add"
                                     Content="&#xE710;"
                                     ToolTip="Add"
                                     AutomationProperties.Name="Add" />
-                            <Button Style="{StaticResource IconButtonStyle}"
+                            <Button Style="{StaticResource IconButton}"
                                     Margin="8,0,0,0"
                                     Command="{Binding PressCommand}"
                                     CommandParameter="Edit"
                                     Content="&#xE70F;"
                                     ToolTip="Edit"
                                     AutomationProperties.Name="Edit" />
-                            <Button Style="{StaticResource IconButtonStyle}"
+                            <Button Style="{StaticResource IconButton}"
                                     Margin="8,0,0,0"
                                     Command="{Binding PressCommand}"
                                     CommandParameter="Delete"
@@ -124,19 +120,18 @@
                                     ToolTip="Delete"
                                     AutomationProperties.Name="Delete" />
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding LastPressed, StringFormat='Last pressed: {0}', TargetNullValue='Last pressed: -'}" />
                     </StackPanel>
                 </Border>
                 <Border Grid.Row="2" Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="DropDownButton" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Opens a menu of options."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Opens a menu of options." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <controls:DropDownButton HorizontalAlignment="Left"
                                                      Content="Sort by"
                                                      AutomationProperties.Name="Sort by">
@@ -161,20 +156,19 @@
                                 </controls:DropDownButton.ContextMenu>
                             </controls:DropDownButton>
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding SortBy, StringFormat='Sort by: {0}'}" />
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Row="2" Grid.Column="2"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="SplitButton" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Runs the main action or picks another one."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Runs the main action or picks another one." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <controls:SplitButton HorizontalAlignment="Left"
                                                   Command="{Binding SaveCommand}"
                                                   CommandParameter="Save"
@@ -195,7 +189,7 @@
                                 </controls:SplitButton.ContextMenu>
                             </controls:SplitButton>
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding LastAction, StringFormat='Last action: {0}', TargetNullValue='Last action: -'}" />
                     </StackPanel>
                 </Border>

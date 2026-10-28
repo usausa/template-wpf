@@ -28,17 +28,17 @@
         </Style>
     </UserControl.Resources>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="24">
-            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+    <ScrollViewer Style="{StaticResource RootScroll}">
+        <StackPanel Style="{StaticResource PageStack}">
+            <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Windows" />
-            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+            <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
                        Text="Open other windows and change how they behave." />
 
-            <StackPanel Style="{StaticResource SectionPanelStyle}">
-                <TextBlock Style="{StaticResource SectionHeaderTextStyle}"
+            <StackPanel Style="{StaticResource SectionPanel}">
+                <TextBlock Style="{StaticResource SectionHeaderTextBlock}"
                            Text="New windows" />
-                <Border Style="{StaticResource CardStyle}">
+                <Border Style="{StaticResource CardBorder}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -47,11 +47,10 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0"
                                     VerticalAlignment="Center">
-                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                            <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                        Text="New window" />
-                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                       Text="Open a window with its own taskbar button."
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                            <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                       Text="Open a window with its own taskbar button." />
                         </StackPanel>
                         <TextBlock Grid.Column="1"
                                    Style="{StaticResource ResultTextStyle}"
@@ -62,7 +61,7 @@
                                 AutomationProperties.Name="Open New window" />
                     </Grid>
                 </Border>
-                <Border Style="{StaticResource CardStyle}">
+                <Border Style="{StaticResource CardBorder}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -70,11 +69,10 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0"
                                     VerticalAlignment="Center">
-                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                            <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                        Text="Tool window" />
-                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                       Text="Open a window that stays above this one."
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                            <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                       Text="Open a window that stays above this one." />
                         </StackPanel>
                         <Button Grid.Column="1"
                                 Style="{StaticResource OpenButtonStyle}"
@@ -82,7 +80,7 @@
                                 AutomationProperties.Name="Open Tool window" />
                     </Grid>
                 </Border>
-                <Border Style="{StaticResource CardStyle}">
+                <Border Style="{StaticResource CardBorder}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -90,11 +88,10 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0"
                                     VerticalAlignment="Center">
-                            <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                            <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                        Text="Compact overlay" />
-                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                       Text="Open a small window that stays on top of other apps."
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                            <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                       Text="Open a small window that stays on top of other apps." />
                         </StackPanel>
                         <Button Grid.Column="1"
                                 Style="{StaticResource OpenButtonStyle}"

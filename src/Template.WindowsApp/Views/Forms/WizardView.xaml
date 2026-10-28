@@ -20,20 +20,20 @@
 
         <Style x:Key="SummaryValueTextStyle"
                TargetType="{x:Type TextBlock}"
-               BasedOn="{StaticResource PageTextStyle}">
+               BasedOn="{StaticResource PageTextBlockBase}">
             <Setter Property="Margin" Value="0,0,0,16" />
         </Style>
     </UserControl.Resources>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+    <ScrollViewer Style="{StaticResource RootScroll}">
         <AdornerDecorator>
-            <StackPanel Margin="24">
-                <TextBlock Style="{StaticResource PageTitleTextStyle}"
+            <StackPanel Style="{StaticResource PageStack}">
+                <TextBlock Style="{StaticResource PageTitleTextBlock}"
                            Text="Wizard" />
-                <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+                <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
                            Text="Step-by-step input with back, next and finish." />
 
-                <Border Style="{StaticResource CardStyle}">
+                <Border Style="{StaticResource CardBorder}">
                     <StackPanel>
                         <ItemsControl ItemsSource="{Binding Steps}"
                                       Focusable="False">
@@ -157,29 +157,29 @@
                                     </Style>
                                 </StackPanel.Style>
                                 <StackPanel>
-                                    <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                    <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                                Text="Name" />
                                     <TextBox Width="320"
                                              HorizontalAlignment="Left"
                                              Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                                              AutomationProperties.Name="Name" />
-                                    <TextBlock Style="{StaticResource FieldErrorTextStyle}"
+                                    <TextBlock Style="{StaticResource FieldErrorTextBlock}"
                                                Visibility="{Binding Errors[Name], Converter={s:NullToVisibility Null=Collapsed, NonNull=Visible}}"
                                                Text="{Binding Errors[Name]}" />
                                 </StackPanel>
                                 <StackPanel Margin="0,16,0,0">
-                                    <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                    <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                                Text="Email" />
                                     <TextBox Width="320"
                                              HorizontalAlignment="Left"
                                              Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
                                              AutomationProperties.Name="Email" />
-                                    <TextBlock Style="{StaticResource FieldErrorTextStyle}"
+                                    <TextBlock Style="{StaticResource FieldErrorTextBlock}"
                                                Visibility="{Binding Errors[Email], Converter={s:NullToVisibility Null=Collapsed, NonNull=Visible}}"
                                                Text="{Binding Errors[Email]}" />
                                 </StackPanel>
                                 <StackPanel Margin="0,16,0,0">
-                                    <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                    <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                                Text="Company (optional)" />
                                     <TextBox Width="320"
                                              HorizontalAlignment="Left"
@@ -200,22 +200,22 @@
                                         </Style.Triggers>
                                     </Style>
                                 </StackPanel.Style>
-                                <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                            Text="Plan"
                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
                                 <TextBlock Style="{StaticResource SummaryValueTextStyle}"
                                            Text="{Binding Plan}" />
-                                <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                            Text="Name"
                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
                                 <TextBlock Style="{StaticResource SummaryValueTextStyle}"
                                            Text="{Binding Name}" />
-                                <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                            Text="Email"
                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
                                 <TextBlock Style="{StaticResource SummaryValueTextStyle}"
                                            Text="{Binding Email}" />
-                                <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                            Text="Company"
                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
                                 <TextBlock>
@@ -278,7 +278,7 @@
                 <TextBlock>
                     <TextBlock.Style>
                         <Style TargetType="{x:Type TextBlock}"
-                               BasedOn="{StaticResource SampleResultTextStyle}">
+                               BasedOn="{StaticResource SampleResultTextBlock}">
                             <Setter Property="Text">
                                 <Setter.Value>
                                     <MultiBinding StringFormat="Last submitted: {0} ({1})">

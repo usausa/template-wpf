@@ -43,7 +43,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="CloseCaptionButtonStyle"
+    <Style x:Key="CloseCaptionButton"
            TargetType="{x:Type controls:CaptionButton}"
            BasedOn="{StaticResource {x:Type controls:CaptionButton}}">
         <Setter Property="Template">
@@ -71,7 +71,7 @@
     <!-- InfoBar -->
     <!-- ================================================================================ -->
 
-    <Style x:Key="InfoBarCloseButtonStyle"
+    <Style x:Key="InfoBarCloseButton"
            TargetType="{x:Type Button}">
         <Setter Property="Width" Value="32" />
         <Setter Property="Height" Value="32" />
@@ -151,7 +151,7 @@
                                               Content="{TemplateBinding ActionButton}" />
                             <Button x:Name="PART_CloseButton"
                                     Grid.Column="3"
-                                    Style="{StaticResource InfoBarCloseButtonStyle}"
+                                    Style="{StaticResource InfoBarCloseButton}"
                                     Margin="0,0,8,0"
                                     VerticalAlignment="Center"
                                     Content="&#xE711;"
@@ -262,7 +262,7 @@
                                                                 Content="&#xE922;"
                                                                 AutomationProperties.Name="Maximize" />
                                         <controls:CaptionButton x:Name="PART_CloseButton"
-                                                                Style="{StaticResource CloseCaptionButtonStyle}"
+                                                                Style="{StaticResource CloseCaptionButton}"
                                                                 Content="&#xE8BB;"
                                                                 ToolTip="Close"
                                                                 AutomationProperties.Name="Close" />
@@ -349,7 +349,7 @@
     <!-- Number box -->
     <!-- ================================================================================ -->
 
-    <Style x:Key="NumberBoxSpinButtonStyle"
+    <Style x:Key="NumberBoxSpinButton"
            TargetType="{x:Type RepeatButton}">
         <Setter Property="Width" Value="32" />
         <Setter Property="Delay" Value="400" />
@@ -401,11 +401,11 @@
                                     Margin="0,1,1,2"
                                     HorizontalAlignment="Right">
                             <RepeatButton x:Name="PART_UpButton"
-                                          Style="{StaticResource NumberBoxSpinButtonStyle}"
+                                          Style="{StaticResource NumberBoxSpinButton}"
                                           Content="&#xE70E;"
                                           AutomationProperties.Name="Increase" />
                             <RepeatButton x:Name="PART_DownButton"
-                                          Style="{StaticResource NumberBoxSpinButtonStyle}"
+                                          Style="{StaticResource NumberBoxSpinButton}"
                                           Content="&#xE70D;"
                                           AutomationProperties.Name="Decrease" />
                         </StackPanel>
@@ -577,7 +577,7 @@
     <!-- Time picker -->
     <!-- ================================================================================ -->
 
-    <Style x:Key="TimePickerToggleButtonStyle"
+    <Style x:Key="TimePickerToggleButton"
            TargetType="{x:Type ToggleButton}">
         <Setter Property="MinHeight" Value="32" />
         <Setter Property="Background" Value="{DynamicResource TimePickerButtonBackground}" />
@@ -614,7 +614,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="TimePickerFlyoutButtonStyle"
+    <Style x:Key="TimePickerFlyoutButton"
            TargetType="{x:Type Button}">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
@@ -688,7 +688,7 @@
                 <ControlTemplate TargetType="{x:Type controls:TimePicker}">
                     <Grid>
                         <ToggleButton x:Name="PART_ToggleButton"
-                                      Style="{StaticResource TimePickerToggleButtonStyle}"
+                                      Style="{StaticResource TimePickerToggleButton}"
                                       IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                                       AutomationProperties.Name="{TemplateBinding AutomationProperties.Name}">
                             <Grid>
@@ -744,13 +744,13 @@
                                             Background="{DynamicResource ControlStrokeColorDefaultBrush}" />
                                     <Button x:Name="PART_AcceptButton"
                                             Grid.Row="2" Grid.Column="0"
-                                            Style="{StaticResource TimePickerFlyoutButtonStyle}"
+                                            Style="{StaticResource TimePickerFlyoutButton}"
                                             Content="&#xE8FB;"
                                             ToolTip="Accept"
                                             AutomationProperties.Name="Accept" />
                                     <Button x:Name="PART_CancelButton"
                                             Grid.Row="2" Grid.Column="2"
-                                            Style="{StaticResource TimePickerFlyoutButtonStyle}"
+                                            Style="{StaticResource TimePickerFlyoutButton}"
                                             Content="&#xE711;"
                                             ToolTip="Cancel"
                                             AutomationProperties.Name="Cancel" />
@@ -947,7 +947,7 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock VerticalAlignment="Center"
                                        Text="{TemplateBinding Text}" />
-                            <Button Style="{StaticResource InfoBarCloseButtonStyle}"
+                            <Button Style="{StaticResource InfoBarCloseButton}"
                                     Width="28" Height="28"
                                     Margin="4,0,0,0"
                                     Command="{TemplateBinding RemoveCommand}"
@@ -967,7 +967,7 @@
     <!-- Tab view -->
     <!-- ================================================================================ -->
 
-    <Style x:Key="TabViewButtonStyle"
+    <Style x:Key="TabViewButton"
            TargetType="{x:Type Button}">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
@@ -1023,7 +1023,7 @@
                             </ScrollViewer>
                             <Button x:Name="PART_AddButton"
                                     Grid.Column="1"
-                                    Style="{StaticResource TabViewButtonStyle}"
+                                    Style="{StaticResource TabViewButton}"
                                     Width="36" Height="36"
                                     Margin="4,0,0,0"
                                     Command="{TemplateBinding AddTabButtonCommand}"
@@ -1083,7 +1083,7 @@
                                               ContentSource="Header" />
                             <Button x:Name="PART_CloseButton"
                                     Grid.Column="2"
-                                    Style="{StaticResource TabViewButtonStyle}"
+                                    Style="{StaticResource TabViewButton}"
                                     Width="28" Height="28"
                                     Margin="4,0,0,0"
                                     Focusable="False"
@@ -1136,7 +1136,7 @@
     <!-- Auto-suggest box -->
     <!-- ================================================================================ -->
 
-    <Style x:Key="AutoSuggestBoxQueryButtonStyle"
+    <Style x:Key="AutoSuggestBoxQueryButton"
            TargetType="{x:Type Button}">
         <Setter Property="Width" Value="32" />
         <Setter Property="Focusable" Value="False" />
@@ -1166,7 +1166,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="AutoSuggestBoxItemStyle"
+    <Style x:Key="AutoSuggestBoxItem"
            TargetType="{x:Type ListBoxItem}">
         <Setter Property="MinHeight" Value="36" />
         <Setter Property="Margin" Value="0" />
@@ -1219,7 +1219,7 @@
                                  Padding="10,5,38,6"
                                  AutomationProperties.Name="{TemplateBinding AutomationProperties.Name}" />
                         <Button x:Name="PART_QueryButton"
-                                Style="{StaticResource AutoSuggestBoxQueryButtonStyle}"
+                                Style="{StaticResource AutoSuggestBoxQueryButton}"
                                 Margin="0,1,1,2"
                                 HorizontalAlignment="Right"
                                 Content="{TemplateBinding QueryIcon}"
@@ -1241,7 +1241,7 @@
                                              Focusable="False"
                                              Background="Transparent"
                                              BorderThickness="0"
-                                             ItemContainerStyle="{StaticResource AutoSuggestBoxItemStyle}"
+                                             ItemContainerStyle="{StaticResource AutoSuggestBoxItem}"
                                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                                         <ListBox.ItemsPanel>
                                             <ItemsPanelTemplate>

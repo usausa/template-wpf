@@ -11,11 +11,11 @@
              d:DataContext="{d:DesignInstance Type={x:Type module:NotificationsViewModel}}"
              d:DesignWidth="800" d:DesignHeight="600">
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="24">
-            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+    <ScrollViewer Style="{StaticResource RootScroll}">
+        <StackPanel Style="{StaticResource PageStack}">
+            <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Notifications" />
-            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+            <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
                        Text="Information bars and notifications that close by themselves." />
 
             <Grid>
@@ -30,14 +30,13 @@
                 </Grid.RowDefinitions>
 
                 <Border Grid.Row="0" Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="Severity" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Information bars for each severity."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Information bars for each severity." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <controls:InfoBar IsOpen="{Binding IsInformationalOpen}"
                                               Title="Information"
                                               Message="A new version is available."
@@ -61,20 +60,19 @@
                                     Command="{Binding ReopenCommand}"
                                     Content="Reopen" />
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding OpenCount, StringFormat='Open: {0}'}" />
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Row="0" Grid.Column="2"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="Action" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="An information bar with a button."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="An information bar with a button." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <controls:InfoBar IsOpen="{Binding IsActionOpen}"
                                               Title="Update ready"
                                               Message="Restart to finish the update."
@@ -85,20 +83,19 @@
                                 </controls:InfoBar.ActionButton>
                             </controls:InfoBar>
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding LastAction, StringFormat='Action: {0}', TargetNullValue='Action: -'}" />
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Row="1" Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="Notification" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Shows a notification at the bottom right of the window."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}"
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Shows a notification at the bottom right of the window." />
+                        <StackPanel Style="{StaticResource SampleStack}"
                                     Orientation="Horizontal">
                             <ComboBox Width="240"
                                       ItemsSource="{Binding Severities}"
@@ -108,7 +105,7 @@
                                     Command="{Binding ShowCommand}"
                                     Content="Show" />
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding ShownCount, StringFormat='Shown: {0}'}" />
                     </StackPanel>
                 </Border>

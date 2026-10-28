@@ -24,11 +24,11 @@
         </s:MapToTextConverter>
     </UserControl.Resources>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="24">
-            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+    <ScrollViewer Style="{StaticResource RootScroll}">
+        <StackPanel Style="{StaticResource PageStack}">
+            <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Choices" />
-            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+            <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
                        Text="Check boxes, toggle switches, radio buttons, combo boxes and sliders." />
 
             <Grid>
@@ -44,21 +44,20 @@
                 </Grid.RowDefinitions>
 
                 <Border Grid.Row="0" Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="CheckBox" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Two-state and three-state check boxes."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Two-state and three-state check boxes." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <CheckBox IsChecked="{Binding TwoState}"
                                       Content="Two-state" />
                             <CheckBox IsChecked="{Binding ThreeState}"
                                       Content="Three-state"
                                       IsThreeState="True" />
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}">
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}">
                             <TextBlock.Text>
                                 <MultiBinding StringFormat="Two-state: {0} · Three-state: {1}">
                                     <Binding Path="TwoState"
@@ -72,14 +71,13 @@
                 </Border>
 
                 <Border Grid.Row="0" Grid.Column="2"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="RadioButton" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Pick one of the options."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Pick one of the options." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <RadioButton IsChecked="{Binding Size, Converter={StaticResource ParameterEqualsConverter}, ConverterParameter=Small}"
                                          Content="Small" />
                             <RadioButton IsChecked="{Binding Size, Converter={StaticResource ParameterEqualsConverter}, ConverterParameter=Medium}"
@@ -87,63 +85,60 @@
                             <RadioButton IsChecked="{Binding Size, Converter={StaticResource ParameterEqualsConverter}, ConverterParameter=Large}"
                                          Content="Large" />
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding Size, StringFormat='Selected: {0}'}" />
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Row="1" Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="ComboBox" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Pick an item from a list."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Pick an item from a list." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <ComboBox Width="240"
                                       HorizontalAlignment="Left"
                                       ItemsSource="{Binding Fruits}"
                                       SelectedItem="{Binding Fruit}"
                                       AutomationProperties.Name="Fruit" />
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding Fruit, StringFormat='Selected: {0}'}" />
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Row="1" Grid.Column="2"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="Slider" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Pick a value from a range."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Pick a value from a range." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <Slider Width="240"
                                     HorizontalAlignment="Left"
                                     Value="{Binding Value}"
                                     Minimum="0" Maximum="100"
                                     AutomationProperties.Name="Value" IsSnapToTickEnabled="True" TickFrequency="1" />
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding Value, StringFormat='Value: {0}'}" />
                     </StackPanel>
                 </Border>
                 <Border Grid.Row="2" Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="ToggleSwitch" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Turn an option on or off."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Turn an option on or off." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <controls:ToggleSwitch IsChecked="{Binding IsSwitchOn}"
                                                    AutomationProperties.Name="Toggle switch" />
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding IsSwitchOn, Converter={s:BoolToText True=On, False=Off}, StringFormat='State: {0}'}" />
                     </StackPanel>
                 </Border>

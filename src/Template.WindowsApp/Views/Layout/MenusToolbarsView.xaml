@@ -28,11 +28,11 @@
         </Style>
     </UserControl.Resources>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="24">
-            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+    <ScrollViewer Style="{StaticResource RootScroll}">
+        <StackPanel Style="{StaticResource PageStack}">
+            <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Menus &amp; toolbars" />
-            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+            <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
                        Text="Menu bars, context menus, toolbars and status bars." />
 
             <Grid>
@@ -47,14 +47,13 @@
                 </Grid.RowDefinitions>
 
                 <Border Grid.Row="0" Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="Menu" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Menu bar with icons, submenus, checks and shortcuts."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Menu bar with icons, submenus, checks and shortcuts." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <Menu HorizontalAlignment="Left">
                                 <MenuItem Header="File">
                                     <MenuItem Command="{Binding MenuItemCommand}"
@@ -161,20 +160,19 @@
                                 </MenuItem>
                             </Menu>
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding LastMenuCommand, StringFormat='Last command: {0}', TargetNullValue='Last command: -'}" />
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Row="0" Grid.Column="2"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="ContextMenu" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Right-click the area to open a menu."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Right-click the area to open a menu." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <Border Style="{StaticResource ContextAreaStyle}"
                                     AutomationProperties.Name="Context area">
                                 <Border.ContextMenu>
@@ -218,20 +216,19 @@
                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
                             </Border>
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding LastContextCommand, StringFormat='Last command: {0}', TargetNullValue='Last command: -'}" />
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Row="1" Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="ToolBar" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Toolbar buttons, toggles and a combo box."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Toolbar buttons, toggles and a combo box." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <ToolBarTray>
                                 <ToolBar>
                                     <Button Command="{Binding ToolBarItemCommand}"
@@ -282,9 +279,9 @@
                                 </ToolBar>
                             </ToolBarTray>
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding LastToolBarCommand, StringFormat='Last command: {0}', TargetNullValue='Last command: -'}" />
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}">
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}">
                             <TextBlock.Text>
                                 <MultiBinding StringFormat="Bold: {0} · Italic: {1} · Underline: {2} · Size: {3}">
                                     <Binding Path="IsBold"
@@ -301,14 +298,13 @@
                 </Border>
 
                 <Border Grid.Row="1" Grid.Column="2"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="StatusBar" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Status bar items updated every second."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Status bar items updated every second." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <StatusBar>
                                 <StatusBarItem Content="Ready" />
                                 <Separator />

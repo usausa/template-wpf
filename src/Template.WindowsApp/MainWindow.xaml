@@ -41,7 +41,7 @@
 
         <Style x:Key="SideBarBadgeStyle"
                TargetType="{x:Type Border}"
-               BasedOn="{StaticResource CountBadgeStyle}"
+               BasedOn="{StaticResource CountBadgeBorder}"
                d:DataContext="{d:DesignInstance Type={x:Type shell:NavigationNode}}">
             <Setter Property="Margin" Value="0,0,12,0" />
             <Style.Triggers>
@@ -54,7 +54,7 @@
 
         <Style x:Key="SideBarGroupBadgeStyle"
                TargetType="{x:Type Border}"
-               BasedOn="{StaticResource CountBadgeStyle}"
+               BasedOn="{StaticResource CountBadgeBorder}"
                d:DataContext="{d:DesignInstance Type={x:Type shell:NavigationGroup}}">
             <Setter Property="HorizontalAlignment" Value="Right" />
             <Setter Property="Visibility" Value="Collapsed" />
@@ -72,7 +72,7 @@
 
         <Style x:Key="SideBarIconBadgeStyle"
                TargetType="{x:Type Border}"
-               BasedOn="{StaticResource SmallCountBadgeStyle}"
+               BasedOn="{StaticResource SmallCountBadgeBorder}"
                d:DataContext="{d:DesignInstance Type={x:Type shell:NavigationNode}}">
             <Setter Property="Margin" Value="18,6,0,0" />
             <Setter Property="HorizontalAlignment" Value="Left" />
@@ -92,7 +92,7 @@
 
         <Style x:Key="BellBadgeStyle"
                TargetType="{x:Type Border}"
-               BasedOn="{StaticResource SmallCountBadgeStyle}"
+               BasedOn="{StaticResource SmallCountBadgeBorder}"
                d:DataContext="{d:DesignInstance Type={x:Type application:MainWindowViewModel}}">
             <Setter Property="Margin" Value="0,-7,-11,0" />
             <Setter Property="HorizontalAlignment" Value="Right" />
@@ -233,7 +233,7 @@
                                                     FontSize="16" />
                                 <Border Grid.Column="0"
                                         Style="{StaticResource SideBarIconBadgeStyle}">
-                                    <TextBlock Style="{StaticResource SmallCountBadgeTextStyle}"
+                                    <TextBlock Style="{StaticResource SmallCountBadgeTextBlock}"
                                                Text="{Binding Badge}" />
                                 </Border>
                                 <TextBlock Grid.Column="1"
@@ -244,7 +244,7 @@
                                            FontSize="14" />
                                 <Border Grid.Column="2"
                                         Style="{StaticResource SideBarBadgeStyle}">
-                                    <TextBlock Style="{StaticResource CountBadgeTextStyle}"
+                                    <TextBlock Style="{StaticResource CountBadgeTextBlock}"
                                                Text="{Binding Badge}" />
                                 </Border>
                             </Grid>
@@ -423,7 +423,7 @@
     </i:Interaction.Triggers>
 
     <controls:AppWindow.LeftHeader>
-        <ToggleButton Style="{StaticResource TitleBarButtonStyle}"
+        <ToggleButton Style="{StaticResource TitleBarButton}"
                       Width="48"
                       IsChecked="{Binding WindowManager.IsPaneOpen}"
                       Content="&#xE700;"
@@ -434,7 +434,7 @@
 
     <controls:AppWindow.TitleBarContent>
         <StackPanel Orientation="Horizontal">
-            <Button Style="{StaticResource TitleBarButtonStyle}"
+            <Button Style="{StaticResource TitleBarButton}"
                     Width="40"
                     Command="{Binding GoBackCommand}"
                     Content="&#xE72B;"
@@ -442,7 +442,7 @@
                     FontSize="14"
                     ToolTip="Back (Alt+Left)"
                     AutomationProperties.Name="Back" />
-            <Button Style="{StaticResource TitleBarButtonStyle}"
+            <Button Style="{StaticResource TitleBarButton}"
                     Width="40"
                     Margin="0,0,8,0"
                     Command="{Binding GoForwardCommand}"
@@ -465,7 +465,7 @@
                           AutomationProperties.Name="Favorite">
                 <ToggleButton.Style>
                     <Style TargetType="{x:Type ToggleButton}"
-                           BasedOn="{StaticResource TitleBarButtonStyle}">
+                           BasedOn="{StaticResource TitleBarButton}">
                         <Setter Property="Content" Value="&#xE734;" />
                         <Setter Property="ToolTip" Value="Add to favorites" />
                         <Style.Triggers>
@@ -482,7 +482,7 @@
 
     <controls:AppWindow.RightHeader>
         <ToggleButton x:Name="NotificationsButton"
-                      Style="{StaticResource TitleBarButtonStyle}"
+                      Style="{StaticResource TitleBarButton}"
                       Width="48"
                       IsChecked="{Binding IsNotificationsOpen}"
                       IsHitTestVisible="{Binding IsOpen, ElementName=NotificationsPopup, Converter={StaticResource ReverseConverter}}"
@@ -493,7 +493,7 @@
                            FontFamily="{DynamicResource SymbolThemeFontFamily}"
                            FontSize="16" />
                 <Border Style="{StaticResource BellBadgeStyle}">
-                    <TextBlock Style="{StaticResource SmallCountBadgeTextStyle}"
+                    <TextBlock Style="{StaticResource SmallCountBadgeTextBlock}"
                                Text="{Binding Notifications.UnreadCount}" />
                 </Border>
             </Grid>
@@ -577,7 +577,7 @@
                                                         FontSize="16" />
                                     <Border Grid.Column="0"
                                             Style="{StaticResource SideBarIconBadgeStyle}">
-                                        <TextBlock Style="{StaticResource SmallCountBadgeTextStyle}"
+                                        <TextBlock Style="{StaticResource SmallCountBadgeTextBlock}"
                                                    Text="{Binding Badge}" />
                                     </Border>
                                     <TextBlock Grid.Column="1"
@@ -587,7 +587,7 @@
                                                FontSize="14" />
                                     <Border Grid.Column="1"
                                             Style="{StaticResource SideBarGroupBadgeStyle}">
-                                        <TextBlock Style="{StaticResource CountBadgeTextStyle}"
+                                        <TextBlock Style="{StaticResource CountBadgeTextBlock}"
                                                    Text="{Binding Badge}" />
                                     </Border>
                                     <TextBlock Grid.Column="2"

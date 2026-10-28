@@ -1,0 +1,336 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ================================================================================ -->
+    <!-- Value -->
+    <!-- ================================================================================ -->
+
+    <!-- Chart -->
+
+    <Color x:Key="ChartBlueSuperLightColor">#C0D8FF</Color>
+    <Color x:Key="ChartBlueLightColor">#8AB8FF</Color>
+    <Color x:Key="ChartBlueColor">#5794F2</Color>
+    <Color x:Key="ChartBlueSemiDarkColor">#3274D9</Color>
+    <Color x:Key="ChartBlueDarkColor">#1F60C4</Color>
+
+    <SolidColorBrush x:Key="ChartBlueSuperLightBrush"
+                     Color="{StaticResource ChartBlueSuperLightColor}" />
+    <SolidColorBrush x:Key="ChartBlueLightBrush"
+                     Color="{StaticResource ChartBlueLightColor}" />
+    <SolidColorBrush x:Key="ChartBlueBrush"
+                     Color="{StaticResource ChartBlueColor}" />
+    <SolidColorBrush x:Key="ChartBlueSemiDarkBrush"
+                     Color="{StaticResource ChartBlueSemiDarkColor}" />
+    <SolidColorBrush x:Key="ChartBlueDarkBrush"
+                     Color="{StaticResource ChartBlueDarkColor}" />
+
+    <!-- ================================================================================ -->
+    <!-- Layout -->
+    <!-- ================================================================================ -->
+
+    <Style x:Key="RootScroll"
+           TargetType="{x:Type ScrollViewer}"
+           BasedOn="{StaticResource {x:Type ScrollViewer}}">
+        <Setter Property="HorizontalScrollBarVisibility" Value="Disabled" />
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+    </Style>
+
+    <Style x:Key="PageStack"
+           TargetType="{x:Type StackPanel}">
+        <Setter Property="Margin" Value="24" />
+    </Style>
+
+    <Style x:Key="PageGrid"
+           TargetType="{x:Type Grid}">
+        <Setter Property="Margin" Value="24" />
+    </Style>
+
+    <Style x:Key="SectionPanel"
+           TargetType="{x:Type Panel}">
+        <Setter Property="Margin" Value="0,0,0,8" />
+    </Style>
+
+    <!-- ================================================================================ -->
+    <!-- Text -->
+    <!-- ================================================================================ -->
+
+    <Style x:Key="PageTextBlockBase"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="{DynamicResource BodyTextBlockFontSize}" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="LineStackingStrategy" Value="MaxHeight" />
+    </Style>
+
+    <Style x:Key="PageTitleTextBlock"
+           TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource PageTextBlockBase}">
+        <Setter Property="FontSize" Value="{DynamicResource TitleTextBlockFontSize}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
+    <Style x:Key="PageDescriptionTextBlock"
+           TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource PageTextBlockBase}">
+        <Setter Property="Margin" Value="0,0,0,24" />
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+    </Style>
+
+    <Style x:Key="SectionHeaderTextBlock"
+           TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource PageTextBlockBase}">
+        <Setter Property="Margin" Value="0,0,0,8" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
+    <!-- ================================================================================ -->
+    <!-- Button -->
+    <!-- ================================================================================ -->
+
+    <Style x:Key="IconButton"
+           TargetType="{x:Type Button}"
+           BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="Width" Value="32" />
+        <Setter Property="Height" Value="32" />
+        <Setter Property="MinWidth" Value="0" />
+        <Setter Property="MinHeight" Value="0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+        <Setter Property="FontSize" Value="16" />
+    </Style>
+
+    <!-- ================================================================================ -->
+    <!-- Card -->
+    <!-- ================================================================================ -->
+
+    <!-- Frame -->
+
+    <Style x:Key="CardBorder"
+           TargetType="{x:Type Border}">
+        <Setter Property="Margin" Value="0,0,0,8" />
+        <Setter Property="Padding" Value="16" />
+        <Setter Property="Background" Value="{DynamicResource CardBackgroundFillColorDefaultBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource CardStrokeColorDefaultBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="2" />
+    </Style>
+
+    <Style x:Key="CardButton"
+           TargetType="{x:Type Button}">
+        <Setter Property="MinWidth" Value="0" />
+        <Setter Property="MinHeight" Value="0" />
+        <Setter Property="Padding" Value="16" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Background" Value="{DynamicResource CardBackgroundFillColorDefaultBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource CardStrokeColorDefaultBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Padding="{TemplateBinding Padding}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="2">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource CardBackgroundFillColorSecondaryBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource SubtleFillColorTertiaryBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Text -->
+
+    <Style x:Key="CardTitleTextBlock"
+           TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource PageTextBlockBase}">
+        <Setter Property="FontWeight" Value="Normal" />
+    </Style>
+
+    <Style x:Key="CardCaptionTextBlock"
+           TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource PageTextBlockBase}">
+        <Setter Property="FontSize" Value="{DynamicResource CaptionTextBlockFontSize}" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+    </Style>
+
+    <!-- Sample -->
+
+    <Style x:Key="SampleStack"
+           TargetType="{x:Type StackPanel}">
+        <Setter Property="Margin" Value="0,16,0,0" />
+    </Style>
+
+    <Style x:Key="SampleResultTextBlock"
+           TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource PageTextBlockBase}">
+        <Setter Property="Margin" Value="0,8,0,0" />
+        <Setter Property="FontSize" Value="{DynamicResource CaptionTextBlockFontSize}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+    </Style>
+
+    <!-- ================================================================================ -->
+    <!-- Field -->
+    <!-- ================================================================================ -->
+
+    <Style x:Key="FieldLabelTextBlock"
+           TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource PageTextBlockBase}">
+        <Setter Property="Margin" Value="0,0,0,4" />
+    </Style>
+
+    <Style x:Key="FieldErrorTextBlock"
+           TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource PageTextBlockBase}">
+        <Setter Property="Margin" Value="0,4,0,0" />
+        <Setter Property="FontSize" Value="{DynamicResource CaptionTextBlockFontSize}" />
+        <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+    </Style>
+
+    <!-- ================================================================================ -->
+    <!-- DataGrid -->
+    <!-- ================================================================================ -->
+
+    <Style x:Key="DataGridCell"
+           TargetType="{x:Type DataGridCell}">
+        <Setter Property="MinHeight" Value="32" />
+        <Setter Property="Padding" Value="10,0" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource DataGridCellFocusVisual}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type DataGridCell}">
+                    <Grid HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                          VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                          SnapsToDevicePixels="True">
+                        <Border x:Name="Border"
+                                Background="Transparent" />
+                        <ContentPresenter Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        <Border x:Name="FocusBorder"
+                                IsHitTestVisible="False"
+                                BorderBrush="Transparent" BorderThickness="1" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource DataGridRowSelectedBackgroundThemeBrush}" />
+                            <Setter Property="Foreground" Value="{DynamicResource DataGridRowSelectedForegroundThemeBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsEditing" Value="True">
+                            <Setter Property="Padding" Value="0" />
+                            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource ControlSolidFillColorDefaultBrush}" />
+                            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="FocusBorder" Property="BorderBrush" Value="{DynamicResource {x:Static DataGrid.FocusBorderBrushKey}}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="DataGridEditingTextBox"
+           TargetType="{x:Type TextBox}"
+           BasedOn="{x:Static DataGridTextColumn.DefaultEditingElementStyle}">
+        <Setter Property="Background" Value="{DynamicResource TextControlBackgroundFocused}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextControlForegroundFocused}" />
+        <Setter Property="CaretBrush" Value="{DynamicResource TextControlForegroundFocused}" />
+        <Setter Property="Padding" Value="10,0" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="DataGridEditingComboBox"
+           TargetType="{x:Type ComboBox}"
+           BasedOn="{StaticResource {x:Type ComboBox}}">
+        <Setter Property="IsSynchronizedWithCurrentItem" Value="False" />
+    </Style>
+
+    <!-- ================================================================================ -->
+    <!-- Shell -->
+    <!-- ================================================================================ -->
+
+    <Style x:Key="TitleBarButton"
+           TargetType="{x:Type ButtonBase}">
+        <Setter Property="MinWidth" Value="0" />
+        <Setter Property="MinHeight" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource AncestorType={x:Type ContentPresenter}}}" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ButtonBase}">
+                    <Grid Background="{TemplateBinding Background}">
+                        <Border x:Name="Overlay"
+                                Background="{TemplateBinding Foreground}"
+                                Opacity="0" />
+                        <ContentPresenter Margin="{TemplateBinding Padding}"
+                                          HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Overlay" Property="Opacity" Value="0.25" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Overlay" Property="Opacity" Value="0.375" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="CountBadgeBorder"
+           TargetType="{x:Type Border}">
+        <Setter Property="MinWidth" Value="20" />
+        <Setter Property="Height" Value="18" />
+        <Setter Property="Padding" Value="5,0" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Background" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+    </Style>
+
+    <Style x:Key="CountBadgeTextBlock"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+    </Style>
+
+    <Style x:Key="SmallCountBadgeBorder"
+           TargetType="{x:Type Border}"
+           BasedOn="{StaticResource CountBadgeBorder}">
+        <Setter Property="MinWidth" Value="16" />
+        <Setter Property="Height" Value="14" />
+        <Setter Property="Padding" Value="4,0" />
+    </Style>
+
+    <Style x:Key="SmallCountBadgeTextBlock"
+           TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource CountBadgeTextBlock}">
+        <Setter Property="FontSize" Value="10" />
+    </Style>
+
+</ResourceDictionary>

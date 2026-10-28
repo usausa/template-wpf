@@ -17,11 +17,11 @@
         </Style>
     </UserControl.Resources>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="24">
-            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+    <ScrollViewer Style="{StaticResource RootScroll}">
+        <StackPanel Style="{StaticResource PageStack}">
+            <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Containers" />
-            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+            <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
                        Text="Expander, GroupBox, TabControl and GridSplitter." />
 
             <Grid>
@@ -36,14 +36,13 @@
                 </Grid.RowDefinitions>
 
                 <Border Grid.Row="0" Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="Expander" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Shows or hides content under a header."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Shows or hides content under a header." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <Expander Header="Expanded"
                                       IsExpanded="{Binding IsFirstExpanded}">
                                 <TextBlock Text="This expander starts open." />
@@ -54,31 +53,30 @@
                                 <TextBlock Text="This expander starts closed." />
                             </Expander>
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding ExpandedCount, StringFormat='Expanded: {0} of 2'}" />
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Row="0" Grid.Column="2"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="GroupBox" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Groups related controls under a header."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Groups related controls under a header." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <GroupBox Header="User information">
                                 <StackPanel>
                                     <StackPanel>
-                                        <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                        <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                                    Text="Name" />
                                         <TextBox Width="240"
                                                  HorizontalAlignment="Left"
                                                  AutomationProperties.Name="Name" />
                                     </StackPanel>
                                     <StackPanel Margin="0,16,0,0">
-                                        <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                        <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                                    Text="Email" />
                                         <TextBox Width="240"
                                                  HorizontalAlignment="Left"
@@ -91,14 +89,13 @@
                 </Border>
 
                 <Border Grid.Row="1" Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="TabControl" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Switches between pages of content."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Switches between pages of content." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <TabControl x:Name="Tabs"
                                         Height="120"
                                         AutomationProperties.Name="Tabs"
@@ -117,19 +114,18 @@
                                 </TabItem>
                             </TabControl>
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding SelectedItem.(HeaderedContentControl.Header), ElementName=Tabs, StringFormat='Selected: {0}'}" />
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Row="1" Grid.Column="2"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="GridSplitter" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Drag the bar to resize the two areas."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Drag the bar to resize the two areas." />
                         <Grid Height="160"
                               Margin="0,16,0,0">
                             <Grid.ColumnDefinitions>

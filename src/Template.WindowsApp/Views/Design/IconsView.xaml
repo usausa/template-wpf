@@ -19,7 +19,7 @@
                     Modifiers="Control" />
     </UserControl.InputBindings>
 
-    <Grid Margin="24">
+    <Grid Style="{StaticResource PageGrid}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -27,10 +27,10 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0"
-                   Style="{StaticResource PageTitleTextStyle}"
+                   Style="{StaticResource PageTitleTextBlock}"
                    Text="Icons" />
         <TextBlock Grid.Row="1"
-                   Style="{StaticResource PageDescriptionTextStyle}"
+                   Style="{StaticResource PageDescriptionTextBlock}"
                    Text="Segoe Fluent Icons glyphs with their names and codes." />
 
         <Grid Grid.Row="2">
@@ -40,7 +40,7 @@
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0"
-                    Style="{StaticResource CardStyle}"
+                    Style="{StaticResource CardBorder}"
                     Margin="0,0,16,8">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -132,13 +132,13 @@
                             </TextBlock.Text>
                         </TextBlock>
                         <Button Grid.Column="1"
-                                Style="{StaticResource IconButtonStyle}"
+                                Style="{StaticResource IconButton}"
                                 Command="{Binding PreviousCommand}"
                                 Content="&#xE76B;"
                                 ToolTip="Previous page"
                                 AutomationProperties.Name="Previous page" />
                         <Button Grid.Column="2"
-                                Style="{StaticResource IconButtonStyle}"
+                                Style="{StaticResource IconButton}"
                                 Margin="8,0,0,0"
                                 Command="{Binding NextCommand}"
                                 Content="&#xE76C;"
@@ -149,7 +149,7 @@
             </Border>
 
             <Border Grid.Column="1"
-                    Style="{StaticResource CardStyle}">
+                    Style="{StaticResource CardBorder}">
                 <StackPanel>
                     <ContentControl Focusable="False"
                                     Content="{Binding SelectedIcon}">
@@ -168,7 +168,7 @@
                                                Margin="0,16,0,0"
                                                Text="{Binding Name}" />
                                     <StackPanel Margin="0,16,0,0">
-                                        <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                        <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                                    Text="Code" />
                                         <Grid>
                                             <Grid.ColumnDefinitions>
@@ -180,7 +180,7 @@
                                                        Text="{Binding Code}"
                                                        FontFamily="{StaticResource CodeFontFamily}" />
                                             <Button Grid.Column="1"
-                                                    Style="{StaticResource IconButtonStyle}"
+                                                    Style="{StaticResource IconButton}"
                                                     Command="{Binding DataContext.CopyCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
                                                     CommandParameter="{Binding Code}"
                                                     Content="&#xE8C8;"
@@ -189,7 +189,7 @@
                                         </Grid>
                                     </StackPanel>
                                     <StackPanel Margin="0,16,0,0">
-                                        <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                        <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                                    Text="XAML" />
                                         <Grid>
                                             <Grid.ColumnDefinitions>
@@ -201,7 +201,7 @@
                                                        Text="{Binding Xaml}"
                                                        FontFamily="{StaticResource CodeFontFamily}" />
                                             <Button Grid.Column="1"
-                                                    Style="{StaticResource IconButtonStyle}"
+                                                    Style="{StaticResource IconButton}"
                                                     Command="{Binding DataContext.CopyCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
                                                     CommandParameter="{Binding Xaml}"
                                                     Content="&#xE8C8;"
@@ -210,7 +210,7 @@
                                         </Grid>
                                     </StackPanel>
                                     <StackPanel Margin="0,16,0,0">
-                                        <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                                        <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                                    Text="C#" />
                                         <Grid>
                                             <Grid.ColumnDefinitions>
@@ -222,7 +222,7 @@
                                                        Text="{Binding CSharp}"
                                                        FontFamily="{StaticResource CodeFontFamily}" />
                                             <Button Grid.Column="1"
-                                                    Style="{StaticResource IconButtonStyle}"
+                                                    Style="{StaticResource IconButton}"
                                                     Command="{Binding DataContext.CopyCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
                                                     CommandParameter="{Binding CSharp}"
                                                     Content="&#xE8C8;"
@@ -234,7 +234,7 @@
                             </DataTemplate>
                         </ContentControl.Resources>
                     </ContentControl>
-                    <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                    <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                Margin="0,16,0,0"
                                Text="{Binding Copied, StringFormat='Copied: {0}', TargetNullValue='Copied: -'}" />
                 </StackPanel>

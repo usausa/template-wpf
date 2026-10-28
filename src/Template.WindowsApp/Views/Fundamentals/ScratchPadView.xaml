@@ -16,7 +16,7 @@
                     Command="{Binding LoadCommand}" />
     </UserControl.InputBindings>
 
-    <Grid Margin="24">
+    <Grid Style="{StaticResource PageGrid}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -26,14 +26,14 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0"
-                   Style="{StaticResource PageTitleTextStyle}"
+                   Style="{StaticResource PageTitleTextBlock}"
                    Text="Scratch pad" />
         <TextBlock Grid.Row="1"
-                   Style="{StaticResource PageDescriptionTextStyle}"
+                   Style="{StaticResource PageDescriptionTextBlock}"
                    Text="Type XAML and press Load or F5 to draw it." />
 
         <Border Grid.Row="2"
-                Style="{StaticResource CardStyle}"
+                Style="{StaticResource CardBorder}"
                 Padding="0">
             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
                           Focusable="False">

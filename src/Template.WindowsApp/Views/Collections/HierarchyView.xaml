@@ -23,11 +23,11 @@
         </Style>
     </UserControl.Resources>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="24">
-            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+    <ScrollViewer Style="{StaticResource RootScroll}">
+        <StackPanel Style="{StaticResource PageStack}">
+            <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Hierarchy" />
-            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+            <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
                        Text="Tree views with templates, selection and on-demand loading." />
 
             <Grid>
@@ -42,14 +42,13 @@
                 </Grid.RowDefinitions>
 
                 <Border Grid.Row="0" Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="TreeView" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Items written in XAML."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Items written in XAML." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <TreeView x:Name="DocumentTree"
                                       AutomationProperties.Name="Documents">
                                 <TreeViewItem Header="Work Documents"
@@ -67,20 +66,19 @@
                                 </TreeViewItem>
                             </TreeView>
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding SelectedItem.(HeaderedItemsControl.Header), ElementName=DocumentTree, StringFormat='Selected: {0}', TargetNullValue='Selected: -'}" />
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Row="0" Grid.Column="2"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="Data binding" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Departments, teams and members from the view model."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Departments, teams and members from the view model." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <TreeView ItemsSource="{Binding Departments}"
                                       AutomationProperties.Name="Organization">
                                 <TreeView.ItemContainerStyle>
@@ -123,20 +121,19 @@
                                 </i:Interaction.Behaviors>
                             </TreeView>
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding SelectedPath, StringFormat='Selected: {0}', TargetNullValue='Selected: -'}" />
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Row="1" Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="Load on demand" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Child folders are loaded when a folder is expanded."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Child folders are loaded when a folder is expanded." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <TreeView ItemsSource="{Binding Folders}"
                                       AutomationProperties.Name="Folders">
                                 <TreeView.ItemContainerStyle>
@@ -180,7 +177,7 @@
                         <TextBlock>
                             <TextBlock.Style>
                                 <Style TargetType="{x:Type TextBlock}"
-                                       BasedOn="{StaticResource SampleResultTextStyle}">
+                                       BasedOn="{StaticResource SampleResultTextBlock}">
                                     <Setter Property="Text" Value="{Binding LoadedCount, StringFormat='Loaded: {0} folders'}" />
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding LoadedCount}"

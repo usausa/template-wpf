@@ -13,11 +13,11 @@
              d:DataContext="{d:DesignInstance Type={x:Type module:CustomControlsViewModel}}"
              d:DesignWidth="800" d:DesignHeight="600">
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="24">
-            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+    <ScrollViewer Style="{StaticResource RootScroll}">
+        <StackPanel Style="{StaticResource PageStack}">
+            <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Custom controls" />
-            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+            <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
                        Text="Build reusable parts as user controls and templated controls." />
 
             <Grid>
@@ -32,14 +32,13 @@
                 </Grid.RowDefinitions>
 
                 <Border Grid.Row="0" Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="UserControl" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Put controls together into one part with its own properties."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Put controls together into one part with its own properties." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <controls:ProfileTile Glyph="&#xE790;"
                                                   DisplayName="Aiko Tanaka"
                                                   Role="Designer" />
@@ -51,14 +50,13 @@
                     </StackPanel>
                 </Border>
                 <Border Grid.Row="0" Grid.Column="2"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="Templated control" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="A control whose look comes from its style in Themes/Generic.xaml."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="A control whose look comes from its style in Themes/Generic.xaml." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <ItemsControl ItemsSource="{Binding Tags}"
                                           Focusable="False">
                                 <ItemsControl.ItemsPanel>
@@ -79,38 +77,36 @@
                                     Command="{Binding ResetTagsCommand}"
                                     Content="Reset tags" />
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding Tags.Count, StringFormat='Tags: {0}'}" />
                     </StackPanel>
                 </Border>
                 <Border Grid.Row="1" Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="Attached property" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Add a property to a control from outside, like the placeholder of this box."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Add a property to a control from outside, like the placeholder of this box." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <TextBox Width="240"
                                      behaviors:TextBoxOption.AllowedCharacters="[0-9-]" behaviors:TextBoxOption.PlaceholderText="Postal code"
                                      HorizontalAlignment="Left"
                                      Text="{Binding PostalCode, UpdateSourceTrigger=PropertyChanged}"
                                      AutomationProperties.Name="Postal code" />
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding PostalCode, StringFormat='Postal code: {0}'}" />
                     </StackPanel>
                 </Border>
                 <Border Grid.Row="1" Grid.Column="2"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="Behavior" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Run a command from any event with an EventTrigger and InvokeCommandAction."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Run a command from any event with an EventTrigger and InvokeCommandAction." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <Border Width="240" Height="56"
                                     HorizontalAlignment="Left"
                                     Background="{DynamicResource SubtleFillColorSecondaryBrush}"
@@ -125,7 +121,7 @@
                                            Text="Point at this box" />
                             </Border>
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding EnterCount, StringFormat='Pointed: {0} times'}" />
                     </StackPanel>
                 </Border>

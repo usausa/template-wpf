@@ -41,19 +41,19 @@
         </Style>
         <Style x:Key="CodeEditingStyle"
                TargetType="{x:Type TextBox}"
-               BasedOn="{StaticResource DataGridEditingTextBoxStyle}">
+               BasedOn="{StaticResource DataGridEditingTextBox}">
             <Setter Property="MaxLength" Value="10" />
             <Setter Property="CharacterCasing" Value="Upper" />
             <Setter Property="behaviors:TextBoxOption.AllowedCharacters" Value="[A-Za-z0-9-]" />
         </Style>
         <Style x:Key="DescriptionEditingStyle"
                TargetType="{x:Type TextBox}"
-               BasedOn="{StaticResource DataGridEditingTextBoxStyle}">
+               BasedOn="{StaticResource DataGridEditingTextBox}">
             <Setter Property="MaxLength" Value="40" />
         </Style>
         <Style x:Key="NumberEditingStyle"
                TargetType="{x:Type TextBox}"
-               BasedOn="{StaticResource DataGridEditingTextBoxStyle}">
+               BasedOn="{StaticResource DataGridEditingTextBox}">
             <Setter Property="TextAlignment" Value="Right" />
             <Setter Property="behaviors:TextBoxOption.AllowedCharacters" Value="[0-9]" />
         </Style>
@@ -75,12 +75,12 @@
         </Style>
         <Style x:Key="NoteEditingStyle"
                TargetType="{x:Type TextBox}"
-               BasedOn="{StaticResource DataGridEditingTextBoxStyle}">
+               BasedOn="{StaticResource DataGridEditingTextBox}">
             <Setter Property="MaxLength" Value="100" />
         </Style>
         <Style x:Key="LineCellStyle"
                TargetType="{x:Type DataGridCell}"
-               BasedOn="{StaticResource DataGridCellStyle}"
+               BasedOn="{StaticResource DataGridCell}"
                d:DataContext="{d:DesignInstance Type={x:Type sample:OrderLine}}">
             <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
             <Setter Property="ToolTip">
@@ -228,15 +228,15 @@
         </DataTemplate>
     </UserControl.Resources>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
+    <ScrollViewer Style="{StaticResource RootScroll}"
                   Focusable="False">
-        <StackPanel Margin="24">
-            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+        <StackPanel Style="{StaticResource PageStack}">
+            <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Editable grid" />
-            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+            <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
                        Text="Edit rows with checks on each cell and row, undo and save the changes, and copy and paste with Excel." />
 
-            <Border Style="{StaticResource CardStyle}">
+            <Border Style="{StaticResource CardBorder}">
                 <StackPanel>
                     <DockPanel>
                         <TextBlock DockPanel.Dock="Right"
@@ -385,7 +385,7 @@
                             <DataGridComboBoxColumn Width="112" MinWidth="112"
                                                     ItemsSource="{x:Static module:EditableGridViewModel.Statuses}"
                                                     Header="Status"
-                                                    EditingElementStyle="{StaticResource DataGridEditingComboBoxStyle}"
+                                                    EditingElementStyle="{StaticResource DataGridEditingComboBox}"
                                                     SelectedItemBinding="{Binding Status}"
                                                     SortMemberPath="Status" />
                             <DataGridTextColumn Width="*" MinWidth="100"

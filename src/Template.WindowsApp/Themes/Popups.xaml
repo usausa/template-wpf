@@ -439,7 +439,7 @@
     <!-- Tool bar -->
     <!-- ================================================================================ -->
 
-    <Style x:Key="ToolBarOverflowButtonStyle"
+    <Style x:Key="ToolBarOverflowButton"
            TargetType="{x:Type ToggleButton}">
         <Setter Property="Foreground">
             <Setter.Value>
@@ -491,7 +491,7 @@
                             CornerRadius="{DynamicResource ControlCornerRadius}">
                         <DockPanel>
                             <ToggleButton DockPanel.Dock="Right"
-                                          Style="{StaticResource ToolBarOverflowButtonStyle}"
+                                          Style="{StaticResource ToolBarOverflowButton}"
                                           IsEnabled="{TemplateBinding HasOverflowItems}"
                                           IsChecked="{Binding IsOverflowOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                                           ClickMode="Press">

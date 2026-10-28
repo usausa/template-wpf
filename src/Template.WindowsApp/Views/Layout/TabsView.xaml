@@ -48,7 +48,7 @@
                     Gesture="Ctrl+D9" />
     </UserControl.InputBindings>
 
-    <Grid Margin="24">
+    <Grid Style="{StaticResource PageGrid}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -58,10 +58,10 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0"
-                   Style="{StaticResource PageTitleTextStyle}"
+                   Style="{StaticResource PageTitleTextBlock}"
                    Text="Tabs" />
         <TextBlock Grid.Row="1"
-                   Style="{StaticResource PageDescriptionTextStyle}"
+                   Style="{StaticResource PageDescriptionTextBlock}"
                    Text="Add, close and move tabs like a document app." />
 
         <StackPanel Grid.Row="2"
@@ -151,7 +151,7 @@
         </TextBlock>
 
         <TextBlock Grid.Row="4"
-                   Style="{StaticResource SampleResultTextStyle}">
+                   Style="{StaticResource SampleResultTextBlock}">
             <TextBlock.Text>
                 <MultiBinding StringFormat="Tabs: {0} · Selected: {1}">
                     <Binding Path="Documents.Count" />

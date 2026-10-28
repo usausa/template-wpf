@@ -60,7 +60,7 @@
                            Text="{Binding Value}"
                            FontFamily="{StaticResource CodeFontFamily}" />
                 <Button Grid.Column="2"
-                        Style="{StaticResource IconButtonStyle}"
+                        Style="{StaticResource IconButton}"
                         Margin="16,0,0,0"
                         Command="{Binding DataContext.OpenCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
                         CommandParameter="{Binding Value}"
@@ -71,11 +71,11 @@
         </DataTemplate>
     </UserControl.Resources>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="24">
-            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+    <ScrollViewer Style="{StaticResource RootScroll}">
+        <StackPanel Style="{StaticResource PageStack}">
+            <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Environment" />
-            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+            <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
                        Text="Operating system, runtime, display, culture and paths." />
 
             <Grid Margin="0,0,0,16">
@@ -87,7 +87,7 @@
                         Command="{Binding CopyAllCommand}"
                         Content="Copy all" />
                 <TextBlock Grid.Column="1"
-                           Style="{StaticResource SampleResultTextStyle}"
+                           Style="{StaticResource SampleResultTextBlock}"
                            Margin="16,0,0,0"
                            VerticalAlignment="Center"
                            Text="{Binding Copied, StringFormat='Copied: {0}', TargetNullValue='Copied: -'}" />
@@ -106,7 +106,7 @@
                 </Grid.RowDefinitions>
 
                 <Border Grid.Row="0" Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
                         <TextBlock Style="{DynamicResource BodyStrongTextBlockStyle}"
                                    Text="{Binding SystemSection.Title}" />
@@ -117,7 +117,7 @@
                 </Border>
 
                 <Border Grid.Row="0" Grid.Column="2"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
                         <TextBlock Style="{DynamicResource BodyStrongTextBlockStyle}"
                                    Text="{Binding RuntimeSection.Title}" />
@@ -128,7 +128,7 @@
                 </Border>
 
                 <Border Grid.Row="1" Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
                         <TextBlock Style="{DynamicResource BodyStrongTextBlockStyle}"
                                    Text="{Binding DisplaySection.Title}" />
@@ -139,7 +139,7 @@
                 </Border>
 
                 <Border Grid.Row="1" Grid.Column="2"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
                         <TextBlock Style="{DynamicResource BodyStrongTextBlockStyle}"
                                    Text="{Binding CultureSection.Title}" />
@@ -150,7 +150,7 @@
                 </Border>
 
                 <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
                         <TextBlock Style="{DynamicResource BodyStrongTextBlockStyle}"
                                    Text="{Binding PathSection.Title}" />

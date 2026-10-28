@@ -15,11 +15,11 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="24">
-            <TextBlock Style="{StaticResource PageTitleTextStyle}"
+    <ScrollViewer Style="{StaticResource RootScroll}">
+        <StackPanel Style="{StaticResource PageStack}">
+            <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Binding" />
-            <TextBlock Style="{StaticResource PageDescriptionTextStyle}"
+            <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
                        Text="Connect controls to each other and to the view model." />
 
             <Grid>
@@ -35,14 +35,13 @@
                 </Grid.RowDefinitions>
 
                 <Border Grid.Row="0" Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="Element to element" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Bind one control to another with ElementName."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Bind one control to another with ElementName." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <Slider x:Name="SourceSlider"
                                     Width="240"
                                     HorizontalAlignment="Left"
@@ -55,37 +54,35 @@
                                          Value="{Binding Value, ElementName=SourceSlider}"
                                          Minimum="0" Maximum="100" />
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding Value, ElementName=SourceSlider, StringFormat='Value: {0}'}" />
                     </StackPanel>
                 </Border>
                 <Border Grid.Row="0" Grid.Column="2"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="Two-way binding" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Typing updates the view model, and the view model updates the text."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Typing updates the view model, and the view model updates the text." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <TextBox Width="240"
                                      HorizontalAlignment="Left"
                                      Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                                      AutomationProperties.Name="Name" />
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding Name, StringFormat='Name: {0}'}" />
                     </StackPanel>
                 </Border>
                 <Border Grid.Row="1" Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="Format and convert" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Format a value with StringFormat and change it with a converter."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Format a value with StringFormat and change it with a converter." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <DatePicker Width="240"
                                         HorizontalAlignment="Left"
                                         AutomationProperties.Name="Date"
@@ -97,19 +94,18 @@
                                        Visibility="{Binding ShowsWeekday, Converter={StaticResource BooleanToVisibilityConverter}}"
                                        Text="{Binding Date, StringFormat='{}{0:dddd}'}" />
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding Date, StringFormat='Date: {0:yyyy-MM-dd}', TargetNullValue='Date: -'}" />
                     </StackPanel>
                 </Border>
                 <Border Grid.Row="1" Grid.Column="2"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="Null value" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="TargetNullValue shows a text while the value is null."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="TargetNullValue shows a text while the value is null." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <TextBlock Style="{DynamicResource SubtitleTextBlockStyle}"
                                        Text="{Binding Nickname, TargetNullValue='(no nickname)'}" />
                             <StackPanel Orientation="Horizontal"
@@ -121,19 +117,18 @@
                                         Content="Clear" />
                             </StackPanel>
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding Nickname, StringFormat='Nickname: {0}', TargetNullValue='Nickname: null'}" />
                     </StackPanel>
                 </Border>
                 <Border Grid.Row="2" Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="MultiBinding" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Combine several values into one text."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}"
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Combine several values into one text." />
+                        <StackPanel Style="{StaticResource SampleStack}"
                                     Orientation="Horizontal">
                             <TextBox Width="116"
                                      behaviors:TextBoxOption.PlaceholderText="First name"
@@ -145,7 +140,7 @@
                                      Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}"
                                      AutomationProperties.Name="Last name" />
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}">
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}">
                             <TextBlock.Text>
                                 <MultiBinding StringFormat="Full name: {0} {1}">
                                     <Binding Path="FirstName" />
@@ -156,14 +151,13 @@
                     </StackPanel>
                 </Border>
                 <Border Grid.Row="2" Grid.Column="2"
-                        Style="{StaticResource CardStyle}">
+                        Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                    Text="Collection" />
-                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                   Text="Bind a list and show each item with a DataTemplate."
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <StackPanel Style="{StaticResource SamplePanelStyle}">
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Bind a list and show each item with a DataTemplate." />
+                        <StackPanel Style="{StaticResource SampleStack}">
                             <ListBox Width="320" Height="132"
                                      HorizontalAlignment="Left"
                                      ItemsSource="{Binding People}"
@@ -181,7 +175,7 @@
                                 </ListBox.ItemTemplate>
                             </ListBox>
                         </StackPanel>
-                        <TextBlock Style="{StaticResource SampleResultTextStyle}"
+                        <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding SelectedPerson.Name, StringFormat='Selected: {0}', FallbackValue='Selected: -'}" />
                     </StackPanel>
                 </Border>
