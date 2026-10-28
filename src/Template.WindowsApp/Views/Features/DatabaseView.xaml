@@ -11,25 +11,50 @@
              d:DesignWidth="800" d:DesignHeight="600">
 
     <UserControl.Resources>
-        <Style x:Key="LabelTextStyle"
+
+        <!-- Common -->
+
+        <Style x:Key="DatabaseLabelTextBlock"
                TargetType="{x:Type TextBlock}">
             <Setter Property="Margin" Value="0,0,16,4" />
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
         </Style>
-        <Style x:Key="ValueTextStyle"
+
+        <Style x:Key="DatabaseValueTextBlock"
                TargetType="{x:Type TextBlock}">
             <Setter Property="Margin" Value="0,0,0,4" />
             <Setter Property="TextWrapping" Value="Wrap" />
         </Style>
-        <Style x:Key="CountTextStyle"
+
+        <!-- File -->
+
+        <Style x:Key="DatabasePathTextBlock"
                TargetType="{x:Type TextBlock}"
-               BasedOn="{StaticResource ValueTextStyle}">
+               BasedOn="{StaticResource DatabaseValueTextBlock}">
+            <Setter Property="FontFamily" Value="{StaticResource CodeFontFamily}" />
+        </Style>
+
+        <!-- Tables -->
+
+        <Style x:Key="DatabaseTablesGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Width" Value="240" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+
+        <Style x:Key="DatabaseCountTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource DatabaseValueTextBlock}">
             <Setter Property="HorizontalAlignment" Value="Right" />
         </Style>
+
     </UserControl.Resources>
 
+    <!-- Content -->
     <ScrollViewer Style="{StaticResource RootScroll}">
         <StackPanel Style="{StaticResource PageStack}">
+
+            <!-- Header -->
             <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Database" />
             <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
@@ -46,6 +71,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
+                <!-- File -->
                 <Border Grid.Row="0" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -53,8 +79,13 @@
                                    Text="File" />
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Where the database file is and how large it is. Rebuild creates it again with the sample data." />
-                        <StackPanel Style="{StaticResource SampleStack}">
-                            <Grid>
+                        <Grid Style="{StaticResource SampleGrid}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="8" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
@@ -64,33 +95,38 @@
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Row="0" Grid.Column="0"
-                                           Style="{StaticResource LabelTextStyle}"
+                                           Style="{StaticResource DatabaseLabelTextBlock}"
                                            Text="Path" />
                                 <TextBlock Grid.Row="0" Grid.Column="1"
-                                           Style="{StaticResource ValueTextStyle}"
-                                           Text="{Binding DatabasePath}"
-                                           FontFamily="{StaticResource CodeFontFamily}" />
+                                           Style="{StaticResource DatabasePathTextBlock}"
+                                           Text="{Binding DatabasePath}" />
                                 <TextBlock Grid.Row="1" Grid.Column="0"
-                                           Style="{StaticResource LabelTextStyle}"
+                                           Style="{StaticResource DatabaseLabelTextBlock}"
                                            Text="Size" />
                                 <TextBlock Grid.Row="1" Grid.Column="1"
-                                           Style="{StaticResource ValueTextStyle}"
+                                           Style="{StaticResource DatabaseValueTextBlock}"
                                            Text="{Binding DatabaseSize}" />
                             </Grid>
-                            <StackPanel Orientation="Horizontal"
-                                        Margin="0,8,0,0">
-                                <Button Command="{Binding OpenFolderCommand}"
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="8" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0"
+                                        Command="{Binding OpenFolderCommand}"
                                         Content="Open folder" />
-                                <Button Margin="8,0,0,0"
+                                <Button Grid.Column="2"
                                         Command="{Binding RebuildCommand}"
                                         Content="Rebuild" />
-                            </StackPanel>
-                        </StackPanel>
+                            </Grid>
+                        </Grid>
                         <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding FileResult, StringFormat='Last: {0}', TargetNullValue='Last: -'}" />
                     </StackPanel>
                 </Border>
 
+                <!-- Tables -->
                 <Border Grid.Row="0" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -98,9 +134,14 @@
                                    Text="Tables" />
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Rows in each table. Data grid, Editable grid and List &amp; detail read and write these tables." />
-                        <StackPanel Style="{StaticResource SampleStack}">
-                            <Grid Width="240"
-                                  HorizontalAlignment="Left">
+                        <Grid Style="{StaticResource SampleGrid}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="8" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0"
+                                  Style="{StaticResource DatabaseTablesGrid}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
@@ -113,46 +154,46 @@
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Row="0" Grid.Column="0"
-                                           Style="{StaticResource LabelTextStyle}"
+                                           Style="{StaticResource DatabaseLabelTextBlock}"
                                            Text="Product" />
                                 <TextBlock Grid.Row="0" Grid.Column="1"
-                                           Style="{StaticResource CountTextStyle}"
+                                           Style="{StaticResource DatabaseCountTextBlock}"
                                            Text="{Binding ProductCount, StringFormat=N0}" />
                                 <TextBlock Grid.Row="1" Grid.Column="0"
-                                           Style="{StaticResource LabelTextStyle}"
+                                           Style="{StaticResource DatabaseLabelTextBlock}"
                                            Text="Customer" />
                                 <TextBlock Grid.Row="1" Grid.Column="1"
-                                           Style="{StaticResource CountTextStyle}"
+                                           Style="{StaticResource DatabaseCountTextBlock}"
                                            Text="{Binding CustomerCount, StringFormat=N0}" />
                                 <TextBlock Grid.Row="2" Grid.Column="0"
-                                           Style="{StaticResource LabelTextStyle}"
+                                           Style="{StaticResource DatabaseLabelTextBlock}"
                                            Text="OrderLine" />
                                 <TextBlock Grid.Row="2" Grid.Column="1"
-                                           Style="{StaticResource CountTextStyle}"
+                                           Style="{StaticResource DatabaseCountTextBlock}"
                                            Text="{Binding OrderLineCount, StringFormat=N0}" />
                                 <TextBlock Grid.Row="3" Grid.Column="0"
-                                           Style="{StaticResource LabelTextStyle}"
+                                           Style="{StaticResource DatabaseLabelTextBlock}"
                                            Text="Data" />
                                 <TextBlock Grid.Row="3" Grid.Column="1"
-                                           Style="{StaticResource CountTextStyle}"
+                                           Style="{StaticResource DatabaseCountTextBlock}"
                                            Text="{Binding DataCount, StringFormat=N0}" />
                                 <TextBlock Grid.Row="4" Grid.Column="0"
-                                           Style="{StaticResource LabelTextStyle}"
+                                           Style="{StaticResource DatabaseLabelTextBlock}"
                                            Text="BulkData" />
                                 <TextBlock Grid.Row="4" Grid.Column="1"
-                                           Style="{StaticResource CountTextStyle}"
+                                           Style="{StaticResource DatabaseCountTextBlock}"
                                            Text="{Binding BulkDataCount, StringFormat=N0}" />
                             </Grid>
-                            <Button Margin="0,8,0,0"
-                                    HorizontalAlignment="Left"
+                            <Button Grid.Row="2"
                                     Command="{Binding RefreshCommand}"
                                     Content="Refresh" />
-                        </StackPanel>
+                        </Grid>
                         <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding TotalCount, StringFormat='Total: {0:N0} rows'}" />
                     </StackPanel>
                 </Border>
 
+                <!-- Single row -->
                 <Border Grid.Row="1" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -160,25 +201,35 @@
                                    Text="Single row" />
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Insert, update, delete and read the row with Id 1 in the Data table." />
-                        <StackPanel Style="{StaticResource SampleStack}"
-                                    Orientation="Horizontal">
-                            <Button Command="{Binding InsertCommand}"
+                        <Grid Style="{StaticResource SampleGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="8" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="8" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="8" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0"
+                                    Command="{Binding InsertCommand}"
                                     Content="Insert" />
-                            <Button Margin="8,0,0,0"
+                            <Button Grid.Column="2"
                                     Command="{Binding UpdateCommand}"
                                     Content="Update" />
-                            <Button Margin="8,0,0,0"
+                            <Button Grid.Column="4"
                                     Command="{Binding DeleteCommand}"
                                     Content="Delete" />
-                            <Button Margin="8,0,0,0"
+                            <Button Grid.Column="6"
                                     Command="{Binding QueryCommand}"
                                     Content="Query" />
-                        </StackPanel>
+                        </Grid>
                         <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding RowResult, StringFormat='Last: {0}', TargetNullValue='Last: -'}" />
                     </StackPanel>
                 </Border>
 
+                <!-- Bulk -->
                 <Border Grid.Row="1" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -186,22 +237,31 @@
                                    Text="Bulk" />
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Insert 10,000 rows in one transaction, read them all and delete them." />
-                        <StackPanel Style="{StaticResource SampleStack}"
-                                    Orientation="Horizontal">
-                            <Button Command="{Binding BulkInsertCommand}"
+                        <Grid Style="{StaticResource SampleGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="8" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="8" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0"
+                                    Command="{Binding BulkInsertCommand}"
                                     Content="Insert 10,000 rows" />
-                            <Button Margin="8,0,0,0"
+                            <Button Grid.Column="2"
                                     Command="{Binding ReadAllCommand}"
                                     Content="Read all" />
-                            <Button Margin="8,0,0,0"
+                            <Button Grid.Column="4"
                                     Command="{Binding DeleteAllCommand}"
                                     Content="Delete all" />
-                        </StackPanel>
+                        </Grid>
                         <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding BulkResult, StringFormat='Last: {0}', TargetNullValue='Last: -'}" />
                     </StackPanel>
                 </Border>
             </Grid>
+
         </StackPanel>
     </ScrollViewer>
+
 </UserControl>

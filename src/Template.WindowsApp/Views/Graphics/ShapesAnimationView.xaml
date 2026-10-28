@@ -12,33 +12,61 @@
              d:DesignWidth="800" d:DesignHeight="600">
 
     <UserControl.Resources>
-        <Style x:Key="ShapeLabelTextStyle"
+
+        <!-- Shapes -->
+
+        <Style x:Key="ShapesAnimationShapesUniformGrid"
+               TargetType="{x:Type UniformGrid}">
+            <Setter Property="Margin" Value="0,16,0,0" />
+        </Style>
+
+        <Style x:Key="ShapesAnimationFrameGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Height" Value="64" />
+        </Style>
+
+        <Style x:Key="ShapesAnimationLabelTextBlock"
                TargetType="{x:Type TextBlock}">
             <Setter Property="Margin" Value="0,8,0,0" />
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="FontSize" Value="{DynamicResource CaptionTextBlockFontSize}" />
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
         </Style>
-        <Style x:Key="EasingLabelTextStyle"
+
+        <!-- Transforms -->
+
+        <Style x:Key="ShapesAnimationTransformGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Width" Value="240" />
+            <Setter Property="Height" Value="160" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+
+        <!-- Easing -->
+
+        <Style x:Key="ShapesAnimationEasingLabelTextBlock"
                TargetType="{x:Type TextBlock}">
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="FontSize" Value="{DynamicResource CaptionTextBlockFontSize}" />
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
         </Style>
-        <Style x:Key="EasingTrackStyle"
+
+        <Style x:Key="ShapesAnimationEasingTrackRectangle"
                TargetType="{x:Type Rectangle}">
             <Setter Property="Height" Value="2" />
             <Setter Property="Margin" Value="8,0" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Fill" Value="{StaticResource ChartBlueSuperLightBrush}" />
         </Style>
-        <Style x:Key="EasingDotStyle"
+
+        <Style x:Key="ShapesAnimationEasingDotEllipse"
                TargetType="{x:Type Ellipse}">
             <Setter Property="Width" Value="16" />
             <Setter Property="Height" Value="16" />
             <Setter Property="HorizontalAlignment" Value="Left" />
             <Setter Property="Fill" Value="{StaticResource ChartBlueBrush}" />
         </Style>
+
         <Storyboard x:Key="EasingStoryboard"
                     Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)">
             <DoubleAnimation Storyboard.TargetName="LinearDot" From="0" To="150" Duration="0:0:1.5" />
@@ -68,6 +96,7 @@
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
         </Storyboard>
+
     </UserControl.Resources>
 
     <i:Interaction.Triggers>
@@ -81,8 +110,11 @@
         </s:EventRequestTrigger>
     </i:Interaction.Triggers>
 
+    <!-- Content -->
     <ScrollViewer Style="{StaticResource RootScroll}">
         <StackPanel Style="{StaticResource PageStack}">
+
+            <!-- Header -->
             <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Shapes &amp; animation" />
             <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
@@ -99,6 +131,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
+                <!-- Shapes -->
                 <Border Grid.Row="0" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -106,59 +139,60 @@
                                    Text="Shapes" />
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Rectangle, ellipse, line, polygon and path." />
-                        <UniformGrid Columns="5"
-                                     Margin="0,16,0,0">
+                        <UniformGrid Style="{StaticResource ShapesAnimationShapesUniformGrid}"
+                                     Columns="5">
                             <StackPanel>
-                                <Grid Height="64">
+                                <Grid Style="{StaticResource ShapesAnimationFrameGrid}">
                                     <Rectangle Width="64" Height="48"
                                                Fill="{StaticResource ChartBlueSuperLightBrush}"
                                                Stroke="{StaticResource ChartBlueDarkBrush}"
                                                StrokeThickness="2" />
                                 </Grid>
-                                <TextBlock Style="{StaticResource ShapeLabelTextStyle}"
+                                <TextBlock Style="{StaticResource ShapesAnimationLabelTextBlock}"
                                            Text="Rectangle" />
                             </StackPanel>
                             <StackPanel>
-                                <Grid Height="64">
+                                <Grid Style="{StaticResource ShapesAnimationFrameGrid}">
                                     <Ellipse Width="56" Height="56"
                                              Fill="{StaticResource ChartBlueLightBrush}" />
                                 </Grid>
-                                <TextBlock Style="{StaticResource ShapeLabelTextStyle}"
+                                <TextBlock Style="{StaticResource ShapesAnimationLabelTextBlock}"
                                            Text="Ellipse" />
                             </StackPanel>
                             <StackPanel>
-                                <Grid Height="64">
+                                <Grid Style="{StaticResource ShapesAnimationFrameGrid}">
                                     <Line Width="64" Height="64"
                                           Stroke="{StaticResource ChartBlueBrush}"
                                           StrokeThickness="4"
                                           StrokeStartLineCap="Round" StrokeEndLineCap="Round"
                                           X1="8" X2="56" Y1="56" Y2="8" />
                                 </Grid>
-                                <TextBlock Style="{StaticResource ShapeLabelTextStyle}"
+                                <TextBlock Style="{StaticResource ShapesAnimationLabelTextBlock}"
                                            Text="Line" />
                             </StackPanel>
                             <StackPanel>
-                                <Grid Height="64">
+                                <Grid Style="{StaticResource ShapesAnimationFrameGrid}">
                                     <Polygon Width="64" Height="64"
                                              Points="32,5 39,25.3 60.5,25.7 43.4,38.7 49.6,59.3 32,47 14.4,59.3 20.6,38.7 3.5,25.7 25,25.3"
                                              Fill="{StaticResource ChartBlueSemiDarkBrush}" />
                                 </Grid>
-                                <TextBlock Style="{StaticResource ShapeLabelTextStyle}"
+                                <TextBlock Style="{StaticResource ShapesAnimationLabelTextBlock}"
                                            Text="Polygon" />
                             </StackPanel>
                             <StackPanel>
-                                <Grid Height="64">
+                                <Grid Style="{StaticResource ShapesAnimationFrameGrid}">
                                     <Path Width="64" Height="64"
                                           Data="M 32,58 C 32,58 4,40 4,22 C 4,12 12,6 20,6 C 26,6 30,10 32,14 C 34,10 38,6 44,6 C 52,6 60,12 60,22 C 60,40 32,58 32,58 Z"
                                           Fill="{StaticResource ChartBlueDarkBrush}" />
                                 </Grid>
-                                <TextBlock Style="{StaticResource ShapeLabelTextStyle}"
+                                <TextBlock Style="{StaticResource ShapesAnimationLabelTextBlock}"
                                            Text="Path" />
                             </StackPanel>
                         </UniformGrid>
                     </StackPanel>
                 </Border>
 
+                <!-- Gradients -->
                 <Border Grid.Row="0" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -166,7 +200,7 @@
                                    Text="Gradients" />
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Linear and radial gradient brushes." />
-                        <Grid Margin="0,16,0,0">
+                        <Grid Style="{StaticResource SampleGrid}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="16" />
@@ -181,7 +215,7 @@
                                         </LinearGradientBrush>
                                     </Rectangle.Fill>
                                 </Rectangle>
-                                <TextBlock Style="{StaticResource ShapeLabelTextStyle}"
+                                <TextBlock Style="{StaticResource ShapesAnimationLabelTextBlock}"
                                            Text="Linear" />
                             </StackPanel>
                             <StackPanel Grid.Column="2">
@@ -193,13 +227,14 @@
                                         </RadialGradientBrush>
                                     </Rectangle.Fill>
                                 </Rectangle>
-                                <TextBlock Style="{StaticResource ShapeLabelTextStyle}"
+                                <TextBlock Style="{StaticResource ShapesAnimationLabelTextBlock}"
                                            Text="Radial" />
                             </StackPanel>
                         </Grid>
                     </StackPanel>
                 </Border>
 
+                <!-- Transforms -->
                 <Border Grid.Row="1" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -207,9 +242,16 @@
                                    Text="Transforms" />
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Rotate and scale a shape." />
-                        <StackPanel Style="{StaticResource SampleStack}">
-                            <Grid Width="240" Height="160"
-                                  HorizontalAlignment="Left">
+                        <Grid Style="{StaticResource SampleGrid}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="16" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="16" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0"
+                                  Style="{StaticResource ShapesAnimationTransformGrid}">
                                 <Path Width="56" Height="56"
                                       Data="M 28,0 L 56,28 L 40,28 L 40,56 L 16,56 L 16,28 L 0,28 Z"
                                       Fill="{StaticResource ChartBlueBrush}"
@@ -222,25 +264,23 @@
                                     </Path.RenderTransform>
                                 </Path>
                             </Grid>
-                            <StackPanel Margin="0,16,0,0">
+                            <StackPanel Grid.Row="2">
                                 <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                            Text="Rotate" />
-                                <Slider Width="240"
-                                        HorizontalAlignment="Left"
+                                <Slider Style="{StaticResource SampleSlider}"
                                         Value="{Binding Angle}"
                                         Minimum="0" Maximum="360"
                                         AutomationProperties.Name="Rotate" IsSnapToTickEnabled="True" TickFrequency="1" />
                             </StackPanel>
-                            <StackPanel Margin="0,16,0,0">
+                            <StackPanel Grid.Row="4">
                                 <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                            Text="Scale" />
-                                <Slider Width="240"
-                                        HorizontalAlignment="Left"
+                                <Slider Style="{StaticResource SampleSlider}"
                                         Value="{Binding Scale}"
                                         Minimum="0.5" Maximum="2"
                                         AutomationProperties.Name="Scale" IsSnapToTickEnabled="True" TickFrequency="0.1" />
                             </StackPanel>
-                        </StackPanel>
+                        </Grid>
                         <TextBlock Style="{StaticResource SampleResultTextBlock}">
                             <TextBlock.Text>
                                 <MultiBinding StringFormat="Angle: {0:0} · Scale: {1:0.##}">
@@ -252,6 +292,7 @@
                     </StackPanel>
                 </Border>
 
+                <!-- Easing -->
                 <Border Grid.Row="1" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -259,8 +300,13 @@
                                    Text="Easing" />
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="The same move with different easing functions." />
-                        <StackPanel Style="{StaticResource SampleStack}">
-                            <Grid>
+                        <Grid Style="{StaticResource SampleGrid}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="16" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="80" />
                                     <ColumnDefinition Width="166" />
@@ -275,91 +321,91 @@
                                 </Grid.RowDefinitions>
 
                                 <TextBlock Grid.Row="0" Grid.Column="0"
-                                           Style="{StaticResource EasingLabelTextStyle}"
+                                           Style="{StaticResource ShapesAnimationEasingLabelTextBlock}"
                                            Text="Linear" />
                                 <Rectangle Grid.Row="0" Grid.Column="1"
-                                           Style="{StaticResource EasingTrackStyle}" />
+                                           Style="{StaticResource ShapesAnimationEasingTrackRectangle}" />
                                 <Ellipse x:Name="LinearDot"
                                          Grid.Row="0" Grid.Column="1"
-                                         Style="{StaticResource EasingDotStyle}">
+                                         Style="{StaticResource ShapesAnimationEasingDotEllipse}">
                                     <Ellipse.RenderTransform>
                                         <TranslateTransform />
                                     </Ellipse.RenderTransform>
                                 </Ellipse>
 
                                 <TextBlock Grid.Row="1" Grid.Column="0"
-                                           Style="{StaticResource EasingLabelTextStyle}"
+                                           Style="{StaticResource ShapesAnimationEasingLabelTextBlock}"
                                            Text="Quadratic" />
                                 <Rectangle Grid.Row="1" Grid.Column="1"
-                                           Style="{StaticResource EasingTrackStyle}" />
+                                           Style="{StaticResource ShapesAnimationEasingTrackRectangle}" />
                                 <Ellipse x:Name="QuadraticDot"
                                          Grid.Row="1" Grid.Column="1"
-                                         Style="{StaticResource EasingDotStyle}">
+                                         Style="{StaticResource ShapesAnimationEasingDotEllipse}">
                                     <Ellipse.RenderTransform>
                                         <TranslateTransform />
                                     </Ellipse.RenderTransform>
                                 </Ellipse>
 
                                 <TextBlock Grid.Row="2" Grid.Column="0"
-                                           Style="{StaticResource EasingLabelTextStyle}"
+                                           Style="{StaticResource ShapesAnimationEasingLabelTextBlock}"
                                            Text="Cubic" />
                                 <Rectangle Grid.Row="2" Grid.Column="1"
-                                           Style="{StaticResource EasingTrackStyle}" />
+                                           Style="{StaticResource ShapesAnimationEasingTrackRectangle}" />
                                 <Ellipse x:Name="CubicDot"
                                          Grid.Row="2" Grid.Column="1"
-                                         Style="{StaticResource EasingDotStyle}">
+                                         Style="{StaticResource ShapesAnimationEasingDotEllipse}">
                                     <Ellipse.RenderTransform>
                                         <TranslateTransform />
                                     </Ellipse.RenderTransform>
                                 </Ellipse>
 
                                 <TextBlock Grid.Row="3" Grid.Column="0"
-                                           Style="{StaticResource EasingLabelTextStyle}"
+                                           Style="{StaticResource ShapesAnimationEasingLabelTextBlock}"
                                            Text="Back" />
                                 <Rectangle Grid.Row="3" Grid.Column="1"
-                                           Style="{StaticResource EasingTrackStyle}" />
+                                           Style="{StaticResource ShapesAnimationEasingTrackRectangle}" />
                                 <Ellipse x:Name="BackDot"
                                          Grid.Row="3" Grid.Column="1"
-                                         Style="{StaticResource EasingDotStyle}">
+                                         Style="{StaticResource ShapesAnimationEasingDotEllipse}">
                                     <Ellipse.RenderTransform>
                                         <TranslateTransform />
                                     </Ellipse.RenderTransform>
                                 </Ellipse>
 
                                 <TextBlock Grid.Row="4" Grid.Column="0"
-                                           Style="{StaticResource EasingLabelTextStyle}"
+                                           Style="{StaticResource ShapesAnimationEasingLabelTextBlock}"
                                            Text="Bounce" />
                                 <Rectangle Grid.Row="4" Grid.Column="1"
-                                           Style="{StaticResource EasingTrackStyle}" />
+                                           Style="{StaticResource ShapesAnimationEasingTrackRectangle}" />
                                 <Ellipse x:Name="BounceDot"
                                          Grid.Row="4" Grid.Column="1"
-                                         Style="{StaticResource EasingDotStyle}">
+                                         Style="{StaticResource ShapesAnimationEasingDotEllipse}">
                                     <Ellipse.RenderTransform>
                                         <TranslateTransform />
                                     </Ellipse.RenderTransform>
                                 </Ellipse>
 
                                 <TextBlock Grid.Row="5" Grid.Column="0"
-                                           Style="{StaticResource EasingLabelTextStyle}"
+                                           Style="{StaticResource ShapesAnimationEasingLabelTextBlock}"
                                            Text="Elastic" />
                                 <Rectangle Grid.Row="5" Grid.Column="1"
-                                           Style="{StaticResource EasingTrackStyle}" />
+                                           Style="{StaticResource ShapesAnimationEasingTrackRectangle}" />
                                 <Ellipse x:Name="ElasticDot"
                                          Grid.Row="5" Grid.Column="1"
-                                         Style="{StaticResource EasingDotStyle}">
+                                         Style="{StaticResource ShapesAnimationEasingDotEllipse}">
                                     <Ellipse.RenderTransform>
                                         <TranslateTransform />
                                     </Ellipse.RenderTransform>
                                 </Ellipse>
                             </Grid>
-                            <Button Margin="0,16,0,0"
-                                    HorizontalAlignment="Left"
+                            <Button Grid.Row="2"
                                     Command="{Binding PlayCommand}"
                                     Content="Play" />
-                        </StackPanel>
+                        </Grid>
                     </StackPanel>
                 </Border>
             </Grid>
+
         </StackPanel>
     </ScrollViewer>
 

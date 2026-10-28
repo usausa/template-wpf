@@ -12,27 +12,64 @@
              d:DesignWidth="800" d:DesignHeight="600">
 
     <UserControl.Resources>
-        <Style x:Key="EntryNameTextStyle"
+
+        <!-- Copy all -->
+
+        <Style x:Key="EnvironmentCopyGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Margin" Value="0,0,0,16" />
+        </Style>
+
+        <Style x:Key="EnvironmentCopiedTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource SampleResultTextBlock}">
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <!-- Sections -->
+
+        <Style x:Key="EnvironmentEntryGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Margin" Value="0,8,0,0" />
+        </Style>
+
+        <Style x:Key="EnvironmentNameTextBlock"
                TargetType="{x:Type TextBlock}">
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
         </Style>
-        <Style x:Key="EntryValueTextStyle"
+
+        <Style x:Key="EnvironmentValueTextBlock"
                TargetType="{x:Type TextBlock}">
             <Setter Property="TextWrapping" Value="Wrap" />
         </Style>
+
+        <Style x:Key="EnvironmentPathNameTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource EnvironmentNameTextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="EnvironmentPathValueTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource EnvironmentValueTextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontFamily" Value="{StaticResource CodeFontFamily}" />
+        </Style>
+
         <DataTemplate x:Key="EntryTemplate"
                       DataType="{x:Type models:EnvironmentEntry}">
-            <Grid Margin="0,8,0,0">
+            <Grid Style="{StaticResource EnvironmentEntryGrid}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="128" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0"
-                           Style="{StaticResource EntryNameTextStyle}"
+                           Style="{StaticResource EnvironmentNameTextBlock}"
                            Text="{Binding Name}" />
                 <TextBlock x:Name="Value"
                            Grid.Column="1"
-                           Style="{StaticResource EntryValueTextStyle}"
+                           Style="{StaticResource EnvironmentValueTextBlock}"
                            Text="{Binding Value}" />
             </Grid>
             <DataTemplate.Triggers>
@@ -42,26 +79,24 @@
                 </DataTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>
+
         <DataTemplate x:Key="PathTemplate"
                       DataType="{x:Type models:EnvironmentEntry}">
-            <Grid Margin="0,8,0,0">
+            <Grid Style="{StaticResource EnvironmentEntryGrid}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="128" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="16" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0"
-                           Style="{StaticResource EntryNameTextStyle}"
-                           VerticalAlignment="Center"
+                           Style="{StaticResource EnvironmentPathNameTextBlock}"
                            Text="{Binding Name}" />
                 <TextBlock Grid.Column="1"
-                           Style="{StaticResource EntryValueTextStyle}"
-                           VerticalAlignment="Center"
-                           Text="{Binding Value}"
-                           FontFamily="{StaticResource CodeFontFamily}" />
-                <Button Grid.Column="2"
+                           Style="{StaticResource EnvironmentPathValueTextBlock}"
+                           Text="{Binding Value}" />
+                <Button Grid.Column="3"
                         Style="{StaticResource IconButton}"
-                        Margin="16,0,0,0"
                         Command="{Binding DataContext.OpenCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
                         CommandParameter="{Binding Value}"
                         Content="&#xE838;"
@@ -69,27 +104,31 @@
                         AutomationProperties.Name="{Binding Name, StringFormat='Open {0}'}" />
             </Grid>
         </DataTemplate>
+
     </UserControl.Resources>
 
+    <!-- Content -->
     <ScrollViewer Style="{StaticResource RootScroll}">
         <StackPanel Style="{StaticResource PageStack}">
+
+            <!-- Header -->
             <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Environment" />
             <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
                        Text="Operating system, runtime, display, culture and paths." />
 
-            <Grid Margin="0,0,0,16">
+            <!-- Copy all -->
+            <Grid Style="{StaticResource EnvironmentCopyGrid}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="16" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0"
                         Command="{Binding CopyAllCommand}"
                         Content="Copy all" />
-                <TextBlock Grid.Column="1"
-                           Style="{StaticResource SampleResultTextBlock}"
-                           Margin="16,0,0,0"
-                           VerticalAlignment="Center"
+                <TextBlock Grid.Column="2"
+                           Style="{StaticResource EnvironmentCopiedTextBlock}"
                            Text="{Binding Copied, StringFormat='Copied: {0}', TargetNullValue='Copied: -'}" />
             </Grid>
 
@@ -105,10 +144,11 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
+                <!-- System -->
                 <Border Grid.Row="0" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyStrongTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardStrongTextBlock}"
                                    Text="{Binding SystemSection.Title}" />
                         <ItemsControl ItemsSource="{Binding SystemSection.Entries}"
                                       ItemTemplate="{StaticResource EntryTemplate}"
@@ -116,10 +156,11 @@
                     </StackPanel>
                 </Border>
 
+                <!-- Runtime -->
                 <Border Grid.Row="0" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyStrongTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardStrongTextBlock}"
                                    Text="{Binding RuntimeSection.Title}" />
                         <ItemsControl ItemsSource="{Binding RuntimeSection.Entries}"
                                       ItemTemplate="{StaticResource EntryTemplate}"
@@ -127,10 +168,11 @@
                     </StackPanel>
                 </Border>
 
+                <!-- Display -->
                 <Border Grid.Row="1" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyStrongTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardStrongTextBlock}"
                                    Text="{Binding DisplaySection.Title}" />
                         <ItemsControl ItemsSource="{Binding DisplaySection.Entries}"
                                       ItemTemplate="{StaticResource EntryTemplate}"
@@ -138,10 +180,11 @@
                     </StackPanel>
                 </Border>
 
+                <!-- Culture -->
                 <Border Grid.Row="1" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyStrongTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardStrongTextBlock}"
                                    Text="{Binding CultureSection.Title}" />
                         <ItemsControl ItemsSource="{Binding CultureSection.Entries}"
                                       ItemTemplate="{StaticResource EntryTemplate}"
@@ -149,10 +192,11 @@
                     </StackPanel>
                 </Border>
 
+                <!-- Paths -->
                 <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
-                        <TextBlock Style="{DynamicResource BodyStrongTextBlockStyle}"
+                        <TextBlock Style="{StaticResource CardStrongTextBlock}"
                                    Text="{Binding PathSection.Title}" />
                         <ItemsControl ItemsSource="{Binding PathSection.Entries}"
                                       ItemTemplate="{StaticResource PathTemplate}"
@@ -160,6 +204,7 @@
                     </StackPanel>
                 </Border>
             </Grid>
+
         </StackPanel>
     </ScrollViewer>
 

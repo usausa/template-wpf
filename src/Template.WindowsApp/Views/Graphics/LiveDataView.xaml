@@ -12,6 +12,126 @@
              d:DataContext="{d:DesignInstance Type={x:Type module:LiveDataViewModel}}"
              d:DesignWidth="800" d:DesignHeight="600">
 
+    <UserControl.Resources>
+
+        <!-- Options -->
+
+        <Style x:Key="LiveDataOptionGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="LiveDataLabelTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="LiveDataRateComboBox"
+               TargetType="{x:Type ComboBox}"
+               BasedOn="{StaticResource {x:Type ComboBox}}">
+            <Setter Property="Width" Value="96" />
+        </Style>
+
+        <Style x:Key="LiveDataToggleSwitch"
+               TargetType="{x:Type controls:ToggleSwitch}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="LiveDataCountTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
+        <Style x:Key="LiveDataPauseButton"
+               TargetType="{x:Type Button}"
+               BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Width" Value="96" />
+        </Style>
+
+        <!-- Sensors -->
+
+        <Style x:Key="LiveDataSensorItemsControl"
+               TargetType="{x:Type ItemsControl}"
+               BasedOn="{StaticResource {x:Type ItemsControl}}">
+            <Setter Property="Margin" Value="0,0,-8,0" />
+        </Style>
+
+        <Style x:Key="LiveDataSensorBorder"
+               TargetType="{x:Type Border}"
+               BasedOn="{StaticResource CardBorder}">
+            <Setter Property="Margin" Value="0,0,8,8" />
+        </Style>
+
+        <Style x:Key="LiveDataLiveTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
+        <Style x:Key="LiveDataStaleBorder"
+               TargetType="{x:Type Border}">
+            <Setter Property="Padding" Value="8,2" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Background" Value="{DynamicResource SystemFillColorCautionBackgroundBrush}" />
+        </Style>
+
+        <Style x:Key="LiveDataStaleIconTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCautionBrush}" />
+        </Style>
+
+        <Style x:Key="LiveDataStaleTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="12" />
+        </Style>
+
+        <Style x:Key="LiveDataUnitTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="0,0,0,5" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
+        <Style x:Key="LiveDataMovementGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Margin" Value="12,0,0,0" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+        </Style>
+
+        <Style x:Key="LiveDataCaretTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="0,0,0,6" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
+        <Style x:Key="LiveDataDeltaTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="0,0,0,4" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
+        <Style x:Key="LiveDataLineChart"
+               TargetType="{x:Type controls:LineChart}">
+            <Setter Property="MinHeight" Value="150" />
+            <Setter Property="Fill" Value="{StaticResource ChartBlueSuperLightBrush}" />
+            <Setter Property="Stroke" Value="{StaticResource ChartBlueBrush}" />
+            <Setter Property="GridBrush" Value="{DynamicResource DividerStrokeColorDefaultBrush}" />
+        </Style>
+
+    </UserControl.Resources>
+
+    <!-- Content -->
     <ScrollViewer Style="{StaticResource RootScroll}">
         <Grid MinHeight="{Binding ViewportHeight, RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}}">
             <Grid Style="{StaticResource PageGrid}">
@@ -19,9 +139,11 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="8" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
+                <!-- Header -->
                 <TextBlock Grid.Row="0"
                            Style="{StaticResource PageTitleTextBlock}"
                            Text="Live data" />
@@ -29,42 +151,52 @@
                            Style="{StaticResource PageDescriptionTextBlock}"
                            Text="Values that keep streaming in, drawn at a limited rate, with streams that stop marked." />
 
+                <!-- Options -->
                 <Border Grid.Row="2"
                         Style="{StaticResource CardBorder}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="32" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="32" />
                             <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="16" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0"
-                                    Orientation="Horizontal"
-                                    VerticalAlignment="Center">
-                            <TextBlock VerticalAlignment="Center"
+                        <Grid Grid.Column="0"
+                              Style="{StaticResource LiveDataOptionGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="12" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0"
+                                       Style="{StaticResource LiveDataLabelTextBlock}"
                                        Text="Updates per second" />
-                            <ComboBox Width="96"
-                                      Margin="12,0,0,0"
+                            <ComboBox Grid.Column="2"
+                                      Style="{StaticResource LiveDataRateComboBox}"
                                       ItemsSource="{Binding Rates}"
                                       SelectedItem="{Binding SelectedRate}"
                                       AutomationProperties.Name="Updates per second" ItemStringFormat="N0" />
-                        </StackPanel>
-                        <StackPanel Grid.Column="1"
-                                    Orientation="Horizontal"
-                                    Margin="32,0,0,0"
-                                    VerticalAlignment="Center">
-                            <TextBlock VerticalAlignment="Center"
+                        </Grid>
+                        <Grid Grid.Column="2"
+                              Style="{StaticResource LiveDataOptionGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="12" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0"
+                                       Style="{StaticResource LiveDataLabelTextBlock}"
                                        Text="Draw 4 times per second" />
-                            <controls:ToggleSwitch Margin="12,0,0,0"
-                                                   VerticalAlignment="Center"
+                            <controls:ToggleSwitch Grid.Column="2"
+                                                   Style="{StaticResource LiveDataToggleSwitch}"
                                                    IsChecked="{Binding IsLimited}"
                                                    AutomationProperties.Name="Draw 4 times per second" />
-                        </StackPanel>
-                        <TextBlock Grid.Column="2"
-                                   Margin="32,0,16,0"
-                                   VerticalAlignment="Center"
-                                   FontSize="12"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                        </Grid>
+                        <TextBlock Grid.Column="4"
+                                   Style="{StaticResource LiveDataCountTextBlock}">
                             <TextBlock.Text>
                                 <MultiBinding StringFormat="{}Received {0:N0} · Drawn {1:N0}">
                                     <Binding Path="ReceivedCount" />
@@ -72,20 +204,26 @@
                                 </MultiBinding>
                             </TextBlock.Text>
                         </TextBlock>
-                        <StackPanel Grid.Column="3"
-                                    Orientation="Horizontal">
-                            <Button Width="96"
+                        <Grid Grid.Column="6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="8" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0"
+                                    Style="{StaticResource LiveDataPauseButton}"
                                     Command="{Binding PauseCommand}"
                                     Content="{Binding IsPaused, Converter={s:BoolToText True=Resume, False=Pause}}" />
-                            <Button Margin="8,0,0,0"
+                            <Button Grid.Column="2"
                                     Command="{Binding DropCommand}"
                                     Content="Stop Humidity for 5 s" />
-                        </StackPanel>
+                        </Grid>
                     </Grid>
                 </Border>
 
-                <ItemsControl Grid.Row="3"
-                              Margin="0,8,-8,0"
+                <!-- Sensors -->
+                <ItemsControl Grid.Row="4"
+                              Style="{StaticResource LiveDataSensorItemsControl}"
                               ItemsSource="{Binding Sensors}"
                               Focusable="False">
                     <ItemsControl.ItemsPanel>
@@ -95,12 +233,13 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="{x:Type sample:LiveSensor}">
-                            <Border Style="{StaticResource CardBorder}"
-                                    Margin="0,0,8,8">
+                            <Border Style="{StaticResource LiveDataSensorBorder}">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="8" />
                                         <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="12" />
                                         <RowDefinition Height="*" />
                                     </Grid.RowDefinitions>
                                     <Grid Grid.Row="0">
@@ -109,70 +248,67 @@
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0"
-                                                   Style="{DynamicResource BodyStrongTextBlockStyle}"
+                                                   Style="{StaticResource CardStrongTextBlock}"
                                                    Text="{Binding Name}" />
                                         <TextBlock x:Name="LiveText"
                                                    Grid.Column="1"
-                                                   VerticalAlignment="Center"
-                                                   Text="Live"
-                                                   FontSize="12"
-                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                                   Style="{StaticResource LiveDataLiveTextBlock}"
+                                                   Text="Live" />
                                         <Border x:Name="StaleBadge"
                                                 Grid.Column="1"
-                                                Padding="8,2"
-                                                VerticalAlignment="Center"
-                                                Visibility="Collapsed"
-                                                Background="{DynamicResource SystemFillColorCautionBackgroundBrush}">
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock VerticalAlignment="Center"
-                                                           Text="&#xE7BA;"
-                                                           FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                                           FontSize="12"
-                                                           Foreground="{DynamicResource SystemFillColorCautionBrush}" />
-                                                <TextBlock Margin="6,0,0,0"
-                                                           VerticalAlignment="Center"
-                                                           Text="No data for 3 s"
-                                                           FontSize="12" />
-                                            </StackPanel>
+                                                Style="{StaticResource LiveDataStaleBorder}"
+                                                Visibility="Collapsed">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="6" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0"
+                                                           Style="{StaticResource LiveDataStaleIconTextBlock}"
+                                                           Text="&#xE7BA;" />
+                                                <TextBlock Grid.Column="2"
+                                                           Style="{StaticResource LiveDataStaleTextBlock}"
+                                                           Text="No data for 3 s" />
+                                            </Grid>
                                         </Border>
                                     </Grid>
-                                    <StackPanel Grid.Row="1"
-                                                Orientation="Horizontal"
-                                                Margin="0,8,0,0">
+                                    <Grid Grid.Row="2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="6" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
                                         <TextBlock x:Name="Reading"
-                                                   Text="{Binding ValueText}"
-                                                   FontSize="{DynamicResource TitleTextBlockFontSize}"
-                                                   FontWeight="SemiBold" />
-                                        <TextBlock Margin="6,0,0,5"
-                                                   VerticalAlignment="Bottom"
-                                                   Text="{Binding Unit}"
-                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                                        <StackPanel x:Name="Movement"
-                                                    Orientation="Horizontal"
-                                                    Margin="12,0,0,0"
-                                                    VerticalAlignment="Bottom">
+                                                   Grid.Column="0"
+                                                   Style="{StaticResource MetricValueTextBlock}"
+                                                   Text="{Binding ValueText}" />
+                                        <TextBlock Grid.Column="2"
+                                                   Style="{StaticResource LiveDataUnitTextBlock}"
+                                                   Text="{Binding Unit}" />
+                                        <Grid x:Name="Movement"
+                                              Grid.Column="3"
+                                              Style="{StaticResource LiveDataMovementGrid}">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="4" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
                                             <TextBlock x:Name="Caret"
-                                                       Margin="0,0,0,6"
-                                                       VerticalAlignment="Bottom"
-                                                       Text="&#xF08E;"
-                                                       FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                                       FontSize="10"
-                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                                            <TextBlock Margin="4,0,0,4"
-                                                       VerticalAlignment="Bottom"
-                                                       Text="{Binding DeltaText}"
-                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                                        </StackPanel>
-                                    </StackPanel>
-                                    <controls:LineChart Grid.Row="2"
-                                                        MinHeight="150"
-                                                        Margin="0,12,0,0"
+                                                       Grid.Column="0"
+                                                       Style="{StaticResource LiveDataCaretTextBlock}"
+                                                       Text="&#xF08E;" />
+                                            <TextBlock Grid.Column="2"
+                                                       Style="{StaticResource LiveDataDeltaTextBlock}"
+                                                       Text="{Binding DeltaText}" />
+                                        </Grid>
+                                    </Grid>
+                                    <controls:LineChart Grid.Row="4"
+                                                        Style="{StaticResource LiveDataLineChart}"
                                                         Minimum="{Binding Minimum}"
                                                         Maximum="{Binding Maximum}"
-                                                        Fill="{StaticResource ChartBlueSuperLightBrush}"
-                                                        Stroke="{StaticResource ChartBlueBrush}"
                                                         Capacity="{x:Static sample:LiveSensor.Capacity}"
-                                                        GridBrush="{DynamicResource DividerStrokeColorDefaultBrush}"
                                                         Values="{Binding Values}" />
                                 </Grid>
                             </Border>
@@ -196,6 +332,7 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
+
             </Grid>
         </Grid>
     </ScrollViewer>

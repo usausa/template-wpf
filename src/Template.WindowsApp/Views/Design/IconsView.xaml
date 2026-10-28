@@ -74,12 +74,6 @@
             <Setter Property="FontSize" Value="48" />
         </Style>
 
-        <Style x:Key="IconsNameTextBlock"
-               TargetType="{x:Type TextBlock}"
-               BasedOn="{StaticResource PageTextBlockBase}">
-            <Setter Property="FontWeight" Value="SemiBold" />
-        </Style>
-
         <Style x:Key="IconsCodeTextBlock"
                TargetType="{x:Type TextBlock}">
             <Setter Property="VerticalAlignment" Value="Center" />
@@ -258,7 +252,7 @@
                                                    Text="{Binding Glyph}" />
                                     </Border>
                                     <TextBlock Grid.Row="2"
-                                               Style="{StaticResource IconsNameTextBlock}"
+                                               Style="{StaticResource CardStrongTextBlock}"
                                                Text="{Binding Name}" />
                                     <StackPanel Grid.Row="4">
                                         <TextBlock Style="{StaticResource FieldLabelTextBlock}"

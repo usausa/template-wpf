@@ -124,6 +124,14 @@
         <Setter Property="FontWeight" Value="Normal" />
     </Style>
 
+    <!-- Metric -->
+
+    <Style x:Key="MetricValueTextBlock"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="{DynamicResource TitleTextBlockFontSize}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
     <!-- ================================================================================ -->
     <!-- Card -->
     <!-- ================================================================================ -->
@@ -190,6 +198,35 @@
         <Setter Property="FontSize" Value="{DynamicResource CaptionTextBlockFontSize}" />
         <Setter Property="FontWeight" Value="Normal" />
         <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+    </Style>
+
+    <Style x:Key="CardStrongTextBlock"
+           TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource PageTextBlockBase}">
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
+    <!-- Row -->
+
+    <Style x:Key="CardRowTitleStack"
+           TargetType="{x:Type StackPanel}">
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="CardRowResultTextBlock"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="{DynamicResource CaptionTextBlockFontSize}" />
+        <Setter Property="MaxWidth" Value="320" />
+        <Setter Property="Margin" Value="16,0,16,0" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+    </Style>
+
+    <Style x:Key="CardRowButton"
+           TargetType="{x:Type Button}"
+           BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="Width" Value="96" />
     </Style>
 
     <!-- Sample -->

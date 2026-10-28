@@ -17,36 +17,66 @@
                     Icon="../../App.ico"
                     ShowIconOnTitleBar="False" Topmost="True">
 
+    <controls:AppWindow.Resources>
+
+        <Style x:Key="MemoryWindowRootGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Margin" Value="16,0,16,16" />
+        </Style>
+
+        <Style x:Key="MemoryWindowPeakTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="0,0,0,6" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
+        <Style x:Key="MemoryWindowLineChart"
+               TargetType="{x:Type controls:LineChart}">
+            <Setter Property="Fill" Value="{StaticResource ChartBlueSuperLightBrush}" />
+            <Setter Property="Stroke" Value="{StaticResource ChartBlueBrush}" />
+            <Setter Property="GridBrush" Value="{DynamicResource DividerStrokeColorDefaultBrush}" />
+            <Setter Property="LabelBrush" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
+    </controls:AppWindow.Resources>
+
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closed">
             <s:DataContextDisposeAction />
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
-    <Grid Margin="16,0,16,16">
+    <!-- Content -->
+    <Grid Style="{StaticResource MemoryWindowRootGrid}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="8" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0"
-                    Orientation="Horizontal">
-            <TextBlock Text="{Binding Memory}"
-                       FontSize="{DynamicResource TitleTextBlockFontSize}"
-                       FontWeight="SemiBold" />
-            <TextBlock Margin="8,0,0,6"
-                       VerticalAlignment="Bottom"
-                       Text="{Binding PeakMemory}"
-                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-        </StackPanel>
-        <controls:LineChart Grid.Row="1"
-                            Margin="0,8,0,0"
-                            Fill="{StaticResource ChartBlueSuperLightBrush}"
-                            Stroke="{StaticResource ChartBlueBrush}"
+
+        <!-- Memory -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="8" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0"
+                       Style="{StaticResource MetricValueTextBlock}"
+                       Text="{Binding Memory}" />
+            <TextBlock Grid.Column="2"
+                       Style="{StaticResource MemoryWindowPeakTextBlock}"
+                       Text="{Binding PeakMemory}" />
+        </Grid>
+
+        <!-- Chart -->
+        <controls:LineChart Grid.Row="2"
+                            Style="{StaticResource MemoryWindowLineChart}"
                             Capacity="{x:Static components:ProcessMonitor.Capacity}"
-                            GridBrush="{DynamicResource DividerStrokeColorDefaultBrush}"
-                            LabelBrush="{DynamicResource TextFillColorSecondaryBrush}"
                             Labels="{Binding MemoryLabels}"
                             Values="{Binding MemoryValues}" />
+
     </Grid>
 
 </controls:AppWindow>

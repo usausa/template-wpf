@@ -18,17 +18,37 @@
                     Topmost="{Binding IsTopmost}">
 
     <controls:AppWindow.Resources>
-        <Style x:Key="SettingIconTextStyle"
+
+        <!-- Layout -->
+
+        <Style x:Key="SampleWindowPageStack"
+               TargetType="{x:Type StackPanel}"
+               BasedOn="{StaticResource PageStack}">
+            <Setter Property="Margin" Value="24,16,24,24" />
+        </Style>
+
+        <!-- Window -->
+
+        <Style x:Key="SampleWindowIconTextBlock"
                TargetType="{x:Type TextBlock}">
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
             <Setter Property="FontSize" Value="16" />
         </Style>
-        <Style x:Key="StatusNameTextStyle"
+
+        <Style x:Key="SampleWindowToggleSwitch"
+               TargetType="{x:Type controls:ToggleSwitch}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <!-- Status -->
+
+        <Style x:Key="SampleWindowStatusNameTextBlock"
                TargetType="{x:Type TextBlock}">
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
         </Style>
+
     </controls:AppWindow.Resources>
 
     <controls:AppWindow.ResizeMode>
@@ -46,112 +66,130 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
+    <!-- Content -->
     <ScrollViewer Style="{StaticResource RootScroll}">
-        <StackPanel Margin="24,16,24,24">
+        <StackPanel Style="{StaticResource SampleWindowPageStack}">
+
+            <!-- Header -->
             <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
                        Text="Change how this window behaves." />
 
+            <!-- Window -->
             <StackPanel Style="{StaticResource SectionPanel}">
                 <TextBlock Style="{StaticResource SectionHeaderTextBlock}"
                            Text="Window" />
+
+                <!-- Always on top -->
                 <Border Style="{StaticResource CardBorder}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="40" />
+                            <ColumnDefinition Width="8" />
                             <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="16" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0"
-                                   Style="{StaticResource SettingIconTextStyle}"
+                                   Style="{StaticResource SampleWindowIconTextBlock}"
                                    Text="&#xE718;" />
-                        <StackPanel Grid.Column="1"
-                                    Margin="8,0,16,0"
-                                    VerticalAlignment="Center">
+                        <StackPanel Grid.Column="2"
+                                    Style="{StaticResource CardRowTitleStack}">
                             <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                        Text="Always on top" />
                             <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                        Text="Keep this window above other windows" />
                         </StackPanel>
-                        <controls:ToggleSwitch Grid.Column="2"
-                                               VerticalAlignment="Center"
+                        <controls:ToggleSwitch Grid.Column="4"
+                                               Style="{StaticResource SampleWindowToggleSwitch}"
                                                IsChecked="{Binding IsTopmost}"
                                                AutomationProperties.Name="Always on top" />
                     </Grid>
                 </Border>
+
+                <!-- Resizable -->
                 <Border Style="{StaticResource CardBorder}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="40" />
+                            <ColumnDefinition Width="8" />
                             <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="16" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0"
-                                   Style="{StaticResource SettingIconTextStyle}"
+                                   Style="{StaticResource SampleWindowIconTextBlock}"
                                    Text="&#xE744;" />
-                        <StackPanel Grid.Column="1"
-                                    Margin="8,0,16,0"
-                                    VerticalAlignment="Center">
+                        <StackPanel Grid.Column="2"
+                                    Style="{StaticResource CardRowTitleStack}">
                             <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                        Text="Resizable" />
                             <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                        Text="Let this window be resized and maximized" />
                         </StackPanel>
-                        <controls:ToggleSwitch Grid.Column="2"
-                                               VerticalAlignment="Center"
+                        <controls:ToggleSwitch Grid.Column="4"
+                                               Style="{StaticResource SampleWindowToggleSwitch}"
                                                IsChecked="{Binding IsResizable}"
                                                AutomationProperties.Name="Resizable" />
                     </Grid>
                 </Border>
+
+                <!-- Show in taskbar -->
                 <Border Style="{StaticResource CardBorder}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="40" />
+                            <ColumnDefinition Width="8" />
                             <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="16" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0"
-                                   Style="{StaticResource SettingIconTextStyle}"
+                                   Style="{StaticResource SampleWindowIconTextBlock}"
                                    Text="&#xE7C4;" />
-                        <StackPanel Grid.Column="1"
-                                    Margin="8,0,16,0"
-                                    VerticalAlignment="Center">
+                        <StackPanel Grid.Column="2"
+                                    Style="{StaticResource CardRowTitleStack}">
                             <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                        Text="Show in taskbar" />
                             <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                        Text="Show a button for this window on the taskbar" />
                         </StackPanel>
-                        <controls:ToggleSwitch Grid.Column="2"
-                                               VerticalAlignment="Center"
+                        <controls:ToggleSwitch Grid.Column="4"
+                                               Style="{StaticResource SampleWindowToggleSwitch}"
                                                IsChecked="{Binding ShowInTaskbar}"
                                                AutomationProperties.Name="Show in taskbar" />
                     </Grid>
                 </Border>
+
+                <!-- Title bar icon -->
                 <Border Style="{StaticResource CardBorder}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="40" />
+                            <ColumnDefinition Width="8" />
                             <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="16" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0"
-                                   Style="{StaticResource SettingIconTextStyle}"
+                                   Style="{StaticResource SampleWindowIconTextBlock}"
                                    Text="&#xECAA;" />
-                        <StackPanel Grid.Column="1"
-                                    Margin="8,0,16,0"
-                                    VerticalAlignment="Center">
+                        <StackPanel Grid.Column="2"
+                                    Style="{StaticResource CardRowTitleStack}">
                             <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                        Text="Title bar icon" />
                             <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                        Text="Show the app icon on the title bar" />
                         </StackPanel>
-                        <controls:ToggleSwitch Grid.Column="2"
-                                               VerticalAlignment="Center"
+                        <controls:ToggleSwitch Grid.Column="4"
+                                               Style="{StaticResource SampleWindowToggleSwitch}"
                                                IsChecked="{Binding ShowIcon}"
                                                AutomationProperties.Name="Title bar icon" />
                     </Grid>
                 </Border>
+
             </StackPanel>
 
+            <!-- Status -->
             <StackPanel Style="{StaticResource SectionPanel}">
                 <TextBlock Style="{StaticResource SectionHeaderTextBlock}"
                            Text="Status" />
@@ -163,11 +201,13 @@
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="8" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="8" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Row="0" Grid.Column="0"
-                                   Style="{StaticResource StatusNameTextStyle}"
+                                   Style="{StaticResource SampleWindowStatusNameTextBlock}"
                                    Text="Size" />
                         <TextBlock Grid.Row="0" Grid.Column="1">
                             <TextBlock.Text>
@@ -179,23 +219,20 @@
                                 </MultiBinding>
                             </TextBlock.Text>
                         </TextBlock>
-                        <TextBlock Grid.Row="1" Grid.Column="0"
-                                   Style="{StaticResource StatusNameTextStyle}"
-                                   Margin="0,8,0,0"
-                                   Text="State" />
-                        <TextBlock Grid.Row="1" Grid.Column="1"
-                                   Margin="0,8,0,0"
-                                   Text="{Binding WindowState, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
                         <TextBlock Grid.Row="2" Grid.Column="0"
-                                   Style="{StaticResource StatusNameTextStyle}"
-                                   Margin="0,8,0,0"
-                                   Text="Owner" />
+                                   Style="{StaticResource SampleWindowStatusNameTextBlock}"
+                                   Text="State" />
                         <TextBlock Grid.Row="2" Grid.Column="1"
-                                   Margin="0,8,0,0"
+                                   Text="{Binding WindowState, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+                        <TextBlock Grid.Row="4" Grid.Column="0"
+                                   Style="{StaticResource SampleWindowStatusNameTextBlock}"
+                                   Text="Owner" />
+                        <TextBlock Grid.Row="4" Grid.Column="1"
                                    Text="{Binding Owner.Title, RelativeSource={RelativeSource AncestorType={x:Type Window}}, FallbackValue=None}" />
                     </Grid>
                 </Border>
             </StackPanel>
+
         </StackPanel>
     </ScrollViewer>
 

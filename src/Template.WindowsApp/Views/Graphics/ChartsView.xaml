@@ -12,6 +12,31 @@
              d:DesignWidth="800" d:DesignHeight="600">
 
     <UserControl.Resources>
+
+        <!-- Line -->
+
+        <Style x:Key="ChartsLineChart"
+               TargetType="{x:Type controls:LineChart}">
+            <Setter Property="MinHeight" Value="160" />
+            <Setter Property="Margin" Value="0,16,0,0" />
+            <Setter Property="Fill" Value="{StaticResource ChartBlueSuperLightBrush}" />
+            <Setter Property="Stroke" Value="{StaticResource ChartBlueBrush}" />
+            <Setter Property="GridBrush" Value="{DynamicResource DividerStrokeColorDefaultBrush}" />
+            <Setter Property="LabelBrush" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
+        <!-- Bar -->
+
+        <Style x:Key="ChartsBarChart"
+               TargetType="{x:Type controls:BarChart}">
+            <Setter Property="MinHeight" Value="160" />
+            <Setter Property="Margin" Value="0,16,0,0" />
+            <Setter Property="Fill" Value="{StaticResource ChartBlueBrush}" />
+            <Setter Property="LabelBrush" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
+        <!-- Donut -->
+
         <x:Array x:Key="ShareFills"
                  Type="{x:Type Brush}">
             <StaticResource ResourceKey="ChartBlueSemiDarkBrush" />
@@ -19,27 +44,43 @@
             <StaticResource ResourceKey="ChartBlueLightBrush" />
             <StaticResource ResourceKey="ChartBlueSuperLightBrush" />
         </x:Array>
-        <Style x:Key="LegendSwatchStyle"
+
+        <Style x:Key="ChartsDonutChart"
+               TargetType="{x:Type controls:DonutChart}">
+            <Setter Property="MinHeight" Value="160" />
+            <Setter Property="Fills" Value="{StaticResource ShareFills}" />
+        </Style>
+
+        <Style x:Key="ChartsLegendGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="ChartsLegendSwatchRectangle"
                TargetType="{x:Type Rectangle}">
             <Setter Property="Width" Value="12" />
             <Setter Property="Height" Value="12" />
             <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
-        <Style x:Key="LegendTextStyle"
+
+        <Style x:Key="ChartsLegendTextBlock"
                TargetType="{x:Type TextBlock}">
             <Setter Property="Margin" Value="8,0,24,0" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="FontSize" Value="{DynamicResource BodyTextBlockFontSize}" />
         </Style>
-        <Style x:Key="LegendValueTextStyle"
+
+        <Style x:Key="ChartsLegendValueTextBlock"
                TargetType="{x:Type TextBlock}">
             <Setter Property="HorizontalAlignment" Value="Right" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="FontSize" Value="{DynamicResource BodyTextBlockFontSize}" />
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
         </Style>
+
     </UserControl.Resources>
 
+    <!-- Content -->
     <ScrollViewer Style="{StaticResource RootScroll}">
         <Grid MinHeight="{Binding ViewportHeight, RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}}">
             <Grid Style="{StaticResource PageGrid}">
@@ -47,9 +88,11 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="16" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
+                <!-- Header -->
                 <TextBlock Grid.Row="0"
                            Style="{StaticResource PageTitleTextBlock}"
                            Text="Charts" />
@@ -57,13 +100,12 @@
                            Style="{StaticResource PageDescriptionTextBlock}"
                            Text="Line, bar and donut charts drawn in code." />
 
+                <!-- Randomize -->
                 <Button Grid.Row="2"
-                        Margin="0,0,0,16"
-                        HorizontalAlignment="Left"
                         Command="{Binding RandomizeCommand}"
                         Content="Randomize" />
 
-                <Grid Grid.Row="3">
+                <Grid Grid.Row="4">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="8" />
@@ -74,6 +116,7 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
+                    <!-- Line -->
                     <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
                             Style="{StaticResource CardBorder}">
                         <Grid>
@@ -89,17 +132,13 @@
                                        Style="{StaticResource CardCaptionTextBlock}"
                                        Text="Monthly values over a year." />
                             <controls:LineChart Grid.Row="2"
-                                                MinHeight="160"
-                                                Margin="0,16,0,0"
-                                                Fill="{StaticResource ChartBlueSuperLightBrush}"
-                                                Stroke="{StaticResource ChartBlueBrush}"
-                                                GridBrush="{DynamicResource DividerStrokeColorDefaultBrush}"
-                                                LabelBrush="{DynamicResource TextFillColorSecondaryBrush}"
+                                                Style="{StaticResource ChartsLineChart}"
                                                 Labels="{Binding MonthLabels}"
                                                 Values="{Binding MonthValues}" />
                         </Grid>
                     </Border>
 
+                    <!-- Bar -->
                     <Border Grid.Row="1" Grid.Column="0"
                             Style="{StaticResource CardBorder}">
                         <Grid>
@@ -115,15 +154,13 @@
                                        Style="{StaticResource CardCaptionTextBlock}"
                                        Text="Values by category." />
                             <controls:BarChart Grid.Row="2"
-                                               MinHeight="160"
-                                               Margin="0,16,0,0"
-                                               Fill="{StaticResource ChartBlueBrush}"
-                                               LabelBrush="{DynamicResource TextFillColorSecondaryBrush}"
+                                               Style="{StaticResource ChartsBarChart}"
                                                Labels="{Binding CategoryLabels}"
                                                Values="{Binding CategoryValues}" />
                         </Grid>
                     </Border>
 
+                    <!-- Donut -->
                     <Border Grid.Row="1" Grid.Column="2"
                             Style="{StaticResource CardBorder}">
                         <Grid>
@@ -139,18 +176,17 @@
                                        Style="{StaticResource CardCaptionTextBlock}"
                                        Text="Shares of the total, with a legend." />
                             <Grid Grid.Row="2"
-                                  Margin="0,16,0,0">
+                                  Style="{StaticResource SampleGrid}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="24" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <controls:DonutChart Grid.Column="0"
-                                                     MinHeight="160"
-                                                     Fills="{StaticResource ShareFills}"
+                                                     Style="{StaticResource ChartsDonutChart}"
                                                      Values="{Binding ShareValues}" />
-                                <Grid Grid.Column="1"
-                                      Margin="24,0,0,0"
-                                      VerticalAlignment="Center">
+                                <Grid Grid.Column="2"
+                                      Style="{StaticResource ChartsLegendGrid}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto" />
@@ -164,49 +200,50 @@
                                     </Grid.RowDefinitions>
 
                                     <Rectangle Grid.Row="0" Grid.Column="0"
-                                               Style="{StaticResource LegendSwatchStyle}"
+                                               Style="{StaticResource ChartsLegendSwatchRectangle}"
                                                Fill="{StaticResource ChartBlueSemiDarkBrush}" />
                                     <TextBlock Grid.Row="0" Grid.Column="1"
-                                               Style="{StaticResource LegendTextStyle}"
+                                               Style="{StaticResource ChartsLegendTextBlock}"
                                                Text="{Binding ShareLabels[0]}" />
                                     <TextBlock Grid.Row="0" Grid.Column="2"
-                                               Style="{StaticResource LegendValueTextStyle}"
+                                               Style="{StaticResource ChartsLegendValueTextBlock}"
                                                Text="{Binding ShareRatios[0], StringFormat={}{0:P0}}" />
 
                                     <Rectangle Grid.Row="1" Grid.Column="0"
-                                               Style="{StaticResource LegendSwatchStyle}"
+                                               Style="{StaticResource ChartsLegendSwatchRectangle}"
                                                Fill="{StaticResource ChartBlueBrush}" />
                                     <TextBlock Grid.Row="1" Grid.Column="1"
-                                               Style="{StaticResource LegendTextStyle}"
+                                               Style="{StaticResource ChartsLegendTextBlock}"
                                                Text="{Binding ShareLabels[1]}" />
                                     <TextBlock Grid.Row="1" Grid.Column="2"
-                                               Style="{StaticResource LegendValueTextStyle}"
+                                               Style="{StaticResource ChartsLegendValueTextBlock}"
                                                Text="{Binding ShareRatios[1], StringFormat={}{0:P0}}" />
 
                                     <Rectangle Grid.Row="2" Grid.Column="0"
-                                               Style="{StaticResource LegendSwatchStyle}"
+                                               Style="{StaticResource ChartsLegendSwatchRectangle}"
                                                Fill="{StaticResource ChartBlueLightBrush}" />
                                     <TextBlock Grid.Row="2" Grid.Column="1"
-                                               Style="{StaticResource LegendTextStyle}"
+                                               Style="{StaticResource ChartsLegendTextBlock}"
                                                Text="{Binding ShareLabels[2]}" />
                                     <TextBlock Grid.Row="2" Grid.Column="2"
-                                               Style="{StaticResource LegendValueTextStyle}"
+                                               Style="{StaticResource ChartsLegendValueTextBlock}"
                                                Text="{Binding ShareRatios[2], StringFormat={}{0:P0}}" />
 
                                     <Rectangle Grid.Row="3" Grid.Column="0"
-                                               Style="{StaticResource LegendSwatchStyle}"
+                                               Style="{StaticResource ChartsLegendSwatchRectangle}"
                                                Fill="{StaticResource ChartBlueSuperLightBrush}" />
                                     <TextBlock Grid.Row="3" Grid.Column="1"
-                                               Style="{StaticResource LegendTextStyle}"
+                                               Style="{StaticResource ChartsLegendTextBlock}"
                                                Text="{Binding ShareLabels[3]}" />
                                     <TextBlock Grid.Row="3" Grid.Column="2"
-                                               Style="{StaticResource LegendValueTextStyle}"
+                                               Style="{StaticResource ChartsLegendValueTextBlock}"
                                                Text="{Binding ShareRatios[3], StringFormat={}{0:P0}}" />
                                 </Grid>
                             </Grid>
                         </Grid>
                     </Border>
                 </Grid>
+
             </Grid>
         </Grid>
     </ScrollViewer>

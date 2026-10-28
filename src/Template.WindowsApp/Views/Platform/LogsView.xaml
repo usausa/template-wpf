@@ -15,12 +15,28 @@
              d:DesignWidth="800" d:DesignHeight="600">
 
     <UserControl.Resources>
-        <Style x:Key="LogCellStyle"
+
+        <!-- Toolbar -->
+
+        <Style x:Key="LogsLabelTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="LogsToggleSwitch"
+               TargetType="{x:Type controls:ToggleSwitch}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <!-- Entries -->
+
+        <Style x:Key="LogsCell"
                TargetType="{x:Type DataGridCell}"
                BasedOn="{StaticResource DataGridCell}">
             <Setter Property="MinHeight" Value="24" />
         </Style>
-        <Style x:Key="LogCellTextStyle"
+
+        <Style x:Key="LogsCellTextBlock"
                TargetType="{x:Type TextBlock}"
                BasedOn="{x:Static DataGridTextColumn.DefaultElementStyle}">
             <Setter Property="VerticalAlignment" Value="Center" />
@@ -48,72 +64,111 @@
                 </MultiDataTrigger>
             </Style.Triggers>
         </Style>
-        <Style x:Key="MessageCellTextStyle"
+
+        <Style x:Key="LogsMessageTextBlock"
                TargetType="{x:Type TextBlock}"
-               BasedOn="{StaticResource LogCellTextStyle}">
+               BasedOn="{StaticResource LogsCellTextBlock}">
             <Setter Property="TextTrimming" Value="CharacterEllipsis" />
         </Style>
+
+        <!-- Count -->
+
+        <Style x:Key="LogsCountTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource PageTextBlockBase}">
+            <Setter Property="FontWeight" Value="Normal" />
+        </Style>
+
+        <!-- Details -->
+
+        <Style x:Key="LogsDetailsTextBox"
+               TargetType="{x:Type TextBox}"
+               BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Height" Value="120" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="FontFamily" Value="{StaticResource CodeFontFamily}" />
+        </Style>
+
     </UserControl.Resources>
 
+    <!-- Content -->
     <Grid Style="{StaticResource PageGrid}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+
+        <!-- Header -->
         <TextBlock Grid.Row="0"
                    Style="{StaticResource PageTitleTextBlock}"
                    Text="Logs" />
         <TextBlock Grid.Row="1"
                    Style="{StaticResource PageDescriptionTextBlock}"
                    Text="Recent log entries of this app." />
+
         <Border Grid.Row="2"
                 Style="{StaticResource CardBorder}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="16" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="16" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="8" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
+                <!-- Toolbar -->
                 <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="16" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" MaxWidth="248" />
+                            <ColumnDefinition Width="8" />
+                            <ColumnDefinition Width="*" MaxWidth="240" />
                         </Grid.ColumnDefinitions>
                         <ComboBox Grid.Column="0"
-                                  Width="160"
+                                  Style="{StaticResource SampleNarrowComboBox}"
                                   ItemsSource="{Binding Levels}"
                                   SelectedItem="{Binding Level}"
                                   AutomationProperties.Name="Level" />
-                        <TextBox Grid.Column="1"
+                        <TextBox Grid.Column="2"
                                  behaviors:TextBoxOption.PlaceholderText="Search"
-                                 Margin="8,0,0,0"
                                  Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
                                  AutomationProperties.Name="Search" />
                     </Grid>
-                    <StackPanel Grid.Column="1"
-                                Orientation="Horizontal"
-                                Margin="16,0,0,0">
-                        <TextBlock VerticalAlignment="Center"
+                    <Grid Grid.Column="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="12" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="16" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="8" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="8" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"
+                                   Style="{StaticResource LogsLabelTextBlock}"
                                    Text="Auto scroll" />
-                        <controls:ToggleSwitch Margin="12,0,0,0"
-                                               VerticalAlignment="Center"
+                        <controls:ToggleSwitch Grid.Column="2"
+                                               Style="{StaticResource LogsToggleSwitch}"
                                                IsChecked="{Binding AutoScroll}"
                                                AutomationProperties.Name="Auto scroll" />
-                        <Button Margin="16,0,0,0"
+                        <Button Grid.Column="4"
                                 Command="{Binding CopyCommand}"
                                 Content="Copy" />
-                        <Button Margin="8,0,0,0"
+                        <Button Grid.Column="6"
                                 Command="{Binding ClearCommand}"
                                 Content="Clear" />
-                        <controls:SplitButton Margin="8,0,0,0"
+                        <controls:SplitButton Grid.Column="8"
                                               Command="{Binding WriteEntryCommand}"
                                               CommandParameter="{x:Static logging:LogLevel.Information}"
                                               Content="Write entry"
@@ -132,17 +187,17 @@
                                 </ContextMenu>
                             </controls:SplitButton.ContextMenu>
                         </controls:SplitButton>
-                    </StackPanel>
+                    </Grid>
                 </Grid>
 
-                <DataGrid Grid.Row="1"
-                          Margin="0,16,0,0"
+                <!-- Entries -->
+                <DataGrid Grid.Row="2"
                           ItemsSource="{Binding Items}"
                           SelectedItem="{Binding SelectedEntry}"
                           SelectionMode="Single"
                           AutoGenerateColumns="False" AutomationProperties.Name="Log entries" CanUserAddRows="False" CanUserDeleteRows="False"
                           CanUserSortColumns="False"
-                          CellStyle="{StaticResource LogCellStyle}"
+                          CellStyle="{StaticResource LogsCell}"
                           HeadersVisibility="Column" IsReadOnly="True">
                     <i:Interaction.Behaviors>
                         <behaviors:AutoScrollBehavior IsEnabled="{Binding AutoScroll}" />
@@ -151,25 +206,25 @@
                         <DataGridTextColumn Width="110"
                                             Binding="{Binding Timestamp, StringFormat=HH:mm:ss.fff}"
                                             Header="Time"
-                                            ElementStyle="{StaticResource LogCellTextStyle}" />
+                                            ElementStyle="{StaticResource LogsCellTextBlock}" />
                         <DataGridTextColumn Width="110"
                                             Binding="{Binding Level}"
                                             Header="Level"
-                                            ElementStyle="{StaticResource LogCellTextStyle}" />
+                                            ElementStyle="{StaticResource LogsCellTextBlock}" />
                         <DataGridTextColumn Width="200"
                                             Binding="{Binding Source}"
                                             Header="Source"
-                                            ElementStyle="{StaticResource LogCellTextStyle}" />
+                                            ElementStyle="{StaticResource LogsCellTextBlock}" />
                         <DataGridTextColumn Width="*"
                                             Binding="{Binding Message}"
                                             Header="Message"
-                                            ElementStyle="{StaticResource MessageCellTextStyle}" />
+                                            ElementStyle="{StaticResource LogsMessageTextBlock}" />
                     </DataGrid.Columns>
                 </DataGrid>
 
-                <TextBlock Grid.Row="2"
-                           Style="{DynamicResource BodyTextBlockStyle}"
-                           Margin="0,16,0,0">
+                <!-- Count -->
+                <TextBlock Grid.Row="4"
+                           Style="{StaticResource LogsCountTextBlock}">
                     <TextBlock.Text>
                         <MultiBinding StringFormat="{}Showing {0} of {1}">
                             <Binding Path="ShownCount" />
@@ -178,16 +233,16 @@
                     </TextBlock.Text>
                 </TextBlock>
 
-                <TextBox Grid.Row="3"
-                         Height="120"
-                         Margin="0,8,0,0"
-                         TextWrapping="Wrap"
+                <!-- Details -->
+                <TextBox Grid.Row="6"
+                         Style="{StaticResource LogsDetailsTextBox}"
                          VerticalScrollBarVisibility="Auto"
                          Text="{Binding Details, Mode=OneWay}"
-                         FontFamily="{StaticResource CodeFontFamily}"
                          AutomationProperties.Name="Details" IsReadOnly="True" />
+
             </Grid>
         </Border>
+
     </Grid>
 
 </UserControl>

@@ -12,17 +12,58 @@
              d:DesignWidth="800" d:DesignHeight="600">
 
     <UserControl.Resources>
-        <Style x:Key="TitleCellTextStyle"
+
+        <!-- Layout -->
+
+        <Style x:Key="WebApiRootGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="MinHeight" Value="840" />
+        </Style>
+
+        <!-- Posts -->
+
+        <Style x:Key="WebApiPostsDataGrid"
+               TargetType="{x:Type DataGrid}"
+               BasedOn="{StaticResource {x:Type DataGrid}}">
+            <Setter Property="MinHeight" Value="354" />
+        </Style>
+
+        <Style x:Key="WebApiTitleTextBlock"
                TargetType="{x:Type TextBlock}"
                BasedOn="{x:Static DataGridTextColumn.DefaultElementStyle}">
             <Setter Property="TextTrimming" Value="CharacterEllipsis" />
         </Style>
-        <Style x:Key="NumberCellTextStyle"
-               TargetType="{x:Type TextBlock}"
-               BasedOn="{x:Static DataGridTextColumn.DefaultElementStyle}">
-            <Setter Property="HorizontalAlignment" Value="Right" />
+
+        <!-- Post -->
+
+        <Style x:Key="WebApiPostButtonsGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Margin" Value="0,16,0,0" />
         </Style>
-        <Style x:Key="RequestCellTextStyle"
+
+        <Style x:Key="WebApiIdNumberBox"
+               TargetType="{x:Type controls:NumberBox}">
+            <Setter Property="Width" Value="120" />
+        </Style>
+
+        <Style x:Key="WebApiBodyTextBox"
+               TargetType="{x:Type TextBox}"
+               BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="MinHeight" Value="64" />
+            <Setter Property="VerticalContentAlignment" Value="Top" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+
+        <!-- Requests -->
+
+        <Style x:Key="WebApiRequestsDataGrid"
+               TargetType="{x:Type DataGrid}"
+               BasedOn="{StaticResource {x:Type DataGrid}}">
+            <Setter Property="MinHeight" Value="96" />
+            <Setter Property="Margin" Value="0,16,0,0" />
+        </Style>
+
+        <Style x:Key="WebApiRequestTextBlock"
                TargetType="{x:Type TextBlock}"
                BasedOn="{x:Static DataGridTextColumn.DefaultElementStyle}"
                d:DataContext="{d:DesignInstance Type={x:Type module:RequestEntry}}">
@@ -36,22 +77,26 @@
                 </MultiDataTrigger>
             </Style.Triggers>
         </Style>
-        <Style x:Key="RequestPathCellTextStyle"
+
+        <Style x:Key="WebApiRequestPathTextBlock"
                TargetType="{x:Type TextBlock}"
-               BasedOn="{StaticResource RequestCellTextStyle}">
+               BasedOn="{StaticResource WebApiRequestTextBlock}">
             <Setter Property="FontFamily" Value="{StaticResource CodeFontFamily}" />
             <Setter Property="TextTrimming" Value="CharacterEllipsis" />
         </Style>
-        <Style x:Key="RequestNumberCellTextStyle"
+
+        <Style x:Key="WebApiRequestNumberTextBlock"
                TargetType="{x:Type TextBlock}"
-               BasedOn="{StaticResource RequestCellTextStyle}">
+               BasedOn="{StaticResource WebApiRequestTextBlock}">
             <Setter Property="HorizontalAlignment" Value="Right" />
         </Style>
+
     </UserControl.Resources>
 
+    <!-- Content -->
     <ScrollViewer Style="{StaticResource RootScroll}">
-        <Grid Height="{Binding ViewportHeight, RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}}"
-              MinHeight="840">
+        <Grid Style="{StaticResource WebApiRootGrid}"
+              Height="{Binding ViewportHeight, RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}}">
             <Grid Style="{StaticResource PageGrid}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -65,6 +110,7 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
+                <!-- Header -->
                 <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
                            Style="{StaticResource PageTitleTextBlock}"
                            Text="Web API" />
@@ -72,6 +118,7 @@
                            Style="{StaticResource PageDescriptionTextBlock}"
                            Text="Call a public REST API with Rester: page through posts, read one, and send create, update and delete requests." />
 
+                <!-- Posts -->
                 <Border Grid.Row="2" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -79,8 +126,14 @@
                                    Text="Posts" />
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="GET /posts, 10 at a time. The total comes from the X-Total-Count header." />
-                        <StackPanel Style="{StaticResource SampleStack}">
-                            <DataGrid MinHeight="354"
+                        <Grid Style="{StaticResource SampleGrid}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="8" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <DataGrid Grid.Row="0"
+                                      Style="{StaticResource WebApiPostsDataGrid}"
                                       ItemsSource="{Binding Posts}"
                                       SelectedItem="{Binding SelectedPost}"
                                       SelectionMode="Single"
@@ -92,22 +145,22 @@
                                     <DataGridTextColumn Width="64"
                                                         Binding="{Binding Id}"
                                                         Header="Id"
-                                                        ElementStyle="{StaticResource NumberCellTextStyle}" />
+                                                        ElementStyle="{StaticResource DataGridNumberTextBlock}" />
                                     <DataGridTextColumn Width="*"
                                                         Binding="{Binding Title}"
                                                         Header="Title"
-                                                        ElementStyle="{StaticResource TitleCellTextStyle}" />
+                                                        ElementStyle="{StaticResource WebApiTitleTextBlock}" />
                                 </DataGrid.Columns>
                             </DataGrid>
-                            <Grid Margin="0,8,0,0">
+                            <Grid Grid.Row="2">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="8" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0"
-                                           Style="{DynamicResource BodyTextBlockStyle}"
-                                           VerticalAlignment="Center">
+                                           Style="{StaticResource PagerRangeTextBlock}">
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="{}{0}–{1} of {2}">
                                             <Binding Path="RangeStart" />
@@ -122,20 +175,20 @@
                                         Content="&#xE76B;"
                                         ToolTip="Previous page"
                                         AutomationProperties.Name="Previous page" />
-                                <Button Grid.Column="2"
+                                <Button Grid.Column="3"
                                         Style="{StaticResource IconButton}"
-                                        Margin="8,0,0,0"
                                         Command="{Binding NextCommand}"
                                         Content="&#xE76C;"
                                         ToolTip="Next page"
                                         AutomationProperties.Name="Next page" />
                             </Grid>
-                        </StackPanel>
+                        </Grid>
                         <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding ListResult, StringFormat='Last: {0}', TargetNullValue='Last: -'}" />
                     </StackPanel>
                 </Border>
 
+                <!-- Post -->
                 <Border Grid.Row="2" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <DockPanel>
@@ -148,56 +201,69 @@
                         <TextBlock DockPanel.Dock="Bottom"
                                    Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding PostResult, StringFormat='Last: {0}', TargetNullValue='Last: -'}" />
-                        <StackPanel DockPanel.Dock="Bottom"
-                                    Orientation="Horizontal"
-                                    Margin="0,16,0,0">
-                            <Button Command="{Binding CreateCommand}"
+                        <Grid DockPanel.Dock="Bottom"
+                              Style="{StaticResource WebApiPostButtonsGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="8" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="8" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="8" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0"
+                                    Command="{Binding CreateCommand}"
                                     Content="Create" />
-                            <Button Margin="8,0,0,0"
+                            <Button Grid.Column="2"
                                     Command="{Binding UpdateCommand}"
                                     Content="Update" />
-                            <Button Margin="8,0,0,0"
+                            <Button Grid.Column="4"
                                     Command="{Binding PatchCommand}"
                                     Content="Patch" />
-                            <Button Margin="8,0,0,0"
+                            <Button Grid.Column="6"
                                     Command="{Binding DeleteCommand}"
                                     Content="Delete" />
-                        </StackPanel>
-                        <Grid Margin="0,16,0,0">
+                        </Grid>
+                        <Grid Style="{StaticResource SampleGrid}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
+                                <RowDefinition Height="16" />
                                 <RowDefinition Height="Auto" />
+                                <RowDefinition Height="16" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <StackPanel Grid.Row="0">
                                 <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                            Text="Id" />
-                                <StackPanel Orientation="Horizontal">
-                                    <controls:NumberBox Width="120"
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <controls:NumberBox Grid.Column="0"
+                                                        Style="{StaticResource WebApiIdNumberBox}"
                                                         Value="{Binding Id}"
                                                         Minimum="0" Maximum="999"
                                                         AutomationProperties.Name="Id" />
-                                    <Button Margin="8,0,0,0"
+                                    <Button Grid.Column="2"
                                             Command="{Binding GetCommand}"
                                             Content="Get" />
-                                </StackPanel>
+                                </Grid>
                             </StackPanel>
-                            <StackPanel Grid.Row="1"
-                                        Margin="0,16,0,0">
+                            <StackPanel Grid.Row="2">
                                 <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                            Text="Title" />
                                 <TextBox Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"
                                          AutomationProperties.Name="Title" />
                             </StackPanel>
-                            <TextBlock Grid.Row="2"
+                            <TextBlock Grid.Row="4"
                                        Style="{StaticResource FieldLabelTextBlock}"
-                                       Margin="0,16,0,4"
                                        Text="Body" />
-                            <TextBox Grid.Row="3"
-                                     MinHeight="64"
-                                     VerticalContentAlignment="Top"
-                                     TextWrapping="Wrap"
+                            <TextBox Grid.Row="5"
+                                     Style="{StaticResource WebApiBodyTextBox}"
                                      VerticalScrollBarVisibility="Auto"
                                      Text="{Binding Body, UpdateSourceTrigger=PropertyChanged}"
                                      AcceptsReturn="True" AutomationProperties.Name="Body" />
@@ -205,6 +271,7 @@
                     </DockPanel>
                 </Border>
 
+                <!-- Requests -->
                 <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"
                         Style="{StaticResource CardBorder}">
                     <DockPanel>
@@ -220,12 +287,10 @@
                                            Text="{Binding BaseAddress, StringFormat='Requests to {0}. The server answers with fake results and saves nothing.'}" />
                             </StackPanel>
                             <Button Grid.Column="1"
-                                    VerticalAlignment="Center"
                                     Command="{Binding ClearCommand}"
                                     Content="Clear" />
                         </Grid>
-                        <DataGrid MinHeight="96"
-                                  Margin="0,16,0,0"
+                        <DataGrid Style="{StaticResource WebApiRequestsDataGrid}"
                                   ItemsSource="{Binding Requests}"
                                   SelectionMode="Single"
                                   AutoGenerateColumns="False" AutomationProperties.Name="Requests" CanUserAddRows="False" CanUserDeleteRows="False"
@@ -236,27 +301,28 @@
                                 <DataGridTextColumn Width="96"
                                                     Binding="{Binding Time, StringFormat=HH:mm:ss}"
                                                     Header="Time"
-                                                    ElementStyle="{StaticResource RequestCellTextStyle}" />
+                                                    ElementStyle="{StaticResource WebApiRequestTextBlock}" />
                                 <DataGridTextColumn Width="96"
                                                     Binding="{Binding Method}"
                                                     Header="Method"
-                                                    ElementStyle="{StaticResource RequestCellTextStyle}" />
+                                                    ElementStyle="{StaticResource WebApiRequestTextBlock}" />
                                 <DataGridTextColumn Width="*"
                                                     Binding="{Binding Path}"
                                                     Header="Path"
-                                                    ElementStyle="{StaticResource RequestPathCellTextStyle}" />
+                                                    ElementStyle="{StaticResource WebApiRequestPathTextBlock}" />
                                 <DataGridTextColumn Width="200"
                                                     Binding="{Binding Status}"
                                                     Header="Status"
-                                                    ElementStyle="{StaticResource RequestCellTextStyle}" />
+                                                    ElementStyle="{StaticResource WebApiRequestTextBlock}" />
                                 <DataGridTextColumn Width="96"
                                                     Binding="{Binding Milliseconds, StringFormat=N0}"
                                                     Header="ms"
-                                                    ElementStyle="{StaticResource RequestNumberCellTextStyle}" />
+                                                    ElementStyle="{StaticResource WebApiRequestNumberTextBlock}" />
                             </DataGrid.Columns>
                         </DataGrid>
                     </DockPanel>
                 </Border>
+
             </Grid>
         </Grid>
     </ScrollViewer>

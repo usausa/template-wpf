@@ -14,24 +14,40 @@
              d:DesignWidth="800" d:DesignHeight="600">
 
     <UserControl.Resources>
-        <Style x:Key="ImageFrameStyle"
+
+        <!-- Image -->
+
+        <Style x:Key="ClipboardDragImageBorder"
                TargetType="{x:Type Border}">
             <Setter Property="Height" Value="120" />
             <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
             <Setter Property="BorderBrush" Value="{DynamicResource CardStrokeColorDefaultBrush}" />
             <Setter Property="BorderThickness" Value="1" />
         </Style>
-        <Style x:Key="FormatNameTextStyle"
+
+        <!-- Formats -->
+
+        <Style x:Key="ClipboardDragFormatNameTextBlock"
                TargetType="{x:Type TextBlock}">
             <Setter Property="Margin" Value="0,0,0,4" />
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
         </Style>
-        <Style x:Key="FormatValueTextStyle"
+
+        <Style x:Key="ClipboardDragFormatValueTextBlock"
                TargetType="{x:Type TextBlock}">
             <Setter Property="Margin" Value="0,0,0,4" />
             <Setter Property="TextWrapping" Value="Wrap" />
         </Style>
-        <Style x:Key="DragChipStyle"
+
+        <Style x:Key="ClipboardDragFormatListTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource ClipboardDragFormatValueTextBlock}">
+            <Setter Property="FontFamily" Value="{StaticResource CodeFontFamily}" />
+        </Style>
+
+        <!-- Drag & drop -->
+
+        <Style x:Key="ClipboardDragChipBorder"
                TargetType="{x:Type Border}">
             <Setter Property="Padding" Value="12,6" />
             <Setter Property="HorizontalAlignment" Value="Left" />
@@ -40,7 +56,20 @@
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="Cursor" Value="Hand" />
         </Style>
-        <Style x:Key="DropAreaStyle"
+
+        <Style x:Key="ClipboardDragChipGlyphTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+
+        <Style x:Key="ClipboardDragChipTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="ClipboardDragDropBorder"
                TargetType="{x:Type Border}">
             <Setter Property="Height" Value="120" />
             <Setter Property="Background" Value="Transparent" />
@@ -53,10 +82,42 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <Style x:Key="ClipboardDragDropHintTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
+        <Style x:Key="ClipboardDragDroppedScroll"
+               TargetType="{x:Type ScrollViewer}"
+               BasedOn="{StaticResource PaneScroll}">
+            <Setter Property="MaxHeight" Value="120" />
+        </Style>
+
+        <Style x:Key="ClipboardDragDroppedGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Margin" Value="0,0,0,4" />
+        </Style>
+
+        <Style x:Key="ClipboardDragDroppedNameTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        </Style>
+
+        <Style x:Key="ClipboardDragDroppedDetailTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
     </UserControl.Resources>
 
+    <!-- Content -->
     <ScrollViewer Style="{StaticResource RootScroll}">
         <StackPanel Style="{StaticResource PageStack}">
+
+            <!-- Header -->
             <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Clipboard &amp; drag" />
             <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
@@ -73,6 +134,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
+                <!-- Text -->
                 <Border Grid.Row="0" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -80,25 +142,36 @@
                                    Text="Text" />
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Copy text to the clipboard and paste it back." />
-                        <StackPanel Style="{StaticResource SampleStack}">
-                            <TextBox Width="320"
-                                     HorizontalAlignment="Left"
+                        <Grid Style="{StaticResource SampleGrid}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="8" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <TextBox Grid.Row="0"
+                                     Style="{StaticResource SampleWideTextBox}"
                                      Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}"
                                      AutomationProperties.Name="Clipboard text" />
-                            <StackPanel Orientation="Horizontal"
-                                        Margin="0,8,0,0">
-                                <Button Command="{Binding CopyTextCommand}"
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="8" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0"
+                                        Command="{Binding CopyTextCommand}"
                                         Content="Copy" />
-                                <Button Margin="8,0,0,0"
+                                <Button Grid.Column="2"
                                         Command="{Binding PasteTextCommand}"
                                         Content="Paste" />
-                            </StackPanel>
-                        </StackPanel>
+                            </Grid>
+                        </Grid>
                         <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding TextResult, StringFormat='Last: {0}', TargetNullValue='Last: -'}" />
                     </StackPanel>
                 </Border>
 
+                <!-- Image -->
                 <Border Grid.Row="0" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -106,40 +179,51 @@
                                    Text="Image" />
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Copy a generated image and paste an image." />
-                        <Grid Margin="0,16,0,0">
+                        <Grid Style="{StaticResource SampleGrid}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="16" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0">
-                                <Border Style="{StaticResource ImageFrameStyle}">
+                            <Grid Grid.Column="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="8" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Border Grid.Row="0"
+                                        Style="{StaticResource ClipboardDragImageBorder}">
                                     <Image Source="{Binding SampleImage}"
                                            Stretch="Uniform"
                                            StretchDirection="DownOnly" />
                                 </Border>
-                                <Button Margin="0,8,0,0"
-                                        HorizontalAlignment="Left"
+                                <Button Grid.Row="2"
                                         Command="{Binding CopyImageCommand}"
                                         Content="Copy image" />
-                            </StackPanel>
-                            <StackPanel Grid.Column="2">
-                                <Border Style="{StaticResource ImageFrameStyle}">
+                            </Grid>
+                            <Grid Grid.Column="2">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="8" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Border Grid.Row="0"
+                                        Style="{StaticResource ClipboardDragImageBorder}">
                                     <Image Source="{Binding PastedImage}"
                                            Stretch="Uniform"
                                            StretchDirection="DownOnly" />
                                 </Border>
-                                <Button Margin="0,8,0,0"
-                                        HorizontalAlignment="Left"
+                                <Button Grid.Row="2"
                                         Command="{Binding PasteImageCommand}"
                                         Content="Paste image" />
-                            </StackPanel>
+                            </Grid>
                         </Grid>
                         <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding PastedSize, StringFormat='Pasted: {0}', TargetNullValue='Pasted: -'}" />
                     </StackPanel>
                 </Border>
 
+                <!-- Formats -->
                 <Border Grid.Row="1" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -147,62 +231,74 @@
                                    Text="Formats" />
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="What the clipboard holds now." />
-                        <Grid Margin="0,16,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="96" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
+                        <Grid Style="{StaticResource SampleGrid}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="12" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="96" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
 
-                            <TextBlock Grid.Row="0" Grid.Column="0"
-                                       Style="{StaticResource FormatNameTextStyle}"
-                                       Text="Text" />
-                            <TextBlock Grid.Row="0" Grid.Column="1"
-                                       Style="{StaticResource FormatValueTextStyle}"
-                                       Text="{Binding HasText, Converter={s:BoolToText True=Yes, False=No}}" />
-                            <TextBlock Grid.Row="1" Grid.Column="0"
-                                       Style="{StaticResource FormatNameTextStyle}"
-                                       Text="Image" />
-                            <TextBlock Grid.Row="1" Grid.Column="1"
-                                       Style="{StaticResource FormatValueTextStyle}"
-                                       Text="{Binding HasImage, Converter={s:BoolToText True=Yes, False=No}}" />
-                            <TextBlock Grid.Row="2" Grid.Column="0"
-                                       Style="{StaticResource FormatNameTextStyle}"
-                                       Text="Files" />
-                            <TextBlock Grid.Row="2" Grid.Column="1"
-                                       Style="{StaticResource FormatValueTextStyle}"
-                                       Text="{Binding HasFiles, Converter={s:BoolToText True=Yes, False=No}}" />
-                            <TextBlock Grid.Row="3" Grid.Column="0"
-                                       Style="{StaticResource FormatNameTextStyle}"
-                                       Text="Audio" />
-                            <TextBlock Grid.Row="3" Grid.Column="1"
-                                       Style="{StaticResource FormatValueTextStyle}"
-                                       Text="{Binding HasAudio, Converter={s:BoolToText True=Yes, False=No}}" />
-                            <TextBlock Grid.Row="4" Grid.Column="0"
-                                       Style="{StaticResource FormatNameTextStyle}"
-                                       Text="Formats" />
-                            <TextBlock Grid.Row="4" Grid.Column="1"
-                                       Style="{StaticResource FormatValueTextStyle}"
-                                       Text="{Binding Formats}"
-                                       FontFamily="{StaticResource CodeFontFamily}" />
+                                <TextBlock Grid.Row="0" Grid.Column="0"
+                                           Style="{StaticResource ClipboardDragFormatNameTextBlock}"
+                                           Text="Text" />
+                                <TextBlock Grid.Row="0" Grid.Column="1"
+                                           Style="{StaticResource ClipboardDragFormatValueTextBlock}"
+                                           Text="{Binding HasText, Converter={s:BoolToText True=Yes, False=No}}" />
+                                <TextBlock Grid.Row="1" Grid.Column="0"
+                                           Style="{StaticResource ClipboardDragFormatNameTextBlock}"
+                                           Text="Image" />
+                                <TextBlock Grid.Row="1" Grid.Column="1"
+                                           Style="{StaticResource ClipboardDragFormatValueTextBlock}"
+                                           Text="{Binding HasImage, Converter={s:BoolToText True=Yes, False=No}}" />
+                                <TextBlock Grid.Row="2" Grid.Column="0"
+                                           Style="{StaticResource ClipboardDragFormatNameTextBlock}"
+                                           Text="Files" />
+                                <TextBlock Grid.Row="2" Grid.Column="1"
+                                           Style="{StaticResource ClipboardDragFormatValueTextBlock}"
+                                           Text="{Binding HasFiles, Converter={s:BoolToText True=Yes, False=No}}" />
+                                <TextBlock Grid.Row="3" Grid.Column="0"
+                                           Style="{StaticResource ClipboardDragFormatNameTextBlock}"
+                                           Text="Audio" />
+                                <TextBlock Grid.Row="3" Grid.Column="1"
+                                           Style="{StaticResource ClipboardDragFormatValueTextBlock}"
+                                           Text="{Binding HasAudio, Converter={s:BoolToText True=Yes, False=No}}" />
+                                <TextBlock Grid.Row="4" Grid.Column="0"
+                                           Style="{StaticResource ClipboardDragFormatNameTextBlock}"
+                                           Text="Formats" />
+                                <TextBlock Grid.Row="4" Grid.Column="1"
+                                           Style="{StaticResource ClipboardDragFormatListTextBlock}"
+                                           Text="{Binding Formats}" />
+                            </Grid>
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="8" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0"
+                                        Command="{Binding RefreshCommand}"
+                                        Content="Refresh" />
+                                <Button Grid.Column="2"
+                                        Command="{Binding ClearCommand}"
+                                        Content="Clear" />
+                            </Grid>
                         </Grid>
-                        <StackPanel Orientation="Horizontal"
-                                    Margin="0,12,0,0">
-                            <Button Command="{Binding RefreshCommand}"
-                                    Content="Refresh" />
-                            <Button Margin="8,0,0,0"
-                                    Command="{Binding ClearCommand}"
-                                    Content="Clear" />
-                        </StackPanel>
                     </StackPanel>
                 </Border>
 
+                <!-- Drag & drop -->
                 <Border Grid.Row="1" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -210,62 +306,73 @@
                                    Text="Drag &amp; drop" />
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Drop files or text, or drag text out." />
-                        <StackPanel Style="{StaticResource SampleStack}">
-                            <Border Style="{StaticResource DragChipStyle}">
+                        <Grid Style="{StaticResource SampleGrid}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="8" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="8" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Border Grid.Row="0"
+                                    Style="{StaticResource ClipboardDragChipBorder}">
                                 <i:Interaction.Behaviors>
                                     <behaviors:DragSourceBehavior Text="{Binding DragText}" />
                                 </i:Interaction.Behaviors>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock VerticalAlignment="Center"
-                                               Text="&#xE7C2;"
-                                               FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                               FontSize="16" />
-                                    <TextBlock Margin="8,0,0,0"
-                                               VerticalAlignment="Center"
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0"
+                                               Style="{StaticResource ClipboardDragChipGlyphTextBlock}"
+                                               Text="&#xE7C2;" />
+                                    <TextBlock Grid.Column="2"
+                                               Style="{StaticResource ClipboardDragChipTextBlock}"
                                                Text="Drag me" />
-                                </StackPanel>
+                                </Grid>
                             </Border>
-                            <Border Style="{StaticResource DropAreaStyle}"
-                                    Margin="0,8,0,0">
+                            <Border Grid.Row="2"
+                                    Style="{StaticResource ClipboardDragDropBorder}">
                                 <i:Interaction.Behaviors>
                                     <behaviors:DropBehavior FilesCommand="{Binding DropFilesCommand}"
                                                             TextCommand="{Binding DropTextCommand}" />
                                 </i:Interaction.Behaviors>
-                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                <TextBlock Style="{StaticResource ClipboardDragDropHintTextBlock}"
                                            IsHitTestVisible="False"
-                                           Text="Drop files or text here"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                           Text="Drop files or text here" />
                             </Border>
-                            <ScrollViewer MaxHeight="120"
-                                          Margin="0,8,0,0"
-                                          HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                            <ScrollViewer Grid.Row="4"
+                                          Style="{StaticResource ClipboardDragDroppedScroll}">
                                 <ItemsControl ItemsSource="{Binding DroppedItems}"
                                               Focusable="False">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate DataType="{x:Type models:DroppedItem}">
-                                            <Grid Margin="0,0,0,4">
+                                            <Grid Style="{StaticResource ClipboardDragDroppedGrid}">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="16" />
                                                     <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock Grid.Column="0"
-                                                           TextTrimming="CharacterEllipsis"
+                                                           Style="{StaticResource ClipboardDragDroppedNameTextBlock}"
                                                            Text="{Binding Name}" />
-                                                <TextBlock Grid.Column="1"
-                                                           Margin="16,0,0,0"
-                                                           Text="{Binding Detail}"
-                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                                <TextBlock Grid.Column="2"
+                                                           Style="{StaticResource ClipboardDragDroppedDetailTextBlock}"
+                                                           Text="{Binding Detail}" />
                                             </Grid>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
                             </ScrollViewer>
-                        </StackPanel>
+                        </Grid>
                         <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding DropResult, StringFormat='Dropped: {0}', TargetNullValue='Dropped: -'}" />
                     </StackPanel>
                 </Border>
             </Grid>
+
         </StackPanel>
     </ScrollViewer>
 
