@@ -1,4 +1,4 @@
-namespace Template.WindowsApp;
+namespace Template.WindowsApp.Helpers;
 
 using System.Diagnostics;
 using System.IO.Pipes;
