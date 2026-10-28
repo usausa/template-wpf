@@ -8,26 +8,59 @@
              x:Class="Template.WindowsApp.Views.Dialogs.ProgressDialogView"
              d:DataContext="{d:DesignInstance Type={x:Type module:ProgressDialogViewModel}}">
 
+    <UserControl.Resources>
+
+        <Style x:Key="ProgressDialogMessageTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+
+        <Style x:Key="ProgressDialogProgressBar"
+               TargetType="{x:Type ProgressBar}"
+               BasedOn="{StaticResource {x:Type ProgressBar}}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="ProgressDialogValueTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+    </UserControl.Resources>
+
+    <!-- Content -->
     <controls:ContentDialog Title="{Binding Title}"
                             CloseButtonCommand="{Binding CloseCommand}"
                             CloseButtonText="Cancel">
-        <StackPanel>
-            <TextBlock TextWrapping="Wrap"
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="16" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- Message -->
+            <TextBlock Grid.Row="0"
+                       Style="{StaticResource ProgressDialogMessageTextBlock}"
                        Text="{Binding Message}" />
-            <Grid Margin="0,16,0,0">
+
+            <!-- Progress -->
+            <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="48" />
                 </Grid.ColumnDefinitions>
                 <ProgressBar Grid.Column="0"
-                             VerticalAlignment="Center"
+                             Style="{StaticResource ProgressDialogProgressBar}"
                              Value="{Binding Value, Mode=OneWay}"
                              AutomationProperties.Name="Progress" />
                 <TextBlock Grid.Column="1"
-                           HorizontalAlignment="Right" VerticalAlignment="Center"
+                           Style="{StaticResource ProgressDialogValueTextBlock}"
                            Text="{Binding Value, StringFormat='{}{0:0} %'}" />
             </Grid>
-        </StackPanel>
+
+        </Grid>
     </controls:ContentDialog>
 
 </UserControl>

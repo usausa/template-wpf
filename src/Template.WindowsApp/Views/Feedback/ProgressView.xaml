@@ -10,8 +10,46 @@
              d:DataContext="{d:DesignInstance Type={x:Type module:ProgressViewModel}}"
              d:DesignWidth="800" d:DesignHeight="600">
 
+    <UserControl.Resources>
+
+        <!-- Common -->
+
+        <Style x:Key="ProgressSampleProgressBar"
+               TargetType="{x:Type ProgressBar}"
+               BasedOn="{StaticResource {x:Type ProgressBar}}">
+            <Setter Property="Width" Value="320" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+
+        <!-- ProgressBar -->
+
+        <Style x:Key="ProgressSampleSlider"
+               TargetType="{x:Type Slider}"
+               BasedOn="{StaticResource SampleSlider}">
+            <Setter Property="Width" Value="320" />
+        </Style>
+
+        <!-- Long-running task -->
+
+        <Style x:Key="ProgressTaskStateTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource SampleResultTextBlock}">
+            <Setter Property="Text" Value="{Binding TaskState}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding TaskState}"
+                             Value="{x:Static module:TaskState.Running}">
+                    <Setter Property="Text" Value="{Binding TaskProgress, StringFormat='Running: {0}%'}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+    </UserControl.Resources>
+
+    <!-- Content -->
     <ScrollViewer Style="{StaticResource RootScroll}">
         <StackPanel Style="{StaticResource PageStack}">
+
+            <!-- Header -->
             <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Progress" />
             <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
@@ -28,6 +66,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
+                <!-- ProgressBar -->
                 <Border Grid.Row="0" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -35,23 +74,28 @@
                                    Text="ProgressBar" />
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Shows how much of a task is done." />
-                        <StackPanel Style="{StaticResource SampleStack}">
-                            <ProgressBar Width="320"
-                                         HorizontalAlignment="Left"
+                        <Grid Style="{StaticResource SampleGrid}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="16" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ProgressBar Grid.Row="0"
+                                         Style="{StaticResource ProgressSampleProgressBar}"
                                          Value="{Binding Value}"
                                          Maximum="100" />
-                            <Slider Width="320"
-                                    Margin="0,16,0,0"
-                                    HorizontalAlignment="Left"
+                            <Slider Grid.Row="2"
+                                    Style="{StaticResource ProgressSampleSlider}"
                                     Value="{Binding Value}"
                                     Minimum="0" Maximum="100"
                                     AutomationProperties.Name="Value" IsSnapToTickEnabled="True" TickFrequency="1" />
-                        </StackPanel>
+                        </Grid>
                         <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding Value, StringFormat='Value: {0}'}" />
                     </StackPanel>
                 </Border>
 
+                <!-- Indeterminate -->
                 <Border Grid.Row="0" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -59,19 +103,25 @@
                                    Text="Indeterminate" />
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Shows that work is in progress without a known end." />
-                        <StackPanel Style="{StaticResource SampleStack}">
-                            <ProgressBar Width="320"
-                                         HorizontalAlignment="Left"
+                        <Grid Style="{StaticResource SampleGrid}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="16" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ProgressBar Grid.Row="0"
+                                         Style="{StaticResource ProgressSampleProgressBar}"
                                          IsIndeterminate="{Binding IsRunning}" />
-                            <ToggleButton Margin="0,16,0,0"
+                            <ToggleButton Grid.Row="2"
                                           IsChecked="{Binding IsRunning}"
                                           Content="Run" />
-                        </StackPanel>
+                        </Grid>
                         <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding IsRunning, Converter={s:BoolToText True=Running, False=Stopped}, StringFormat='State: {0}'}" />
                     </StackPanel>
                 </Border>
 
+                <!-- Busy indicator -->
                 <Border Grid.Row="1" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -89,6 +139,7 @@
                     </StackPanel>
                 </Border>
 
+                <!-- Long-running task -->
                 <Border Grid.Row="1" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -96,38 +147,36 @@
                                    Text="Long-running task" />
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Reports progress and can be canceled." />
-                        <StackPanel Style="{StaticResource SampleStack}">
-                            <ProgressBar Width="320"
-                                         HorizontalAlignment="Left"
+                        <Grid Style="{StaticResource SampleGrid}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="16" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ProgressBar Grid.Row="0"
+                                         Style="{StaticResource ProgressSampleProgressBar}"
                                          Value="{Binding TaskProgress, Mode=OneWay}"
                                          Maximum="100" />
-                            <StackPanel Orientation="Horizontal"
-                                        Margin="0,16,0,0">
-                                <Button Style="{DynamicResource AccentButtonStyle}"
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="8" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0"
+                                        Style="{StaticResource AccentButton}"
                                         Command="{Binding StartCommand}"
                                         Content="Start" />
-                                <Button Margin="8,0,0,0"
+                                <Button Grid.Column="2"
                                         Command="{Binding CancelCommand}"
                                         Content="Cancel" />
-                            </StackPanel>
-                        </StackPanel>
-                        <TextBlock>
-                            <TextBlock.Style>
-                                <Style TargetType="{x:Type TextBlock}"
-                                       BasedOn="{StaticResource SampleResultTextBlock}">
-                                    <Setter Property="Text" Value="{Binding TaskState}" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding TaskState}"
-                                                     Value="{x:Static module:TaskState.Running}">
-                                            <Setter Property="Text" Value="{Binding TaskProgress, StringFormat='Running: {0}%'}" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
+                            </Grid>
+                        </Grid>
+                        <TextBlock Style="{StaticResource ProgressTaskStateTextBlock}" />
                     </StackPanel>
                 </Border>
             </Grid>
+
         </StackPanel>
     </ScrollViewer>
 

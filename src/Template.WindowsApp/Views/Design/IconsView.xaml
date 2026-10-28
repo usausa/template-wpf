@@ -13,12 +13,94 @@
              d:DataContext="{d:DesignInstance Type={x:Type module:IconsViewModel}}"
              d:DesignWidth="800" d:DesignHeight="600">
 
+    <UserControl.Resources>
+
+        <!-- Search -->
+
+        <Style x:Key="IconsHintTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
+        <!-- List -->
+
+        <Style x:Key="IconsListBoxItem"
+               TargetType="{x:Type ListBoxItem}"
+               BasedOn="{StaticResource {x:Type ListBoxItem}}"
+               d:DataContext="{d:DesignInstance Type={x:Type sample:IconEntry}}">
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="AutomationProperties.Name" Value="{Binding Name}" />
+        </Style>
+
+        <Style x:Key="IconsItemGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Width" Value="80" />
+            <Setter Property="Height" Value="72" />
+        </Style>
+
+        <Style x:Key="IconsItemGlyphTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="0,12,0,0" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+            <Setter Property="FontSize" Value="24" />
+        </Style>
+
+        <Style x:Key="IconsItemNameTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="4,0" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
+        <!-- Details -->
+
+        <Style x:Key="IconsPreviewBorder"
+               TargetType="{x:Type Border}">
+            <Setter Property="Width" Value="96" />
+            <Setter Property="Height" Value="96" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+        </Style>
+
+        <Style x:Key="IconsPreviewGlyphTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+            <Setter Property="FontSize" Value="48" />
+        </Style>
+
+        <Style x:Key="IconsNameTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource PageTextBlockBase}">
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+
+        <Style x:Key="IconsCodeTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontFamily" Value="{StaticResource CodeFontFamily}" />
+        </Style>
+
+        <Style x:Key="IconsCopiedTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource SampleResultTextBlock}">
+            <Setter Property="Margin" Value="0,16,0,0" />
+        </Style>
+
+    </UserControl.Resources>
+
     <UserControl.InputBindings>
         <KeyBinding Key="F"
                     Command="{Binding FindCommand}"
                     Modifiers="Control" />
     </UserControl.InputBindings>
 
+    <!-- Content -->
     <Grid Style="{StaticResource PageGrid}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -26,6 +108,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+        <!-- Header -->
         <TextBlock Grid.Row="0"
                    Style="{StaticResource PageTitleTextBlock}"
                    Text="Icons" />
@@ -36,41 +119,48 @@
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="16" />
                 <ColumnDefinition Width="320" />
             </Grid.ColumnDefinitions>
 
+            <!-- Icons -->
             <Border Grid.Column="0"
-                    Style="{StaticResource CardBorder}"
-                    Margin="0,0,16,8">
+                    Style="{StaticResource CardBorder}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="8" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="16" />
                         <RowDefinition Height="*" />
+                        <RowDefinition Height="16" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <StackPanel Grid.Row="0">
-                        <TextBox Width="320"
-                                 behaviors:TextBoxOption.PlaceholderText="Search icons (Ctrl+F)"
-                                 HorizontalAlignment="Left"
-                                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Delay=300}"
-                                 AutomationProperties.Name="Search icons">
-                            <i:Interaction.Triggers>
-                                <s:EventRequestTrigger Request="{Binding FindRequest}">
-                                    <s:SetFocusAction />
-                                    <s:SelectAllTextAction />
-                                </s:EventRequestTrigger>
-                            </i:Interaction.Triggers>
-                        </TextBox>
-                        <TextBlock Margin="0,8,0,0"
-                                   Text="Separate words with spaces to match all of them, or with | to match any. Codes such as E70 also match."
-                                   FontSize="12"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                    </StackPanel>
-                    <ListBox Grid.Row="1"
-                             Margin="0,16,0,0"
+
+                    <!-- Search -->
+                    <TextBox Grid.Row="0"
+                             Style="{StaticResource SampleWideTextBox}"
+                             behaviors:TextBoxOption.PlaceholderText="Search icons (Ctrl+F)"
+                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Delay=300}"
+                             AutomationProperties.Name="Search icons">
+                        <i:Interaction.Triggers>
+                            <s:EventRequestTrigger Request="{Binding FindRequest}">
+                                <s:SetFocusAction />
+                                <s:SelectAllTextAction />
+                            </s:EventRequestTrigger>
+                        </i:Interaction.Triggers>
+                    </TextBox>
+                    <TextBlock Grid.Row="2"
+                               Style="{StaticResource IconsHintTextBlock}"
+                               Text="Separate words with spaces to match all of them, or with | to match any. Codes such as E70 also match." />
+
+                    <!-- List -->
+                    <ListBox Grid.Row="4"
                              ItemsSource="{Binding Items}"
                              SelectedItem="{Binding SelectedIcon}"
-                             AutomationProperties.Name="Icons" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                             AutomationProperties.Name="Icons"
+                             ItemContainerStyle="{StaticResource IconsListBoxItem}"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                         <ListBox.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Command="{Binding CopyNameCommand}"
@@ -88,41 +178,35 @@
                                 <WrapPanel />
                             </ItemsPanelTemplate>
                         </ListBox.ItemsPanel>
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="{x:Type ListBoxItem}"
-                                   BasedOn="{StaticResource {x:Type ListBoxItem}}">
-                                <Setter Property="Padding" Value="0" />
-                                <Setter Property="AutomationProperties.Name" Value="{Binding Name}" />
-                            </Style>
-                        </ListBox.ItemContainerStyle>
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="{x:Type sample:IconEntry}">
-                                <StackPanel Width="80" Height="72">
-                                    <TextBlock Margin="0,12,0,0"
-                                               HorizontalAlignment="Center"
-                                               Text="{Binding Glyph}"
-                                               FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                               FontSize="24" />
-                                    <TextBlock Margin="4,8,4,0"
-                                               HorizontalAlignment="Center"
-                                               TextTrimming="CharacterEllipsis"
-                                               Text="{Binding Name}"
-                                               FontSize="12"
-                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                                </StackPanel>
+                                <Grid Style="{StaticResource IconsItemGrid}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="8" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0"
+                                               Style="{StaticResource IconsItemGlyphTextBlock}"
+                                               Text="{Binding Glyph}" />
+                                    <TextBlock Grid.Row="2"
+                                               Style="{StaticResource IconsItemNameTextBlock}"
+                                               Text="{Binding Name}" />
+                                </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                    <Grid Grid.Row="2"
-                          Margin="0,16,0,0">
+
+                    <!-- Pager -->
+                    <Grid Grid.Row="6">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="8" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0"
-                                   Style="{DynamicResource BodyTextBlockStyle}"
-                                   VerticalAlignment="Center">
+                                   Style="{StaticResource PagerRangeTextBlock}">
                             <TextBlock.Text>
                                 <MultiBinding StringFormat="{}{0}–{1} of {2}">
                                     <Binding Path="RangeStart" />
@@ -137,37 +221,46 @@
                                 Content="&#xE76B;"
                                 ToolTip="Previous page"
                                 AutomationProperties.Name="Previous page" />
-                        <Button Grid.Column="2"
+                        <Button Grid.Column="3"
                                 Style="{StaticResource IconButton}"
-                                Margin="8,0,0,0"
                                 Command="{Binding NextCommand}"
                                 Content="&#xE76C;"
                                 ToolTip="Next page"
                                 AutomationProperties.Name="Next page" />
                     </Grid>
+
                 </Grid>
             </Border>
 
-            <Border Grid.Column="1"
+            <!-- Details -->
+            <Border Grid.Column="2"
                     Style="{StaticResource CardBorder}">
                 <StackPanel>
                     <ContentControl Focusable="False"
                                     Content="{Binding SelectedIcon}">
                         <ContentControl.Resources>
                             <DataTemplate DataType="{x:Type sample:IconEntry}">
-                                <StackPanel>
-                                    <Border Width="96" Height="96"
-                                            HorizontalAlignment="Left"
-                                            Background="{DynamicResource SubtleFillColorSecondaryBrush}">
-                                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                   Text="{Binding Glyph}"
-                                                   FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                                   FontSize="48" />
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="16" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="16" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="16" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="16" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Border Grid.Row="0"
+                                            Style="{StaticResource IconsPreviewBorder}">
+                                        <TextBlock Style="{StaticResource IconsPreviewGlyphTextBlock}"
+                                                   Text="{Binding Glyph}" />
                                     </Border>
-                                    <TextBlock Style="{DynamicResource BodyStrongTextBlockStyle}"
-                                               Margin="0,16,0,0"
+                                    <TextBlock Grid.Row="2"
+                                               Style="{StaticResource IconsNameTextBlock}"
                                                Text="{Binding Name}" />
-                                    <StackPanel Margin="0,16,0,0">
+                                    <StackPanel Grid.Row="4">
                                         <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                                    Text="Code" />
                                         <Grid>
@@ -176,9 +269,8 @@
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Grid.Column="0"
-                                                       VerticalAlignment="Center"
-                                                       Text="{Binding Code}"
-                                                       FontFamily="{StaticResource CodeFontFamily}" />
+                                                       Style="{StaticResource IconsCodeTextBlock}"
+                                                       Text="{Binding Code}" />
                                             <Button Grid.Column="1"
                                                     Style="{StaticResource IconButton}"
                                                     Command="{Binding DataContext.CopyCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
@@ -188,7 +280,7 @@
                                                     AutomationProperties.Name="Copy code" />
                                         </Grid>
                                     </StackPanel>
-                                    <StackPanel Margin="0,16,0,0">
+                                    <StackPanel Grid.Row="6">
                                         <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                                    Text="XAML" />
                                         <Grid>
@@ -197,9 +289,8 @@
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Grid.Column="0"
-                                                       VerticalAlignment="Center"
-                                                       Text="{Binding Xaml}"
-                                                       FontFamily="{StaticResource CodeFontFamily}" />
+                                                       Style="{StaticResource IconsCodeTextBlock}"
+                                                       Text="{Binding Xaml}" />
                                             <Button Grid.Column="1"
                                                     Style="{StaticResource IconButton}"
                                                     Command="{Binding DataContext.CopyCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
@@ -209,7 +300,7 @@
                                                     AutomationProperties.Name="Copy XAML" />
                                         </Grid>
                                     </StackPanel>
-                                    <StackPanel Margin="0,16,0,0">
+                                    <StackPanel Grid.Row="8">
                                         <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                                    Text="C#" />
                                         <Grid>
@@ -218,9 +309,8 @@
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Grid.Column="0"
-                                                       VerticalAlignment="Center"
-                                                       Text="{Binding CSharp}"
-                                                       FontFamily="{StaticResource CodeFontFamily}" />
+                                                       Style="{StaticResource IconsCodeTextBlock}"
+                                                       Text="{Binding CSharp}" />
                                             <Button Grid.Column="1"
                                                     Style="{StaticResource IconButton}"
                                                     Command="{Binding DataContext.CopyCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
@@ -230,16 +320,17 @@
                                                     AutomationProperties.Name="Copy C#" />
                                         </Grid>
                                     </StackPanel>
-                                </StackPanel>
+                                </Grid>
                             </DataTemplate>
                         </ContentControl.Resources>
                     </ContentControl>
-                    <TextBlock Style="{StaticResource SampleResultTextBlock}"
-                               Margin="0,16,0,0"
+                    <TextBlock Style="{StaticResource IconsCopiedTextBlock}"
                                Text="{Binding Copied, StringFormat='Copied: {0}', TargetNullValue='Copied: -'}" />
                 </StackPanel>
             </Border>
+
         </Grid>
+
     </Grid>
 
 </UserControl>

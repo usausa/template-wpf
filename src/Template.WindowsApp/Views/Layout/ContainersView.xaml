@@ -11,14 +11,46 @@
              d:DesignWidth="800" d:DesignHeight="600">
 
     <UserControl.Resources>
-        <Style x:Key="PaneStyle"
+
+        <!-- TabControl -->
+
+        <Style x:Key="ContainersTabControl"
+               TargetType="{x:Type TabControl}"
+               BasedOn="{StaticResource {x:Type TabControl}}">
+            <Setter Property="Height" Value="120" />
+        </Style>
+
+        <Style x:Key="ContainersTabTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="0,12,0,0" />
+        </Style>
+
+        <!-- GridSplitter -->
+
+        <Style x:Key="ContainersSplitterGrid"
+               TargetType="{x:Type Grid}"
+               BasedOn="{StaticResource SampleGrid}">
+            <Setter Property="Height" Value="160" />
+        </Style>
+
+        <Style x:Key="ContainersPaneBorder"
                TargetType="{x:Type Border}">
             <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
         </Style>
+
+        <Style x:Key="ContainersPaneTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
     </UserControl.Resources>
 
+    <!-- Content -->
     <ScrollViewer Style="{StaticResource RootScroll}">
         <StackPanel Style="{StaticResource PageStack}">
+
+            <!-- Header -->
             <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Containers" />
             <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
@@ -35,6 +67,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
+                <!-- Expander -->
                 <Border Grid.Row="0" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -42,22 +75,29 @@
                                    Text="Expander" />
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Shows or hides content under a header." />
-                        <StackPanel Style="{StaticResource SampleStack}">
-                            <Expander Header="Expanded"
+                        <Grid Style="{StaticResource SampleGrid}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="8" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Expander Grid.Row="0"
+                                      Header="Expanded"
                                       IsExpanded="{Binding IsFirstExpanded}">
                                 <TextBlock Text="This expander starts open." />
                             </Expander>
-                            <Expander Margin="0,8,0,0"
+                            <Expander Grid.Row="2"
                                       Header="Collapsed"
                                       IsExpanded="{Binding IsSecondExpanded}">
                                 <TextBlock Text="This expander starts closed." />
                             </Expander>
-                        </StackPanel>
+                        </Grid>
                         <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding ExpandedCount, StringFormat='Expanded: {0} of 2'}" />
                     </StackPanel>
                 </Border>
 
+                <!-- GroupBox -->
                 <Border Grid.Row="0" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -67,27 +107,31 @@
                                    Text="Groups related controls under a header." />
                         <StackPanel Style="{StaticResource SampleStack}">
                             <GroupBox Header="User information">
-                                <StackPanel>
-                                    <StackPanel>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="16" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Grid.Row="0">
                                         <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                                    Text="Name" />
-                                        <TextBox Width="240"
-                                                 HorizontalAlignment="Left"
+                                        <TextBox Style="{StaticResource SampleTextBox}"
                                                  AutomationProperties.Name="Name" />
                                     </StackPanel>
-                                    <StackPanel Margin="0,16,0,0">
+                                    <StackPanel Grid.Row="2">
                                         <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                                    Text="Email" />
-                                        <TextBox Width="240"
-                                                 HorizontalAlignment="Left"
+                                        <TextBox Style="{StaticResource SampleTextBox}"
                                                  AutomationProperties.Name="Email" />
                                     </StackPanel>
-                                </StackPanel>
+                                </Grid>
                             </GroupBox>
                         </StackPanel>
                     </StackPanel>
                 </Border>
 
+                <!-- TabControl -->
                 <Border Grid.Row="1" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -97,19 +141,19 @@
                                    Text="Switches between pages of content." />
                         <StackPanel Style="{StaticResource SampleStack}">
                             <TabControl x:Name="Tabs"
-                                        Height="120"
+                                        Style="{StaticResource ContainersTabControl}"
                                         AutomationProperties.Name="Tabs"
                                         SelectedIndex="{Binding TabIndex}">
                                 <TabItem Header="General">
-                                    <TextBlock Margin="0,12,0,0"
+                                    <TextBlock Style="{StaticResource ContainersTabTextBlock}"
                                                Text="Name, language and region." />
                                 </TabItem>
                                 <TabItem Header="Details">
-                                    <TextBlock Margin="0,12,0,0"
+                                    <TextBlock Style="{StaticResource ContainersTabTextBlock}"
                                                Text="Version, size and location." />
                                 </TabItem>
                                 <TabItem Header="History">
-                                    <TextBlock Margin="0,12,0,0"
+                                    <TextBlock Style="{StaticResource ContainersTabTextBlock}"
                                                Text="Changes in the last 30 days." />
                                 </TabItem>
                             </TabControl>
@@ -119,6 +163,7 @@
                     </StackPanel>
                 </Border>
 
+                <!-- GridSplitter -->
                 <Border Grid.Row="1" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -126,8 +171,7 @@
                                    Text="GridSplitter" />
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Drag the bar to resize the two areas." />
-                        <Grid Height="160"
-                              Margin="0,16,0,0">
+                        <Grid Style="{StaticResource ContainersSplitterGrid}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="{Binding LeftWidth, Mode=TwoWay}"
                                                   MinWidth="80" />
@@ -136,21 +180,22 @@
                                                   MinWidth="80" />
                             </Grid.ColumnDefinitions>
                             <Border Grid.Column="0"
-                                    Style="{StaticResource PaneStyle}">
-                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                    Style="{StaticResource ContainersPaneBorder}">
+                                <TextBlock Style="{StaticResource ContainersPaneTextBlock}"
                                            Text="Left" />
                             </Border>
                             <GridSplitter Grid.Column="1"
                                           AutomationProperties.Name="Splitter" ResizeBehavior="PreviousAndNext" />
                             <Border Grid.Column="2"
-                                    Style="{StaticResource PaneStyle}">
-                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                    Style="{StaticResource ContainersPaneBorder}">
+                                <TextBlock Style="{StaticResource ContainersPaneTextBlock}"
                                            Text="Right" />
                             </Border>
                         </Grid>
                     </StackPanel>
                 </Border>
             </Grid>
+
         </StackPanel>
     </ScrollViewer>
 

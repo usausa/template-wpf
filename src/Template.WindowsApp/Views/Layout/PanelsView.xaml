@@ -11,16 +11,40 @@
              d:DesignWidth="800" d:DesignHeight="600">
 
     <UserControl.Resources>
+
+        <!-- Converter -->
+
         <s:ParameterEqualsConverter x:Key="ParameterEqualsConverter" />
 
-        <Style x:Key="PanelBoxStyle"
+        <!-- Common -->
+
+        <Style x:Key="PanelsBoxBorder"
                TargetType="{x:Type Border}">
             <Setter Property="Margin" Value="2" />
             <Setter Property="MinHeight" Value="32" />
             <Setter Property="Background" Value="{DynamicResource AccentFillColorDefaultBrush}" />
         </Style>
 
-        <Style x:Key="PanelBoxTextStyle"
+        <Style x:Key="PanelsFixedBoxBorder"
+               TargetType="{x:Type Border}"
+               BasedOn="{StaticResource PanelsBoxBorder}">
+            <Setter Property="Width" Value="64" />
+            <Setter Property="Height" Value="32" />
+        </Style>
+
+        <Style x:Key="PanelsShortBoxBorder"
+               TargetType="{x:Type Border}"
+               BasedOn="{StaticResource PanelsBoxBorder}">
+            <Setter Property="Height" Value="32" />
+        </Style>
+
+        <Style x:Key="PanelsNarrowBoxBorder"
+               TargetType="{x:Type Border}"
+               BasedOn="{StaticResource PanelsBoxBorder}">
+            <Setter Property="Width" Value="64" />
+        </Style>
+
+        <Style x:Key="PanelsBoxTextBlock"
                TargetType="{x:Type TextBlock}">
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
@@ -28,25 +52,49 @@
             <Setter Property="Foreground" Value="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
         </Style>
 
+        <Style x:Key="PanelsItemsControl"
+               TargetType="{x:Type ItemsControl}"
+               BasedOn="{StaticResource {x:Type ItemsControl}}">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+
         <DataTemplate x:Key="FixedBoxTemplate">
-            <Border Style="{StaticResource PanelBoxStyle}"
-                    Width="64" Height="32">
-                <TextBlock Style="{StaticResource PanelBoxTextStyle}"
+            <Border Style="{StaticResource PanelsFixedBoxBorder}">
+                <TextBlock Style="{StaticResource PanelsBoxTextBlock}"
                            Text="{Binding}" />
             </Border>
         </DataTemplate>
 
         <DataTemplate x:Key="FillBoxTemplate">
-            <Border Style="{StaticResource PanelBoxStyle}"
-                    Height="32">
-                <TextBlock Style="{StaticResource PanelBoxTextStyle}"
+            <Border Style="{StaticResource PanelsShortBoxBorder}">
+                <TextBlock Style="{StaticResource PanelsBoxTextBlock}"
                            Text="{Binding}" />
             </Border>
         </DataTemplate>
+
+        <!-- Grid -->
+
+        <Style x:Key="PanelsSampleGrid"
+               TargetType="{x:Type Grid}"
+               BasedOn="{StaticResource SampleGrid}">
+            <Setter Property="Height" Value="108" />
+        </Style>
+
+        <!-- DockPanel -->
+
+        <Style x:Key="PanelsSampleDockPanel"
+               TargetType="{x:Type DockPanel}">
+            <Setter Property="Height" Value="160" />
+            <Setter Property="Margin" Value="0,16,0,0" />
+        </Style>
+
     </UserControl.Resources>
 
+    <!-- Content -->
     <ScrollViewer Style="{StaticResource RootScroll}">
         <StackPanel Style="{StaticResource PageStack}">
+
+            <!-- Header -->
             <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Panels" />
             <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
@@ -64,6 +112,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
+                <!-- Grid -->
                 <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -71,8 +120,7 @@
                                    Text="Grid" />
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Rows and columns, with cells that span." />
-                        <Grid Height="108"
-                              Margin="0,16,0,0">
+                        <Grid Style="{StaticResource PanelsSampleGrid}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="*" />
@@ -84,44 +132,45 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Border Grid.Row="0" Grid.Column="0"
-                                    Style="{StaticResource PanelBoxStyle}">
-                                <TextBlock Style="{StaticResource PanelBoxTextStyle}"
+                                    Style="{StaticResource PanelsBoxBorder}">
+                                <TextBlock Style="{StaticResource PanelsBoxTextBlock}"
                                            Text="0, 0" />
                             </Border>
                             <Border Grid.Row="0" Grid.Column="1"
-                                    Style="{StaticResource PanelBoxStyle}">
-                                <TextBlock Style="{StaticResource PanelBoxTextStyle}"
+                                    Style="{StaticResource PanelsBoxBorder}">
+                                <TextBlock Style="{StaticResource PanelsBoxTextBlock}"
                                            Text="0, 1" />
                             </Border>
                             <Border Grid.Row="0" Grid.Column="2"
-                                    Style="{StaticResource PanelBoxStyle}">
-                                <TextBlock Style="{StaticResource PanelBoxTextStyle}"
+                                    Style="{StaticResource PanelsBoxBorder}">
+                                <TextBlock Style="{StaticResource PanelsBoxTextBlock}"
                                            Text="0, 2" />
                             </Border>
                             <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
-                                    Style="{StaticResource PanelBoxStyle}">
-                                <TextBlock Style="{StaticResource PanelBoxTextStyle}"
+                                    Style="{StaticResource PanelsBoxBorder}">
+                                <TextBlock Style="{StaticResource PanelsBoxTextBlock}"
                                            Text="ColumnSpan 2" />
                             </Border>
                             <Border Grid.Row="1" Grid.RowSpan="2" Grid.Column="2"
-                                    Style="{StaticResource PanelBoxStyle}">
-                                <TextBlock Style="{StaticResource PanelBoxTextStyle}"
+                                    Style="{StaticResource PanelsBoxBorder}">
+                                <TextBlock Style="{StaticResource PanelsBoxTextBlock}"
                                            Text="RowSpan 2" />
                             </Border>
                             <Border Grid.Row="2" Grid.Column="0"
-                                    Style="{StaticResource PanelBoxStyle}">
-                                <TextBlock Style="{StaticResource PanelBoxTextStyle}"
+                                    Style="{StaticResource PanelsBoxBorder}">
+                                <TextBlock Style="{StaticResource PanelsBoxTextBlock}"
                                            Text="2, 0" />
                             </Border>
                             <Border Grid.Row="2" Grid.Column="1"
-                                    Style="{StaticResource PanelBoxStyle}">
-                                <TextBlock Style="{StaticResource PanelBoxTextStyle}"
+                                    Style="{StaticResource PanelsBoxBorder}">
+                                <TextBlock Style="{StaticResource PanelsBoxTextBlock}"
                                            Text="2, 1" />
                             </Border>
                         </Grid>
                     </StackPanel>
                 </Border>
 
+                <!-- StackPanel -->
                 <Border Grid.Row="1" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -129,29 +178,37 @@
                                    Text="StackPanel" />
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Stacks items in one direction." />
-                        <StackPanel Style="{StaticResource SampleStack}"
-                                    Orientation="Horizontal">
-                            <RadioButton IsChecked="{Binding Orientation, Converter={StaticResource ParameterEqualsConverter}, ConverterParameter=Vertical}"
-                                         Content="Vertical" />
-                            <RadioButton IsChecked="{Binding Orientation, Converter={StaticResource ParameterEqualsConverter}, ConverterParameter=Horizontal}"
-                                         Content="Horizontal" />
-                        </StackPanel>
-                        <ItemsControl Margin="0,8,0,0"
-                                      HorizontalAlignment="Left"
-                                      ItemsSource="{Binding StackItems}"
-                                      ItemTemplate="{StaticResource FixedBoxTemplate}"
-                                      Focusable="False">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="{Binding Orientation}" />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                        </ItemsControl>
+                        <Grid Style="{StaticResource SampleGrid}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="8" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <StackPanel Grid.Row="0"
+                                        Orientation="Horizontal">
+                                <RadioButton IsChecked="{Binding Orientation, Converter={StaticResource ParameterEqualsConverter}, ConverterParameter=Vertical}"
+                                             Content="Vertical" />
+                                <RadioButton IsChecked="{Binding Orientation, Converter={StaticResource ParameterEqualsConverter}, ConverterParameter=Horizontal}"
+                                             Content="Horizontal" />
+                            </StackPanel>
+                            <ItemsControl Grid.Row="2"
+                                          Style="{StaticResource PanelsItemsControl}"
+                                          ItemsSource="{Binding StackItems}"
+                                          ItemTemplate="{StaticResource FixedBoxTemplate}"
+                                          Focusable="False">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="{Binding Orientation}" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                        </Grid>
                         <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding Orientation, StringFormat='Orientation: {0}'}" />
                     </StackPanel>
                 </Border>
 
+                <!-- WrapPanel -->
                 <Border Grid.Row="1" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -159,30 +216,36 @@
                                    Text="WrapPanel" />
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Wraps items onto the next line." />
-                        <StackPanel Style="{StaticResource SampleStack}">
-                            <Slider Width="240"
-                                    HorizontalAlignment="Left"
+                        <Grid Style="{StaticResource SampleGrid}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="8" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Slider Grid.Row="0"
+                                    Style="{StaticResource SampleSlider}"
                                     Value="{Binding WrapWidth}"
                                     Minimum="200" Maximum="480"
                                     AutomationProperties.Name="Width" IsSnapToTickEnabled="True" TickFrequency="10" />
-                        </StackPanel>
-                        <ItemsControl Width="{Binding WrapWidth}"
-                                      Margin="0,8,0,0"
-                                      HorizontalAlignment="Left"
-                                      ItemsSource="{Binding WrapItems}"
-                                      ItemTemplate="{StaticResource FixedBoxTemplate}"
-                                      Focusable="False">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <WrapPanel />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                        </ItemsControl>
+                            <ItemsControl Grid.Row="2"
+                                          Style="{StaticResource PanelsItemsControl}"
+                                          Width="{Binding WrapWidth}"
+                                          ItemsSource="{Binding WrapItems}"
+                                          ItemTemplate="{StaticResource FixedBoxTemplate}"
+                                          Focusable="False">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                        </Grid>
                         <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding WrapWidth, StringFormat='Width: {0}'}" />
                     </StackPanel>
                 </Border>
 
+                <!-- DockPanel -->
                 <Border Grid.Row="2" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -190,40 +253,36 @@
                                    Text="DockPanel" />
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Docks items to the edges and fills the rest." />
-                        <DockPanel Height="160"
-                                   Margin="0,16,0,0">
+                        <DockPanel Style="{StaticResource PanelsSampleDockPanel}">
                             <Border DockPanel.Dock="Top"
-                                    Style="{StaticResource PanelBoxStyle}"
-                                    Height="32">
-                                <TextBlock Style="{StaticResource PanelBoxTextStyle}"
+                                    Style="{StaticResource PanelsShortBoxBorder}">
+                                <TextBlock Style="{StaticResource PanelsBoxTextBlock}"
                                            Text="Top" />
                             </Border>
                             <Border DockPanel.Dock="Bottom"
-                                    Style="{StaticResource PanelBoxStyle}"
-                                    Height="32">
-                                <TextBlock Style="{StaticResource PanelBoxTextStyle}"
+                                    Style="{StaticResource PanelsShortBoxBorder}">
+                                <TextBlock Style="{StaticResource PanelsBoxTextBlock}"
                                            Text="Bottom" />
                             </Border>
                             <Border DockPanel.Dock="Left"
-                                    Style="{StaticResource PanelBoxStyle}"
-                                    Width="64">
-                                <TextBlock Style="{StaticResource PanelBoxTextStyle}"
+                                    Style="{StaticResource PanelsNarrowBoxBorder}">
+                                <TextBlock Style="{StaticResource PanelsBoxTextBlock}"
                                            Text="Left" />
                             </Border>
                             <Border DockPanel.Dock="Right"
-                                    Style="{StaticResource PanelBoxStyle}"
-                                    Width="64">
-                                <TextBlock Style="{StaticResource PanelBoxTextStyle}"
+                                    Style="{StaticResource PanelsNarrowBoxBorder}">
+                                <TextBlock Style="{StaticResource PanelsBoxTextBlock}"
                                            Text="Right" />
                             </Border>
-                            <Border Style="{StaticResource PanelBoxStyle}">
-                                <TextBlock Style="{StaticResource PanelBoxTextStyle}"
+                            <Border Style="{StaticResource PanelsBoxBorder}">
+                                <TextBlock Style="{StaticResource PanelsBoxTextBlock}"
                                            Text="Fill" />
                             </Border>
                         </DockPanel>
                     </StackPanel>
                 </Border>
 
+                <!-- UniformGrid -->
                 <Border Grid.Row="2" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -231,28 +290,34 @@
                                    Text="UniformGrid" />
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Cells of the same size." />
-                        <StackPanel Style="{StaticResource SampleStack}">
-                            <Slider Width="240"
-                                    HorizontalAlignment="Left"
+                        <Grid Style="{StaticResource SampleGrid}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="8" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Slider Grid.Row="0"
+                                    Style="{StaticResource SampleSlider}"
                                     Value="{Binding Columns}"
                                     Minimum="1" Maximum="4"
                                     AutomationProperties.Name="Columns" IsSnapToTickEnabled="True" TickFrequency="1" />
-                        </StackPanel>
-                        <ItemsControl Margin="0,8,0,0"
-                                      ItemsSource="{Binding GridItems}"
-                                      ItemTemplate="{StaticResource FillBoxTemplate}"
-                                      Focusable="False">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <UniformGrid Columns="{Binding Columns}" />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                        </ItemsControl>
+                            <ItemsControl Grid.Row="2"
+                                          ItemsSource="{Binding GridItems}"
+                                          ItemTemplate="{StaticResource FillBoxTemplate}"
+                                          Focusable="False">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Columns="{Binding Columns}" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                        </Grid>
                         <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding Columns, StringFormat='Columns: {0}'}" />
                     </StackPanel>
                 </Border>
             </Grid>
+
         </StackPanel>
     </ScrollViewer>
 

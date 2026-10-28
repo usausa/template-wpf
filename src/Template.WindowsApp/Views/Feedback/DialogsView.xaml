@@ -11,7 +11,15 @@
              d:DesignWidth="800" d:DesignHeight="600">
 
     <UserControl.Resources>
-        <Style x:Key="ResultTextStyle"
+
+        <!-- Common -->
+
+        <Style x:Key="DialogsTitleStack"
+               TargetType="{x:Type StackPanel}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="DialogsResultTextBlock"
                TargetType="{x:Type TextBlock}">
             <Setter Property="FontSize" Value="{DynamicResource CaptionTextBlockFontSize}" />
             <Setter Property="MaxWidth" Value="320" />
@@ -20,24 +28,32 @@
             <Setter Property="TextTrimming" Value="CharacterEllipsis" />
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
         </Style>
-        <Style x:Key="RunButtonStyle"
+
+        <Style x:Key="DialogsRunButton"
                TargetType="{x:Type Button}"
                BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="Width" Value="96" />
             <Setter Property="Content" Value="Run" />
         </Style>
+
     </UserControl.Resources>
 
+    <!-- Content -->
     <ScrollViewer Style="{StaticResource RootScroll}">
         <StackPanel Style="{StaticResource PageStack}">
+
+            <!-- Header -->
             <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Dialogs" />
             <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
                        Text="Show in-window, file and error dialogs." />
 
+            <!-- In-window dialogs -->
             <StackPanel Style="{StaticResource SectionPanel}">
                 <TextBlock Style="{StaticResource SectionHeaderTextBlock}"
                            Text="In-window dialogs" />
+
+                <!-- Confirm -->
                 <Border Style="{StaticResource CardBorder}">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -46,21 +62,23 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0"
-                                    VerticalAlignment="Center">
+                                    Style="{StaticResource DialogsTitleStack}">
                             <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                        Text="Confirm" />
                             <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                        Text="Ask yes or no." />
                         </StackPanel>
                         <TextBlock Grid.Column="1"
-                                   Style="{StaticResource ResultTextStyle}"
+                                   Style="{StaticResource DialogsResultTextBlock}"
                                    Text="{Binding ConfirmResult}" />
                         <Button Grid.Column="2"
-                                Style="{StaticResource RunButtonStyle}"
+                                Style="{StaticResource DialogsRunButton}"
                                 Command="{Binding ConfirmCommand}"
                                 AutomationProperties.Name="Run Confirm" />
                     </Grid>
                 </Border>
+
+                <!-- Notify -->
                 <Border Style="{StaticResource CardBorder}">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -68,18 +86,20 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0"
-                                    VerticalAlignment="Center">
+                                    Style="{StaticResource DialogsTitleStack}">
                             <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                        Text="Notify" />
                             <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                        Text="Show a message." />
                         </StackPanel>
                         <Button Grid.Column="1"
-                                Style="{StaticResource RunButtonStyle}"
+                                Style="{StaticResource DialogsRunButton}"
                                 Command="{Binding NotifyCommand}"
                                 AutomationProperties.Name="Run Notify" />
                     </Grid>
                 </Border>
+
+                <!-- Input -->
                 <Border Style="{StaticResource CardBorder}">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -88,21 +108,23 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0"
-                                    VerticalAlignment="Center">
+                                    Style="{StaticResource DialogsTitleStack}">
                             <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                        Text="Input" />
                             <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                        Text="Enter a value." />
                         </StackPanel>
                         <TextBlock Grid.Column="1"
-                                   Style="{StaticResource ResultTextStyle}"
+                                   Style="{StaticResource DialogsResultTextBlock}"
                                    Text="{Binding InputResult}" />
                         <Button Grid.Column="2"
-                                Style="{StaticResource RunButtonStyle}"
+                                Style="{StaticResource DialogsRunButton}"
                                 Command="{Binding InputCommand}"
                                 AutomationProperties.Name="Run Input" />
                     </Grid>
                 </Border>
+
+                <!-- Progress -->
                 <Border Style="{StaticResource CardBorder}">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -111,26 +133,30 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0"
-                                    VerticalAlignment="Center">
+                                    Style="{StaticResource DialogsTitleStack}">
                             <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                        Text="Progress" />
                             <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                        Text="Run a task and show its progress." />
                         </StackPanel>
                         <TextBlock Grid.Column="1"
-                                   Style="{StaticResource ResultTextStyle}"
+                                   Style="{StaticResource DialogsResultTextBlock}"
                                    Text="{Binding ProgressResult}" />
                         <Button Grid.Column="2"
-                                Style="{StaticResource RunButtonStyle}"
+                                Style="{StaticResource DialogsRunButton}"
                                 Command="{Binding ProgressCommand}"
                                 AutomationProperties.Name="Run Progress" />
                     </Grid>
                 </Border>
+
             </StackPanel>
 
+            <!-- Files -->
             <StackPanel Style="{StaticResource SectionPanel}">
                 <TextBlock Style="{StaticResource SectionHeaderTextBlock}"
                            Text="Files" />
+
+                <!-- Open file -->
                 <Border Style="{StaticResource CardBorder}">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -139,22 +165,24 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0"
-                                    VerticalAlignment="Center">
+                                    Style="{StaticResource DialogsTitleStack}">
                             <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                        Text="Open file" />
                             <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                        Text="Pick a file to open." />
                         </StackPanel>
                         <TextBlock Grid.Column="1"
-                                   Style="{StaticResource ResultTextStyle}"
+                                   Style="{StaticResource DialogsResultTextBlock}"
                                    Text="{Binding OpenFileResult}"
                                    ToolTip="{Binding OpenFileResult}" />
                         <Button Grid.Column="2"
-                                Style="{StaticResource RunButtonStyle}"
+                                Style="{StaticResource DialogsRunButton}"
                                 Command="{Binding OpenFileCommand}"
                                 AutomationProperties.Name="Run Open file" />
                     </Grid>
                 </Border>
+
+                <!-- Save file -->
                 <Border Style="{StaticResource CardBorder}">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -163,22 +191,24 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0"
-                                    VerticalAlignment="Center">
+                                    Style="{StaticResource DialogsTitleStack}">
                             <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                        Text="Save file" />
                             <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                        Text="Pick a file to save." />
                         </StackPanel>
                         <TextBlock Grid.Column="1"
-                                   Style="{StaticResource ResultTextStyle}"
+                                   Style="{StaticResource DialogsResultTextBlock}"
                                    Text="{Binding SaveFileResult}"
                                    ToolTip="{Binding SaveFileResult}" />
                         <Button Grid.Column="2"
-                                Style="{StaticResource RunButtonStyle}"
+                                Style="{StaticResource DialogsRunButton}"
                                 Command="{Binding SaveFileCommand}"
                                 AutomationProperties.Name="Run Save file" />
                     </Grid>
                 </Border>
+
+                <!-- Select folder -->
                 <Border Style="{StaticResource CardBorder}">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -187,27 +217,31 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0"
-                                    VerticalAlignment="Center">
+                                    Style="{StaticResource DialogsTitleStack}">
                             <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                        Text="Select folder" />
                             <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                        Text="Pick a folder." />
                         </StackPanel>
                         <TextBlock Grid.Column="1"
-                                   Style="{StaticResource ResultTextStyle}"
+                                   Style="{StaticResource DialogsResultTextBlock}"
                                    Text="{Binding SelectFolderResult}"
                                    ToolTip="{Binding SelectFolderResult}" />
                         <Button Grid.Column="2"
-                                Style="{StaticResource RunButtonStyle}"
+                                Style="{StaticResource DialogsRunButton}"
                                 Command="{Binding SelectFolderCommand}"
                                 AutomationProperties.Name="Run Select folder" />
                     </Grid>
                 </Border>
+
             </StackPanel>
 
+            <!-- Errors -->
             <StackPanel Style="{StaticResource SectionPanel}">
                 <TextBlock Style="{StaticResource SectionHeaderTextBlock}"
                            Text="Errors" />
+
+                <!-- Unhandled exception -->
                 <Border Style="{StaticResource CardBorder}">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -215,19 +249,21 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0"
-                                    VerticalAlignment="Center">
+                                    Style="{StaticResource DialogsTitleStack}">
                             <TextBlock Style="{StaticResource CardTitleTextBlock}"
                                        Text="Unhandled exception" />
                             <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                        Text="Throw an exception to show the error window." />
                         </StackPanel>
                         <Button Grid.Column="1"
-                                Style="{StaticResource RunButtonStyle}"
+                                Style="{StaticResource DialogsRunButton}"
                                 Command="{Binding UnhandledExceptionCommand}"
                                 AutomationProperties.Name="Run Unhandled exception" />
                     </Grid>
                 </Border>
+
             </StackPanel>
+
         </StackPanel>
     </ScrollViewer>
 

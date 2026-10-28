@@ -14,6 +14,55 @@
              d:DataContext="{d:DesignInstance Type={x:Type module:TabsViewModel}}"
              d:DesignWidth="800" d:DesignHeight="600">
 
+    <UserControl.Resources>
+
+        <!-- Options -->
+
+        <Style x:Key="TabsOptionLabelTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource PageTextBlockBase}">
+            <Setter Property="Margin" Value="0,0,0,4" />
+            <Setter Property="FontSize" Value="{DynamicResource CaptionTextBlockFontSize}" />
+            <Setter Property="FontWeight" Value="Normal" />
+        </Style>
+
+        <!-- Documents -->
+
+        <Style x:Key="TabsTabViewItem"
+               TargetType="{x:Type controls:TabViewItem}">
+            <Setter Property="Glyph" Value="&#xE8A5;" />
+        </Style>
+
+        <Style x:Key="TabsTitleTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        </Style>
+
+        <Style x:Key="TabsDocumentTextBox"
+               TargetType="{x:Type TextBox}"
+               BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Padding" Value="12" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+
+        <Style x:Key="TabsEmptyTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+            <Setter Property="Visibility" Value="Collapsed" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Documents.Count}"
+                             Value="0">
+                    <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+    </UserControl.Resources>
+
     <UserControl.InputBindings>
         <KeyBinding Command="{Binding AddCommand}"
                     Gesture="Ctrl+T" />
@@ -48,15 +97,18 @@
                     Gesture="Ctrl+D9" />
     </UserControl.InputBindings>
 
+    <!-- Content -->
     <Grid Style="{StaticResource PageGrid}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="16" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
+        <!-- Header -->
         <TextBlock Grid.Row="0"
                    Style="{StaticResource PageTitleTextBlock}"
                    Text="Tabs" />
@@ -64,14 +116,17 @@
                    Style="{StaticResource PageDescriptionTextBlock}"
                    Text="Add, close and move tabs like a document app." />
 
-        <StackPanel Grid.Row="2"
-                    Orientation="Horizontal"
-                    Margin="0,0,0,16">
-            <StackPanel>
-                <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                           Margin="0,0,0,4"
+        <!-- Options -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="16" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <TextBlock Style="{StaticResource TabsOptionLabelTextBlock}"
                            Text="Tab width" />
-                <ComboBox Width="240"
+                <ComboBox Style="{StaticResource SampleComboBox}"
                           AutomationProperties.Name="Tab width"
                           SelectedValue="{Binding WidthMode}"
                           SelectedValuePath="Tag">
@@ -83,11 +138,10 @@
                                   Tag="{x:Static models:TabViewWidthMode.Compact}" />
                 </ComboBox>
             </StackPanel>
-            <StackPanel Margin="16,0,0,0">
-                <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                           Margin="0,0,0,4"
+            <StackPanel Grid.Column="2">
+                <TextBlock Style="{StaticResource TabsOptionLabelTextBlock}"
                            Text="Close button" />
-                <ComboBox Width="240"
+                <ComboBox Style="{StaticResource SampleComboBox}"
                           AutomationProperties.Name="Close button"
                           SelectedValue="{Binding CloseButtonMode}"
                           SelectedValuePath="Tag">
@@ -97,60 +151,42 @@
                                   Tag="{x:Static controls:TabViewCloseButtonOverlayMode.OnPointerOver}" />
                 </ComboBox>
             </StackPanel>
-        </StackPanel>
+        </Grid>
 
-        <controls:TabView Grid.Row="3"
+        <!-- Documents -->
+        <controls:TabView Grid.Row="4"
                           ItemsSource="{Binding Documents}"
                           SelectedItem="{Binding SelectedDocument}"
                           TabWidthMode="{Binding WidthMode}"
                           CloseButtonOverlayMode="{Binding CloseButtonMode}"
                           AddTabButtonCommand="{Binding AddCommand}"
                           CloseTabCommand="{Binding CloseCommand}"
-                          AutomationProperties.Name="Documents">
+                          AutomationProperties.Name="Documents"
+                          ItemContainerStyle="{StaticResource TabsTabViewItem}">
             <i:Interaction.Behaviors>
                 <behaviors:TabReorderBehavior MoveCommand="{Binding MoveCommand}" />
             </i:Interaction.Behaviors>
-            <controls:TabView.ItemContainerStyle>
-                <Style TargetType="{x:Type controls:TabViewItem}">
-                    <Setter Property="Glyph" Value="&#xE8A5;" />
-                </Style>
-            </controls:TabView.ItemContainerStyle>
             <controls:TabView.ItemTemplate>
                 <DataTemplate DataType="{x:Type module:DocumentTab}">
-                    <TextBlock TextTrimming="CharacterEllipsis"
+                    <TextBlock Style="{StaticResource TabsTitleTextBlock}"
                                Text="{Binding Title}" />
                 </DataTemplate>
             </controls:TabView.ItemTemplate>
             <controls:TabView.ContentTemplate>
                 <DataTemplate DataType="{x:Type module:DocumentTab}">
-                    <TextBox Padding="12"
-                             TextWrapping="Wrap"
+                    <TextBox Style="{StaticResource TabsDocumentTextBox}"
                              VerticalScrollBarVisibility="Auto"
                              Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}"
-                             Background="Transparent"
-                             BorderThickness="0"
                              AcceptsReturn="True" AutomationProperties.Name="Document text" />
                 </DataTemplate>
             </controls:TabView.ContentTemplate>
         </controls:TabView>
-        <TextBlock Grid.Row="3"
-                   HorizontalAlignment="Center" VerticalAlignment="Center"
-                   Text="No open tabs. Select + or press Ctrl+T."
-                   Foreground="{DynamicResource TextFillColorSecondaryBrush}">
-            <TextBlock.Style>
-                <Style TargetType="{x:Type TextBlock}">
-                    <Setter Property="Visibility" Value="Collapsed" />
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Documents.Count}"
-                                     Value="0">
-                            <Setter Property="Visibility" Value="Visible" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBlock.Style>
-        </TextBlock>
-
         <TextBlock Grid.Row="4"
+                   Style="{StaticResource TabsEmptyTextBlock}"
+                   Text="No open tabs. Select + or press Ctrl+T." />
+
+        <!-- Result -->
+        <TextBlock Grid.Row="5"
                    Style="{StaticResource SampleResultTextBlock}">
             <TextBlock.Text>
                 <MultiBinding StringFormat="Tabs: {0} · Selected: {1}">
@@ -160,6 +196,7 @@
                 </MultiBinding>
             </TextBlock.Text>
         </TextBlock>
+
     </Grid>
 
 </UserControl>

@@ -12,37 +12,87 @@
              d:DataContext="{d:DesignInstance Type={x:Type module:ColorsViewModel}}"
              d:DesignWidth="800" d:DesignHeight="600">
 
+    <UserControl.Resources>
+
+        <!-- Category -->
+
+        <Style x:Key="ColorsCategoryGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Margin" Value="0,0,0,16" />
+        </Style>
+
+        <Style x:Key="ColorsCategoryComboBoxItem"
+               TargetType="{x:Type ComboBoxItem}"
+               BasedOn="{StaticResource {x:Type ComboBoxItem}}"
+               d:DataContext="{d:DesignInstance Type={x:Type sample:ColorCategory}}">
+            <Setter Property="AutomationProperties.Name" Value="{Binding Title}" />
+        </Style>
+
+        <Style x:Key="ColorsCopiedTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource SampleResultTextBlock}">
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <!-- Groups -->
+
+        <Style x:Key="ColorsEntryGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Margin" Value="0,4" />
+        </Style>
+
+        <Style x:Key="ColorsBrushSwatch"
+               TargetType="{x:Type controls:BrushSwatch}">
+            <Setter Property="Width" Value="32" />
+            <Setter Property="Height" Value="32" />
+            <Setter Property="BorderBrush" Value="{DynamicResource CardStrokeColorDefaultBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+
+        <Style x:Key="ColorsNameTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource CardTitleTextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="ColorsKeyTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource CardCaptionTextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+    </UserControl.Resources>
+
+    <!-- Content -->
     <ScrollViewer Style="{StaticResource RootScroll}">
         <StackPanel Style="{StaticResource PageStack}">
+
+            <!-- Header -->
             <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Colors" />
             <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
                        Text="Theme brushes and their resource names." />
 
-            <Grid Margin="0,0,0,16">
+            <!-- Category -->
+            <Grid Style="{StaticResource ColorsCategoryGrid}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="16" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <ComboBox Grid.Column="0"
-                          Width="240"
+                          Style="{StaticResource SampleComboBox}"
                           ItemsSource="{Binding Categories}"
                           SelectedItem="{Binding SelectedCategory}"
-                          AutomationProperties.Name="Category" DisplayMemberPath="Title">
-                    <ComboBox.ItemContainerStyle>
-                        <Style TargetType="{x:Type ComboBoxItem}"
-                               BasedOn="{StaticResource {x:Type ComboBoxItem}}">
-                            <Setter Property="AutomationProperties.Name" Value="{Binding Title}" />
-                        </Style>
-                    </ComboBox.ItemContainerStyle>
-                </ComboBox>
-                <TextBlock Grid.Column="1"
-                           Style="{StaticResource SampleResultTextBlock}"
-                           Margin="16,0,0,0"
-                           VerticalAlignment="Center"
+                          AutomationProperties.Name="Category" DisplayMemberPath="Title"
+                          ItemContainerStyle="{StaticResource ColorsCategoryComboBoxItem}" />
+                <TextBlock Grid.Column="2"
+                           Style="{StaticResource ColorsCopiedTextBlock}"
                            Text="{Binding Copied, StringFormat='Copied: {0}', TargetNullValue='Copied: -'}" />
             </Grid>
 
+            <!-- Groups -->
             <ItemsControl ItemsSource="{Binding SelectedCategory.Groups}"
                           Focusable="False">
                 <ItemsControl.ItemTemplate>
@@ -55,29 +105,26 @@
                                               Focusable="False">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate DataType="{x:Type sample:ColorEntry}">
-                                            <Grid Margin="0,4">
+                                            <Grid Style="{StaticResource ColorsEntryGrid}">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="32" />
+                                                    <ColumnDefinition Width="16" />
                                                     <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="16" />
                                                     <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="16" />
                                                     <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
                                                 <controls:BrushSwatch Grid.Column="0"
-                                                                      Width="32" Height="32"
-                                                                      BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
-                                                                      BorderThickness="1"
+                                                                      Style="{StaticResource ColorsBrushSwatch}"
                                                                       BrushKey="{Binding Key}" />
-                                                <TextBlock Grid.Column="1"
-                                                           Style="{StaticResource CardTitleTextBlock}"
-                                                           Margin="16,0"
-                                                           VerticalAlignment="Center"
-                                                           Text="{Binding Name}" />
                                                 <TextBlock Grid.Column="2"
-                                                           Style="{StaticResource CardCaptionTextBlock}"
-                                                           Margin="0,0,16,0"
-                                                           VerticalAlignment="Center"
+                                                           Style="{StaticResource ColorsNameTextBlock}"
+                                                           Text="{Binding Name}" />
+                                                <TextBlock Grid.Column="4"
+                                                           Style="{StaticResource ColorsKeyTextBlock}"
                                                            Text="{Binding Key}" />
-                                                <Button Grid.Column="3"
+                                                <Button Grid.Column="6"
                                                         Style="{StaticResource IconButton}"
                                                         Command="{Binding DataContext.CopyCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
                                                         CommandParameter="{Binding Key}"
@@ -93,6 +140,7 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
+
         </StackPanel>
     </ScrollViewer>
 

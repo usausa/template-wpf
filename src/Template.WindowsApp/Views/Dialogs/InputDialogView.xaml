@@ -10,6 +10,7 @@
              x:Class="Template.WindowsApp.Views.Dialogs.InputDialogView"
              d:DataContext="{d:DesignInstance Type={x:Type module:InputDialogViewModel}}">
 
+    <!-- Content -->
     <controls:ContentDialog Title="{Binding Title}"
                             CloseButtonCommand="{Binding CloseCommand}"
                             CloseButtonText="Cancel"

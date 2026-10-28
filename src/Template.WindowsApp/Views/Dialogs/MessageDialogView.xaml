@@ -8,6 +8,16 @@
              x:Class="Template.WindowsApp.Views.Dialogs.MessageDialogView"
              d:DataContext="{d:DesignInstance Type={x:Type module:MessageDialogViewModel}}">
 
+    <UserControl.Resources>
+
+        <Style x:Key="MessageDialogMessageTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+
+    </UserControl.Resources>
+
+    <!-- Content -->
     <controls:ContentDialog Title="{Binding Title}"
                             CloseButtonCommand="{Binding CloseCommand}"
                             CloseButtonText="{Binding CloseButtonText}"
@@ -15,7 +25,7 @@
                             PrimaryButtonText="{Binding PrimaryButtonText}"
                             SecondaryButtonCommand="{Binding SecondaryCommand}"
                             SecondaryButtonText="{Binding SecondaryButtonText}">
-        <TextBlock TextWrapping="Wrap"
+        <TextBlock Style="{StaticResource MessageDialogMessageTextBlock}"
                    Text="{Binding Message}" />
     </controls:ContentDialog>
 

@@ -11,38 +11,56 @@
              d:DesignWidth="800" d:DesignHeight="600">
 
     <UserControl.Resources>
-        <Style x:Key="HeaderCellTextStyle"
+
+        <!-- Copied -->
+
+        <Style x:Key="TypographyCopiedTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource SampleResultTextBlock}">
+            <Setter Property="Margin" Value="0,0,0,16" />
+        </Style>
+
+        <!-- Styles -->
+
+        <Style x:Key="TypographyHeaderTextBlock"
                TargetType="{x:Type TextBlock}"
                BasedOn="{StaticResource PageTextBlockBase}">
             <Setter Property="Margin" Value="0,0,16,8" />
             <Setter Property="FontSize" Value="{DynamicResource CaptionTextBlockFontSize}" />
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
         </Style>
-        <Style x:Key="ValueCellTextStyle"
+
+        <Style x:Key="TypographyValueTextBlock"
                TargetType="{x:Type TextBlock}"
                BasedOn="{StaticResource PageTextBlockBase}">
             <Setter Property="Margin" Value="0,0,16,0" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="FontSize" Value="{DynamicResource CaptionTextBlockFontSize}" />
         </Style>
-        <Style x:Key="KeyCellTextStyle"
+
+        <Style x:Key="TypographyKeyTextBlock"
                TargetType="{x:Type TextBlock}"
-               BasedOn="{StaticResource ValueCellTextStyle}">
+               BasedOn="{StaticResource TypographyValueTextBlock}">
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
         </Style>
+
     </UserControl.Resources>
 
+    <!-- Content -->
     <ScrollViewer Style="{StaticResource RootScroll}">
         <StackPanel Style="{StaticResource PageStack}">
+
+            <!-- Header -->
             <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Typography" />
             <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
                        Text="Text styles of the Fluent theme." />
 
-            <TextBlock Style="{StaticResource SampleResultTextBlock}"
-                       Margin="0,0,0,16"
+            <!-- Copied -->
+            <TextBlock Style="{StaticResource TypographyCopiedTextBlock}"
                        Text="{Binding Copied, StringFormat='Copied: {0}', TargetNullValue='Copied: -'}" />
 
+            <!-- Styles -->
             <Border Style="{StaticResource CardBorder}">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -63,16 +81,16 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0" Grid.Column="0"
-                               Style="{StaticResource HeaderCellTextStyle}"
+                               Style="{StaticResource TypographyHeaderTextBlock}"
                                Text="Example" />
                     <TextBlock Grid.Row="0" Grid.Column="1"
-                               Style="{StaticResource HeaderCellTextStyle}"
+                               Style="{StaticResource TypographyHeaderTextBlock}"
                                Text="Size" />
                     <TextBlock Grid.Row="0" Grid.Column="2"
-                               Style="{StaticResource HeaderCellTextStyle}"
+                               Style="{StaticResource TypographyHeaderTextBlock}"
                                Text="Weight" />
                     <TextBlock Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2"
-                               Style="{StaticResource HeaderCellTextStyle}"
+                               Style="{StaticResource TypographyHeaderTextBlock}"
                                Text="Style" />
                     <TextBlock Grid.Row="1" Grid.Column="0"
                                Style="{DynamicResource CaptionTextBlockStyle}"
@@ -80,13 +98,13 @@
                                VerticalAlignment="Center"
                                Text="Caption" />
                     <TextBlock Grid.Row="1" Grid.Column="1"
-                               Style="{StaticResource ValueCellTextStyle}"
+                               Style="{StaticResource TypographyValueTextBlock}"
                                Text="12" />
                     <TextBlock Grid.Row="1" Grid.Column="2"
-                               Style="{StaticResource ValueCellTextStyle}"
+                               Style="{StaticResource TypographyValueTextBlock}"
                                Text="Regular" />
                     <TextBlock Grid.Row="1" Grid.Column="3"
-                               Style="{StaticResource KeyCellTextStyle}"
+                               Style="{StaticResource TypographyKeyTextBlock}"
                                Text="CaptionTextBlockStyle" />
                     <Button Grid.Row="1" Grid.Column="4"
                             Style="{StaticResource IconButton}"
@@ -101,13 +119,13 @@
                                VerticalAlignment="Center"
                                Text="Body" />
                     <TextBlock Grid.Row="2" Grid.Column="1"
-                               Style="{StaticResource ValueCellTextStyle}"
+                               Style="{StaticResource TypographyValueTextBlock}"
                                Text="14" />
                     <TextBlock Grid.Row="2" Grid.Column="2"
-                               Style="{StaticResource ValueCellTextStyle}"
+                               Style="{StaticResource TypographyValueTextBlock}"
                                Text="Regular" />
                     <TextBlock Grid.Row="2" Grid.Column="3"
-                               Style="{StaticResource KeyCellTextStyle}"
+                               Style="{StaticResource TypographyKeyTextBlock}"
                                Text="BodyTextBlockStyle" />
                     <Button Grid.Row="2" Grid.Column="4"
                             Style="{StaticResource IconButton}"
@@ -122,13 +140,13 @@
                                VerticalAlignment="Center"
                                Text="Body strong" />
                     <TextBlock Grid.Row="3" Grid.Column="1"
-                               Style="{StaticResource ValueCellTextStyle}"
+                               Style="{StaticResource TypographyValueTextBlock}"
                                Text="14" />
                     <TextBlock Grid.Row="3" Grid.Column="2"
-                               Style="{StaticResource ValueCellTextStyle}"
+                               Style="{StaticResource TypographyValueTextBlock}"
                                Text="SemiBold" />
                     <TextBlock Grid.Row="3" Grid.Column="3"
-                               Style="{StaticResource KeyCellTextStyle}"
+                               Style="{StaticResource TypographyKeyTextBlock}"
                                Text="BodyStrongTextBlockStyle" />
                     <Button Grid.Row="3" Grid.Column="4"
                             Style="{StaticResource IconButton}"
@@ -143,13 +161,13 @@
                                VerticalAlignment="Center"
                                Text="Subtitle" />
                     <TextBlock Grid.Row="4" Grid.Column="1"
-                               Style="{StaticResource ValueCellTextStyle}"
+                               Style="{StaticResource TypographyValueTextBlock}"
                                Text="20" />
                     <TextBlock Grid.Row="4" Grid.Column="2"
-                               Style="{StaticResource ValueCellTextStyle}"
+                               Style="{StaticResource TypographyValueTextBlock}"
                                Text="SemiBold" />
                     <TextBlock Grid.Row="4" Grid.Column="3"
-                               Style="{StaticResource KeyCellTextStyle}"
+                               Style="{StaticResource TypographyKeyTextBlock}"
                                Text="SubtitleTextBlockStyle" />
                     <Button Grid.Row="4" Grid.Column="4"
                             Style="{StaticResource IconButton}"
@@ -164,13 +182,13 @@
                                VerticalAlignment="Center"
                                Text="Title" />
                     <TextBlock Grid.Row="5" Grid.Column="1"
-                               Style="{StaticResource ValueCellTextStyle}"
+                               Style="{StaticResource TypographyValueTextBlock}"
                                Text="28" />
                     <TextBlock Grid.Row="5" Grid.Column="2"
-                               Style="{StaticResource ValueCellTextStyle}"
+                               Style="{StaticResource TypographyValueTextBlock}"
                                Text="SemiBold" />
                     <TextBlock Grid.Row="5" Grid.Column="3"
-                               Style="{StaticResource KeyCellTextStyle}"
+                               Style="{StaticResource TypographyKeyTextBlock}"
                                Text="TitleTextBlockStyle" />
                     <Button Grid.Row="5" Grid.Column="4"
                             Style="{StaticResource IconButton}"
@@ -185,13 +203,13 @@
                                VerticalAlignment="Center"
                                Text="Title large" />
                     <TextBlock Grid.Row="6" Grid.Column="1"
-                               Style="{StaticResource ValueCellTextStyle}"
+                               Style="{StaticResource TypographyValueTextBlock}"
                                Text="40" />
                     <TextBlock Grid.Row="6" Grid.Column="2"
-                               Style="{StaticResource ValueCellTextStyle}"
+                               Style="{StaticResource TypographyValueTextBlock}"
                                Text="SemiBold" />
                     <TextBlock Grid.Row="6" Grid.Column="3"
-                               Style="{StaticResource KeyCellTextStyle}"
+                               Style="{StaticResource TypographyKeyTextBlock}"
                                Text="TitleLargeTextBlockStyle" />
                     <Button Grid.Row="6" Grid.Column="4"
                             Style="{StaticResource IconButton}"
@@ -206,13 +224,13 @@
                                VerticalAlignment="Center"
                                Text="Display" />
                     <TextBlock Grid.Row="7" Grid.Column="1"
-                               Style="{StaticResource ValueCellTextStyle}"
+                               Style="{StaticResource TypographyValueTextBlock}"
                                Text="68" />
                     <TextBlock Grid.Row="7" Grid.Column="2"
-                               Style="{StaticResource ValueCellTextStyle}"
+                               Style="{StaticResource TypographyValueTextBlock}"
                                Text="SemiBold" />
                     <TextBlock Grid.Row="7" Grid.Column="3"
-                               Style="{StaticResource KeyCellTextStyle}"
+                               Style="{StaticResource TypographyKeyTextBlock}"
                                Text="DisplayTextBlockStyle" />
                     <Button Grid.Row="7" Grid.Column="4"
                             Style="{StaticResource IconButton}"
@@ -223,6 +241,7 @@
                             AutomationProperties.Name="Copy DisplayTextBlockStyle" />
                 </Grid>
             </Border>
+
         </StackPanel>
     </ScrollViewer>
 

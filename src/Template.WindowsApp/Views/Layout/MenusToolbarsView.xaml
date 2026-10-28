@@ -11,13 +11,30 @@
              d:DesignWidth="800" d:DesignHeight="600">
 
     <UserControl.Resources>
+
+        <!-- Converter -->
+
         <s:ParameterEqualsConverter x:Key="ParameterEqualsConverter" />
-        <Style x:Key="GlyphTextStyle"
+
+        <!-- Common -->
+
+        <Style x:Key="MenusToolbarsGlyphTextBlock"
                TargetType="{x:Type TextBlock}">
             <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
             <Setter Property="FontSize" Value="16" />
         </Style>
-        <Style x:Key="ContextAreaStyle"
+
+        <!-- Menu -->
+
+        <Style x:Key="MenusToolbarsMenu"
+               TargetType="{x:Type Menu}"
+               BasedOn="{StaticResource {x:Type Menu}}">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+
+        <!-- ContextMenu -->
+
+        <Style x:Key="MenusToolbarsContextAreaBorder"
                TargetType="{x:Type Border}">
             <Setter Property="Height" Value="120" />
             <Setter Property="Focusable" Value="True" />
@@ -26,10 +43,29 @@
             <Setter Property="BorderBrush" Value="{DynamicResource ControlStrongStrokeColorDefaultBrush}" />
             <Setter Property="BorderThickness" Value="1" />
         </Style>
+
+        <Style x:Key="MenusToolbarsContextHintTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
+        <!-- ToolBar -->
+
+        <Style x:Key="MenusToolbarsTextSizeComboBox"
+               TargetType="{x:Type ComboBox}"
+               BasedOn="{StaticResource {x:Type ComboBox}}">
+            <Setter Property="Width" Value="72" />
+        </Style>
+
     </UserControl.Resources>
 
+    <!-- Content -->
     <ScrollViewer Style="{StaticResource RootScroll}">
         <StackPanel Style="{StaticResource PageStack}">
+
+            <!-- Header -->
             <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Menus &amp; toolbars" />
             <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
@@ -46,6 +82,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
+                <!-- Menu -->
                 <Border Grid.Row="0" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -54,14 +91,14 @@
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Menu bar with icons, submenus, checks and shortcuts." />
                         <StackPanel Style="{StaticResource SampleStack}">
-                            <Menu HorizontalAlignment="Left">
+                            <Menu Style="{StaticResource MenusToolbarsMenu}">
                                 <MenuItem Header="File">
                                     <MenuItem Command="{Binding MenuItemCommand}"
                                               CommandParameter="New"
                                               Header="New"
                                               InputGestureText="Ctrl+N">
                                         <MenuItem.Icon>
-                                            <TextBlock Style="{StaticResource GlyphTextStyle}"
+                                            <TextBlock Style="{StaticResource MenusToolbarsGlyphTextBlock}"
                                                        Text="&#xE8A5;" />
                                         </MenuItem.Icon>
                                     </MenuItem>
@@ -70,7 +107,7 @@
                                               Header="Open"
                                               InputGestureText="Ctrl+O">
                                         <MenuItem.Icon>
-                                            <TextBlock Style="{StaticResource GlyphTextStyle}"
+                                            <TextBlock Style="{StaticResource MenusToolbarsGlyphTextBlock}"
                                                        Text="&#xE8E5;" />
                                         </MenuItem.Icon>
                                     </MenuItem>
@@ -79,7 +116,7 @@
                                               Header="Save"
                                               InputGestureText="Ctrl+S">
                                         <MenuItem.Icon>
-                                            <TextBlock Style="{StaticResource GlyphTextStyle}"
+                                            <TextBlock Style="{StaticResource MenusToolbarsGlyphTextBlock}"
                                                        Text="&#xE74E;" />
                                         </MenuItem.Icon>
                                     </MenuItem>
@@ -99,7 +136,7 @@
                                               Header="Undo"
                                               InputGestureText="Ctrl+Z">
                                         <MenuItem.Icon>
-                                            <TextBlock Style="{StaticResource GlyphTextStyle}"
+                                            <TextBlock Style="{StaticResource MenusToolbarsGlyphTextBlock}"
                                                        Text="&#xE7A7;" />
                                         </MenuItem.Icon>
                                     </MenuItem>
@@ -109,7 +146,7 @@
                                               Header="Cut"
                                               InputGestureText="Ctrl+X">
                                         <MenuItem.Icon>
-                                            <TextBlock Style="{StaticResource GlyphTextStyle}"
+                                            <TextBlock Style="{StaticResource MenusToolbarsGlyphTextBlock}"
                                                        Text="&#xE8C6;" />
                                         </MenuItem.Icon>
                                     </MenuItem>
@@ -118,7 +155,7 @@
                                               Header="Copy"
                                               InputGestureText="Ctrl+C">
                                         <MenuItem.Icon>
-                                            <TextBlock Style="{StaticResource GlyphTextStyle}"
+                                            <TextBlock Style="{StaticResource MenusToolbarsGlyphTextBlock}"
                                                        Text="&#xE8C8;" />
                                         </MenuItem.Icon>
                                     </MenuItem>
@@ -127,7 +164,7 @@
                                               Header="Paste"
                                               InputGestureText="Ctrl+V">
                                         <MenuItem.Icon>
-                                            <TextBlock Style="{StaticResource GlyphTextStyle}"
+                                            <TextBlock Style="{StaticResource MenusToolbarsGlyphTextBlock}"
                                                        Text="&#xE77F;" />
                                         </MenuItem.Icon>
                                     </MenuItem>
@@ -165,6 +202,7 @@
                     </StackPanel>
                 </Border>
 
+                <!-- ContextMenu -->
                 <Border Grid.Row="0" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -173,7 +211,7 @@
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Right-click the area to open a menu." />
                         <StackPanel Style="{StaticResource SampleStack}">
-                            <Border Style="{StaticResource ContextAreaStyle}"
+                            <Border Style="{StaticResource MenusToolbarsContextAreaBorder}"
                                     AutomationProperties.Name="Context area">
                                 <Border.ContextMenu>
                                     <ContextMenu>
@@ -210,10 +248,9 @@
                                                   IsCheckable="True" />
                                     </ContextMenu>
                                 </Border.ContextMenu>
-                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                <TextBlock Style="{StaticResource MenusToolbarsContextHintTextBlock}"
                                            IsHitTestVisible="False"
-                                           Text="Right-click here"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                           Text="Right-click here" />
                             </Border>
                         </StackPanel>
                         <TextBlock Style="{StaticResource SampleResultTextBlock}"
@@ -221,6 +258,7 @@
                     </StackPanel>
                 </Border>
 
+                <!-- ToolBar -->
                 <Border Grid.Row="1" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -235,21 +273,21 @@
                                             CommandParameter="New"
                                             ToolTip="New"
                                             AutomationProperties.Name="New">
-                                        <TextBlock Style="{StaticResource GlyphTextStyle}"
+                                        <TextBlock Style="{StaticResource MenusToolbarsGlyphTextBlock}"
                                                    Text="&#xE8A5;" />
                                     </Button>
                                     <Button Command="{Binding ToolBarItemCommand}"
                                             CommandParameter="Open"
                                             ToolTip="Open"
                                             AutomationProperties.Name="Open">
-                                        <TextBlock Style="{StaticResource GlyphTextStyle}"
+                                        <TextBlock Style="{StaticResource MenusToolbarsGlyphTextBlock}"
                                                    Text="&#xE8E5;" />
                                     </Button>
                                     <Button Command="{Binding ToolBarItemCommand}"
                                             CommandParameter="Save"
                                             ToolTip="Save"
                                             AutomationProperties.Name="Save">
-                                        <TextBlock Style="{StaticResource GlyphTextStyle}"
+                                        <TextBlock Style="{StaticResource MenusToolbarsGlyphTextBlock}"
                                                    Text="&#xE74E;" />
                                     </Button>
                                 </ToolBar>
@@ -257,22 +295,22 @@
                                     <ToggleButton IsChecked="{Binding IsBold}"
                                                   ToolTip="Bold"
                                                   AutomationProperties.Name="Bold">
-                                        <TextBlock Style="{StaticResource GlyphTextStyle}"
+                                        <TextBlock Style="{StaticResource MenusToolbarsGlyphTextBlock}"
                                                    Text="&#xE8DD;" />
                                     </ToggleButton>
                                     <ToggleButton IsChecked="{Binding IsItalic}"
                                                   ToolTip="Italic"
                                                   AutomationProperties.Name="Italic">
-                                        <TextBlock Style="{StaticResource GlyphTextStyle}"
+                                        <TextBlock Style="{StaticResource MenusToolbarsGlyphTextBlock}"
                                                    Text="&#xE8DB;" />
                                     </ToggleButton>
                                     <ToggleButton IsChecked="{Binding IsUnderline}"
                                                   ToolTip="Underline"
                                                   AutomationProperties.Name="Underline">
-                                        <TextBlock Style="{StaticResource GlyphTextStyle}"
+                                        <TextBlock Style="{StaticResource MenusToolbarsGlyphTextBlock}"
                                                    Text="&#xE8DC;" />
                                     </ToggleButton>
-                                    <ComboBox Width="72"
+                                    <ComboBox Style="{StaticResource MenusToolbarsTextSizeComboBox}"
                                               ItemsSource="{Binding TextSizes}"
                                               SelectedItem="{Binding TextSize}"
                                               AutomationProperties.Name="Text size" />
@@ -297,6 +335,7 @@
                     </StackPanel>
                 </Border>
 
+                <!-- StatusBar -->
                 <Border Grid.Row="1" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -324,6 +363,7 @@
                     </StackPanel>
                 </Border>
             </Grid>
+
         </StackPanel>
     </ScrollViewer>
 

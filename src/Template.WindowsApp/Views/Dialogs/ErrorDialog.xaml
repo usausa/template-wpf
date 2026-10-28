@@ -14,38 +14,92 @@
                     WindowStartupLocation="CenterOwner" SizeToContent="Height" ShowInTaskbar="False"
                     Title="Unexpected error">
 
+    <controls:AppWindow.Resources>
+
+        <Style x:Key="ErrorDialogRootGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Margin" Value="16" />
+        </Style>
+
+        <Style x:Key="ErrorDialogMessageTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+
+        <Style x:Key="ErrorDialogDetailsTextBox"
+               TargetType="{x:Type TextBox}"
+               BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Height" Value="240" />
+            <Setter Property="FontFamily" Value="{StaticResource CodeFontFamily}" />
+        </Style>
+
+        <Style x:Key="ErrorDialogButtonsGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+
+        <Style x:Key="ErrorDialogButton"
+               TargetType="{x:Type Button}"
+               BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="MinWidth" Value="96" />
+        </Style>
+
+    </controls:AppWindow.Resources>
+
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closed">
             <s:DataContextDisposeAction />
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
-    <StackPanel Margin="16">
-        <TextBlock TextWrapping="Wrap"
+    <!-- Content -->
+    <Grid Style="{StaticResource ErrorDialogRootGrid}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="16" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="16" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Message -->
+        <TextBlock Grid.Row="0"
+                   Style="{StaticResource ErrorDialogMessageTextBlock}"
                    Text="Something went wrong. The details are saved in the log." />
-        <Expander Margin="0,16,0,0"
+
+        <!-- Details -->
+        <Expander Grid.Row="2"
                   Header="Details">
-            <TextBox Height="240"
+            <TextBox Style="{StaticResource ErrorDialogDetailsTextBox}"
                      HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
                      Text="{Binding Details, Mode=OneWay}"
-                     FontFamily="{StaticResource CodeFontFamily}"
                      IsReadOnly="True" />
         </Expander>
-        <StackPanel Orientation="Horizontal"
-                    Margin="0,16,0,0"
-                    HorizontalAlignment="Right">
-            <Button MinWidth="96"
+
+        <!-- Buttons -->
+        <Grid Grid.Row="4"
+              Style="{StaticResource ErrorDialogButtonsGrid}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="8" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="8" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0"
+                    Style="{StaticResource ErrorDialogButton}"
                     Command="{Binding CopyCommand}"
                     Content="Copy details" />
-            <Button MinWidth="96"
-                    Margin="8,0,0,0"
+            <Button Grid.Column="2"
+                    Style="{StaticResource ErrorDialogButton}"
                     Command="{Binding OpenLogFolderCommand}"
                     Content="Open log folder" />
-            <Button MinWidth="96"
-                    Margin="8,0,0,0"
+            <Button Grid.Column="4"
+                    Style="{StaticResource ErrorDialogButton}"
                     IsDefault="True" IsCancel="True"
                     Content="Close" />
-        </StackPanel>
-    </StackPanel>
+        </Grid>
+
+    </Grid>
 
 </controls:AppWindow>
