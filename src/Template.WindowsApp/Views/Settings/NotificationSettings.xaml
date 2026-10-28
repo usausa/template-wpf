@@ -9,16 +9,22 @@
              d:DataContext="{d:DesignInstance Type={x:Type module:SettingsViewModel}}"
              d:DesignWidth="800" d:DesignHeight="600">
 
-    <StackPanel Margin="0,0,0,16">
-        <TextBlock Style="{DynamicResource SubtitleTextBlockStyle}"
-                   Margin="0,0,0,16"
+    <!-- Content -->
+    <StackPanel Style="{StaticResource SettingsSectionStack}">
+
+        <!-- Header -->
+        <TextBlock Style="{StaticResource SettingsSectionTitleTextBlock}"
                    Text="Notifications" />
+
+        <!-- Pop-up notifications -->
         <controls:SettingsCard Header="Pop-up notifications"
                                Description="Show notifications at the bottom right of the window"
                                HeaderIcon="&#xEA8F;">
             <controls:ToggleSwitch IsChecked="{Binding Notifications.ShowsPopups}"
                                    AutomationProperties.Name="Pop-up notifications" />
         </controls:SettingsCard>
+
+        <!-- Notification types -->
         <controls:SettingsCard Header="Notification types"
                                Description="Choose which notifications pop up"
                                HeaderIcon="&#xE8FD;"
@@ -35,6 +41,7 @@
                           Content="Error" />
             </StackPanel>
         </controls:SettingsCard>
+
     </StackPanel>
 
 </UserControl>

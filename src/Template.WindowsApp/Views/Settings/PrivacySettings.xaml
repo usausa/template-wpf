@@ -9,10 +9,14 @@
              d:DataContext="{d:DesignInstance Type={x:Type module:SettingsViewModel}}"
              d:DesignWidth="800" d:DesignHeight="600">
 
-    <StackPanel Margin="0,0,0,16">
-        <TextBlock Style="{DynamicResource SubtitleTextBlockStyle}"
-                   Margin="0,0,0,16"
+    <!-- Content -->
+    <StackPanel Style="{StaticResource SettingsSectionStack}">
+
+        <!-- Header -->
+        <TextBlock Style="{StaticResource SettingsSectionTitleTextBlock}"
                    Text="Privacy" />
+
+        <!-- Recent commands -->
         <controls:SettingsCard Header="Recent commands"
                                Description="Recently and frequently used commands are listed first in the command palette"
                                HeaderIcon="&#xE81C;">
@@ -20,6 +24,8 @@
                     Content="Clear"
                     AutomationProperties.Name="Clear recent commands" />
         </controls:SettingsCard>
+
+        <!-- Recent pages -->
         <controls:SettingsCard Header="Recent pages"
                                Description="Recently opened pages are listed on Home and in the jump list"
                                HeaderIcon="&#xE823;">
@@ -27,6 +33,8 @@
                     Content="Clear"
                     AutomationProperties.Name="Clear recent pages" />
         </controls:SettingsCard>
+
+        <!-- Favorite pages -->
         <controls:SettingsCard Header="Favorite pages"
                                Description="Pages added with the star are listed in the navigation pane, on Home and in the jump list"
                                HeaderIcon="&#xE734;">
@@ -34,6 +42,7 @@
                     Content="Clear"
                     AutomationProperties.Name="Clear favorite pages" />
         </controls:SettingsCard>
+
     </StackPanel>
 
 </UserControl>

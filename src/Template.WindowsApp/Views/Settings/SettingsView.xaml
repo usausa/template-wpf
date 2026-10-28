@@ -13,14 +13,22 @@
              d:DataContext="{d:DesignInstance Type={x:Type module:SettingsViewModel}}"
              d:DesignWidth="800" d:DesignHeight="600">
 
-    <UserControl.InputBindings>
-        <KeyBinding Key="F"
-                    Command="{Binding FindCommand}"
-                    Modifiers="Control" />
-    </UserControl.InputBindings>
-
     <UserControl.Resources>
-        <Style x:Key="SettingsPageItemStyle"
+
+        <!-- Pane -->
+
+        <Style x:Key="SettingsPaneGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Margin" Value="24,24,16,24" />
+        </Style>
+
+        <Style x:Key="SettingsPageListBox"
+               TargetType="{x:Type ListBox}"
+               BasedOn="{StaticResource {x:Type ListBox}}">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+
+        <Style x:Key="SettingsPageListBoxItem"
                TargetType="{x:Type ListBoxItem}">
             <Setter Property="Height" Value="40" />
             <Setter Property="Padding" Value="0" />
@@ -55,7 +63,8 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="SettingsPageIconTextStyle"
+
+        <Style x:Key="SettingsPageIconTextBlock"
                TargetType="{x:Type TextBlock}">
             <Setter Property="Width" Value="48" />
             <Setter Property="VerticalAlignment" Value="Center" />
@@ -63,33 +72,60 @@
             <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
             <Setter Property="FontSize" Value="16" />
         </Style>
-        <Style x:Key="SettingsPageTitleTextStyle"
+
+        <Style x:Key="SettingsPageTitleTextBlock"
                TargetType="{x:Type TextBlock}">
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="FontSize" Value="14" />
         </Style>
+
+        <!-- Sections -->
+
+        <Style x:Key="SettingsSectionsGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Margin" Value="8,24,24,24" />
+        </Style>
+
+        <Style x:Key="SettingsNoResultsTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
     </UserControl.Resources>
 
+    <UserControl.InputBindings>
+        <KeyBinding Key="F"
+                    Command="{Binding FindCommand}"
+                    Modifiers="Control" />
+    </UserControl.InputBindings>
+
+    <!-- Content -->
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
+        <!-- Pane -->
         <Grid Grid.Column="0"
-              Margin="24,24,16,24">
+              Style="{StaticResource SettingsPaneGrid}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="16" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
+
+            <!-- Header -->
             <TextBlock Grid.Row="0"
                        Style="{StaticResource PageTitleTextBlock}"
                        Text="Settings" />
             <TextBlock Grid.Row="1"
                        Style="{StaticResource PageDescriptionTextBlock}"
                        Text="Change how the app looks and behaves." />
+
+            <!-- Search -->
             <TextBox Grid.Row="2"
                      behaviors:TextBoxOption.PlaceholderText="Search settings (Ctrl+F)"
                      Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Delay=300}"
@@ -105,12 +141,12 @@
                     </s:EventRequestTrigger>
                 </i:Interaction.Triggers>
             </TextBox>
-            <ListBox Grid.Row="3"
-                     Margin="0,16,0,0" Padding="0"
-                     Background="Transparent"
-                     BorderThickness="0"
+
+            <!-- Pages -->
+            <ListBox Grid.Row="4"
+                     Style="{StaticResource SettingsPageListBox}"
                      AutomationProperties.Name="Settings pages"
-                     ItemContainerStyle="{StaticResource SettingsPageItemStyle}"
+                     ItemContainerStyle="{StaticResource SettingsPageListBoxItem}"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"
                      SelectedValue="{Binding SelectedPage}"
                      SelectedValuePath="Tag">
@@ -123,9 +159,9 @@
                              AutomationProperties.Name="General"
                              Tag="{x:Static module:SettingsPage.General}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Style="{StaticResource SettingsPageIconTextStyle}"
+                        <TextBlock Style="{StaticResource SettingsPageIconTextBlock}"
                                    Text="&#xE713;" />
-                        <TextBlock Style="{StaticResource SettingsPageTitleTextStyle}"
+                        <TextBlock Style="{StaticResource SettingsPageTitleTextBlock}"
                                    Text="General" />
                     </StackPanel>
                 </ListBoxItem>
@@ -133,9 +169,9 @@
                              AutomationProperties.Name="Appearance"
                              Tag="{x:Static module:SettingsPage.Appearance}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Style="{StaticResource SettingsPageIconTextStyle}"
+                        <TextBlock Style="{StaticResource SettingsPageIconTextBlock}"
                                    Text="&#xE790;" />
-                        <TextBlock Style="{StaticResource SettingsPageTitleTextStyle}"
+                        <TextBlock Style="{StaticResource SettingsPageTitleTextBlock}"
                                    Text="Appearance" />
                     </StackPanel>
                 </ListBoxItem>
@@ -143,9 +179,9 @@
                              AutomationProperties.Name="Notifications"
                              Tag="{x:Static module:SettingsPage.Notifications}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Style="{StaticResource SettingsPageIconTextStyle}"
+                        <TextBlock Style="{StaticResource SettingsPageIconTextBlock}"
                                    Text="&#xEA8F;" />
-                        <TextBlock Style="{StaticResource SettingsPageTitleTextStyle}"
+                        <TextBlock Style="{StaticResource SettingsPageTitleTextBlock}"
                                    Text="Notifications" />
                     </StackPanel>
                 </ListBoxItem>
@@ -153,9 +189,9 @@
                              AutomationProperties.Name="Privacy"
                              Tag="{x:Static module:SettingsPage.Privacy}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Style="{StaticResource SettingsPageIconTextStyle}"
+                        <TextBlock Style="{StaticResource SettingsPageIconTextBlock}"
                                    Text="&#xE72E;" />
-                        <TextBlock Style="{StaticResource SettingsPageTitleTextStyle}"
+                        <TextBlock Style="{StaticResource SettingsPageTitleTextBlock}"
                                    Text="Privacy" />
                     </StackPanel>
                 </ListBoxItem>
@@ -163,18 +199,20 @@
                              AutomationProperties.Name="About"
                              Tag="{x:Static module:SettingsPage.About}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Style="{StaticResource SettingsPageIconTextStyle}"
+                        <TextBlock Style="{StaticResource SettingsPageIconTextBlock}"
                                    Text="&#xE946;" />
-                        <TextBlock Style="{StaticResource SettingsPageTitleTextStyle}"
+                        <TextBlock Style="{StaticResource SettingsPageTitleTextBlock}"
                                    Text="About" />
                     </StackPanel>
                 </ListBoxItem>
             </ListBox>
+
         </Grid>
 
+        <!-- Sections -->
         <ScrollViewer Grid.Column="1"
-                      HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-            <Grid Margin="8,24,24,24">
+                      Style="{StaticResource PaneScroll}">
+            <Grid Style="{StaticResource SettingsSectionsGrid}">
                 <controls:SettingsPanel x:Name="Pages"
                                         Query="{Binding SearchText}"
                                         SelectedPage="{Binding SelectedPage}">
@@ -184,15 +222,22 @@
                     <module:PrivacySettings controls:SettingsPanel.Page="{x:Static module:SettingsPage.Privacy}" />
                     <module:AboutSettings controls:SettingsPanel.Page="{x:Static module:SettingsPage.About}" />
                 </controls:SettingsPanel>
-                <StackPanel Visibility="{Binding HasNoResults, ElementName=Pages, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <TextBlock Style="{DynamicResource SubtitleTextBlockStyle}"
+                <Grid Visibility="{Binding HasNoResults, ElementName=Pages, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="8" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0"
+                               Style="{StaticResource PageSubtitleTextBlock}"
                                Text="No results" />
-                    <TextBlock Margin="0,8,0,0"
-                               Text="Try different words, or clear the search to see all settings."
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                </StackPanel>
+                    <TextBlock Grid.Row="2"
+                               Style="{StaticResource SettingsNoResultsTextBlock}"
+                               Text="Try different words, or clear the search to see all settings." />
+                </Grid>
             </Grid>
         </ScrollViewer>
+
     </Grid>
 
 </UserControl>

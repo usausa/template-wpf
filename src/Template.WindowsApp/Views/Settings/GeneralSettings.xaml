@@ -10,20 +10,36 @@
              d:DataContext="{d:DesignInstance Type={x:Type module:SettingsViewModel}}"
              d:DesignWidth="800" d:DesignHeight="600">
 
-    <StackPanel Margin="0,0,0,16">
-        <TextBlock Style="{DynamicResource SubtitleTextBlockStyle}"
-                   Margin="0,0,0,16"
+    <UserControl.Resources>
+
+        <Style x:Key="GeneralSettingsComboBox"
+               TargetType="{x:Type ComboBox}"
+               BasedOn="{StaticResource {x:Type ComboBox}}">
+            <Setter Property="Width" Value="200" />
+        </Style>
+
+    </UserControl.Resources>
+
+    <!-- Content -->
+    <StackPanel Style="{StaticResource SettingsSectionStack}">
+
+        <!-- Header -->
+        <TextBlock Style="{StaticResource SettingsSectionTitleTextBlock}"
                    Text="General" />
+
+        <!-- Navigation pane -->
         <controls:SettingsCard Header="Navigation pane"
                                Description="Show the pane with labels"
                                HeaderIcon="&#xE700;">
             <controls:ToggleSwitch IsChecked="{Binding WindowManager.IsPaneOpen}"
                                    AutomationProperties.Name="Navigation pane" />
         </controls:SettingsCard>
+
+        <!-- Start page -->
         <controls:SettingsCard Header="Start page"
                                Description="Page to show when the app starts"
                                HeaderIcon="&#xE80F;">
-            <ComboBox Width="200"
+            <ComboBox Style="{StaticResource GeneralSettingsComboBox}"
                       AutomationProperties.Name="Start page"
                       SelectedValue="{Binding WindowManager.StartPage}"
                       SelectedValuePath="Tag">
@@ -33,6 +49,7 @@
                               Tag="{x:Static settings:StartPage.LastPage}" />
             </ComboBox>
         </controls:SettingsCard>
+
     </StackPanel>
 
 </UserControl>

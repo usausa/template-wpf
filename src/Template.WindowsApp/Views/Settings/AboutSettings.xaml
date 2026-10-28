@@ -9,10 +9,14 @@
              d:DataContext="{d:DesignInstance Type={x:Type module:SettingsViewModel}}"
              d:DesignWidth="800" d:DesignHeight="600">
 
-    <StackPanel Margin="0,0,0,16">
-        <TextBlock Style="{DynamicResource SubtitleTextBlockStyle}"
-                   Margin="0,0,0,16"
+    <!-- Content -->
+    <StackPanel Style="{StaticResource SettingsSectionStack}">
+
+        <!-- Header -->
+        <TextBlock Style="{StaticResource SettingsSectionTitleTextBlock}"
                    Text="About" />
+
+        <!-- Version -->
         <controls:SettingsCard Header="{Binding ApplicationName}"
                                Description="{Binding VersionText}"
                                HeaderIcon="&#xE946;"
@@ -21,6 +25,8 @@
                     Content="Copy"
                     AutomationProperties.Name="Copy version info" />
         </controls:SettingsCard>
+
+        <!-- Logs -->
         <controls:SettingsCard Header="Logs"
                                Description="Messages that the app has written while running"
                                HeaderIcon="&#xE9A4;"
@@ -29,6 +35,7 @@
                 <Hyperlink Command="{Binding OpenLogsCommand}">View logs</Hyperlink>
             </TextBlock>
         </controls:SettingsCard>
+
     </StackPanel>
 
 </UserControl>

@@ -76,6 +76,13 @@
         <Setter Property="FontWeight" Value="SemiBold" />
     </Style>
 
+    <Style x:Key="PageSubtitleTextBlock"
+           TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource PageTextBlockBase}">
+        <Setter Property="FontSize" Value="{DynamicResource SubtitleTextBlockFontSize}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
     <Style x:Key="PageDescriptionTextBlock"
            TargetType="{x:Type TextBlock}"
            BasedOn="{StaticResource PageTextBlockBase}">
@@ -388,6 +395,21 @@
            TargetType="{x:Type TextBox}"
            BasedOn="{StaticResource DataGridEditingTextBox}">
         <Setter Property="TextAlignment" Value="Right" />
+    </Style>
+
+    <!-- ================================================================================ -->
+    <!-- Settings -->
+    <!-- ================================================================================ -->
+
+    <Style x:Key="SettingsSectionStack"
+           TargetType="{x:Type StackPanel}">
+        <Setter Property="Margin" Value="0,0,0,16" />
+    </Style>
+
+    <Style x:Key="SettingsSectionTitleTextBlock"
+           TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource PageSubtitleTextBlock}">
+        <Setter Property="Margin" Value="0,0,0,16" />
     </Style>
 
     <!-- ================================================================================ -->

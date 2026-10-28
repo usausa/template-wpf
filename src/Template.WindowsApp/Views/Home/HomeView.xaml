@@ -14,11 +14,141 @@
              d:DesignWidth="800" d:DesignHeight="600">
 
     <UserControl.Resources>
+
+        <!-- Common -->
+
+        <Style x:Key="HomeTileItemsControl"
+               TargetType="{x:Type ItemsControl}"
+               BasedOn="{StaticResource {x:Type ItemsControl}}">
+            <Setter Property="Margin" Value="0,0,-8,0" />
+        </Style>
+
+        <Style x:Key="HomeTileBorder"
+               TargetType="{x:Type Border}"
+               BasedOn="{StaticResource CardBorder}">
+            <Setter Property="Margin" Value="0,0,8,8" />
+        </Style>
+
+        <Style x:Key="HomeEmojiIcon"
+               TargetType="{x:Type controls:EmojiIcon}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+
+        <!-- Summaries -->
+
+        <Style x:Key="HomeSummaryTitleTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource CardCaptionTextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <!-- Charts -->
+
+        <Style x:Key="HomeChartUniformGrid"
+               TargetType="{x:Type UniformGrid}">
+            <Setter Property="Margin" Value="0,0,-8,0" />
+        </Style>
+
+        <Style x:Key="HomeLineChart"
+               TargetType="{x:Type controls:LineChart}">
+            <Setter Property="MinHeight" Value="80" />
+            <Setter Property="Margin" Value="0,16,0,0" />
+            <Setter Property="Fill" Value="{StaticResource ChartBlueSuperLightBrush}" />
+            <Setter Property="Stroke" Value="{StaticResource ChartBlueBrush}" />
+            <Setter Property="GridBrush" Value="{DynamicResource DividerStrokeColorDefaultBrush}" />
+            <Setter Property="LabelBrush" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
+        <Style x:Key="HomeBarChart"
+               TargetType="{x:Type controls:BarChart}">
+            <Setter Property="MinHeight" Value="80" />
+            <Setter Property="Margin" Value="0,16,0,0" />
+            <Setter Property="Fill" Value="{StaticResource ChartBlueBrush}" />
+            <Setter Property="LabelBrush" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
+        <!-- Pages -->
+
         <ItemsPanelTemplate x:Key="PageButtonPanel">
             <WrapPanel />
         </ItemsPanelTemplate>
+
+        <Style x:Key="HomePagesUniformGrid"
+               TargetType="{x:Type UniformGrid}">
+            <Setter Property="Margin" Value="0,0,-8,8" />
+        </Style>
+
+        <Style x:Key="HomePagesBorder"
+               TargetType="{x:Type Border}"
+               BasedOn="{StaticResource CardBorder}">
+            <Setter Property="Margin" Value="0,0,8,0" />
+        </Style>
+
+        <Style x:Key="HomePageItemsControl"
+               TargetType="{x:Type ItemsControl}"
+               BasedOn="{StaticResource {x:Type ItemsControl}}">
+            <Setter Property="Margin" Value="0,8,-8,-8" />
+        </Style>
+
+        <Style x:Key="HomePageButton"
+               TargetType="{x:Type Button}"
+               BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Margin" Value="0,0,8,8" />
+            <Setter Property="Padding" Value="12,6" />
+        </Style>
+
+        <Style x:Key="HomePageTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="HomeEmptyTextBlockBase"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="0,8,0,0" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+            <Setter Property="Visibility" Value="Collapsed" />
+        </Style>
+
+        <Style x:Key="HomeFavoritesEmptyTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource HomeEmptyTextBlockBase}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Favorites.Count}"
+                             Value="0">
+                    <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="HomeRecentEmptyTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource HomeEmptyTextBlockBase}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RecentPages.Count}"
+                             Value="0">
+                    <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Samples -->
+
+        <Style x:Key="HomeSampleButton"
+               TargetType="{x:Type Button}"
+               BasedOn="{StaticResource CardButton}">
+            <Setter Property="Margin" Value="0,0,8,8" />
+        </Style>
+
+        <Style x:Key="HomeSampleEmojiIcon"
+               TargetType="{x:Type controls:EmojiIcon}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="24" />
+        </Style>
+
     </UserControl.Resources>
 
+    <!-- Content -->
     <ScrollViewer Style="{StaticResource RootScroll}">
         <Grid MinHeight="{Binding ViewportHeight, RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}}">
             <Grid Style="{StaticResource PageGrid}">
@@ -30,6 +160,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
+                <!-- Header -->
                 <TextBlock Grid.Row="0"
                            Style="{StaticResource PageTitleTextBlock}"
                            Text="Home" />
@@ -44,8 +175,9 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
+                    <!-- Summaries -->
                     <ItemsControl Grid.Row="0"
-                                  Margin="0,0,-8,0"
+                                  Style="{StaticResource HomeTileItemsControl}"
                                   ItemsSource="{Binding Summaries}"
                                   Focusable="False">
                         <ItemsControl.ItemsPanel>
@@ -55,176 +187,157 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="{x:Type module:Summary}">
-                                <Border Style="{StaticResource CardBorder}"
-                                        Margin="0,0,8,8">
+                                <Border Style="{StaticResource HomeTileBorder}">
                                     <StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <controls:EmojiIcon VerticalAlignment="Center"
-                                                                Glyph="{Binding Emoji}"
-                                                                FontSize="16" />
-                                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                                       Margin="6,0,0,0"
-                                                       VerticalAlignment="Center"
-                                                       Text="{Binding Title}"
-                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                                        </StackPanel>
-                                        <TextBlock Style="{DynamicResource TitleTextBlockStyle}"
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="6" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <controls:EmojiIcon Grid.Column="0"
+                                                                Style="{StaticResource HomeEmojiIcon}"
+                                                                Glyph="{Binding Emoji}" />
+                                            <TextBlock Grid.Column="2"
+                                                       Style="{StaticResource HomeSummaryTitleTextBlock}"
+                                                       Text="{Binding Title}" />
+                                        </Grid>
+                                        <TextBlock Style="{StaticResource MetricValueTextBlock}"
                                                    Text="{Binding Value}" />
-                                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                                   TextTrimming="CharacterEllipsis"
-                                                   Text="{Binding Detail}"
-                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                                   Text="{Binding Detail}" />
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
 
+                    <!-- Charts -->
                     <UniformGrid Grid.Row="1"
-                                 Rows="1"
-                                 Margin="0,0,-8,0">
-                        <Border Style="{StaticResource CardBorder}"
-                                Margin="0,0,8,8">
+                                 Style="{StaticResource HomeChartUniformGrid}"
+                                 Rows="1">
+                        <Border Style="{StaticResource HomeTileBorder}">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Row="0"
-                                           Style="{DynamicResource BodyStrongTextBlockStyle}"
+                                           Style="{StaticResource CardStrongTextBlock}"
                                            Text="Memory, last 60 seconds" />
                                 <controls:LineChart Grid.Row="1"
-                                                    MinHeight="80"
-                                                    Margin="0,16,0,0"
-                                                    Fill="{StaticResource ChartBlueSuperLightBrush}"
-                                                    Stroke="{StaticResource ChartBlueBrush}"
+                                                    Style="{StaticResource HomeLineChart}"
                                                     Capacity="{x:Static components:ProcessMonitor.Capacity}"
-                                                    GridBrush="{DynamicResource DividerStrokeColorDefaultBrush}"
-                                                    LabelBrush="{DynamicResource TextFillColorSecondaryBrush}"
                                                     Labels="{Binding MemoryLabels}"
                                                     Values="{Binding MemoryValues}" />
                             </Grid>
                         </Border>
-                        <Border Style="{StaticResource CardBorder}"
-                                Margin="0,0,8,8">
+                        <Border Style="{StaticResource HomeTileBorder}">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Row="0"
-                                           Style="{DynamicResource BodyStrongTextBlockStyle}"
+                                           Style="{StaticResource CardStrongTextBlock}"
                                            Text="Log entries by level" />
                                 <controls:BarChart Grid.Row="1"
-                                                   MinHeight="80"
-                                                   Margin="0,16,0,0"
-                                                   Fill="{StaticResource ChartBlueBrush}"
-                                                   LabelBrush="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   Style="{StaticResource HomeBarChart}"
                                                    Labels="{Binding LevelLabels}"
                                                    Values="{Binding LevelValues}" />
                             </Grid>
                         </Border>
                     </UniformGrid>
+
                 </Grid>
 
+                <!-- Pages -->
                 <UniformGrid Grid.Row="3"
-                             Rows="1"
-                             Margin="0,0,-8,8">
-                    <Border Style="{StaticResource CardBorder}"
-                            Margin="0,0,8,0">
+                             Style="{StaticResource HomePagesUniformGrid}"
+                             Rows="1">
+
+                    <!-- Favorites -->
+                    <Border Style="{StaticResource HomePagesBorder}">
                         <StackPanel>
-                            <TextBlock Style="{DynamicResource BodyStrongTextBlockStyle}"
+                            <TextBlock Style="{StaticResource CardStrongTextBlock}"
                                        Text="Favorites" />
-                            <ItemsControl Margin="0,8,-8,-8"
+                            <ItemsControl Style="{StaticResource HomePageItemsControl}"
                                           ItemsSource="{Binding Favorites}"
                                           Focusable="False"
                                           ItemsPanel="{StaticResource PageButtonPanel}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate DataType="{x:Type shell:NavigationItem}">
-                                        <Button Margin="0,0,8,8" Padding="12,6"
+                                        <Button Style="{StaticResource HomePageButton}"
                                                 Command="{Binding DataContext.ForwardCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
                                                 CommandParameter="{Binding Id}"
                                                 AutomationProperties.Name="{Binding Title}">
-                                            <StackPanel Orientation="Horizontal">
-                                                <controls:EmojiIcon VerticalAlignment="Center"
-                                                                    Glyph="{Binding Emoji}"
-                                                                    FontSize="16" />
-                                                <TextBlock Margin="8,0,0,0"
-                                                           VerticalAlignment="Center"
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="8" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <controls:EmojiIcon Grid.Column="0"
+                                                                    Style="{StaticResource HomeEmojiIcon}"
+                                                                    Glyph="{Binding Emoji}" />
+                                                <TextBlock Grid.Column="2"
+                                                           Style="{StaticResource HomePageTextBlock}"
                                                            Text="{Binding Title}" />
-                                            </StackPanel>
+                                            </Grid>
                                         </Button>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
-                            <TextBlock Margin="0,8,0,0"
-                                       Text="Add pages with the star in the title bar."
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}">
-                                <TextBlock.Style>
-                                    <Style TargetType="{x:Type TextBlock}">
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Favorites.Count}"
-                                                         Value="0">
-                                                <Setter Property="Visibility" Value="Visible" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
+                            <TextBlock Style="{StaticResource HomeFavoritesEmptyTextBlock}"
+                                       Text="Add pages with the star in the title bar." />
                         </StackPanel>
                     </Border>
-                    <Border Style="{StaticResource CardBorder}"
-                            Margin="0,0,8,0">
+
+                    <!-- Recent pages -->
+                    <Border Style="{StaticResource HomePagesBorder}">
                         <StackPanel>
-                            <TextBlock Style="{DynamicResource BodyStrongTextBlockStyle}"
+                            <TextBlock Style="{StaticResource CardStrongTextBlock}"
                                        Text="Recent pages" />
-                            <ItemsControl Margin="0,8,-8,-8"
+                            <ItemsControl Style="{StaticResource HomePageItemsControl}"
                                           ItemsSource="{Binding RecentPages}"
                                           Focusable="False"
                                           ItemsPanel="{StaticResource PageButtonPanel}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate DataType="{x:Type shell:NavigationItem}">
-                                        <Button Margin="0,0,8,8" Padding="12,6"
+                                        <Button Style="{StaticResource HomePageButton}"
                                                 Command="{Binding DataContext.ForwardCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
                                                 CommandParameter="{Binding Id}"
                                                 AutomationProperties.Name="{Binding Title}">
-                                            <StackPanel Orientation="Horizontal">
-                                                <controls:EmojiIcon VerticalAlignment="Center"
-                                                                    Glyph="{Binding Emoji}"
-                                                                    FontSize="16" />
-                                                <TextBlock Margin="8,0,0,0"
-                                                           VerticalAlignment="Center"
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="8" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <controls:EmojiIcon Grid.Column="0"
+                                                                    Style="{StaticResource HomeEmojiIcon}"
+                                                                    Glyph="{Binding Emoji}" />
+                                                <TextBlock Grid.Column="2"
+                                                           Style="{StaticResource HomePageTextBlock}"
                                                            Text="{Binding Title}" />
-                                            </StackPanel>
+                                            </Grid>
                                         </Button>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
-                            <TextBlock Margin="0,8,0,0"
-                                       Text="Pages you open appear here."
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}">
-                                <TextBlock.Style>
-                                    <Style TargetType="{x:Type TextBlock}">
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding RecentPages.Count}"
-                                                         Value="0">
-                                                <Setter Property="Visibility" Value="Visible" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
+                            <TextBlock Style="{StaticResource HomeRecentEmptyTextBlock}"
+                                       Text="Pages you open appear here." />
                         </StackPanel>
                     </Border>
+
                 </UniformGrid>
 
+                <!-- Samples -->
                 <StackPanel Grid.Row="4"
                             Style="{StaticResource SectionPanel}">
                     <TextBlock Style="{StaticResource SectionHeaderTextBlock}"
                                Text="Samples" />
-                    <ItemsControl Margin="0,0,-8,0"
+                    <ItemsControl Style="{StaticResource HomeTileItemsControl}"
                                   ItemsSource="{Binding Samples}"
                                   Focusable="False">
                         <ItemsControl.ItemsPanel>
@@ -234,29 +347,25 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="{x:Type module:SampleEntry}">
-                                <Button Style="{StaticResource CardButton}"
-                                        Margin="0,0,8,8"
+                                <Button Style="{StaticResource HomeSampleButton}"
                                         Command="{Binding DataContext.ForwardCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
                                         CommandParameter="{Binding Id}"
                                         AutomationProperties.Name="{Binding Title}">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="16" />
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
                                         <controls:EmojiIcon Grid.Column="0"
-                                                            VerticalAlignment="Center"
-                                                            Glyph="{Binding Emoji}"
-                                                            FontSize="24" />
-                                        <StackPanel Grid.Column="1"
-                                                    Margin="16,0,0,0"
-                                                    VerticalAlignment="Center">
-                                            <TextBlock Style="{DynamicResource BodyStrongTextBlockStyle}"
+                                                            Style="{StaticResource HomeSampleEmojiIcon}"
+                                                            Glyph="{Binding Emoji}" />
+                                        <StackPanel Grid.Column="2"
+                                                    Style="{StaticResource CardRowTitleStack}">
+                                            <TextBlock Style="{StaticResource CardStrongTextBlock}"
                                                        Text="{Binding Title}" />
-                                            <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                                       TextTrimming="CharacterEllipsis"
-                                                       Text="{Binding Description}"
-                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                            <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                                       Text="{Binding Description}" />
                                         </StackPanel>
                                     </Grid>
                                 </Button>
@@ -264,6 +373,7 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </StackPanel>
+
             </Grid>
         </Grid>
     </ScrollViewer>

@@ -12,7 +12,13 @@
              d:DesignWidth="800" d:DesignHeight="600">
 
     <UserControl.Resources>
+
+        <!-- Converter -->
+
         <converters:ThemeTextConverter x:Key="ThemeToTextConverter" />
+
+        <!-- App theme -->
+
         <ControlTemplate x:Key="LightThemePreviewTemplate"
                          TargetType="{x:Type ContentControl}">
             <Grid Width="120" Height="80"
@@ -43,6 +49,7 @@
                 </StackPanel>
             </Grid>
         </ControlTemplate>
+
         <ControlTemplate x:Key="DarkThemePreviewTemplate"
                          TargetType="{x:Type ContentControl}">
             <Grid Width="120" Height="80"
@@ -73,6 +80,7 @@
                 </StackPanel>
             </Grid>
         </ControlTemplate>
+
         <DataTemplate x:Key="ThemeChoiceTemplate"
                       DataType="{x:Type settings:AppTheme}">
             <Grid>
@@ -99,7 +107,8 @@
                 </DataTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>
-        <Style x:Key="ThemeChoiceItemStyle"
+
+        <Style x:Key="AppearanceThemeListBoxItem"
                TargetType="{x:Type ListBoxItem}">
             <Setter Property="Margin" Value="0,0,12,0" />
             <Setter Property="Padding" Value="0" />
@@ -137,12 +146,13 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="ThemeChoiceListStyle"
+
+        <Style x:Key="AppearanceThemeListBox"
                TargetType="{x:Type ListBox}">
             <Setter Property="Padding" Value="0" />
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="ItemContainerStyle" Value="{StaticResource ThemeChoiceItemStyle}" />
+            <Setter Property="ItemContainerStyle" Value="{StaticResource AppearanceThemeListBoxItem}" />
             <Setter Property="ItemTemplate" Value="{StaticResource ThemeChoiceTemplate}" />
             <Setter Property="ItemsPanel">
                 <Setter.Value>
@@ -159,22 +169,28 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
     </UserControl.Resources>
 
-    <StackPanel Margin="0,0,0,16">
-        <TextBlock Style="{DynamicResource SubtitleTextBlockStyle}"
-                   Margin="0,0,0,16"
+    <!-- Content -->
+    <StackPanel Style="{StaticResource SettingsSectionStack}">
+
+        <!-- Header -->
+        <TextBlock Style="{StaticResource SettingsSectionTitleTextBlock}"
                    Text="Appearance" />
+
+        <!-- App theme -->
         <controls:SettingsCard Header="App theme"
                                Description="Select which app theme to display"
                                HeaderIcon="&#xE790;"
                                Keywords="Light Dark System mode"
                                ContentAlignment="Vertical">
-            <ListBox Style="{StaticResource ThemeChoiceListStyle}"
+            <ListBox Style="{StaticResource AppearanceThemeListBox}"
                      ItemsSource="{Binding Themes}"
                      SelectedItem="{Binding WindowManager.Theme}"
                      AutomationProperties.Name="App theme" />
         </controls:SettingsCard>
+
     </StackPanel>
 
 </UserControl>
