@@ -24,7 +24,12 @@
                     ShowIconOnTitleBar="False">
 
     <controls:AppWindow.Resources>
+
+        <!-- Converter -->
+
         <converters:CountBadgeImageConverter x:Key="CountBadgeImageConverter" />
+
+        <!-- Dialog -->
 
         <DataTemplate DataType="{x:Type dialogs:MessageDialogViewModel}">
             <dialogs:MessageDialogView />
@@ -39,283 +44,53 @@
             <forms:BulkChangeDialogView />
         </DataTemplate>
 
-        <Style x:Key="SideBarBadgeStyle"
-               TargetType="{x:Type Border}"
-               BasedOn="{StaticResource CountBadgeBorder}"
-               d:DataContext="{d:DesignInstance Type={x:Type shell:NavigationNode}}">
-            <Setter Property="Margin" Value="0,0,12,0" />
+        <!-- Common -->
+
+        <Style x:Key="FlyoutBorderBase"
+               TargetType="{x:Type Border}">
+            <Setter Property="Background" Value="{DynamicResource FlyoutBackground}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource FlyoutBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+
+        <!-- Title bar -->
+
+        <Style x:Key="TitleBarPaneToggleButton"
+               TargetType="{x:Type ToggleButton}"
+               BasedOn="{StaticResource TitleBarButton}">
+            <Setter Property="Width" Value="48" />
+            <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+
+        <Style x:Key="TitleBarIconButton"
+               TargetType="{x:Type ButtonBase}"
+               BasedOn="{StaticResource TitleBarButton}">
+            <Setter Property="Width" Value="40" />
+            <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+            <Setter Property="FontSize" Value="14" />
+        </Style>
+
+        <Style x:Key="TitleBarFavoriteToggleButton"
+               TargetType="{x:Type ToggleButton}"
+               BasedOn="{StaticResource TitleBarIconButton}">
+            <Setter Property="Content" Value="&#xE734;" />
+            <Setter Property="ToolTip" Value="Add to favorites" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Badge}"
-                             Value="0">
-                    <Setter Property="Visibility" Value="Collapsed" />
-                </DataTrigger>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Content" Value="&#xE735;" />
+                    <Setter Property="ToolTip" Value="Remove from favorites" />
+                </Trigger>
             </Style.Triggers>
         </Style>
 
-        <Style x:Key="SideBarGroupBadgeStyle"
-               TargetType="{x:Type Border}"
-               BasedOn="{StaticResource CountBadgeBorder}"
-               d:DataContext="{d:DesignInstance Type={x:Type shell:NavigationGroup}}">
-            <Setter Property="HorizontalAlignment" Value="Right" />
-            <Setter Property="Visibility" Value="Collapsed" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsExpanded}"
-                             Value="False">
-                    <Setter Property="Visibility" Value="Visible" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Badge}"
-                             Value="0">
-                    <Setter Property="Visibility" Value="Collapsed" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style x:Key="SideBarIconBadgeStyle"
-               TargetType="{x:Type Border}"
-               BasedOn="{StaticResource SmallCountBadgeBorder}"
-               d:DataContext="{d:DesignInstance Type={x:Type shell:NavigationNode}}">
-            <Setter Property="Margin" Value="18,6,0,0" />
-            <Setter Property="HorizontalAlignment" Value="Left" />
-            <Setter Property="VerticalAlignment" Value="Top" />
-            <Setter Property="Visibility" Value="Collapsed" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding DataContext.WindowManager.IsPaneOpen, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
-                             Value="False">
-                    <Setter Property="Visibility" Value="Visible" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Badge}"
-                             Value="0">
-                    <Setter Property="Visibility" Value="Collapsed" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style x:Key="BellBadgeStyle"
-               TargetType="{x:Type Border}"
-               BasedOn="{StaticResource SmallCountBadgeBorder}"
-               d:DataContext="{d:DesignInstance Type={x:Type application:MainWindowViewModel}}">
-            <Setter Property="Margin" Value="0,-7,-11,0" />
-            <Setter Property="HorizontalAlignment" Value="Right" />
-            <Setter Property="VerticalAlignment" Value="Top" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Notifications.UnreadCount}"
-                             Value="0">
-                    <Setter Property="Visibility" Value="Collapsed" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style x:Key="FlyoutTextButtonStyle"
+        <Style x:Key="CommandBoxButton"
                TargetType="{x:Type Button}">
-            <Setter Property="Padding" Value="8,4" />
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Foreground" Value="{DynamicResource AccentTextFillColorPrimaryBrush}" />
+            <Setter Property="Width" Value="400" />
+            <Setter Property="Height" Value="32" />
+            <Setter Property="MinWidth" Value="0" />
+            <Setter Property="MinHeight" Value="0" />
             <Setter Property="FontSize" Value="12" />
-            <Setter Property="FocusVisualStyle" Value="{DynamicResource DefaultControlFocusVisualStyle}" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border Padding="{TemplateBinding Padding}"
-                                Background="{TemplateBinding Background}">
-                            <ContentPresenter />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="{DynamicResource SubtleFillColorTertiaryBrush}" />
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Foreground" Value="{DynamicResource TextFillColorDisabledBrush}" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <DataTemplate x:Key="NotificationHistoryTemplate"
-                      DataType="{x:Type components:Notification}">
-            <Grid Margin="16,0,16,0">
-                <Border Height="1"
-                        VerticalAlignment="Top"
-                        Background="{DynamicResource DividerStrokeColorDefaultBrush}" />
-                <Grid Margin="0,12,0,12">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0"
-                          Margin="0,2,0,0"
-                          VerticalAlignment="Top">
-                        <TextBlock x:Name="IconBackground"
-                                   Text="&#xF136;"
-                                   FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                   FontSize="16"
-                                   Foreground="{DynamicResource SystemFillColorAttentionBrush}" />
-                        <TextBlock x:Name="IconGlyph"
-                                   Text="&#xF13F;"
-                                   FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                   FontSize="16"
-                                   Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
-                    </Grid>
-                    <StackPanel Grid.Column="1"
-                                Margin="12,0,0,0">
-                        <Grid>
-                            <TextBlock Margin="0,0,48,0"
-                                       TextTrimming="CharacterEllipsis"
-                                       Text="{Binding Title}"
-                                       FontSize="14" FontWeight="SemiBold" />
-                            <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center"
-                                       Text="{Binding Time, StringFormat=HH:mm}"
-                                       FontSize="12"
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        </Grid>
-                        <TextBlock Margin="0,2,0,0"
-                                   TextWrapping="Wrap"
-                                   Text="{Binding Message}"
-                                   FontSize="14"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                    </StackPanel>
-                </Grid>
-            </Grid>
-            <DataTemplate.Triggers>
-                <DataTrigger Binding="{Binding Severity}"
-                             Value="Success">
-                    <Setter TargetName="IconBackground" Property="Foreground" Value="{DynamicResource SystemFillColorSuccessBrush}" />
-                    <Setter TargetName="IconGlyph" Property="Text" Value="&#xF13E;" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Severity}"
-                             Value="Warning">
-                    <Setter TargetName="IconBackground" Property="Foreground" Value="{DynamicResource SystemFillColorCautionBrush}" />
-                    <Setter TargetName="IconGlyph" Property="Text" Value="&#xF13C;" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Severity}"
-                             Value="Error">
-                    <Setter TargetName="IconBackground" Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
-                    <Setter TargetName="IconGlyph" Property="Text" Value="&#xF13D;" />
-                </DataTrigger>
-            </DataTemplate.Triggers>
-        </DataTemplate>
-
-        <Style x:Key="SideBarButtonStyle"
-               TargetType="{x:Type Button}"
-               d:DataContext="{d:DesignInstance Type={x:Type shell:NavigationNode}}">
-            <Setter Property="Height" Value="40" />
-            <Setter Property="MinWidth" Value="0" />
-            <Setter Property="MinHeight" Value="0" />
-            <Setter Property="Padding" Value="8,0,0,0" />
-            <Setter Property="HorizontalAlignment" Value="Stretch" />
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
-            <Setter Property="AutomationProperties.HelpText" Value="{Binding Badge, StringFormat='{}{0} unread'}" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Grid d:DataContext="{d:DesignInstance Type={x:Type shell:NavigationItem}}"
-                              Background="{TemplateBinding Background}">
-                            <Border Visibility="{Binding IsSelected, Converter={StaticResource BoolToVisibilityConverter}}"
-                                    Background="{DynamicResource SubtleFillColorSecondaryBrush}" />
-                            <Border Width="3" Height="16"
-                                    HorizontalAlignment="Left"
-                                    Visibility="{Binding IsSelected, Converter={StaticResource BoolToVisibilityConverter}}"
-                                    Background="{DynamicResource AccentFillColorDefaultBrush}" />
-                            <Grid Margin="{TemplateBinding Padding}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="32" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <controls:EmojiIcon Grid.Column="0"
-                                                    HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                    Glyph="{Binding Emoji}"
-                                                    FontSize="16" />
-                                <Border Grid.Column="0"
-                                        Style="{StaticResource SideBarIconBadgeStyle}">
-                                    <TextBlock Style="{StaticResource SmallCountBadgeTextBlock}"
-                                               Text="{Binding Badge}" />
-                                </Border>
-                                <TextBlock Grid.Column="1"
-                                           VerticalAlignment="Center"
-                                           TextTrimming="CharacterEllipsis"
-                                           Visibility="{Binding DataContext.WindowManager.IsPaneOpen, RelativeSource={RelativeSource AncestorType={x:Type Window}}, Converter={StaticResource BoolToVisibilityConverter}}"
-                                           Text="{Binding Title}"
-                                           FontSize="14" />
-                                <Border Grid.Column="2"
-                                        Style="{StaticResource SideBarBadgeStyle}">
-                                    <TextBlock Style="{StaticResource CountBadgeTextBlock}"
-                                               Text="{Binding Badge}" />
-                                </Border>
-                            </Grid>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="{DynamicResource SubtleFillColorTertiaryBrush}" />
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Foreground" Value="{DynamicResource TextFillColorDisabledBrush}" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Badge}"
-                             Value="0">
-                    <Setter Property="AutomationProperties.HelpText" Value="" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style x:Key="SideBarChildButtonStyle"
-               TargetType="{x:Type Button}"
-               BasedOn="{StaticResource SideBarButtonStyle}">
-            <Setter Property="Padding" Value="39,0,0,0" />
-        </Style>
-
-        <Style x:Key="SideBarGroupButtonStyle"
-               TargetType="{x:Type Button}"
-               d:DataContext="{d:DesignInstance Type={x:Type shell:NavigationNode}}">
-            <Setter Property="Height" Value="40" />
-            <Setter Property="MinWidth" Value="0" />
-            <Setter Property="MinHeight" Value="0" />
-            <Setter Property="HorizontalAlignment" Value="Stretch" />
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
-            <Setter Property="AutomationProperties.HelpText" Value="{Binding Badge, StringFormat='{}{0} unread'}" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Grid Background="{TemplateBinding Background}">
-                            <ContentPresenter />
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="{DynamicResource SubtleFillColorTertiaryBrush}" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Badge}"
-                             Value="0">
-                    <Setter Property="AutomationProperties.HelpText" Value="" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style x:Key="CommandBoxStyle"
-               TargetType="{x:Type Button}">
-            <Setter Property="MinWidth" Value="0" />
-            <Setter Property="MinHeight" Value="0" />
             <Setter Property="Foreground" Value="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource AncestorType={x:Type ContentPresenter}}}" />
             <Setter Property="Focusable" Value="False" />
             <Setter Property="Template">
@@ -350,7 +125,583 @@
             </Setter>
         </Style>
 
-        <Style x:Key="CommandItemStyle"
+        <Style x:Key="TitleBarBellToggleButton"
+               TargetType="{x:Type ToggleButton}"
+               BasedOn="{StaticResource TitleBarButton}">
+            <Setter Property="Width" Value="48" />
+        </Style>
+
+        <Style x:Key="TitleBarBellGlyphTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+
+        <Style x:Key="BellBadgeBorder"
+               TargetType="{x:Type Border}"
+               BasedOn="{StaticResource SmallCountBadgeBorder}"
+               d:DataContext="{d:DesignInstance Type={x:Type application:MainWindowViewModel}}">
+            <Setter Property="Margin" Value="0,-7,-11,0" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Notifications.UnreadCount}"
+                             Value="0">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Side bar -->
+
+        <Style x:Key="SideBarBorder"
+               TargetType="{x:Type Border}"
+               d:DataContext="{d:DesignInstance Type={x:Type application:MainWindowViewModel}}">
+            <Setter Property="Width" Value="48" />
+            <Setter Property="Background" Value="{DynamicResource SolidBackgroundFillColorBaseBrush}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding WindowManager.IsPaneOpen}"
+                             Value="True">
+                    <Setter Property="Width" Value="200" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SideBarBadgeBorder"
+               TargetType="{x:Type Border}"
+               BasedOn="{StaticResource CountBadgeBorder}"
+               d:DataContext="{d:DesignInstance Type={x:Type shell:NavigationNode}}">
+            <Setter Property="Margin" Value="0,0,12,0" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Badge}"
+                             Value="0">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SideBarGroupBadgeBorder"
+               TargetType="{x:Type Border}"
+               BasedOn="{StaticResource CountBadgeBorder}"
+               d:DataContext="{d:DesignInstance Type={x:Type shell:NavigationGroup}}">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="Visibility" Value="Collapsed" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsExpanded}"
+                             Value="False">
+                    <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Badge}"
+                             Value="0">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SideBarIconBadgeBorder"
+               TargetType="{x:Type Border}"
+               BasedOn="{StaticResource SmallCountBadgeBorder}"
+               d:DataContext="{d:DesignInstance Type={x:Type shell:NavigationNode}}">
+            <Setter Property="Margin" Value="18,6,0,0" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Visibility" Value="Collapsed" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding DataContext.WindowManager.IsPaneOpen, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                             Value="False">
+                    <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Badge}"
+                             Value="0">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SideBarButton"
+               TargetType="{x:Type Button}"
+               d:DataContext="{d:DesignInstance Type={x:Type shell:NavigationNode}}">
+            <Setter Property="Height" Value="40" />
+            <Setter Property="MinWidth" Value="0" />
+            <Setter Property="MinHeight" Value="0" />
+            <Setter Property="Padding" Value="8,0,0,0" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+            <Setter Property="AutomationProperties.HelpText" Value="{Binding Badge, StringFormat='{}{0} unread'}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid d:DataContext="{d:DesignInstance Type={x:Type shell:NavigationItem}}"
+                              Background="{TemplateBinding Background}">
+                            <Border Visibility="{Binding IsSelected, Converter={StaticResource BoolToVisibilityConverter}}"
+                                    Background="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                            <Border Width="3" Height="16"
+                                    HorizontalAlignment="Left"
+                                    Visibility="{Binding IsSelected, Converter={StaticResource BoolToVisibilityConverter}}"
+                                    Background="{DynamicResource AccentFillColorDefaultBrush}" />
+                            <Grid Margin="{TemplateBinding Padding}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="32" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <controls:EmojiIcon Grid.Column="0"
+                                                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                    Glyph="{Binding Emoji}"
+                                                    FontSize="16" />
+                                <Border Grid.Column="0"
+                                        Style="{StaticResource SideBarIconBadgeBorder}">
+                                    <TextBlock Style="{StaticResource SmallCountBadgeTextBlock}"
+                                               Text="{Binding Badge}" />
+                                </Border>
+                                <TextBlock Grid.Column="1"
+                                           VerticalAlignment="Center"
+                                           TextTrimming="CharacterEllipsis"
+                                           Visibility="{Binding DataContext.WindowManager.IsPaneOpen, RelativeSource={RelativeSource AncestorType={x:Type Window}}, Converter={StaticResource BoolToVisibilityConverter}}"
+                                           Text="{Binding Title}"
+                                           FontSize="14" />
+                                <Border Grid.Column="2"
+                                        Style="{StaticResource SideBarBadgeBorder}">
+                                    <TextBlock Style="{StaticResource CountBadgeTextBlock}"
+                                               Text="{Binding Badge}" />
+                                </Border>
+                            </Grid>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource SubtleFillColorTertiaryBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="{DynamicResource TextFillColorDisabledBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Badge}"
+                             Value="0">
+                    <Setter Property="AutomationProperties.HelpText" Value="" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SideBarChildButton"
+               TargetType="{x:Type Button}"
+               BasedOn="{StaticResource SideBarButton}">
+            <Setter Property="Padding" Value="39,0,0,0" />
+        </Style>
+
+        <Style x:Key="SideBarGroupButton"
+               TargetType="{x:Type Button}"
+               d:DataContext="{d:DesignInstance Type={x:Type shell:NavigationNode}}">
+            <Setter Property="Height" Value="40" />
+            <Setter Property="MinWidth" Value="0" />
+            <Setter Property="MinHeight" Value="0" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+            <Setter Property="AutomationProperties.HelpText" Value="{Binding Badge, StringFormat='{}{0} unread'}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <ContentPresenter />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource SubtleFillColorTertiaryBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Badge}"
+                             Value="0">
+                    <Setter Property="AutomationProperties.HelpText" Value="" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SideBarGroupSelectionGrid"
+               TargetType="{x:Type Grid}"
+               d:DataContext="{d:DesignInstance Type={x:Type shell:NavigationGroup}}">
+            <Setter Property="Visibility" Value="Collapsed" />
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsChildSelected}" Value="True" />
+                        <Condition Binding="{Binding IsExpanded}" Value="False" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Visibility" Value="Visible" />
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsChildSelected}" Value="True" />
+                        <Condition Binding="{Binding DataContext.WindowManager.IsPaneOpen, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Value="False" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Visibility" Value="Visible" />
+                </MultiDataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SideBarSelectionBorder"
+               TargetType="{x:Type Border}">
+            <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+        </Style>
+
+        <Style x:Key="SideBarIndicatorBorder"
+               TargetType="{x:Type Border}">
+            <Setter Property="Width" Value="3" />
+            <Setter Property="Height" Value="16" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="Background" Value="{DynamicResource AccentFillColorDefaultBrush}" />
+        </Style>
+
+        <Style x:Key="SideBarGroupContentGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Margin" Value="8,0,0,0" />
+        </Style>
+
+        <Style x:Key="SideBarEmojiIcon"
+               TargetType="{x:Type controls:EmojiIcon}">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+
+        <Style x:Key="SideBarTitleTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+            <Setter Property="FontSize" Value="14" />
+        </Style>
+
+        <Style x:Key="SideBarChevronTextBlock"
+               TargetType="{x:Type TextBlock}"
+               d:DataContext="{d:DesignInstance Type={x:Type shell:NavigationGroup}}">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+            <Setter Property="FontSize" Value="8" />
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <RotateTransform Angle="0" />
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsExpanded}"
+                             Value="True">
+                    <Setter Property="RenderTransform">
+                        <Setter.Value>
+                            <RotateTransform Angle="180" />
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SideBarGroupItemsControl"
+               TargetType="{x:Type ItemsControl}"
+               BasedOn="{StaticResource {x:Type ItemsControl}}"
+               d:DataContext="{d:DesignInstance Type={x:Type shell:NavigationGroup}}">
+            <Setter Property="Visibility" Value="Collapsed" />
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsExpanded}" Value="True" />
+                        <Condition Binding="{Binding DataContext.WindowManager.IsPaneOpen, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Value="True" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Visibility" Value="Visible" />
+                </MultiDataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SideBarFavoritesContentControl"
+               TargetType="{x:Type ContentControl}"
+               BasedOn="{StaticResource {x:Type ContentControl}}"
+               d:DataContext="{d:DesignInstance Type={x:Type application:MainWindowViewModel}}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Menu.Favorites.Items.Count}"
+                             Value="0">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Busy -->
+
+        <Style x:Key="BusyProgressBar"
+               TargetType="{x:Type ProgressBar}"
+               BasedOn="{StaticResource {x:Type ProgressBar}}"
+               d:DataContext="{d:DesignInstance Type={x:Type application:MainWindowViewModel}}">
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="Visibility" Value="Hidden" />
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding BusyState.IsBusy}" Value="True" />
+                        <Condition Binding="{Binding IsNavigating}" Value="False" />
+                        <Condition Binding="{Binding Dialogs.Current}" Value="{x:Null}" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Visibility" Value="Visible" />
+                </MultiDataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Toast -->
+
+        <Style x:Key="ToastItemsControl"
+               TargetType="{x:Type ItemsControl}"
+               BasedOn="{StaticResource {x:Type ItemsControl}}">
+            <Setter Property="Width" Value="360" />
+            <Setter Property="Margin" Value="24" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+        </Style>
+
+        <Style x:Key="ToastBorder"
+               TargetType="{x:Type Border}">
+            <Setter Property="Margin" Value="0,8,0,0" />
+            <Setter Property="Background" Value="{DynamicResource SolidBackgroundFillColorBaseBrush}" />
+        </Style>
+
+        <!-- Notifications -->
+
+        <Style x:Key="NotificationFlyoutBorder"
+               TargetType="{x:Type Border}"
+               BasedOn="{StaticResource FlyoutBorderBase}">
+            <Setter Property="Width" Value="360" />
+        </Style>
+
+        <Style x:Key="NotificationHeaderGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Margin" Value="16,10,8,8" />
+        </Style>
+
+        <Style x:Key="NotificationHeaderTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+
+        <Style x:Key="FlyoutTextButton"
+               TargetType="{x:Type Button}">
+            <Setter Property="Padding" Value="8,4" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{DynamicResource AccentTextFillColorPrimaryBrush}" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FocusVisualStyle" Value="{DynamicResource DefaultControlFocusVisualStyle}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Padding="{TemplateBinding Padding}"
+                                Background="{TemplateBinding Background}">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource SubtleFillColorTertiaryBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="{DynamicResource TextFillColorDisabledBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="NotificationHistoryScroll"
+               TargetType="{x:Type ScrollViewer}"
+               BasedOn="{StaticResource PaneScroll}">
+            <Setter Property="MaxHeight" Value="420" />
+        </Style>
+
+        <Style x:Key="NotificationHistoryItemsControl"
+               TargetType="{x:Type ItemsControl}"
+               BasedOn="{StaticResource {x:Type ItemsControl}}">
+            <Setter Property="Margin" Value="0,0,0,4" />
+        </Style>
+
+        <Style x:Key="NotificationRowGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Margin" Value="16,0,16,0" />
+        </Style>
+
+        <Style x:Key="NotificationDividerBorder"
+               TargetType="{x:Type Border}">
+            <Setter Property="Height" Value="1" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Background" Value="{DynamicResource DividerStrokeColorDefaultBrush}" />
+        </Style>
+
+        <Style x:Key="NotificationRowContentGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Margin" Value="0,12,0,12" />
+        </Style>
+
+        <Style x:Key="NotificationIconGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Margin" Value="0,2,0,0" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+        </Style>
+
+        <Style x:Key="NotificationIconBackgroundTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Foreground" Value="{DynamicResource SystemFillColorAttentionBrush}" />
+        </Style>
+
+        <Style x:Key="NotificationIconGlyphTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Foreground" Value="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+        </Style>
+
+        <Style x:Key="NotificationTitleTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="0,0,48,0" />
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+
+        <Style x:Key="NotificationTimeTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
+        <Style x:Key="NotificationMessageTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
+        <Style x:Key="NotificationEmptyGrid"
+               TargetType="{x:Type Grid}"
+               BasedOn="{StaticResource NotificationRowGrid}"
+               d:DataContext="{d:DesignInstance Type={x:Type application:MainWindowViewModel}}">
+            <Setter Property="Visibility" Value="Collapsed" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Notifications.History.Count}"
+                             Value="0">
+                    <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="NotificationEmptyTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="0,12,0,16" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
+        <DataTemplate x:Key="NotificationHistoryTemplate"
+                      DataType="{x:Type components:Notification}">
+            <Grid Style="{StaticResource NotificationRowGrid}">
+                <Border Style="{StaticResource NotificationDividerBorder}" />
+                <Grid Style="{StaticResource NotificationRowContentGrid}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="12" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0"
+                          Style="{StaticResource NotificationIconGrid}">
+                        <TextBlock x:Name="IconBackground"
+                                   Style="{StaticResource NotificationIconBackgroundTextBlock}"
+                                   Text="&#xF136;" />
+                        <TextBlock x:Name="IconGlyph"
+                                   Style="{StaticResource NotificationIconGlyphTextBlock}"
+                                   Text="&#xF13F;" />
+                    </Grid>
+                    <Grid Grid.Column="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="2" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0">
+                            <TextBlock Style="{StaticResource NotificationTitleTextBlock}"
+                                       Text="{Binding Title}" />
+                            <TextBlock Style="{StaticResource NotificationTimeTextBlock}"
+                                       Text="{Binding Time, StringFormat=HH:mm}" />
+                        </Grid>
+                        <TextBlock Grid.Row="2"
+                                   Style="{StaticResource NotificationMessageTextBlock}"
+                                   Text="{Binding Message}" />
+                    </Grid>
+                </Grid>
+            </Grid>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Severity}"
+                             Value="Success">
+                    <Setter TargetName="IconBackground" Property="Foreground" Value="{DynamicResource SystemFillColorSuccessBrush}" />
+                    <Setter TargetName="IconGlyph" Property="Text" Value="&#xF13E;" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Severity}"
+                             Value="Warning">
+                    <Setter TargetName="IconBackground" Property="Foreground" Value="{DynamicResource SystemFillColorCautionBrush}" />
+                    <Setter TargetName="IconGlyph" Property="Text" Value="&#xF13C;" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Severity}"
+                             Value="Error">
+                    <Setter TargetName="IconBackground" Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+                    <Setter TargetName="IconGlyph" Property="Text" Value="&#xF13D;" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+        <!-- Palette -->
+
+        <Style x:Key="PaletteAnchorElement"
+               TargetType="{x:Type FrameworkElement}">
+            <Setter Property="Width" Value="600" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+        </Style>
+
+        <Style x:Key="PaletteFlyoutBorder"
+               TargetType="{x:Type Border}"
+               BasedOn="{StaticResource FlyoutBorderBase}">
+            <Setter Property="Width" Value="600" />
+        </Style>
+
+        <Style x:Key="PaletteTextBox"
+               TargetType="{x:Type TextBox}"
+               BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Height" Value="32" />
+        </Style>
+
+        <Style x:Key="PaletteListBox"
+               TargetType="{x:Type ListBox}"
+               BasedOn="{StaticResource {x:Type ListBox}}">
+            <Setter Property="MaxHeight" Value="360" />
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+
+        <Style x:Key="CommandListBoxItem"
                TargetType="{x:Type ListBoxItem}">
             <Setter Property="Height" Value="36" />
             <Setter Property="MinHeight" Value="0" />
@@ -386,6 +737,49 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style x:Key="PaletteItemGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+
+        <Style x:Key="PaletteIconTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+
+        <Style x:Key="PaletteTitleTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+            <Setter Property="FontSize" Value="14" />
+        </Style>
+
+        <Style x:Key="PaletteCategoryTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="0,0,16,0" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
+        <Style x:Key="PaletteEmptyTextBlock"
+               TargetType="{x:Type TextBlock}"
+               d:DataContext="{d:DesignInstance Type={x:Type application:MainWindowViewModel}}">
+            <Setter Property="Margin" Value="12,8,12,8" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+            <Setter Property="Visibility" Value="Collapsed" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Palette.Candidates.Count}"
+                             Value="0">
+                    <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
     </controls:AppWindow.Resources>
 
     <controls:AppWindow.InputBindings>
@@ -422,77 +816,61 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
+    <!-- Left header -->
     <controls:AppWindow.LeftHeader>
-        <ToggleButton Style="{StaticResource TitleBarButton}"
-                      Width="48"
+        <ToggleButton Style="{StaticResource TitleBarPaneToggleButton}"
                       IsChecked="{Binding WindowManager.IsPaneOpen}"
                       Content="&#xE700;"
-                      FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                      FontSize="16"
                       AutomationProperties.Name="Navigation" />
     </controls:AppWindow.LeftHeader>
 
+    <!-- Title bar -->
     <controls:AppWindow.TitleBarContent>
-        <StackPanel Orientation="Horizontal">
-            <Button Style="{StaticResource TitleBarButton}"
-                    Width="40"
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="8" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="8" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0"
+                    Style="{StaticResource TitleBarIconButton}"
                     Command="{Binding GoBackCommand}"
                     Content="&#xE72B;"
-                    FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                    FontSize="14"
                     ToolTip="Back (Alt+Left)"
                     AutomationProperties.Name="Back" />
-            <Button Style="{StaticResource TitleBarButton}"
-                    Width="40"
-                    Margin="0,0,8,0"
+            <Button Grid.Column="1"
+                    Style="{StaticResource TitleBarIconButton}"
                     Command="{Binding GoForwardCommand}"
                     Content="&#xE72A;"
-                    FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                    FontSize="14"
                     ToolTip="Forward (Alt+Right)"
                     AutomationProperties.Name="Forward" />
-            <Button Style="{StaticResource CommandBoxStyle}"
-                    Width="400" Height="32"
+            <Button Grid.Column="3"
+                    Style="{StaticResource CommandBoxButton}"
                     Command="{Binding OpenPaletteCommand}"
-                    Content="Search commands (Ctrl+Shift+P)"
-                    FontSize="12" />
-            <ToggleButton Width="40"
-                          Margin="8,0,0,0"
+                    Content="Search commands (Ctrl+Shift+P)" />
+            <ToggleButton Grid.Column="5"
+                          Style="{StaticResource TitleBarFavoriteToggleButton}"
                           IsEnabled="{Binding CanFavorite}"
                           IsChecked="{Binding IsFavorite}"
-                          FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                          FontSize="14"
-                          AutomationProperties.Name="Favorite">
-                <ToggleButton.Style>
-                    <Style TargetType="{x:Type ToggleButton}"
-                           BasedOn="{StaticResource TitleBarButton}">
-                        <Setter Property="Content" Value="&#xE734;" />
-                        <Setter Property="ToolTip" Value="Add to favorites" />
-                        <Style.Triggers>
-                            <Trigger Property="IsChecked" Value="True">
-                                <Setter Property="Content" Value="&#xE735;" />
-                                <Setter Property="ToolTip" Value="Remove from favorites" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </ToggleButton.Style>
-            </ToggleButton>
-        </StackPanel>
+                          AutomationProperties.Name="Favorite" />
+        </Grid>
     </controls:AppWindow.TitleBarContent>
 
+    <!-- Right header -->
     <controls:AppWindow.RightHeader>
         <ToggleButton x:Name="NotificationsButton"
-                      Style="{StaticResource TitleBarButton}"
-                      Width="48"
+                      Style="{StaticResource TitleBarBellToggleButton}"
                       IsChecked="{Binding IsNotificationsOpen}"
                       IsHitTestVisible="{Binding IsOpen, ElementName=NotificationsPopup, Converter={StaticResource ReverseConverter}}"
                       ToolTip="Notifications"
                       AutomationProperties.Name="Notifications">
             <Grid>
-                <TextBlock Text="&#xEA8F;"
-                           FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                           FontSize="16" />
-                <Border Style="{StaticResource BellBadgeStyle}">
+                <TextBlock Style="{StaticResource TitleBarBellGlyphTextBlock}"
+                           Text="&#xEA8F;" />
+                <Border Style="{StaticResource BellBadgeBorder}">
                     <TextBlock Style="{StaticResource SmallCountBadgeTextBlock}"
                                Text="{Binding Notifications.UnreadCount}" />
                 </Border>
@@ -500,29 +878,20 @@
         </ToggleButton>
     </controls:AppWindow.RightHeader>
 
+    <!-- Content -->
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
+        <!-- Side bar -->
         <Border Grid.Column="0"
-                Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
+                Style="{StaticResource SideBarBorder}"
                 ClipToBounds="True">
-            <Border.Style>
-                <Style TargetType="{x:Type Border}">
-                    <Setter Property="Width" Value="48" />
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding WindowManager.IsPaneOpen}"
-                                     Value="True">
-                            <Setter Property="Width" Value="200" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
             <Border.Resources>
                 <DataTemplate DataType="{x:Type shell:NavigationItem}">
-                    <Button Style="{StaticResource SideBarButtonStyle}"
+                    <Button Style="{StaticResource SideBarButton}"
                             Command="{Binding DataContext.ForwardCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                             CommandParameter="{Binding Id}"
                             ToolTip="{Binding Title}"
@@ -532,112 +901,50 @@
                 <DataTemplate DataType="{x:Type shell:NavigationGroup}">
                     <StackPanel>
                         <Grid>
-                            <Grid>
-                                <Grid.Style>
-                                    <Style TargetType="{x:Type Grid}">
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                        <Style.Triggers>
-                                            <MultiDataTrigger>
-                                                <MultiDataTrigger.Conditions>
-                                                    <Condition Binding="{Binding IsChildSelected}" Value="True" />
-                                                    <Condition Binding="{Binding IsExpanded}" Value="False" />
-                                                </MultiDataTrigger.Conditions>
-                                                <Setter Property="Visibility" Value="Visible" />
-                                            </MultiDataTrigger>
-                                            <MultiDataTrigger>
-                                                <MultiDataTrigger.Conditions>
-                                                    <Condition Binding="{Binding IsChildSelected}" Value="True" />
-                                                    <Condition Binding="{Binding DataContext.WindowManager.IsPaneOpen, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Value="False" />
-                                                </MultiDataTrigger.Conditions>
-                                                <Setter Property="Visibility" Value="Visible" />
-                                            </MultiDataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Grid.Style>
-                                <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" />
-                                <Border Width="3" Height="16"
-                                        HorizontalAlignment="Left"
-                                        Background="{DynamicResource AccentFillColorDefaultBrush}" />
+                            <Grid Style="{StaticResource SideBarGroupSelectionGrid}">
+                                <Border Style="{StaticResource SideBarSelectionBorder}" />
+                                <Border Style="{StaticResource SideBarIndicatorBorder}" />
                             </Grid>
-                            <Button Style="{StaticResource SideBarGroupButtonStyle}"
+                            <Button Style="{StaticResource SideBarGroupButton}"
                                     Command="{Binding DataContext.ToggleGroupCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                                     CommandParameter="{Binding}"
                                     ToolTip="{Binding Title}"
                                     AutomationProperties.Name="{Binding Title}"
                                     ToolTipService.IsEnabled="{Binding DataContext.WindowManager.IsPaneOpen, RelativeSource={RelativeSource AncestorType={x:Type Window}}, Converter={StaticResource ReverseConverter}}">
-                                <Grid Margin="8,0,0,0">
+                                <Grid Style="{StaticResource SideBarGroupContentGrid}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="32" />
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="40" />
                                     </Grid.ColumnDefinitions>
                                     <controls:EmojiIcon Grid.Column="0"
-                                                        HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                        Glyph="{Binding Emoji}"
-                                                        FontSize="16" />
+                                                        Style="{StaticResource SideBarEmojiIcon}"
+                                                        Glyph="{Binding Emoji}" />
                                     <Border Grid.Column="0"
-                                            Style="{StaticResource SideBarIconBadgeStyle}">
+                                            Style="{StaticResource SideBarIconBadgeBorder}">
                                         <TextBlock Style="{StaticResource SmallCountBadgeTextBlock}"
                                                    Text="{Binding Badge}" />
                                     </Border>
                                     <TextBlock Grid.Column="1"
-                                               VerticalAlignment="Center"
-                                               TextTrimming="CharacterEllipsis"
-                                               Text="{Binding Title}"
-                                               FontSize="14" />
+                                               Style="{StaticResource SideBarTitleTextBlock}"
+                                               Text="{Binding Title}" />
                                     <Border Grid.Column="1"
-                                            Style="{StaticResource SideBarGroupBadgeStyle}">
+                                            Style="{StaticResource SideBarGroupBadgeBorder}">
                                         <TextBlock Style="{StaticResource CountBadgeTextBlock}"
                                                    Text="{Binding Badge}" />
                                     </Border>
                                     <TextBlock Grid.Column="2"
-                                               HorizontalAlignment="Center" VerticalAlignment="Center"
-                                               Text="&#xE70D;"
-                                               FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                               FontSize="8"
-                                               RenderTransformOrigin="0.5,0.5">
-                                        <TextBlock.Style>
-                                            <Style TargetType="{x:Type TextBlock}">
-                                                <Setter Property="RenderTransform">
-                                                    <Setter.Value>
-                                                        <RotateTransform Angle="0" />
-                                                    </Setter.Value>
-                                                </Setter>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsExpanded}"
-                                                                 Value="True">
-                                                        <Setter Property="RenderTransform">
-                                                            <Setter.Value>
-                                                                <RotateTransform Angle="180" />
-                                                            </Setter.Value>
-                                                        </Setter>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
+                                               Style="{StaticResource SideBarChevronTextBlock}"
+                                               Text="&#xE70D;" />
                                 </Grid>
                             </Button>
                         </Grid>
-                        <ItemsControl ItemsSource="{Binding Items}"
+                        <ItemsControl Style="{StaticResource SideBarGroupItemsControl}"
+                                      ItemsSource="{Binding Items}"
                                       Focusable="False">
-                            <ItemsControl.Style>
-                                <Style TargetType="{x:Type ItemsControl}">
-                                    <Setter Property="Visibility" Value="Collapsed" />
-                                    <Style.Triggers>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding IsExpanded}" Value="True" />
-                                                <Condition Binding="{Binding DataContext.WindowManager.IsPaneOpen, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Value="True" />
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Visibility" Value="Visible" />
-                                        </MultiDataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </ItemsControl.Style>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate DataType="{x:Type shell:NavigationItem}">
-                                    <Button Style="{StaticResource SideBarChildButtonStyle}"
+                                    <Button Style="{StaticResource SideBarChildButton}"
                                             Command="{Binding DataContext.ForwardCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                                             CommandParameter="{Binding Id}"
                                             AutomationProperties.Name="{Binding Title}" />
@@ -653,24 +960,14 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <ScrollViewer Grid.Row="0"
-                              HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
+                              Style="{StaticResource PaneScroll}"
                               Focusable="False">
                     <StackPanel>
                         <ItemsControl ItemsSource="{Binding Menu.HeaderItems}"
                                       Focusable="False" />
-                        <ContentControl Focusable="False"
-                                        Content="{Binding Menu.Favorites}">
-                            <ContentControl.Style>
-                                <Style TargetType="{x:Type ContentControl}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Menu.Favorites.Items.Count}"
-                                                     Value="0">
-                                            <Setter Property="Visibility" Value="Collapsed" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </ContentControl.Style>
-                        </ContentControl>
+                        <ContentControl Style="{StaticResource SideBarFavoritesContentControl}"
+                                        Focusable="False"
+                                        Content="{Binding Menu.Favorites}" />
                         <ItemsControl ItemsSource="{Binding Menu.Items}"
                                       Focusable="False" />
                     </StackPanel>
@@ -681,41 +978,24 @@
             </Grid>
         </Border>
 
+        <!-- Pages -->
         <Canvas Grid.Column="1"
                 navigation:NavigationContainer.Navigator="{Binding Navigator}"
                 ClipToBounds="True" />
 
+        <!-- Busy -->
         <ProgressBar Grid.Column="0" Grid.ColumnSpan="2"
-                     VerticalAlignment="Bottom"
-                     IsIndeterminate="True">
-            <ProgressBar.Style>
-                <Style TargetType="{x:Type ProgressBar}"
-                       BasedOn="{StaticResource {x:Type ProgressBar}}">
-                    <Setter Property="Visibility" Value="Hidden" />
-                    <Style.Triggers>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding BusyState.IsBusy}" Value="True" />
-                                <Condition Binding="{Binding IsNavigating}" Value="False" />
-                                <Condition Binding="{Binding Dialogs.Current}" Value="{x:Null}" />
-                            </MultiDataTrigger.Conditions>
-                            <Setter Property="Visibility" Value="Visible" />
-                        </MultiDataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </ProgressBar.Style>
-        </ProgressBar>
+                     Style="{StaticResource BusyProgressBar}"
+                     IsIndeterminate="True" />
 
+        <!-- Toasts -->
         <ItemsControl Grid.Column="1"
-                      Width="360"
-                      Margin="24"
-                      HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                      Style="{StaticResource ToastItemsControl}"
                       ItemsSource="{Binding Notifications.Items}"
                       Focusable="False">
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type components:Notification}">
-                    <Border Margin="0,8,0,0"
-                            Background="{DynamicResource SolidBackgroundFillColorBaseBrush}">
+                    <Border Style="{StaticResource ToastBorder}">
                         <controls:InfoBar Title="{Binding Title}"
                                           Message="{Binding Message}"
                                           Severity="{Binding Severity}"
@@ -726,62 +1006,43 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
+        <!-- Notifications -->
         <Popup x:Name="NotificationsPopup"
                Grid.Column="0"
                IsOpen="{Binding IsNotificationsOpen}"
                AllowsTransparency="True" HorizontalOffset="-312" Placement="Bottom"
                PlacementTarget="{Binding ElementName=NotificationsButton}"
                StaysOpen="False" VerticalOffset="4">
-            <Border Width="360"
-                    Background="{DynamicResource FlyoutBackground}"
-                    BorderBrush="{DynamicResource FlyoutBorderBrush}"
-                    BorderThickness="1">
+            <Border Style="{StaticResource NotificationFlyoutBorder}">
                 <StackPanel>
-                    <Grid Margin="16,10,8,8">
-                        <TextBlock VerticalAlignment="Center"
-                                   Text="Notifications"
-                                   FontSize="14" FontWeight="SemiBold" />
-                        <Button Style="{StaticResource FlyoutTextButtonStyle}"
-                                HorizontalAlignment="Right"
+                    <Grid Style="{StaticResource NotificationHeaderGrid}">
+                        <TextBlock Style="{StaticResource NotificationHeaderTextBlock}"
+                                   Text="Notifications" />
+                        <Button Style="{StaticResource FlyoutTextButton}"
                                 Command="{Binding ClearNotificationsCommand}"
                                 Content="Clear all" />
                     </Grid>
-                    <ScrollViewer MaxHeight="420"
-                                  HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
+                    <ScrollViewer Style="{StaticResource NotificationHistoryScroll}"
                                   Focusable="False">
-                        <ItemsControl Margin="0,0,0,4"
+                        <ItemsControl Style="{StaticResource NotificationHistoryItemsControl}"
                                       ItemsSource="{Binding Notifications.History}"
                                       ItemTemplate="{StaticResource NotificationHistoryTemplate}"
                                       Focusable="False"
                                       AutomationProperties.Name="Notification history" />
                     </ScrollViewer>
-                    <Grid Margin="16,0,16,0">
-                        <Grid.Style>
-                            <Style TargetType="{x:Type Grid}">
-                                <Setter Property="Visibility" Value="Collapsed" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Notifications.History.Count}"
-                                                 Value="0">
-                                        <Setter Property="Visibility" Value="Visible" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Style>
-                        <Border Height="1"
-                                VerticalAlignment="Top"
-                                Background="{DynamicResource DividerStrokeColorDefaultBrush}" />
-                        <TextBlock Margin="0,12,0,16"
-                                   Text="No notifications"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                    <Grid Style="{StaticResource NotificationEmptyGrid}">
+                        <Border Style="{StaticResource NotificationDividerBorder}" />
+                        <TextBlock Style="{StaticResource NotificationEmptyTextBlock}"
+                                   Text="No notifications" />
                     </Grid>
                 </StackPanel>
             </Border>
         </Popup>
 
+        <!-- Palette -->
         <FrameworkElement x:Name="PaletteAnchor"
                           Grid.Column="0" Grid.ColumnSpan="2"
-                          Width="600"
-                          HorizontalAlignment="Center" VerticalAlignment="Top" />
+                          Style="{StaticResource PaletteAnchorElement}" />
 
         <Popup Grid.Column="0"
                IsOpen="{Binding Palette.IsOpen}"
@@ -793,13 +1054,10 @@
                     <s:SetFocusAction TargetObject="{Binding ElementName=CommandText}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
-            <Border Width="600"
-                    Background="{DynamicResource FlyoutBackground}"
-                    BorderBrush="{DynamicResource FlyoutBorderBrush}"
-                    BorderThickness="1">
+            <Border Style="{StaticResource PaletteFlyoutBorder}">
                 <StackPanel>
                     <TextBox x:Name="CommandText"
-                             Height="32"
+                             Style="{StaticResource PaletteTextBox}"
                              behaviors:TextBoxOption.PlaceholderText="Type to search"
                              Text="{Binding Palette.Text, UpdateSourceTrigger=PropertyChanged}"
                              AutomationProperties.Name="Command text">
@@ -822,13 +1080,10 @@
                                         Command="{Binding ClosePaletteCommand}" />
                         </TextBox.InputBindings>
                     </TextBox>
-                    <ListBox MaxHeight="360"
-                             Padding="0"
+                    <ListBox Style="{StaticResource PaletteListBox}"
                              ItemsSource="{Binding Palette.Candidates}"
                              Focusable="False"
-                             Background="Transparent"
-                             BorderThickness="0"
-                             ItemContainerStyle="{StaticResource CommandItemStyle}"
+                             ItemContainerStyle="{StaticResource CommandListBoxItem}"
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                              SelectedIndex="{Binding Palette.SelectedIndex}">
                         <i:Interaction.Behaviors>
@@ -836,7 +1091,7 @@
                         </i:Interaction.Behaviors>
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="{x:Type shell:CommandCandidate}">
-                                <Grid Background="Transparent">
+                                <Grid Style="{StaticResource PaletteItemGrid}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="48" />
                                         <ColumnDefinition Width="*" />
@@ -849,43 +1104,24 @@
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                     <TextBlock Grid.Column="0"
-                                               HorizontalAlignment="Center" VerticalAlignment="Center"
-                                               Text="{Binding Command.Icon}"
-                                               FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                               FontSize="16" />
+                                               Style="{StaticResource PaletteIconTextBlock}"
+                                               Text="{Binding Command.Icon}" />
                                     <TextBlock Grid.Column="1"
-                                               behaviors:TextBlockOption.Runs="{Binding TitleRuns}"
-                                               VerticalAlignment="Center"
-                                               TextTrimming="CharacterEllipsis"
-                                               FontSize="14" />
+                                               Style="{StaticResource PaletteTitleTextBlock}"
+                                               behaviors:TextBlockOption.Runs="{Binding TitleRuns}" />
                                     <TextBlock Grid.Column="2"
-                                               Margin="0,0,16,0"
-                                               VerticalAlignment="Center"
-                                               Text="{Binding Command.Category}"
-                                               FontSize="12"
-                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                               Style="{StaticResource PaletteCategoryTextBlock}"
+                                               Text="{Binding Command.Category}" />
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                    <TextBlock Margin="12,8,12,8"
-                               Text="No matching commands"
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}">
-                        <TextBlock.Style>
-                            <Style TargetType="{x:Type TextBlock}">
-                                <Setter Property="Visibility" Value="Collapsed" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Palette.Candidates.Count}"
-                                                 Value="0">
-                                        <Setter Property="Visibility" Value="Visible" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
+                    <TextBlock Style="{StaticResource PaletteEmptyTextBlock}"
+                               Text="No matching commands" />
                 </StackPanel>
             </Border>
         </Popup>
+
     </Grid>
 
 </controls:AppWindow>
