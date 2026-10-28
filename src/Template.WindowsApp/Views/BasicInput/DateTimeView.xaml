@@ -15,11 +15,33 @@
              d:DesignWidth="800" d:DesignHeight="600">
 
     <UserControl.Resources>
+
+        <!-- Converter -->
+
         <converters:ShortDateConverter x:Key="ShortDateConverter" />
+
+        <!-- Calendar -->
+
+        <Style x:Key="DateTimeCalendar"
+               TargetType="{x:Type Calendar}"
+               BasedOn="{StaticResource {x:Type Calendar}}">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+
+        <!-- TimePicker -->
+
+        <Style x:Key="DateTimeTimePicker"
+               TargetType="{x:Type controls:TimePicker}">
+            <Setter Property="Width" Value="240" />
+        </Style>
+
     </UserControl.Resources>
 
+    <!-- Content -->
     <ScrollViewer Style="{StaticResource RootScroll}">
         <StackPanel Style="{StaticResource PageStack}">
+
+            <!-- Header -->
             <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Date &amp; time" />
             <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
@@ -37,6 +59,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
+                <!-- DatePicker -->
                 <Border Grid.Row="0" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -45,8 +68,7 @@
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Pick a date from a drop-down calendar." />
                         <StackPanel Style="{StaticResource SampleStack}">
-                            <DatePicker Width="240"
-                                        HorizontalAlignment="Left"
+                            <DatePicker Style="{StaticResource SampleDatePicker}"
                                         AutomationProperties.Name="Date"
                                         SelectedDate="{Binding Date}" />
                         </StackPanel>
@@ -55,6 +77,7 @@
                     </StackPanel>
                 </Border>
 
+                <!-- Limits -->
                 <Border Grid.Row="0" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -63,8 +86,7 @@
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Only the next 30 days can be picked." />
                         <StackPanel Style="{StaticResource SampleStack}">
-                            <DatePicker Width="240"
-                                        HorizontalAlignment="Left"
+                            <DatePicker Style="{StaticResource SampleDatePicker}"
                                         AutomationProperties.Name="Limited date"
                                         DisplayDateEnd="{Binding LastDate, Mode=OneWay}"
                                         DisplayDateStart="{Binding FirstDate, Mode=OneWay}"
@@ -80,6 +102,7 @@
                     </StackPanel>
                 </Border>
 
+                <!-- Calendar -->
                 <Border Grid.Row="1" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -88,7 +111,7 @@
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Select a day on a calendar." />
                         <StackPanel Style="{StaticResource SampleStack}">
-                            <Calendar HorizontalAlignment="Left"
+                            <Calendar Style="{StaticResource DateTimeCalendar}"
                                       AutomationProperties.Name="Calendar"
                                       SelectedDate="{Binding CalendarDate}" />
                         </StackPanel>
@@ -97,6 +120,7 @@
                     </StackPanel>
                 </Border>
 
+                <!-- Date range -->
                 <Border Grid.Row="1" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -106,7 +130,7 @@
                                    Text="Select a range of days." />
                         <StackPanel Style="{StaticResource SampleStack}">
                             <Calendar x:Name="RangeCalendar"
-                                      HorizontalAlignment="Left"
+                                      Style="{StaticResource DateTimeCalendar}"
                                       SelectionMode="SingleRange"
                                       AutomationProperties.Name="Date range">
                                 <i:Interaction.Triggers>
@@ -152,6 +176,7 @@
                     </StackPanel>
                 </Border>
 
+                <!-- TimePicker -->
                 <Border Grid.Row="2" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -160,7 +185,7 @@
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Pick a time from a drop-down list." />
                         <StackPanel Style="{StaticResource SampleStack}">
-                            <controls:TimePicker Width="240"
+                            <controls:TimePicker Style="{StaticResource DateTimeTimePicker}"
                                                  AutomationProperties.Name="Time"
                                                  SelectedTime="{Binding Time}" />
                         </StackPanel>
@@ -169,6 +194,7 @@
                     </StackPanel>
                 </Border>
 
+                <!-- Minute increment -->
                 <Border Grid.Row="2" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -177,7 +203,7 @@
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Minutes go up in steps of 15." />
                         <StackPanel Style="{StaticResource SampleStack}">
-                            <controls:TimePicker Width="240"
+                            <controls:TimePicker Style="{StaticResource DateTimeTimePicker}"
                                                  AutomationProperties.Name="Step time" MinuteIncrement="15"
                                                  SelectedTime="{Binding StepTime}" />
                         </StackPanel>
@@ -186,6 +212,7 @@
                     </StackPanel>
                 </Border>
             </Grid>
+
         </StackPanel>
     </ScrollViewer>
 

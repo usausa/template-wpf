@@ -12,11 +12,69 @@
              d:DesignWidth="800" d:DesignHeight="600">
 
     <UserControl.Resources>
+
+        <!-- Converter -->
+
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
+        <!-- Element to element -->
+
+        <Style x:Key="BindingProgressBar"
+               TargetType="{x:Type ProgressBar}"
+               BasedOn="{StaticResource {x:Type ProgressBar}}">
+            <Setter Property="Width" Value="240" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+
+        <!-- Format and convert -->
+
+        <Style x:Key="BindingWeekdayTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="0,4,0,0" />
+        </Style>
+
+        <!-- Null value -->
+
+        <Style x:Key="BindingNicknameTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource PageTextBlockBase}">
+            <Setter Property="FontSize" Value="{DynamicResource SubtitleTextBlockFontSize}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+
+        <!-- MultiBinding -->
+
+        <Style x:Key="BindingNameTextBox"
+               TargetType="{x:Type TextBox}"
+               BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Width" Value="116" />
+        </Style>
+
+        <!-- Collection -->
+
+        <Style x:Key="BindingPeopleListBox"
+               TargetType="{x:Type ListBox}"
+               BasedOn="{StaticResource SampleListBox}">
+            <Setter Property="Height" Value="132" />
+        </Style>
+
+        <Style x:Key="BindingPersonNameTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Width" Value="120" />
+        </Style>
+
+        <Style x:Key="BindingPersonRoleTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
     </UserControl.Resources>
 
+    <!-- Content -->
     <ScrollViewer Style="{StaticResource RootScroll}">
         <StackPanel Style="{StaticResource PageStack}">
+
+            <!-- Header -->
             <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Binding" />
             <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
@@ -34,6 +92,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
+                <!-- Element to element -->
                 <Border Grid.Row="0" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -41,23 +100,29 @@
                                    Text="Element to element" />
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Bind one control to another with ElementName." />
-                        <StackPanel Style="{StaticResource SampleStack}">
+                        <Grid Style="{StaticResource SampleGrid}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="12" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
                             <Slider x:Name="SourceSlider"
-                                    Width="240"
-                                    HorizontalAlignment="Left"
+                                    Grid.Row="0"
+                                    Style="{StaticResource SampleSlider}"
                                     Value="40"
                                     Minimum="0" Maximum="100"
                                     AutomationProperties.Name="Source value" IsSnapToTickEnabled="True" TickFrequency="1" />
-                            <ProgressBar Width="240"
-                                         Margin="0,12,0,0"
-                                         HorizontalAlignment="Left"
+                            <ProgressBar Grid.Row="2"
+                                         Style="{StaticResource BindingProgressBar}"
                                          Value="{Binding Value, ElementName=SourceSlider}"
                                          Minimum="0" Maximum="100" />
-                        </StackPanel>
+                        </Grid>
                         <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding Value, ElementName=SourceSlider, StringFormat='Value: {0}'}" />
                     </StackPanel>
                 </Border>
+
+                <!-- Two-way binding -->
                 <Border Grid.Row="0" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -66,8 +131,7 @@
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Typing updates the view model, and the view model updates the text." />
                         <StackPanel Style="{StaticResource SampleStack}">
-                            <TextBox Width="240"
-                                     HorizontalAlignment="Left"
+                            <TextBox Style="{StaticResource SampleTextBox}"
                                      Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                                      AutomationProperties.Name="Name" />
                         </StackPanel>
@@ -75,6 +139,8 @@
                                    Text="{Binding Name, StringFormat='Name: {0}'}" />
                     </StackPanel>
                 </Border>
+
+                <!-- Format and convert -->
                 <Border Grid.Row="1" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -82,22 +148,31 @@
                                    Text="Format and convert" />
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Format a value with StringFormat and change it with a converter." />
-                        <StackPanel Style="{StaticResource SampleStack}">
-                            <DatePicker Width="240"
-                                        HorizontalAlignment="Left"
+                        <Grid Style="{StaticResource SampleGrid}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="12" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <DatePicker Grid.Row="0"
+                                        Style="{StaticResource SampleDatePicker}"
                                         AutomationProperties.Name="Date"
                                         SelectedDate="{Binding Date}" />
-                            <CheckBox Margin="0,12,0,0"
+                            <CheckBox Grid.Row="2"
                                       IsChecked="{Binding ShowsWeekday}"
                                       Content="Show the day of the week" />
-                            <TextBlock Margin="0,4,0,0"
+                            <TextBlock Grid.Row="3"
+                                       Style="{StaticResource BindingWeekdayTextBlock}"
                                        Visibility="{Binding ShowsWeekday, Converter={StaticResource BooleanToVisibilityConverter}}"
                                        Text="{Binding Date, StringFormat='{}{0:dddd}'}" />
-                        </StackPanel>
+                        </Grid>
                         <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding Date, StringFormat='Date: {0:yyyy-MM-dd}', TargetNullValue='Date: -'}" />
                     </StackPanel>
                 </Border>
+
+                <!-- Null value -->
                 <Border Grid.Row="1" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -105,22 +180,35 @@
                                    Text="Null value" />
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="TargetNullValue shows a text while the value is null." />
-                        <StackPanel Style="{StaticResource SampleStack}">
-                            <TextBlock Style="{DynamicResource SubtitleTextBlockStyle}"
+                        <Grid Style="{StaticResource SampleGrid}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="12" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0"
+                                       Style="{StaticResource BindingNicknameTextBlock}"
                                        Text="{Binding Nickname, TargetNullValue='(no nickname)'}" />
-                            <StackPanel Orientation="Horizontal"
-                                        Margin="0,12,0,0">
-                                <Button Command="{Binding SetNicknameCommand}"
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="8" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0"
+                                        Command="{Binding SetNicknameCommand}"
                                         Content="Set nickname" />
-                                <Button Margin="8,0,0,0"
+                                <Button Grid.Column="2"
                                         Command="{Binding ClearNicknameCommand}"
                                         Content="Clear" />
-                            </StackPanel>
-                        </StackPanel>
+                            </Grid>
+                        </Grid>
                         <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding Nickname, StringFormat='Nickname: {0}', TargetNullValue='Nickname: null'}" />
                     </StackPanel>
                 </Border>
+
+                <!-- MultiBinding -->
                 <Border Grid.Row="2" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -128,18 +216,23 @@
                                    Text="MultiBinding" />
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Combine several values into one text." />
-                        <StackPanel Style="{StaticResource SampleStack}"
-                                    Orientation="Horizontal">
-                            <TextBox Width="116"
+                        <Grid Style="{StaticResource SampleGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="8" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0"
+                                     Style="{StaticResource BindingNameTextBox}"
                                      behaviors:TextBoxOption.PlaceholderText="First name"
                                      Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"
                                      AutomationProperties.Name="First name" />
-                            <TextBox Width="116"
+                            <TextBox Grid.Column="2"
+                                     Style="{StaticResource BindingNameTextBox}"
                                      behaviors:TextBoxOption.PlaceholderText="Last name"
-                                     Margin="8,0,0,0"
                                      Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}"
                                      AutomationProperties.Name="Last name" />
-                        </StackPanel>
+                        </Grid>
                         <TextBlock Style="{StaticResource SampleResultTextBlock}">
                             <TextBlock.Text>
                                 <MultiBinding StringFormat="Full name: {0} {1}">
@@ -150,6 +243,8 @@
                         </TextBlock>
                     </StackPanel>
                 </Border>
+
+                <!-- Collection -->
                 <Border Grid.Row="2" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -158,18 +253,17 @@
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Bind a list and show each item with a DataTemplate." />
                         <StackPanel Style="{StaticResource SampleStack}">
-                            <ListBox Width="320" Height="132"
-                                     HorizontalAlignment="Left"
+                            <ListBox Style="{StaticResource BindingPeopleListBox}"
                                      ItemsSource="{Binding People}"
                                      SelectedItem="{Binding SelectedPerson}"
                                      AutomationProperties.Name="People">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate DataType="{x:Type module:PersonEntry}">
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Width="120"
+                                            <TextBlock Style="{StaticResource BindingPersonNameTextBlock}"
                                                        Text="{Binding Name}" />
-                                            <TextBlock Text="{Binding Role}"
-                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                            <TextBlock Style="{StaticResource BindingPersonRoleTextBlock}"
+                                                       Text="{Binding Role}" />
                                         </StackPanel>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
@@ -180,6 +274,7 @@
                     </StackPanel>
                 </Border>
             </Grid>
+
         </StackPanel>
     </ScrollViewer>
 

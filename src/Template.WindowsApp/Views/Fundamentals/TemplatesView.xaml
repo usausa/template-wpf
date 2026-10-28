@@ -11,8 +11,100 @@
              d:DataContext="{d:DesignInstance Type={x:Type module:TemplatesViewModel}}"
              d:DesignWidth="800" d:DesignHeight="600">
 
+    <UserControl.Resources>
+
+        <!-- ItemTemplate -->
+
+        <Style x:Key="TemplatesSwatchRectangle"
+               TargetType="{x:Type Rectangle}">
+            <Setter Property="Width" Value="16" />
+            <Setter Property="Height" Value="16" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="TemplatesSwatchNameTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <!-- ControlTemplate -->
+
+        <Style x:Key="TemplatesNewLookButton"
+               TargetType="{x:Type Button}"
+               BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Width" Value="240" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource CardStrokeColorDefaultBrush}" />
+        </Style>
+
+        <!-- Templates by data type -->
+
+        <Style x:Key="TemplatesItemGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Margin" Value="0,0,0,8" />
+        </Style>
+
+        <Style x:Key="TemplatesGlyphTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+
+        <Style x:Key="TemplatesItemTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="TemplatesLinkTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource TemplatesItemTextBlock}">
+            <Setter Property="Foreground" Value="{DynamicResource AccentTextFillColorPrimaryBrush}" />
+        </Style>
+
+        <Style x:Key="TemplatesAddressTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource TemplatesItemTextBlock}">
+            <Setter Property="FontFamily" Value="{StaticResource CodeFontFamily}" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
+        <Style x:Key="TemplatesTaskCheckBox"
+               TargetType="{x:Type CheckBox}"
+               BasedOn="{StaticResource {x:Type CheckBox}}">
+            <Setter Property="Margin" Value="0,0,0,8" />
+        </Style>
+
+        <!-- DataTemplateSelector -->
+
+        <Style x:Key="TemplatesNormalBorder"
+               TargetType="{x:Type Border}">
+            <Setter Property="Margin" Value="0,0,8,8" />
+            <Setter Property="Padding" Value="12,6" />
+            <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+        </Style>
+
+        <Style x:Key="TemplatesHotBorder"
+               TargetType="{x:Type Border}"
+               BasedOn="{StaticResource TemplatesNormalBorder}">
+            <Setter Property="Background" Value="{DynamicResource AccentFillColorDefaultBrush}" />
+        </Style>
+
+        <Style x:Key="TemplatesHotTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+        </Style>
+
+    </UserControl.Resources>
+
+    <!-- Content -->
     <ScrollViewer Style="{StaticResource RootScroll}">
         <StackPanel Style="{StaticResource PageStack}">
+
+            <!-- Header -->
             <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Templates" />
             <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
@@ -30,6 +122,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
+                <!-- ItemTemplate -->
                 <Border Grid.Row="0" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -38,24 +131,28 @@
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Show each item of a list with a DataTemplate." />
                         <StackPanel Style="{StaticResource SampleStack}">
-                            <ComboBox Width="240"
-                                      HorizontalAlignment="Left"
+                            <ComboBox Style="{StaticResource SampleComboBox}"
                                       ItemsSource="{Binding Swatches}"
                                       SelectedItem="{Binding SelectedSwatch}"
                                       AutomationProperties.Name="Color">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate DataType="{x:Type module:SwatchEntry}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Rectangle Width="16" Height="16"
-                                                       VerticalAlignment="Center">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="8" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <Rectangle Grid.Column="0"
+                                                       Style="{StaticResource TemplatesSwatchRectangle}">
                                                 <Rectangle.Fill>
                                                     <SolidColorBrush Color="{Binding Color}" />
                                                 </Rectangle.Fill>
                                             </Rectangle>
-                                            <TextBlock Margin="8,0,0,0"
-                                                       VerticalAlignment="Center"
+                                            <TextBlock Grid.Column="2"
+                                                       Style="{StaticResource TemplatesSwatchNameTextBlock}"
                                                        Text="{Binding Name}" />
-                                        </StackPanel>
+                                        </Grid>
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
@@ -64,6 +161,8 @@
                                    Text="{Binding SelectedSwatch.Name, StringFormat='Selected: {0}', FallbackValue='Selected: -'}" />
                     </StackPanel>
                 </Border>
+
+                <!-- ItemsPanelTemplate -->
                 <Border Grid.Row="0" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -72,8 +171,7 @@
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Lay out the items of a list with another panel." />
                         <StackPanel Style="{StaticResource SampleStack}">
-                            <ListBox Width="320"
-                                     HorizontalAlignment="Left"
+                            <ListBox Style="{StaticResource SampleListBox}"
                                      ItemsSource="{Binding Tags}"
                                      SelectedItem="{Binding SelectedTag}"
                                      AutomationProperties.Name="Tags" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
@@ -88,6 +186,8 @@
                                    Text="{Binding SelectedTag, StringFormat='Selected: {0}', TargetNullValue='Selected: -'}" />
                     </StackPanel>
                 </Border>
+
+                <!-- ControlTemplate -->
                 <Border Grid.Row="1" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -96,12 +196,9 @@
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Give a control a whole new look and keep how it works." />
                         <StackPanel Style="{StaticResource SampleStack}">
-                            <Button Width="240"
-                                    HorizontalAlignment="Left"
+                            <Button Style="{StaticResource TemplatesNewLookButton}"
                                     Command="{Binding PressCommand}"
-                                    Content="Press the new look"
-                                    Background="{DynamicResource SubtleFillColorSecondaryBrush}"
-                                    BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}">
+                                    Content="Press the new look">
                                 <Button.Template>
                                     <ControlTemplate TargetType="{x:Type Button}">
                                         <Border x:Name="Root"
@@ -135,6 +232,8 @@
                                    Text="{Binding PressCount, StringFormat='Pressed: {0} times'}" />
                     </StackPanel>
                 </Border>
+
+                <!-- Templates by data type -->
                 <Border Grid.Row="1" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -147,47 +246,53 @@
                                           Focusable="False">
                                 <ItemsControl.Resources>
                                     <DataTemplate DataType="{x:Type module:NoteItem}">
-                                        <StackPanel Orientation="Horizontal"
-                                                    Margin="0,0,0,8">
-                                            <TextBlock VerticalAlignment="Center"
-                                                       Text="&#xE70B;"
-                                                       FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                                       FontSize="16" />
-                                            <TextBlock Margin="8,0,0,0"
-                                                       VerticalAlignment="Center"
+                                        <Grid Style="{StaticResource TemplatesItemGrid}">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="8" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0"
+                                                       Style="{StaticResource TemplatesGlyphTextBlock}"
+                                                       Text="&#xE70B;" />
+                                            <TextBlock Grid.Column="2"
+                                                       Style="{StaticResource TemplatesItemTextBlock}"
                                                        Text="{Binding Text}" />
-                                        </StackPanel>
+                                        </Grid>
                                     </DataTemplate>
                                     <DataTemplate DataType="{x:Type module:TaskItem}">
-                                        <CheckBox Margin="0,0,0,8"
+                                        <CheckBox Style="{StaticResource TemplatesTaskCheckBox}"
                                                   IsChecked="{Binding IsDone, Mode=OneWay}"
                                                   IsHitTestVisible="False"
                                                   Content="{Binding Text}" />
                                     </DataTemplate>
                                     <DataTemplate DataType="{x:Type module:LinkItem}">
-                                        <StackPanel Orientation="Horizontal"
-                                                    Margin="0,0,0,8">
-                                            <TextBlock VerticalAlignment="Center"
-                                                       Text="&#xE71B;"
-                                                       FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                                       FontSize="16" />
-                                            <TextBlock Margin="8,0,0,0"
-                                                       VerticalAlignment="Center"
-                                                       Text="{Binding Text}"
-                                                       Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
-                                            <TextBlock Margin="8,0,0,0"
-                                                       VerticalAlignment="Center"
-                                                       Text="{Binding Address}"
-                                                       FontFamily="{StaticResource CodeFontFamily}"
-                                                       FontSize="12"
-                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                                        </StackPanel>
+                                        <Grid Style="{StaticResource TemplatesItemGrid}">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="8" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="8" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0"
+                                                       Style="{StaticResource TemplatesGlyphTextBlock}"
+                                                       Text="&#xE71B;" />
+                                            <TextBlock Grid.Column="2"
+                                                       Style="{StaticResource TemplatesLinkTextBlock}"
+                                                       Text="{Binding Text}" />
+                                            <TextBlock Grid.Column="4"
+                                                       Style="{StaticResource TemplatesAddressTextBlock}"
+                                                       Text="{Binding Address}" />
+                                        </Grid>
                                     </DataTemplate>
                                 </ItemsControl.Resources>
                             </ItemsControl>
                         </StackPanel>
                     </StackPanel>
                 </Border>
+
+                <!-- DataTemplateSelector -->
                 <Border Grid.Row="2" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -207,19 +312,16 @@
                                     <controls:TemperatureTemplateSelector HotThreshold="30">
                                         <controls:TemperatureTemplateSelector.NormalTemplate>
                                             <DataTemplate>
-                                                <Border Margin="0,0,8,8" Padding="12,6"
-                                                        Background="{DynamicResource SubtleFillColorSecondaryBrush}">
+                                                <Border Style="{StaticResource TemplatesNormalBorder}">
                                                     <TextBlock Text="{Binding StringFormat='{}{0} °C'}" />
                                                 </Border>
                                             </DataTemplate>
                                         </controls:TemperatureTemplateSelector.NormalTemplate>
                                         <controls:TemperatureTemplateSelector.HotTemplate>
                                             <DataTemplate>
-                                                <Border Margin="0,0,8,8" Padding="12,6"
-                                                        Background="{DynamicResource AccentFillColorDefaultBrush}">
-                                                    <TextBlock Text="{Binding StringFormat='{}{0} °C'}"
-                                                               FontWeight="SemiBold"
-                                                               Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+                                                <Border Style="{StaticResource TemplatesHotBorder}">
+                                                    <TextBlock Style="{StaticResource TemplatesHotTextBlock}"
+                                                               Text="{Binding StringFormat='{}{0} °C'}" />
                                                 </Border>
                                             </DataTemplate>
                                         </controls:TemperatureTemplateSelector.HotTemplate>
@@ -232,6 +334,7 @@
                     </StackPanel>
                 </Border>
             </Grid>
+
         </StackPanel>
     </ScrollViewer>
 

@@ -11,20 +11,85 @@
              d:DataContext="{d:DesignInstance Type={x:Type module:ScratchPadViewModel}}"
              d:DesignWidth="800" d:DesignHeight="600">
 
+    <UserControl.Resources>
+
+        <!-- Preview -->
+
+        <Style x:Key="ScratchPadPreviewBorder"
+               TargetType="{x:Type Border}"
+               BasedOn="{StaticResource CardBorder}">
+            <Setter Property="Padding" Value="0" />
+        </Style>
+
+        <Style x:Key="ScratchPadPreviewScroll"
+               TargetType="{x:Type ScrollViewer}"
+               BasedOn="{StaticResource {x:Type ScrollViewer}}">
+            <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+        </Style>
+
+        <Style x:Key="ScratchPadPresenter"
+               TargetType="{x:Type controls:XamlPresenter}">
+            <Setter Property="Margin" Value="16" />
+        </Style>
+
+        <!-- Editor -->
+
+        <Style x:Key="ScratchPadXamlTextBox"
+               TargetType="{x:Type TextBox}"
+               BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Height" Value="240" />
+            <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+            <Setter Property="FontFamily" Value="{StaticResource CodeFontFamily}" />
+            <Setter Property="FontSize" Value="13" />
+        </Style>
+
+        <Style x:Key="ScratchPadLoadButton"
+               TargetType="{x:Type Button}"
+               BasedOn="{StaticResource AccentButton}">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+        </Style>
+
+        <Style x:Key="ScratchPadResetButton"
+               TargetType="{x:Type Button}"
+               BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+        </Style>
+
+        <!-- Status -->
+
+        <Style x:Key="ScratchPadStatusTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Error, ElementName=Presenter}"
+                             Value="{x:Null}">
+                    <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+    </UserControl.Resources>
+
     <UserControl.InputBindings>
         <KeyBinding Key="F5"
                     Command="{Binding LoadCommand}" />
     </UserControl.InputBindings>
 
+    <!-- Content -->
     <Grid Style="{StaticResource PageGrid}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="8" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
+        <!-- Header -->
         <TextBlock Grid.Row="0"
                    Style="{StaticResource PageTitleTextBlock}"
                    Text="Scratch pad" />
@@ -32,60 +97,51 @@
                    Style="{StaticResource PageDescriptionTextBlock}"
                    Text="Type XAML and press Load or F5 to draw it." />
 
+        <!-- Preview -->
         <Border Grid.Row="2"
-                Style="{StaticResource CardBorder}"
-                Padding="0">
-            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                Style="{StaticResource ScratchPadPreviewBorder}">
+            <ScrollViewer Style="{StaticResource ScratchPadPreviewScroll}"
                           Focusable="False">
                 <controls:XamlPresenter x:Name="Presenter"
-                                        Margin="16"
+                                        Style="{StaticResource ScratchPadPresenter}"
                                         Focusable="False"
                                         Xaml="{Binding LoadedXaml}" />
             </ScrollViewer>
         </Border>
 
+        <!-- Editor -->
         <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="8" />
+                <ColumnDefinition Width="120" />
             </Grid.ColumnDefinitions>
             <TextBox Grid.Column="0"
-                     Height="240"
-                     HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                     Style="{StaticResource ScratchPadXamlTextBox}"
                      Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}"
-                     FontFamily="{StaticResource CodeFontFamily}"
-                     FontSize="13"
                      AcceptsReturn="True" AcceptsTab="True" AutomationProperties.Name="XAML" />
-            <StackPanel Grid.Column="1"
-                        Width="120"
-                        Margin="8,0,0,0">
-                <Button Style="{DynamicResource AccentButtonStyle}"
-                        HorizontalAlignment="Stretch"
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="8" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Button Grid.Row="0"
+                        Style="{StaticResource ScratchPadLoadButton}"
                         Command="{Binding LoadCommand}"
                         Content="Load" />
-                <Button Margin="0,8,0,0"
-                        HorizontalAlignment="Stretch"
+                <Button Grid.Row="2"
+                        Style="{StaticResource ScratchPadResetButton}"
                         Command="{Binding ResetCommand}"
                         Content="Reset" />
-            </StackPanel>
+            </Grid>
         </Grid>
 
-        <TextBlock Grid.Row="4"
-                   Margin="0,8,0,0"
-                   TextWrapping="Wrap"
-                   Text="{Binding Error, ElementName=Presenter, TargetNullValue='Loaded'}">
-            <TextBlock.Style>
-                <Style TargetType="{x:Type TextBlock}">
-                    <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Error, ElementName=Presenter}"
-                                     Value="{x:Null}">
-                            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBlock.Style>
-        </TextBlock>
+        <!-- Status -->
+        <TextBlock Grid.Row="5"
+                   Style="{StaticResource ScratchPadStatusTextBlock}"
+                   Text="{Binding Error, ElementName=Presenter, TargetNullValue='Loaded'}" />
+
     </Grid>
 
 </UserControl>

@@ -13,8 +13,103 @@
              d:DataContext="{d:DesignInstance Type={x:Type module:TextViewModel}}"
              d:DesignWidth="800" d:DesignHeight="600">
 
+    <UserControl.Resources>
+
+        <!-- PasswordBox -->
+
+        <Style x:Key="TextPasswordBox"
+               TargetType="{x:Type PasswordBox}"
+               BasedOn="{StaticResource {x:Type PasswordBox}}">
+            <Setter Property="Width" Value="320" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+
+        <!-- Multi-line -->
+
+        <Style x:Key="TextMultiLineTextBox"
+               TargetType="{x:Type TextBox}"
+               BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Height" Value="96" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+        </Style>
+
+        <!-- RichTextBox -->
+
+        <Style x:Key="TextRichTextBox"
+               TargetType="{x:Type RichTextBox}"
+               BasedOn="{StaticResource {x:Type RichTextBox}}">
+            <Setter Property="Height" Value="96" />
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+        </Style>
+
+        <!-- NumberBox -->
+
+        <Style x:Key="TextNumberBox"
+               TargetType="{x:Type controls:NumberBox}">
+            <Setter Property="Width" Value="160" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+
+        <!-- AutoSuggestBox -->
+
+        <Style x:Key="TextAutoSuggestBox"
+               TargetType="{x:Type controls:AutoSuggestBox}">
+            <Setter Property="Width" Value="320" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+
+        <Style x:Key="TextCityNameTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        </Style>
+
+        <!-- Search box -->
+
+        <Style x:Key="TextCustomerNameTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        </Style>
+
+        <Style x:Key="TextCustomerCompanyTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="12,0,0,0" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
+        <Style x:Key="TextCustomerResultTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource SampleResultTextBlock}">
+            <Setter Property="Text">
+                <Setter.Value>
+                    <MultiBinding StringFormat="Customer: {0} · {1} · {2}">
+                        <Binding Path="SelectedCustomer.Name"
+                                 FallbackValue="-" />
+                        <Binding Path="SelectedCustomer.Company"
+                                 FallbackValue="-" />
+                        <Binding Path="SelectedCustomer.City"
+                                 FallbackValue="-" />
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding SelectedCustomer}"
+                             Value="{x:Null}">
+                    <Setter Property="Text" Value="{Binding CustomerQuery, StringFormat='No customer matches \'{0}\'', TargetNullValue='Customer: none'}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+    </UserControl.Resources>
+
+    <!-- Content -->
     <ScrollViewer Style="{StaticResource RootScroll}">
         <StackPanel Style="{StaticResource PageStack}">
+
+            <!-- Header -->
             <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Text" />
             <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
@@ -33,6 +128,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
+                <!-- TextBox -->
                 <Border Grid.Row="0" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -41,9 +137,8 @@
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Single-line input with a hint." />
                         <StackPanel Style="{StaticResource SampleStack}">
-                            <TextBox Width="320"
+                            <TextBox Style="{StaticResource SampleWideTextBox}"
                                      behaviors:TextBoxOption.PlaceholderText="Type here"
-                                     HorizontalAlignment="Left"
                                      Text="{Binding SingleLineText, UpdateSourceTrigger=PropertyChanged}"
                                      AutomationProperties.Name="Single-line text" />
                         </StackPanel>
@@ -52,6 +147,7 @@
                     </StackPanel>
                 </Border>
 
+                <!-- PasswordBox -->
                 <Border Grid.Row="0" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -61,9 +157,8 @@
                                    Text="Hidden input." />
                         <StackPanel Style="{StaticResource SampleStack}">
                             <PasswordBox x:Name="PasswordInput"
-                                         Width="320"
+                                         Style="{StaticResource TextPasswordBox}"
                                          behaviors:PasswordBoxOption.IsCapsLockWarningEnabled="True" behaviors:PasswordBoxOption.IsRevealButtonEnabled="True"
-                                         HorizontalAlignment="Left"
                                          AutomationProperties.Name="Password">
                                 <i:Interaction.Triggers>
                                     <s:EventRequestTrigger Request="{Binding ClearPasswordRequest}">
@@ -84,6 +179,7 @@
                     </StackPanel>
                 </Border>
 
+                <!-- Multi-line -->
                 <Border Grid.Row="1" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -92,9 +188,7 @@
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Multiple lines of text." />
                         <StackPanel Style="{StaticResource SampleStack}">
-                            <TextBox Height="96"
-                                     TextWrapping="Wrap"
-                                     VerticalScrollBarVisibility="Auto"
+                            <TextBox Style="{StaticResource TextMultiLineTextBox}"
                                      Text="{Binding MultiLineText, UpdateSourceTrigger=PropertyChanged}"
                                      AcceptsReturn="True" AutomationProperties.Name="Multi-line text" />
                         </StackPanel>
@@ -103,6 +197,7 @@
                     </StackPanel>
                 </Border>
 
+                <!-- RichTextBox -->
                 <Border Grid.Row="1" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -111,8 +206,7 @@
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Formatted text." />
                         <StackPanel Style="{StaticResource SampleStack}">
-                            <RichTextBox Height="96"
-                                         VerticalScrollBarVisibility="Auto"
+                            <RichTextBox Style="{StaticResource TextRichTextBox}"
                                          AutomationProperties.Name="Rich text">
                                 <FlowDocument>
                                     <Paragraph xml:space="preserve">Rich text with <Bold>bold</Bold>, <Italic>italic</Italic> and <Underline>underline</Underline>.</Paragraph>
@@ -122,6 +216,7 @@
                     </StackPanel>
                 </Border>
 
+                <!-- Read-only -->
                 <Border Grid.Row="2" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -130,13 +225,14 @@
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Text that cannot be changed." />
                         <StackPanel Style="{StaticResource SampleStack}">
-                            <TextBox Width="320"
-                                     HorizontalAlignment="Left"
+                            <TextBox Style="{StaticResource SampleWideTextBox}"
                                      Text="This text is read-only."
                                      AutomationProperties.Name="Read-only text" IsReadOnly="True" />
                         </StackPanel>
                     </StackPanel>
                 </Border>
+
+                <!-- NumberBox -->
                 <Border Grid.Row="2" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -145,8 +241,7 @@
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Number input with spin buttons." />
                         <StackPanel Style="{StaticResource SampleStack}">
-                            <controls:NumberBox Width="160"
-                                                HorizontalAlignment="Left"
+                            <controls:NumberBox Style="{StaticResource TextNumberBox}"
                                                 Value="{Binding Number}"
                                                 Minimum="0" Maximum="100"
                                                 AutomationProperties.Name="Number" />
@@ -156,6 +251,7 @@
                     </StackPanel>
                 </Border>
 
+                <!-- AutoSuggestBox -->
                 <Border Grid.Row="3" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -164,8 +260,7 @@
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Suggestions while you type." />
                         <StackPanel Style="{StaticResource SampleStack}">
-                            <controls:AutoSuggestBox Width="320"
-                                                     HorizontalAlignment="Left"
+                            <controls:AutoSuggestBox Style="{StaticResource TextAutoSuggestBox}"
                                                      ItemsSource="{Binding CitySuggestions}"
                                                      Text="{Binding CityText}"
                                                      PlaceholderText="Type a city"
@@ -174,8 +269,8 @@
                                                      AutomationProperties.Name="City">
                                 <controls:AutoSuggestBox.ItemTemplate>
                                     <DataTemplate DataType="{x:Type module:CitySuggestion}">
-                                        <TextBlock behaviors:TextBlockOption.Runs="{Binding NameRuns}"
-                                                   TextTrimming="CharacterEllipsis" />
+                                        <TextBlock Style="{StaticResource TextCityNameTextBlock}"
+                                                   behaviors:TextBlockOption.Runs="{Binding NameRuns}" />
                                     </DataTemplate>
                                 </controls:AutoSuggestBox.ItemTemplate>
                             </controls:AutoSuggestBox>
@@ -184,6 +279,8 @@
                                    Text="{Binding SelectedCity, StringFormat='Selected: {0}', TargetNullValue='Selected: none'}" />
                     </StackPanel>
                 </Border>
+
+                <!-- Search box -->
                 <Border Grid.Row="3" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -192,8 +289,7 @@
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Press Enter or the search button to find a customer." />
                         <StackPanel Style="{StaticResource SampleStack}">
-                            <controls:AutoSuggestBox Width="320"
-                                                     HorizontalAlignment="Left"
+                            <controls:AutoSuggestBox Style="{StaticResource TextAutoSuggestBox}"
                                                      ItemsSource="{Binding CustomerSuggestions}"
                                                      Text="{Binding CustomerText}"
                                                      PlaceholderText="Search customers"
@@ -209,48 +305,21 @@
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Grid.Column="0"
-                                                       behaviors:TextBlockOption.Runs="{Binding NameRuns}"
-                                                       VerticalAlignment="Center"
-                                                       TextTrimming="CharacterEllipsis" />
+                                                       Style="{StaticResource TextCustomerNameTextBlock}"
+                                                       behaviors:TextBlockOption.Runs="{Binding NameRuns}" />
                                             <TextBlock Grid.Column="1"
-                                                       behaviors:TextBlockOption.Runs="{Binding CompanyRuns}"
-                                                       Margin="12,0,0,0"
-                                                       VerticalAlignment="Center"
-                                                       FontSize="12"
-                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                                       Style="{StaticResource TextCustomerCompanyTextBlock}"
+                                                       behaviors:TextBlockOption.Runs="{Binding CompanyRuns}" />
                                         </Grid>
                                     </DataTemplate>
                                 </controls:AutoSuggestBox.ItemTemplate>
                             </controls:AutoSuggestBox>
                         </StackPanel>
-                        <TextBlock>
-                            <TextBlock.Style>
-                                <Style TargetType="{x:Type TextBlock}"
-                                       BasedOn="{StaticResource SampleResultTextBlock}">
-                                    <Setter Property="Text">
-                                        <Setter.Value>
-                                            <MultiBinding StringFormat="Customer: {0} · {1} · {2}">
-                                                <Binding Path="SelectedCustomer.Name"
-                                                         FallbackValue="-" />
-                                                <Binding Path="SelectedCustomer.Company"
-                                                         FallbackValue="-" />
-                                                <Binding Path="SelectedCustomer.City"
-                                                         FallbackValue="-" />
-                                            </MultiBinding>
-                                        </Setter.Value>
-                                    </Setter>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding SelectedCustomer}"
-                                                     Value="{x:Null}">
-                                            <Setter Property="Text" Value="{Binding CustomerQuery, StringFormat='No customer matches \'{0}\'', TargetNullValue='Customer: none'}" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
+                        <TextBlock Style="{StaticResource TextCustomerResultTextBlock}" />
                     </StackPanel>
                 </Border>
             </Grid>
+
         </StackPanel>
     </ScrollViewer>
 

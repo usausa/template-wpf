@@ -12,11 +12,32 @@
              d:DesignWidth="800" d:DesignHeight="600">
 
     <UserControl.Resources>
+
+        <!-- Converter -->
+
         <s:ParameterEqualsConverter x:Key="ParameterEqualsConverter" />
+
+        <!-- DropDownButton -->
+
+        <Style x:Key="ButtonsDropDownButton"
+               TargetType="{x:Type controls:DropDownButton}">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+
+        <!-- SplitButton -->
+
+        <Style x:Key="ButtonsSplitButton"
+               TargetType="{x:Type controls:SplitButton}">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+
     </UserControl.Resources>
 
+    <!-- Content -->
     <ScrollViewer Style="{StaticResource RootScroll}">
         <StackPanel Style="{StaticResource PageStack}">
+
+            <!-- Header -->
             <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Buttons" />
             <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
@@ -34,6 +55,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
+                <!-- Button -->
                 <Border Grid.Row="0" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -41,23 +63,31 @@
                                    Text="Button" />
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Standard, accent and disabled buttons." />
-                        <StackPanel Style="{StaticResource SampleStack}"
-                                    Orientation="Horizontal">
-                            <Button Command="{Binding ClickCommand}"
+                        <Grid Style="{StaticResource SampleGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="8" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="8" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0"
+                                    Command="{Binding ClickCommand}"
                                     Content="Standard" />
-                            <Button Style="{DynamicResource AccentButtonStyle}"
-                                    Margin="8,0,0,0"
+                            <Button Grid.Column="2"
+                                    Style="{StaticResource AccentButton}"
                                     Command="{Binding ClickCommand}"
                                     Content="Accent" />
-                            <Button Margin="8,0,0,0"
+                            <Button Grid.Column="4"
                                     IsEnabled="False"
                                     Content="Disabled" />
-                        </StackPanel>
+                        </Grid>
                         <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding ClickCount, StringFormat='Clicked {0} times'}" />
                     </StackPanel>
                 </Border>
 
+                <!-- RepeatButton -->
                 <Border Grid.Row="0" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -74,6 +104,7 @@
                     </StackPanel>
                 </Border>
 
+                <!-- ToggleButton -->
                 <Border Grid.Row="1" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -90,6 +121,7 @@
                     </StackPanel>
                 </Border>
 
+                <!-- Icon buttons -->
                 <Border Grid.Row="1" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -97,33 +129,42 @@
                                    Text="Icon buttons" />
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Buttons with a glyph and a tooltip." />
-                        <StackPanel Style="{StaticResource SampleStack}"
-                                    Orientation="Horizontal">
-                            <Button Style="{StaticResource IconButton}"
+                        <Grid Style="{StaticResource SampleGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="8" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="8" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0"
+                                    Style="{StaticResource IconButton}"
                                     Command="{Binding PressCommand}"
                                     CommandParameter="Add"
                                     Content="&#xE710;"
                                     ToolTip="Add"
                                     AutomationProperties.Name="Add" />
-                            <Button Style="{StaticResource IconButton}"
-                                    Margin="8,0,0,0"
+                            <Button Grid.Column="2"
+                                    Style="{StaticResource IconButton}"
                                     Command="{Binding PressCommand}"
                                     CommandParameter="Edit"
                                     Content="&#xE70F;"
                                     ToolTip="Edit"
                                     AutomationProperties.Name="Edit" />
-                            <Button Style="{StaticResource IconButton}"
-                                    Margin="8,0,0,0"
+                            <Button Grid.Column="4"
+                                    Style="{StaticResource IconButton}"
                                     Command="{Binding PressCommand}"
                                     CommandParameter="Delete"
                                     Content="&#xE74D;"
                                     ToolTip="Delete"
                                     AutomationProperties.Name="Delete" />
-                        </StackPanel>
+                        </Grid>
                         <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding LastPressed, StringFormat='Last pressed: {0}', TargetNullValue='Last pressed: -'}" />
                     </StackPanel>
                 </Border>
+
+                <!-- DropDownButton -->
                 <Border Grid.Row="2" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -132,7 +173,7 @@
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Opens a menu of options." />
                         <StackPanel Style="{StaticResource SampleStack}">
-                            <controls:DropDownButton HorizontalAlignment="Left"
+                            <controls:DropDownButton Style="{StaticResource ButtonsDropDownButton}"
                                                      Content="Sort by"
                                                      AutomationProperties.Name="Sort by">
                                 <controls:DropDownButton.ContextMenu>
@@ -161,6 +202,7 @@
                     </StackPanel>
                 </Border>
 
+                <!-- SplitButton -->
                 <Border Grid.Row="2" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -169,7 +211,7 @@
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Runs the main action or picks another one." />
                         <StackPanel Style="{StaticResource SampleStack}">
-                            <controls:SplitButton HorizontalAlignment="Left"
+                            <controls:SplitButton Style="{StaticResource ButtonsSplitButton}"
                                                   Command="{Binding SaveCommand}"
                                                   CommandParameter="Save"
                                                   Content="Save"
@@ -194,6 +236,7 @@
                     </StackPanel>
                 </Border>
             </Grid>
+
         </StackPanel>
     </ScrollViewer>
 

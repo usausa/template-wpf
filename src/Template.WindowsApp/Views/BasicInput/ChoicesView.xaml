@@ -12,6 +12,9 @@
              d:DesignWidth="800" d:DesignHeight="600">
 
     <UserControl.Resources>
+
+        <!-- Converter -->
+
         <s:ParameterEqualsConverter x:Key="ParameterEqualsConverter" />
         <s:MapToTextConverter x:Key="CheckStateToTextConverter"
                               DefaultValue="Indeterminate">
@@ -22,10 +25,14 @@
                                   Value="Off" />
             </s:MapToTextConverter.Entries>
         </s:MapToTextConverter>
+
     </UserControl.Resources>
 
+    <!-- Content -->
     <ScrollViewer Style="{StaticResource RootScroll}">
         <StackPanel Style="{StaticResource PageStack}">
+
+            <!-- Header -->
             <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Choices" />
             <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
@@ -43,6 +50,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
+                <!-- CheckBox -->
                 <Border Grid.Row="0" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -70,6 +78,7 @@
                     </StackPanel>
                 </Border>
 
+                <!-- RadioButton -->
                 <Border Grid.Row="0" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -90,6 +99,7 @@
                     </StackPanel>
                 </Border>
 
+                <!-- ComboBox -->
                 <Border Grid.Row="1" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -98,8 +108,7 @@
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Pick an item from a list." />
                         <StackPanel Style="{StaticResource SampleStack}">
-                            <ComboBox Width="240"
-                                      HorizontalAlignment="Left"
+                            <ComboBox Style="{StaticResource SampleComboBox}"
                                       ItemsSource="{Binding Fruits}"
                                       SelectedItem="{Binding Fruit}"
                                       AutomationProperties.Name="Fruit" />
@@ -109,6 +118,7 @@
                     </StackPanel>
                 </Border>
 
+                <!-- Slider -->
                 <Border Grid.Row="1" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -117,8 +127,7 @@
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Pick a value from a range." />
                         <StackPanel Style="{StaticResource SampleStack}">
-                            <Slider Width="240"
-                                    HorizontalAlignment="Left"
+                            <Slider Style="{StaticResource SampleSlider}"
                                     Value="{Binding Value}"
                                     Minimum="0" Maximum="100"
                                     AutomationProperties.Name="Value" IsSnapToTickEnabled="True" TickFrequency="1" />
@@ -127,6 +136,8 @@
                                    Text="{Binding Value, StringFormat='Value: {0}'}" />
                     </StackPanel>
                 </Border>
+
+                <!-- ToggleSwitch -->
                 <Border Grid.Row="2" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -143,6 +154,7 @@
                     </StackPanel>
                 </Border>
             </Grid>
+
         </StackPanel>
     </ScrollViewer>
 

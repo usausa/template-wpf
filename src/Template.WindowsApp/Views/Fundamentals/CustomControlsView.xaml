@@ -13,8 +13,40 @@
              d:DataContext="{d:DesignInstance Type={x:Type module:CustomControlsViewModel}}"
              d:DesignWidth="800" d:DesignHeight="600">
 
+    <UserControl.Resources>
+
+        <!-- Templated control -->
+
+        <Style x:Key="CustomControlsRemovableTag"
+               TargetType="{x:Type controls:RemovableTag}">
+            <Setter Property="Margin" Value="0,0,8,8" />
+        </Style>
+
+        <!-- Behavior -->
+
+        <Style x:Key="CustomControlsPointBorder"
+               TargetType="{x:Type Border}">
+            <Setter Property="Width" Value="240" />
+            <Setter Property="Height" Value="56" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource CardStrokeColorDefaultBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+
+        <Style x:Key="CustomControlsPointTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+    </UserControl.Resources>
+
+    <!-- Content -->
     <ScrollViewer Style="{StaticResource RootScroll}">
         <StackPanel Style="{StaticResource PageStack}">
+
+            <!-- Header -->
             <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Custom controls" />
             <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
@@ -31,6 +63,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
+                <!-- UserControl -->
                 <Border Grid.Row="0" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -38,17 +71,25 @@
                                    Text="UserControl" />
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Put controls together into one part with its own properties." />
-                        <StackPanel Style="{StaticResource SampleStack}">
-                            <controls:ProfileTile Glyph="&#xE790;"
+                        <Grid Style="{StaticResource SampleGrid}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="8" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <controls:ProfileTile Grid.Row="0"
+                                                  Glyph="&#xE790;"
                                                   DisplayName="Aiko Tanaka"
                                                   Role="Designer" />
-                            <controls:ProfileTile Margin="0,8,0,0"
+                            <controls:ProfileTile Grid.Row="2"
                                                   Glyph="&#xE943;"
                                                   DisplayName="Ben Carter"
                                                   Role="Developer" />
-                        </StackPanel>
+                        </Grid>
                     </StackPanel>
                 </Border>
+
+                <!-- Templated control -->
                 <Border Grid.Row="0" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -56,8 +97,14 @@
                                    Text="Templated control" />
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="A control whose look comes from its style in Themes/Generic.xaml." />
-                        <StackPanel Style="{StaticResource SampleStack}">
-                            <ItemsControl ItemsSource="{Binding Tags}"
+                        <Grid Style="{StaticResource SampleGrid}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="4" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ItemsControl Grid.Row="0"
+                                          ItemsSource="{Binding Tags}"
                                           Focusable="False">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
@@ -66,21 +113,23 @@
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <controls:RemovableTag Margin="0,0,8,8"
+                                        <controls:RemovableTag Style="{StaticResource CustomControlsRemovableTag}"
                                                                Text="{Binding}"
                                                                RemoveCommand="{Binding DataContext.RemoveTagCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
                                                                RemoveCommandParameter="{Binding}" />
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
-                            <Button Margin="0,4,0,0"
+                            <Button Grid.Row="2"
                                     Command="{Binding ResetTagsCommand}"
                                     Content="Reset tags" />
-                        </StackPanel>
+                        </Grid>
                         <TextBlock Style="{StaticResource SampleResultTextBlock}"
                                    Text="{Binding Tags.Count, StringFormat='Tags: {0}'}" />
                     </StackPanel>
                 </Border>
+
+                <!-- Attached property -->
                 <Border Grid.Row="1" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -89,9 +138,8 @@
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Add a property to a control from outside, like the placeholder of this box." />
                         <StackPanel Style="{StaticResource SampleStack}">
-                            <TextBox Width="240"
+                            <TextBox Style="{StaticResource SampleTextBox}"
                                      behaviors:TextBoxOption.AllowedCharacters="[0-9-]" behaviors:TextBoxOption.PlaceholderText="Postal code"
-                                     HorizontalAlignment="Left"
                                      Text="{Binding PostalCode, UpdateSourceTrigger=PropertyChanged}"
                                      AutomationProperties.Name="Postal code" />
                         </StackPanel>
@@ -99,6 +147,8 @@
                                    Text="{Binding PostalCode, StringFormat='Postal code: {0}'}" />
                     </StackPanel>
                 </Border>
+
+                <!-- Behavior -->
                 <Border Grid.Row="1" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -107,17 +157,13 @@
                         <TextBlock Style="{StaticResource CardCaptionTextBlock}"
                                    Text="Run a command from any event with an EventTrigger and InvokeCommandAction." />
                         <StackPanel Style="{StaticResource SampleStack}">
-                            <Border Width="240" Height="56"
-                                    HorizontalAlignment="Left"
-                                    Background="{DynamicResource SubtleFillColorSecondaryBrush}"
-                                    BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
-                                    BorderThickness="1">
+                            <Border Style="{StaticResource CustomControlsPointBorder}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="MouseEnter">
                                         <i:InvokeCommandAction Command="{Binding EnterCommand}" />
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
-                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                <TextBlock Style="{StaticResource CustomControlsPointTextBlock}"
                                            Text="Point at this box" />
                             </Border>
                         </StackPanel>
@@ -126,6 +172,7 @@
                     </StackPanel>
                 </Border>
             </Grid>
+
         </StackPanel>
     </ScrollViewer>
 

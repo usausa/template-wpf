@@ -87,6 +87,11 @@
     <!-- Button -->
     <!-- ================================================================================ -->
 
+    <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
+    <Style x:Key="AccentButton"
+           TargetType="{x:Type Button}"
+           BasedOn="{StaticResource AccentButtonStyle}" />
+
     <Style x:Key="IconButton"
            TargetType="{x:Type Button}"
            BasedOn="{StaticResource {x:Type Button}}">
@@ -172,6 +177,52 @@
     <Style x:Key="SampleStack"
            TargetType="{x:Type StackPanel}">
         <Setter Property="Margin" Value="0,16,0,0" />
+    </Style>
+
+    <Style x:Key="SampleGrid"
+           TargetType="{x:Type Grid}">
+        <Setter Property="Margin" Value="0,16,0,0" />
+    </Style>
+
+    <Style x:Key="SampleTextBox"
+           TargetType="{x:Type TextBox}"
+           BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="Width" Value="240" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+
+    <Style x:Key="SampleWideTextBox"
+           TargetType="{x:Type TextBox}"
+           BasedOn="{StaticResource SampleTextBox}">
+        <Setter Property="Width" Value="320" />
+    </Style>
+
+    <Style x:Key="SampleComboBox"
+           TargetType="{x:Type ComboBox}"
+           BasedOn="{StaticResource {x:Type ComboBox}}">
+        <Setter Property="Width" Value="240" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+
+    <Style x:Key="SampleSlider"
+           TargetType="{x:Type Slider}"
+           BasedOn="{StaticResource {x:Type Slider}}">
+        <Setter Property="Width" Value="240" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+
+    <Style x:Key="SampleDatePicker"
+           TargetType="{x:Type DatePicker}"
+           BasedOn="{StaticResource {x:Type DatePicker}}">
+        <Setter Property="Width" Value="240" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+
+    <Style x:Key="SampleListBox"
+           TargetType="{x:Type ListBox}"
+           BasedOn="{StaticResource {x:Type ListBox}}">
+        <Setter Property="Width" Value="320" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
     </Style>
 
     <Style x:Key="SampleResultTextBlock"
