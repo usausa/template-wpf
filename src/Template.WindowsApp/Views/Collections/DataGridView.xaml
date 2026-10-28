@@ -16,9 +16,15 @@
              d:DesignWidth="800" d:DesignHeight="600">
 
     <UserControl.Resources>
+
+        <!-- Converter -->
+
         <converters:CurrencyConverter x:Key="CurrencyConverter" />
         <converters:ShortDateConverter x:Key="ShortDateConverter" />
-        <Style x:Key="ColumnMenuItemStyle"
+
+        <!-- Toolbar -->
+
+        <Style x:Key="ProductColumnMenuItem"
                TargetType="{x:Type MenuItem}"
                BasedOn="{StaticResource {x:Type MenuItem}}"
                d:DataContext="{d:DesignInstance Type={x:Type models:DataGridColumnSetting}}">
@@ -28,50 +34,64 @@
             <Setter Property="IsEnabled" Value="{Binding CanHide}" />
             <Setter Property="StaysOpenOnClick" Value="True" />
         </Style>
-        <Style x:Key="NumberCellTextStyle"
-               TargetType="{x:Type TextBlock}"
-               BasedOn="{x:Static DataGridTextColumn.DefaultElementStyle}">
-            <Setter Property="HorizontalAlignment" Value="Right" />
-        </Style>
-        <Style x:Key="NumberCellEditingStyle"
-               TargetType="{x:Type TextBox}"
-               BasedOn="{StaticResource DataGridEditingTextBox}">
-            <Setter Property="TextAlignment" Value="Right" />
-        </Style>
+
     </UserControl.Resources>
 
+    <!-- Content -->
     <ScrollViewer Style="{StaticResource RootScroll}"
                   Focusable="False">
         <StackPanel Style="{StaticResource PageStack}">
+
+            <!-- Header -->
             <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Data grid" />
             <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
                        Text="Sort, filter, edit and page through products, and choose, freeze and resize the columns." />
 
             <Border Style="{StaticResource CardBorder}">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBox Width="240"
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="16" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="16" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Toolbar -->
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="16" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="16" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="16" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0"
+                                 Style="{StaticResource SampleTextBox}"
                                  behaviors:TextBoxOption.PlaceholderText="Search"
                                  Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
                                  AutomationProperties.Name="Search" />
-                        <controls:DropDownButton Margin="16,0,0,0"
+                        <controls:DropDownButton Grid.Column="2"
                                                  Content="Columns"
                                                  AutomationProperties.Name="Columns">
                             <controls:DropDownButton.ContextMenu>
                                 <ContextMenu ItemsSource="{Binding Columns}"
-                                             ItemContainerStyle="{StaticResource ColumnMenuItemStyle}" />
+                                             ItemContainerStyle="{StaticResource ProductColumnMenuItem}" />
                             </controls:DropDownButton.ContextMenu>
                         </controls:DropDownButton>
-                        <CheckBox Margin="16,0,0,0"
+                        <CheckBox Grid.Column="4"
                                   IsChecked="{Binding IsFrozen}"
                                   Content="Freeze Code and Name" />
-                        <Button Margin="16,0,0,0"
+                        <Button Grid.Column="6"
                                 Command="{Binding ResetColumnsCommand}"
                                 Content="Reset columns" />
-                    </StackPanel>
+                    </Grid>
 
-                    <DataGrid Margin="0,16,0,0"
+                    <!-- Products -->
+                    <DataGrid Grid.Row="2"
                               ItemsSource="{Binding Items}"
                               AutoGenerateColumns="False" AutomationProperties.Name="Products" CanUserAddRows="False" CanUserDeleteRows="False"
                               CellStyle="{StaticResource DataGridCell}"
@@ -109,13 +129,13 @@
                             <DataGridTextColumn Width="100"
                                                 Binding="{Binding Price, Converter={StaticResource CurrencyConverter}}"
                                                 Header="Price"
-                                                EditingElementStyle="{StaticResource NumberCellEditingStyle}"
-                                                ElementStyle="{StaticResource NumberCellTextStyle}" />
+                                                EditingElementStyle="{StaticResource DataGridNumberEditingTextBox}"
+                                                ElementStyle="{StaticResource DataGridNumberTextBlock}" />
                             <DataGridTextColumn Width="80"
                                                 Binding="{Binding Stock, TargetNullValue=-}"
                                                 Header="Stock"
-                                                EditingElementStyle="{StaticResource NumberCellEditingStyle}"
-                                                ElementStyle="{StaticResource NumberCellTextStyle}" />
+                                                EditingElementStyle="{StaticResource DataGridNumberEditingTextBox}"
+                                                ElementStyle="{StaticResource DataGridNumberTextBlock}" />
                             <DataGridTextColumn Width="110"
                                                 Binding="{Binding Updated, Converter={StaticResource ShortDateConverter}}"
                                                 Header="Updated"
@@ -126,15 +146,16 @@
                         </DataGrid.Columns>
                     </DataGrid>
 
-                    <Grid Margin="0,16,0,0">
+                    <!-- Pager -->
+                    <Grid Grid.Row="4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="8" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0"
-                                   Style="{DynamicResource BodyTextBlockStyle}"
-                                   VerticalAlignment="Center">
+                                   Style="{StaticResource PagerRangeTextBlock}">
                             <TextBlock.Text>
                                 <MultiBinding StringFormat="{}{0}–{1} of {2}">
                                     <Binding Path="RangeStart" />
@@ -149,16 +170,17 @@
                                 Content="&#xE76B;"
                                 ToolTip="Previous page"
                                 AutomationProperties.Name="Previous page" />
-                        <Button Grid.Column="2"
+                        <Button Grid.Column="3"
                                 Style="{StaticResource IconButton}"
-                                Margin="8,0,0,0"
                                 Command="{Binding NextCommand}"
                                 Content="&#xE76C;"
                                 ToolTip="Next page"
                                 AutomationProperties.Name="Next page" />
                     </Grid>
-                </StackPanel>
+
+                </Grid>
             </Border>
+
         </StackPanel>
     </ScrollViewer>
 

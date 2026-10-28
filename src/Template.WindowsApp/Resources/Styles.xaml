@@ -35,6 +35,13 @@
         <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
     </Style>
 
+    <Style x:Key="PaneScroll"
+           TargetType="{x:Type ScrollViewer}"
+           BasedOn="{StaticResource {x:Type ScrollViewer}}">
+        <Setter Property="HorizontalScrollBarVisibility" Value="Disabled" />
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+    </Style>
+
     <Style x:Key="PageStack"
            TargetType="{x:Type StackPanel}">
         <Setter Property="Margin" Value="24" />
@@ -102,6 +109,19 @@
         <Setter Property="Padding" Value="0" />
         <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
         <Setter Property="FontSize" Value="16" />
+    </Style>
+
+    <!-- ================================================================================ -->
+    <!-- Basic -->
+    <!-- ================================================================================ -->
+
+    <!-- Pager -->
+
+    <Style x:Key="PagerRangeTextBlock"
+           TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource PageTextBlockBase}">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontWeight" Value="Normal" />
     </Style>
 
     <!-- ================================================================================ -->
@@ -202,6 +222,12 @@
            BasedOn="{StaticResource {x:Type ComboBox}}">
         <Setter Property="Width" Value="240" />
         <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+
+    <Style x:Key="SampleNarrowComboBox"
+           TargetType="{x:Type ComboBox}"
+           BasedOn="{StaticResource SampleComboBox}">
+        <Setter Property="Width" Value="160" />
     </Style>
 
     <Style x:Key="SampleSlider"
@@ -313,6 +339,18 @@
            TargetType="{x:Type ComboBox}"
            BasedOn="{StaticResource {x:Type ComboBox}}">
         <Setter Property="IsSynchronizedWithCurrentItem" Value="False" />
+    </Style>
+
+    <Style x:Key="DataGridNumberTextBlock"
+           TargetType="{x:Type TextBlock}"
+           BasedOn="{x:Static DataGridTextColumn.DefaultElementStyle}">
+        <Setter Property="HorizontalAlignment" Value="Right" />
+    </Style>
+
+    <Style x:Key="DataGridNumberEditingTextBox"
+           TargetType="{x:Type TextBox}"
+           BasedOn="{StaticResource DataGridEditingTextBox}">
+        <Setter Property="TextAlignment" Value="Right" />
     </Style>
 
     <!-- ================================================================================ -->

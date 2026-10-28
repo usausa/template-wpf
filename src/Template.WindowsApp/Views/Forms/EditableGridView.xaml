@@ -16,69 +16,118 @@
              d:DesignWidth="800" d:DesignHeight="600">
 
     <UserControl.Resources>
+
+        <!-- Converter -->
+
         <converters:ShortDateConverter x:Key="ShortDateConverter" />
         <converters:OrderLineCellConverter x:Key="CellConverter" />
+
+        <!-- Toolbar -->
+
+        <Style x:Key="EditableGridGlyphTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+
+        <Style x:Key="EditableGridButtonTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
         <DataTemplate x:Key="IconTextTemplate">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock VerticalAlignment="Center"
-                           Text="{Binding Tag, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
-                           FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                           FontSize="16" />
-                <TextBlock Margin="8,0,0,0"
-                           VerticalAlignment="Center"
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0"
+                           Style="{StaticResource EditableGridGlyphTextBlock}"
+                           Text="{Binding Tag, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" />
+                <TextBlock Grid.Column="2"
+                           Style="{StaticResource EditableGridButtonTextBlock}"
                            Text="{Binding}" />
-            </StackPanel>
+            </Grid>
         </DataTemplate>
-        <Style x:Key="CellTextStyle"
+
+        <Style x:Key="EditableGridToolWrapPanel"
+               TargetType="{x:Type WrapPanel}">
+            <Setter Property="Margin" Value="0,0,0,-8" />
+        </Style>
+
+        <Style x:Key="EditableGridToolGroupGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Margin" Value="0,0,24,8" />
+        </Style>
+
+        <Style x:Key="EditableGridExportButton"
+               TargetType="{x:Type Button}"
+               BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Margin" Value="0,0,0,8" />
+        </Style>
+
+        <Style x:Key="EditableGridSummaryTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="MinWidth" Value="160" />
+            <Setter Property="Margin" Value="0,6,0,0" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="TextAlignment" Value="Right" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
+        <!-- Lines -->
+
+        <Style x:Key="EditableGridCellTextBlock"
                TargetType="{x:Type TextBlock}"
                BasedOn="{x:Static DataGridTextColumn.DefaultElementStyle}">
             <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
         </Style>
-        <Style x:Key="NumberCellTextStyle"
+        <Style x:Key="EditableGridNumberTextBlock"
                TargetType="{x:Type TextBlock}"
-               BasedOn="{StaticResource CellTextStyle}">
+               BasedOn="{StaticResource EditableGridCellTextBlock}">
             <Setter Property="HorizontalAlignment" Value="Right" />
         </Style>
-        <Style x:Key="CodeEditingStyle"
+        <Style x:Key="EditableGridCodeEditingTextBox"
                TargetType="{x:Type TextBox}"
                BasedOn="{StaticResource DataGridEditingTextBox}">
             <Setter Property="MaxLength" Value="10" />
             <Setter Property="CharacterCasing" Value="Upper" />
             <Setter Property="behaviors:TextBoxOption.AllowedCharacters" Value="[A-Za-z0-9-]" />
         </Style>
-        <Style x:Key="DescriptionEditingStyle"
+        <Style x:Key="EditableGridDescriptionEditingTextBox"
                TargetType="{x:Type TextBox}"
                BasedOn="{StaticResource DataGridEditingTextBox}">
             <Setter Property="MaxLength" Value="40" />
         </Style>
-        <Style x:Key="NumberEditingStyle"
+        <Style x:Key="EditableGridNumberEditingTextBox"
                TargetType="{x:Type TextBox}"
-               BasedOn="{StaticResource DataGridEditingTextBox}">
-            <Setter Property="TextAlignment" Value="Right" />
+               BasedOn="{StaticResource DataGridNumberEditingTextBox}">
             <Setter Property="behaviors:TextBoxOption.AllowedCharacters" Value="[0-9]" />
         </Style>
-        <Style x:Key="QuantityEditingStyle"
+        <Style x:Key="EditableGridQuantityEditingTextBox"
                TargetType="{x:Type TextBox}"
-               BasedOn="{StaticResource NumberEditingStyle}">
+               BasedOn="{StaticResource EditableGridNumberEditingTextBox}">
             <Setter Property="MaxLength" Value="3" />
         </Style>
-        <Style x:Key="PriceEditingStyle"
+        <Style x:Key="EditableGridPriceEditingTextBox"
                TargetType="{x:Type TextBox}"
-               BasedOn="{StaticResource NumberEditingStyle}">
+               BasedOn="{StaticResource EditableGridNumberEditingTextBox}">
             <Setter Property="MaxLength" Value="8" />
             <Setter Property="behaviors:TextBoxOption.AllowedCharacters" Value="[0-9.]" />
         </Style>
-        <Style x:Key="DiscountEditingStyle"
+        <Style x:Key="EditableGridDiscountEditingTextBox"
                TargetType="{x:Type TextBox}"
-               BasedOn="{StaticResource NumberEditingStyle}">
+               BasedOn="{StaticResource EditableGridNumberEditingTextBox}">
             <Setter Property="MaxLength" Value="2" />
         </Style>
-        <Style x:Key="NoteEditingStyle"
+        <Style x:Key="EditableGridNoteEditingTextBox"
                TargetType="{x:Type TextBox}"
                BasedOn="{StaticResource DataGridEditingTextBox}">
             <Setter Property="MaxLength" Value="100" />
         </Style>
-        <Style x:Key="LineCellStyle"
+        <Style x:Key="EditableGridLineCell"
                TargetType="{x:Type DataGridCell}"
                BasedOn="{StaticResource DataGridCell}"
                d:DataContext="{d:DesignInstance Type={x:Type sample:OrderLine}}">
@@ -163,13 +212,13 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="ImeOffCellStyle"
+        <Style x:Key="EditableGridImeOffCell"
                TargetType="{x:Type DataGridCell}"
-               BasedOn="{StaticResource LineCellStyle}">
+               BasedOn="{StaticResource EditableGridLineCell}">
             <Setter Property="InputMethod.IsInputMethodEnabled" Value="False" />
         </Style>
         <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
-        <Style x:Key="LineRowStyle"
+        <Style x:Key="EditableGridLineRow"
                TargetType="{x:Type DataGridRow}"
                BasedOn="{StaticResource DefaultDataGridRowStyle}"
                d:DataContext="{d:DesignInstance Type={x:Type sample:OrderLine}}">
@@ -182,7 +231,7 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-        <Style x:Key="LineRowHeaderStyle"
+        <Style x:Key="EditableGridLineRowHeader"
                TargetType="{x:Type DataGridRowHeader}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -226,85 +275,123 @@
                 </DataTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>
+
+        <!-- Hint -->
+
+        <Style x:Key="EditableGridHintTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
     </UserControl.Resources>
 
+    <!-- Content -->
     <ScrollViewer Style="{StaticResource RootScroll}"
                   Focusable="False">
         <StackPanel Style="{StaticResource PageStack}">
+
+            <!-- Header -->
             <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Editable grid" />
             <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
                        Text="Edit rows with checks on each cell and row, undo and save the changes, and copy and paste with Excel." />
 
             <Border Style="{StaticResource CardBorder}">
-                <StackPanel>
-                    <DockPanel>
-                        <TextBlock DockPanel.Dock="Right"
-                                   MinWidth="160"
-                                   Margin="16,6,0,0"
-                                   VerticalAlignment="Top"
-                                   TextAlignment="Right"
-                                   Text="{Binding Summary}"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <WrapPanel Margin="0,0,0,-8">
-                            <StackPanel Orientation="Horizontal"
-                                        Margin="0,0,24,8">
-                                <Button Command="{Binding AddCommand}"
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="16" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="12" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Toolbar -->
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="16" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <WrapPanel Grid.Column="0"
+                                   Style="{StaticResource EditableGridToolWrapPanel}">
+                            <Grid Style="{StaticResource EditableGridToolGroupGrid}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="8" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="8" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="8" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0"
+                                        Command="{Binding AddCommand}"
                                         Content="Add row"
                                         ContentTemplate="{StaticResource IconTextTemplate}"
                                         Tag="&#xE710;" />
-                                <Button Margin="8,0,0,0"
+                                <Button Grid.Column="2"
                                         Command="{Binding DuplicateCommand}"
                                         Content="Duplicate"
                                         ContentTemplate="{StaticResource IconTextTemplate}"
                                         Tag="&#xE8C8;" />
-                                <Button Margin="8,0,0,0"
+                                <Button Grid.Column="4"
                                         Command="{Binding DeleteCommand}"
                                         Content="Delete"
                                         ContentTemplate="{StaticResource IconTextTemplate}"
                                         Tag="&#xE74D;" />
-                                <Button Margin="8,0,0,0"
+                                <Button Grid.Column="6"
                                         Command="{Binding ChangeCommand}"
                                         Content="Change"
                                         ToolTip="Change selected rows"
                                         ContentTemplate="{StaticResource IconTextTemplate}"
                                         Tag="&#xE70F;" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal"
-                                        Margin="0,0,24,8">
-                                <Button Command="{Binding RevertCommand}"
+                            </Grid>
+                            <Grid Style="{StaticResource EditableGridToolGroupGrid}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="8" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0"
+                                        Command="{Binding RevertCommand}"
                                         Content="Revert"
                                         ContentTemplate="{StaticResource IconTextTemplate}"
                                         Tag="&#xE7A7;" />
-                                <Button Style="{DynamicResource AccentButtonStyle}"
-                                        Margin="8,0,0,0"
+                                <Button Grid.Column="2"
+                                        Style="{StaticResource AccentButton}"
                                         Command="{Binding SaveCommand}"
                                         Content="Save"
                                         ContentTemplate="{StaticResource IconTextTemplate}"
                                         Tag="&#xE74E;" />
-                            </StackPanel>
-                            <Button Margin="0,0,0,8"
+                            </Grid>
+                            <Button Style="{StaticResource EditableGridExportButton}"
                                     Command="{Binding ExportCommand}"
                                     Content="Export"
                                     ToolTip="Export to CSV"
                                     ContentTemplate="{StaticResource IconTextTemplate}"
                                     Tag="&#xEDE1;" />
                         </WrapPanel>
-                    </DockPanel>
+                        <TextBlock Grid.Column="2"
+                                   Style="{StaticResource EditableGridSummaryTextBlock}"
+                                   Text="{Binding Summary}" />
+                    </Grid>
 
-                    <DataGrid Margin="0,16,0,0"
+                    <!-- Lines -->
+                    <DataGrid Grid.Row="2"
                               ItemsSource="{Binding Lines}"
                               SelectionMode="Extended"
                               AutoGenerateColumns="False" AutomationProperties.Name="Order lines" CanUserAddRows="False" CanUserDeleteRows="False"
                               CanUserSortColumns="False"
-                              CellStyle="{StaticResource LineCellStyle}"
+                              CellStyle="{StaticResource EditableGridLineCell}"
                               ClipboardCopyMode="ExcludeHeader"
                               CurrentItem="{Binding CurrentItem, Mode=OneWayToSource}"
                               HeadersVisibility="All"
-                              RowHeaderStyle="{StaticResource LineRowHeaderStyle}"
+                              RowHeaderStyle="{StaticResource EditableGridLineRowHeader}"
                               RowHeaderTemplate="{StaticResource LineRowHeaderTemplate}"
                               RowHeaderWidth="28"
-                              RowStyle="{StaticResource LineRowStyle}"
+                              RowStyle="{StaticResource EditableGridLineRow}"
                               SelectionUnit="CellOrRowHeader">
                         <DataGrid.Resources>
                             <Style TargetType="{x:Type ContentPresenter}">
@@ -334,36 +421,36 @@
                             <DataGridTextColumn Width="96" MinWidth="96"
                                                 Binding="{Binding Code}"
                                                 Header="Item code"
-                                                CellStyle="{StaticResource ImeOffCellStyle}"
-                                                EditingElementStyle="{StaticResource CodeEditingStyle}"
-                                                ElementStyle="{StaticResource CellTextStyle}" />
+                                                CellStyle="{StaticResource EditableGridImeOffCell}"
+                                                EditingElementStyle="{StaticResource EditableGridCodeEditingTextBox}"
+                                                ElementStyle="{StaticResource EditableGridCellTextBlock}" />
                             <DataGridTextColumn Width="2*" MinWidth="120"
                                                 Binding="{Binding Description}"
                                                 Header="Description"
-                                                EditingElementStyle="{StaticResource DescriptionEditingStyle}"
-                                                ElementStyle="{StaticResource CellTextStyle}" />
+                                                EditingElementStyle="{StaticResource EditableGridDescriptionEditingTextBox}"
+                                                ElementStyle="{StaticResource EditableGridCellTextBlock}" />
                             <DataGridTextColumn Width="88" MinWidth="88"
                                                 Binding="{Binding Quantity}"
                                                 Header="Quantity"
-                                                CellStyle="{StaticResource ImeOffCellStyle}"
-                                                EditingElementStyle="{StaticResource QuantityEditingStyle}"
-                                                ElementStyle="{StaticResource NumberCellTextStyle}" />
+                                                CellStyle="{StaticResource EditableGridImeOffCell}"
+                                                EditingElementStyle="{StaticResource EditableGridQuantityEditingTextBox}"
+                                                ElementStyle="{StaticResource EditableGridNumberTextBlock}" />
                             <DataGridTextColumn Width="96" MinWidth="96"
                                                 Binding="{Binding UnitPrice, StringFormat=0.00}"
                                                 Header="Unit price"
-                                                CellStyle="{StaticResource ImeOffCellStyle}"
-                                                EditingElementStyle="{StaticResource PriceEditingStyle}"
-                                                ElementStyle="{StaticResource NumberCellTextStyle}" />
+                                                CellStyle="{StaticResource EditableGridImeOffCell}"
+                                                EditingElementStyle="{StaticResource EditableGridPriceEditingTextBox}"
+                                                ElementStyle="{StaticResource EditableGridNumberTextBlock}" />
                             <DataGridTextColumn Width="112" MinWidth="112"
                                                 Binding="{Binding Discount}"
                                                 Header="Discount (%)"
-                                                CellStyle="{StaticResource ImeOffCellStyle}"
-                                                EditingElementStyle="{StaticResource DiscountEditingStyle}"
-                                                ElementStyle="{StaticResource NumberCellTextStyle}" />
+                                                CellStyle="{StaticResource EditableGridImeOffCell}"
+                                                EditingElementStyle="{StaticResource EditableGridDiscountEditingTextBox}"
+                                                ElementStyle="{StaticResource EditableGridNumberTextBlock}" />
                             <DataGridTextColumn Width="104" MinWidth="104"
                                                 Binding="{Binding Amount, Mode=OneWay, StringFormat=N2}"
                                                 Header="Amount"
-                                                ElementStyle="{StaticResource NumberCellTextStyle}"
+                                                ElementStyle="{StaticResource EditableGridNumberTextBlock}"
                                                 IsReadOnly="True" />
                             <DataGridTemplateColumn Width="128" MinWidth="128"
                                                     Header="Delivery"
@@ -371,7 +458,7 @@
                                                     SortMemberPath="Delivery">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate DataType="{x:Type sample:OrderLine}">
-                                        <TextBlock Style="{StaticResource CellTextStyle}"
+                                        <TextBlock Style="{StaticResource EditableGridCellTextBlock}"
                                                    Text="{Binding Delivery, Converter={StaticResource ShortDateConverter}}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
@@ -391,17 +478,19 @@
                             <DataGridTextColumn Width="*" MinWidth="100"
                                                 Binding="{Binding Note}"
                                                 Header="Note"
-                                                EditingElementStyle="{StaticResource NoteEditingStyle}"
-                                                ElementStyle="{StaticResource CellTextStyle}" />
+                                                EditingElementStyle="{StaticResource EditableGridNoteEditingTextBox}"
+                                                ElementStyle="{StaticResource EditableGridCellTextBlock}" />
                         </DataGrid.Columns>
                     </DataGrid>
 
-                    <TextBlock Margin="0,12,0,0"
-                               Text="Esc undoes the cell, Esc again the whole row. Ctrl+C and Ctrl+V work with Excel."
-                               FontSize="12"
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                </StackPanel>
+                    <!-- Hint -->
+                    <TextBlock Grid.Row="4"
+                               Style="{StaticResource EditableGridHintTextBlock}"
+                               Text="Esc undoes the cell, Esc again the whole row. Ctrl+C and Ctrl+V work with Excel." />
+
+                </Grid>
             </Border>
+
         </StackPanel>
     </ScrollViewer>
 

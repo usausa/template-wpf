@@ -11,31 +11,205 @@
              d:DesignWidth="800" d:DesignHeight="600">
 
     <UserControl.Resources>
+
+        <!-- Converter -->
+
         <s:ParameterEqualsConverter x:Key="ParameterEqualsConverter" />
 
-        <Style x:Key="StepPanelStyle"
-               TargetType="{x:Type StackPanel}">
+        <!-- Steps -->
+
+        <Style x:Key="WizardConnectorBorder"
+               TargetType="{x:Type Border}">
+            <Setter Property="Width" Value="40" />
+            <Setter Property="Height" Value="1" />
+            <Setter Property="Margin" Value="12,0,12,0" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Background" Value="{DynamicResource DividerStrokeColorDefaultBrush}" />
+        </Style>
+
+        <Style x:Key="WizardCircleGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Width" Value="24" />
+            <Setter Property="Height" Value="24" />
+        </Style>
+
+        <Style x:Key="WizardCircleEllipse"
+               TargetType="{x:Type Ellipse}">
+            <Setter Property="Stroke" Value="{DynamicResource ControlStrongStrokeColorDefaultBrush}" />
+            <Setter Property="StrokeThickness" Value="1" />
+        </Style>
+
+        <Style x:Key="WizardNumberTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
+        <Style x:Key="WizardCheckTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+        </Style>
+
+        <Style x:Key="WizardTitleTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
+        <!-- Common -->
+
+        <Style x:Key="WizardStepPanel"
+               TargetType="{x:Type Panel}">
             <Setter Property="Visibility" Value="Collapsed" />
         </Style>
 
-        <Style x:Key="SummaryValueTextStyle"
+        <!-- Plan -->
+
+        <Style x:Key="WizardPlanPanel"
+               TargetType="{x:Type Panel}"
+               BasedOn="{StaticResource WizardStepPanel}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Step}"
+                             Value="{x:Static module:WizardStep.Plan}">
+                    <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Details -->
+
+        <Style x:Key="WizardDetailsPanel"
+               TargetType="{x:Type Panel}"
+               BasedOn="{StaticResource WizardStepPanel}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Step}"
+                             Value="{x:Static module:WizardStep.Details}">
+                    <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Confirm -->
+
+        <Style x:Key="WizardConfirmPanel"
+               TargetType="{x:Type Panel}"
+               BasedOn="{StaticResource WizardStepPanel}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Step}"
+                             Value="{x:Static module:WizardStep.Confirm}">
+                    <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="WizardSummaryLabelTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource FieldLabelTextBlock}">
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
+        <Style x:Key="WizardSummaryValueTextBlock"
                TargetType="{x:Type TextBlock}"
                BasedOn="{StaticResource PageTextBlockBase}">
             <Setter Property="Margin" Value="0,0,0,16" />
         </Style>
+
+        <Style x:Key="WizardCompanyValueTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource WizardSummaryValueTextBlock}">
+            <Setter Property="Text" Value="{Binding Company}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Company}"
+                             Value="">
+                    <Setter Property="Text" Value="-" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Navigation -->
+
+        <Style x:Key="WizardNavigationStack"
+               TargetType="{x:Type StackPanel}">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+
+        <Style x:Key="WizardNextBorder"
+               TargetType="{x:Type Border}">
+            <Setter Property="Margin" Value="8,0,0,0" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Step}"
+                             Value="{x:Static module:WizardStep.Confirm}">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="WizardFinishBorder"
+               TargetType="{x:Type Border}">
+            <Setter Property="Margin" Value="8,0,0,0" />
+            <Setter Property="Visibility" Value="Collapsed" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Step}"
+                             Value="{x:Static module:WizardStep.Confirm}">
+                    <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Result -->
+
+        <Style x:Key="WizardResultTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource SampleResultTextBlock}">
+            <Setter Property="Text">
+                <Setter.Value>
+                    <MultiBinding StringFormat="Last submitted: {0} ({1})">
+                        <Binding Path="SubmittedName" />
+                        <Binding Path="SubmittedPlan" />
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding SubmittedName}"
+                             Value="{x:Null}">
+                    <Setter Property="Text" Value="Last submitted: -" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
     </UserControl.Resources>
 
+    <!-- Content -->
     <ScrollViewer Style="{StaticResource RootScroll}">
         <AdornerDecorator>
             <StackPanel Style="{StaticResource PageStack}">
+
+                <!-- Header -->
                 <TextBlock Style="{StaticResource PageTitleTextBlock}"
                            Text="Wizard" />
                 <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
                            Text="Step-by-step input with back, next and finish." />
 
                 <Border Style="{StaticResource CardBorder}">
-                    <StackPanel>
-                        <ItemsControl ItemsSource="{Binding Steps}"
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="24" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="24" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <!-- Steps -->
+                        <ItemsControl Grid.Row="0"
+                                      ItemsSource="{Binding Steps}"
                                       Focusable="False">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
@@ -44,36 +218,33 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate DataType="{x:Type module:WizardStepItem}">
-                                    <StackPanel Orientation="Horizontal">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="8" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
                                         <Border x:Name="Connector"
-                                                Width="40" Height="1"
-                                                Margin="12,0,12,0"
-                                                VerticalAlignment="Center"
-                                                Background="{DynamicResource DividerStrokeColorDefaultBrush}" />
-                                        <Grid Width="24" Height="24">
+                                                Grid.Column="0"
+                                                Style="{StaticResource WizardConnectorBorder}" />
+                                        <Grid Grid.Column="1"
+                                              Style="{StaticResource WizardCircleGrid}">
                                             <Ellipse x:Name="Circle"
-                                                     Stroke="{DynamicResource ControlStrongStrokeColorDefaultBrush}"
-                                                     StrokeThickness="1" />
+                                                     Style="{StaticResource WizardCircleEllipse}" />
                                             <TextBlock x:Name="Number"
-                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                       Text="{Binding Number}"
-                                                       FontSize="12"
-                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                                       Style="{StaticResource WizardNumberTextBlock}"
+                                                       Text="{Binding Number}" />
                                             <TextBlock x:Name="Check"
-                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Style="{StaticResource WizardCheckTextBlock}"
                                                        Visibility="Collapsed"
-                                                       Text="&#xE73E;"
-                                                       FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                                       FontSize="12"
-                                                       Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+                                                       Text="&#xE73E;" />
                                         </Grid>
                                         <TextBlock x:Name="Title"
-                                                   Margin="8,0,0,0"
-                                                   VerticalAlignment="Center"
-                                                   Text="{Binding Step}"
-                                                   FontSize="14"
-                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                                    </StackPanel>
+                                                   Grid.Column="3"
+                                                   Style="{StaticResource WizardTitleTextBlock}"
+                                                   Text="{Binding Step}" />
+                                    </Grid>
                                     <DataTemplate.Triggers>
                                         <DataTrigger Binding="{Binding Number}"
                                                      Value="1">
@@ -100,202 +271,129 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
 
-                        <Grid Margin="0,24,0,0">
-                            <StackPanel>
-                                <StackPanel.Style>
-                                    <Style TargetType="{x:Type StackPanel}"
-                                           BasedOn="{StaticResource StepPanelStyle}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Step}"
-                                                         Value="{x:Static module:WizardStep.Plan}">
-                                                <Setter Property="Visibility" Value="Visible" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </StackPanel.Style>
-                                <RadioButton IsChecked="{Binding Plan, Converter={StaticResource ParameterEqualsConverter}, ConverterParameter={x:Static module:WizardPlan.Basic}}"
+                        <Grid Grid.Row="2">
+
+                            <!-- Plan -->
+                            <Grid Style="{StaticResource WizardPlanPanel}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="8" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="8" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <RadioButton Grid.Row="0"
+                                             IsChecked="{Binding Plan, Converter={StaticResource ParameterEqualsConverter}, ConverterParameter={x:Static module:WizardPlan.Basic}}"
                                              AutomationProperties.Name="Basic">
                                     <StackPanel>
                                         <TextBlock Text="Basic" />
-                                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                                   Text="For one user."
-                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                                   Text="For one user." />
                                     </StackPanel>
                                 </RadioButton>
-                                <RadioButton Margin="0,8,0,0"
+                                <RadioButton Grid.Row="2"
                                              IsChecked="{Binding Plan, Converter={StaticResource ParameterEqualsConverter}, ConverterParameter={x:Static module:WizardPlan.Standard}}"
                                              AutomationProperties.Name="Standard">
                                     <StackPanel>
                                         <TextBlock Text="Standard" />
-                                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                                   Text="For small teams."
-                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                                   Text="For small teams." />
                                     </StackPanel>
                                 </RadioButton>
-                                <RadioButton Margin="0,8,0,0"
+                                <RadioButton Grid.Row="4"
                                              IsChecked="{Binding Plan, Converter={StaticResource ParameterEqualsConverter}, ConverterParameter={x:Static module:WizardPlan.Premium}}"
                                              AutomationProperties.Name="Premium">
                                     <StackPanel>
                                         <TextBlock Text="Premium" />
-                                        <TextBlock Style="{DynamicResource CaptionTextBlockStyle}"
-                                                   Text="For the whole organization."
-                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                                   Text="For the whole organization." />
                                     </StackPanel>
                                 </RadioButton>
-                            </StackPanel>
+                            </Grid>
 
-                            <StackPanel>
-                                <StackPanel.Style>
-                                    <Style TargetType="{x:Type StackPanel}"
-                                           BasedOn="{StaticResource StepPanelStyle}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Step}"
-                                                         Value="{x:Static module:WizardStep.Details}">
-                                                <Setter Property="Visibility" Value="Visible" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </StackPanel.Style>
-                                <StackPanel>
+                            <!-- Details -->
+                            <Grid Style="{StaticResource WizardDetailsPanel}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="16" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="16" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <StackPanel Grid.Row="0">
                                     <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                                Text="Name" />
-                                    <TextBox Width="320"
-                                             HorizontalAlignment="Left"
+                                    <TextBox Style="{StaticResource SampleWideTextBox}"
                                              Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                                              AutomationProperties.Name="Name" />
                                     <TextBlock Style="{StaticResource FieldErrorTextBlock}"
                                                Visibility="{Binding Errors[Name], Converter={s:NullToVisibility Null=Collapsed, NonNull=Visible}}"
                                                Text="{Binding Errors[Name]}" />
                                 </StackPanel>
-                                <StackPanel Margin="0,16,0,0">
+                                <StackPanel Grid.Row="2">
                                     <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                                Text="Email" />
-                                    <TextBox Width="320"
-                                             HorizontalAlignment="Left"
+                                    <TextBox Style="{StaticResource SampleWideTextBox}"
                                              Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
                                              AutomationProperties.Name="Email" />
                                     <TextBlock Style="{StaticResource FieldErrorTextBlock}"
                                                Visibility="{Binding Errors[Email], Converter={s:NullToVisibility Null=Collapsed, NonNull=Visible}}"
                                                Text="{Binding Errors[Email]}" />
                                 </StackPanel>
-                                <StackPanel Margin="0,16,0,0">
+                                <StackPanel Grid.Row="4">
                                     <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                                Text="Company (optional)" />
-                                    <TextBox Width="320"
-                                             HorizontalAlignment="Left"
+                                    <TextBox Style="{StaticResource SampleWideTextBox}"
                                              Text="{Binding Company, UpdateSourceTrigger=PropertyChanged}"
                                              AutomationProperties.Name="Company" />
                                 </StackPanel>
+                            </Grid>
+
+                            <!-- Confirm -->
+                            <StackPanel Style="{StaticResource WizardConfirmPanel}">
+                                <TextBlock Style="{StaticResource WizardSummaryLabelTextBlock}"
+                                           Text="Plan" />
+                                <TextBlock Style="{StaticResource WizardSummaryValueTextBlock}"
+                                           Text="{Binding Plan}" />
+                                <TextBlock Style="{StaticResource WizardSummaryLabelTextBlock}"
+                                           Text="Name" />
+                                <TextBlock Style="{StaticResource WizardSummaryValueTextBlock}"
+                                           Text="{Binding Name}" />
+                                <TextBlock Style="{StaticResource WizardSummaryLabelTextBlock}"
+                                           Text="Email" />
+                                <TextBlock Style="{StaticResource WizardSummaryValueTextBlock}"
+                                           Text="{Binding Email}" />
+                                <TextBlock Style="{StaticResource WizardSummaryLabelTextBlock}"
+                                           Text="Company" />
+                                <TextBlock Style="{StaticResource WizardCompanyValueTextBlock}" />
                             </StackPanel>
 
-                            <StackPanel>
-                                <StackPanel.Style>
-                                    <Style TargetType="{x:Type StackPanel}"
-                                           BasedOn="{StaticResource StepPanelStyle}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Step}"
-                                                         Value="{x:Static module:WizardStep.Confirm}">
-                                                <Setter Property="Visibility" Value="Visible" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </StackPanel.Style>
-                                <TextBlock Style="{StaticResource FieldLabelTextBlock}"
-                                           Text="Plan"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                                <TextBlock Style="{StaticResource SummaryValueTextStyle}"
-                                           Text="{Binding Plan}" />
-                                <TextBlock Style="{StaticResource FieldLabelTextBlock}"
-                                           Text="Name"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                                <TextBlock Style="{StaticResource SummaryValueTextStyle}"
-                                           Text="{Binding Name}" />
-                                <TextBlock Style="{StaticResource FieldLabelTextBlock}"
-                                           Text="Email"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                                <TextBlock Style="{StaticResource SummaryValueTextStyle}"
-                                           Text="{Binding Email}" />
-                                <TextBlock Style="{StaticResource FieldLabelTextBlock}"
-                                           Text="Company"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                                <TextBlock>
-                                    <TextBlock.Style>
-                                        <Style TargetType="{x:Type TextBlock}"
-                                               BasedOn="{StaticResource SummaryValueTextStyle}">
-                                            <Setter Property="Text" Value="{Binding Company}" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Company}"
-                                                             Value="">
-                                                    <Setter Property="Text" Value="-" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                            </StackPanel>
                         </Grid>
 
-                        <StackPanel Orientation="Horizontal"
-                                    Margin="0,24,0,0"
-                                    HorizontalAlignment="Right">
+                        <!-- Navigation -->
+                        <StackPanel Grid.Row="4"
+                                    Style="{StaticResource WizardNavigationStack}"
+                                    Orientation="Horizontal">
                             <Button Command="{Binding BackCommand}"
                                     Content="Back" />
-                            <Border Margin="8,0,0,0">
-                                <Border.Style>
-                                    <Style TargetType="{x:Type Border}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Step}"
-                                                         Value="{x:Static module:WizardStep.Confirm}">
-                                                <Setter Property="Visibility" Value="Collapsed" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Border.Style>
-                                <Button Style="{DynamicResource AccentButtonStyle}"
+                            <Border Style="{StaticResource WizardNextBorder}">
+                                <Button Style="{StaticResource AccentButton}"
                                         Command="{Binding NextCommand}"
                                         Content="Next" />
                             </Border>
-                            <Border Margin="8,0,0,0">
-                                <Border.Style>
-                                    <Style TargetType="{x:Type Border}">
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Step}"
-                                                         Value="{x:Static module:WizardStep.Confirm}">
-                                                <Setter Property="Visibility" Value="Visible" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Border.Style>
-                                <Button Style="{DynamicResource AccentButtonStyle}"
+                            <Border Style="{StaticResource WizardFinishBorder}">
+                                <Button Style="{StaticResource AccentButton}"
                                         Command="{Binding FinishCommand}"
                                         Content="Finish" />
                             </Border>
                         </StackPanel>
-                    </StackPanel>
+
+                    </Grid>
                 </Border>
 
-                <TextBlock>
-                    <TextBlock.Style>
-                        <Style TargetType="{x:Type TextBlock}"
-                               BasedOn="{StaticResource SampleResultTextBlock}">
-                            <Setter Property="Text">
-                                <Setter.Value>
-                                    <MultiBinding StringFormat="Last submitted: {0} ({1})">
-                                        <Binding Path="SubmittedName" />
-                                        <Binding Path="SubmittedPlan" />
-                                    </MultiBinding>
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding SubmittedName}"
-                                             Value="{x:Null}">
-                                    <Setter Property="Text" Value="Last submitted: -" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
+                <!-- Result -->
+                <TextBlock Style="{StaticResource WizardResultTextBlock}" />
+
             </StackPanel>
         </AdornerDecorator>
     </ScrollViewer>

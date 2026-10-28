@@ -10,6 +10,7 @@
              d:DataContext="{d:DesignInstance Type={x:Type module:ListDetailViewModel}}"
              d:DesignWidth="800" d:DesignHeight="600">
 
+    <!-- Content -->
     <Grid Style="{StaticResource PageGrid}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -17,6 +18,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+        <!-- Header -->
         <TextBlock Grid.Row="0"
                    Style="{StaticResource PageTitleTextBlock}"
                    Text="List &amp; detail" />
@@ -27,33 +29,39 @@
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="16" />
                 <ColumnDefinition Width="320" />
             </Grid.ColumnDefinitions>
 
+            <!-- List -->
             <Border Grid.Column="0"
-                    Style="{StaticResource CardBorder}"
-                    Margin="0,0,16,8">
+                    Style="{StaticResource CardBorder}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="16" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <StackPanel Grid.Row="0"
-                                Orientation="Horizontal">
-                        <Button Style="{StaticResource IconButton}"
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="8" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0"
+                                Style="{StaticResource IconButton}"
                                 Command="{Binding AddCommand}"
                                 Content="&#xE710;"
                                 ToolTip="Add"
                                 AutomationProperties.Name="Add" />
-                        <Button Style="{StaticResource IconButton}"
-                                Margin="8,0,0,0"
+                        <Button Grid.Column="2"
+                                Style="{StaticResource IconButton}"
                                 Command="{Binding DeleteCommand}"
                                 Content="&#xE74D;"
                                 ToolTip="Delete"
                                 AutomationProperties.Name="Delete" />
-                    </StackPanel>
-                    <ListView Grid.Row="1"
-                              Margin="0,16,0,0"
+                    </Grid>
+                    <ListView Grid.Row="2"
                               ItemsSource="{Binding Customers}"
                               SelectedItem="{Binding SelectedCustomer}"
                               AutomationProperties.Name="Customers" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
@@ -74,51 +82,75 @@
                 </Grid>
             </Border>
 
-            <Border Grid.Column="1"
+            <!-- Detail -->
+            <Border Grid.Column="2"
                     Style="{StaticResource CardBorder}">
-                <StackPanel IsEnabled="{Binding SelectedCustomer, Converter={s:NullToBool Invert=True}}">
-                    <StackPanel>
+                <Grid IsEnabled="{Binding SelectedCustomer, Converter={s:NullToBool Invert=True}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="16" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="16" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="16" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="16" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="16" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0">
                         <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                    Text="Name" />
                         <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                                  AutomationProperties.Name="Name" />
                     </StackPanel>
-                    <StackPanel Margin="0,16,0,0">
+                    <StackPanel Grid.Row="2">
                         <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                    Text="Company" />
                         <TextBox Text="{Binding Company, UpdateSourceTrigger=PropertyChanged}"
                                  AutomationProperties.Name="Company" />
                     </StackPanel>
-                    <StackPanel Margin="0,16,0,0">
+                    <StackPanel Grid.Row="4">
                         <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                    Text="Email" />
                         <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
                                  AutomationProperties.Name="Email" />
                     </StackPanel>
-                    <StackPanel Margin="0,16,0,0">
+                    <StackPanel Grid.Row="6">
                         <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                    Text="Phone" />
                         <TextBox Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}"
                                  AutomationProperties.Name="Phone" />
                     </StackPanel>
-                    <StackPanel Margin="0,16,0,0">
+                    <StackPanel Grid.Row="8">
                         <TextBlock Style="{StaticResource FieldLabelTextBlock}"
                                    Text="City" />
                         <TextBox Text="{Binding City, UpdateSourceTrigger=PropertyChanged}"
                                  AutomationProperties.Name="City" />
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal"
-                                Margin="0,16,0,0">
-                        <Button Style="{DynamicResource AccentButtonStyle}"
+
+                    <!-- Action -->
+                    <Grid Grid.Row="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="8" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0"
+                                Style="{StaticResource AccentButton}"
                                 Command="{Binding SaveCommand}"
                                 Content="Save" />
-                        <Button Margin="8,0,0,0"
+                        <Button Grid.Column="2"
                                 Command="{Binding CancelCommand}"
                                 Content="Cancel" />
-                    </StackPanel>
-                </StackPanel>
+                    </Grid>
+
+                </Grid>
             </Border>
+
         </Grid>
+
     </Grid>
 
 </UserControl>

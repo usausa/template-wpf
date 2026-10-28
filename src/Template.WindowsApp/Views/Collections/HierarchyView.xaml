@@ -15,16 +15,65 @@
              d:DesignWidth="800" d:DesignHeight="600">
 
     <UserControl.Resources>
-        <Style x:Key="NodeIconStyle"
+
+        <!-- Common -->
+
+        <Style x:Key="HierarchyNodeEmojiIcon"
                TargetType="{x:Type controls:EmojiIcon}">
             <Setter Property="Margin" Value="0,0,8,0" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="FontSize" Value="16" />
         </Style>
+
+        <Style x:Key="HierarchyNodeTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <!-- Data binding -->
+
+        <Style x:Key="HierarchyOrganizationTreeViewItem"
+               TargetType="{x:Type TreeViewItem}"
+               BasedOn="{StaticResource {x:Type TreeViewItem}}"
+               d:DataContext="{d:DesignInstance Type={x:Type sample:OrganizationNode}}">
+            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+            <Setter Property="AutomationProperties.Name" Value="{Binding Name}" />
+        </Style>
+
+        <!-- Load on demand -->
+
+        <Style x:Key="HierarchyFolderTreeViewItem"
+               TargetType="{x:Type TreeViewItem}"
+               BasedOn="{StaticResource {x:Type TreeViewItem}}"
+               d:DataContext="{d:DesignInstance Type={x:Type sample:FolderNode}}">
+            <Setter Property="AutomationProperties.Name" Value="{Binding Name}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsPlaceholder}"
+                             Value="True">
+                    <Setter Property="AutomationProperties.Name" Value="Loading…" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="HierarchyLoadedTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource SampleResultTextBlock}">
+            <Setter Property="Text" Value="{Binding LoadedCount, StringFormat='Loaded: {0} folders'}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding LoadedCount}"
+                             Value="1">
+                    <Setter Property="Text" Value="Loaded: 1 folder" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
     </UserControl.Resources>
 
+    <!-- Content -->
     <ScrollViewer Style="{StaticResource RootScroll}">
         <StackPanel Style="{StaticResource PageStack}">
+
+            <!-- Header -->
             <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Hierarchy" />
             <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
@@ -41,6 +90,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
+                <!-- TreeView -->
                 <Border Grid.Row="0" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -71,6 +121,7 @@
                     </StackPanel>
                 </Border>
 
+                <!-- Data binding -->
                 <Border Grid.Row="0" Grid.Column="2"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -80,38 +131,32 @@
                                    Text="Departments, teams and members from the view model." />
                         <StackPanel Style="{StaticResource SampleStack}">
                             <TreeView ItemsSource="{Binding Departments}"
-                                      AutomationProperties.Name="Organization">
-                                <TreeView.ItemContainerStyle>
-                                    <Style TargetType="{x:Type TreeViewItem}"
-                                           BasedOn="{StaticResource {x:Type TreeViewItem}}">
-                                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
-                                        <Setter Property="AutomationProperties.Name" Value="{Binding Name}" />
-                                    </Style>
-                                </TreeView.ItemContainerStyle>
+                                      AutomationProperties.Name="Organization"
+                                      ItemContainerStyle="{StaticResource HierarchyOrganizationTreeViewItem}">
                                 <TreeView.Resources>
                                     <HierarchicalDataTemplate ItemsSource="{Binding Teams}"
                                                               DataType="{x:Type sample:Department}">
                                         <StackPanel Orientation="Horizontal">
-                                            <controls:EmojiIcon Style="{StaticResource NodeIconStyle}"
+                                            <controls:EmojiIcon Style="{StaticResource HierarchyNodeEmojiIcon}"
                                                                 Glyph="&#x1F3E2;" />
-                                            <TextBlock VerticalAlignment="Center"
+                                            <TextBlock Style="{StaticResource HierarchyNodeTextBlock}"
                                                        Text="{Binding Name}" />
                                         </StackPanel>
                                     </HierarchicalDataTemplate>
                                     <HierarchicalDataTemplate ItemsSource="{Binding Members}"
                                                               DataType="{x:Type sample:Team}">
                                         <StackPanel Orientation="Horizontal">
-                                            <controls:EmojiIcon Style="{StaticResource NodeIconStyle}"
+                                            <controls:EmojiIcon Style="{StaticResource HierarchyNodeEmojiIcon}"
                                                                 Glyph="&#x1F465;" />
-                                            <TextBlock VerticalAlignment="Center"
+                                            <TextBlock Style="{StaticResource HierarchyNodeTextBlock}"
                                                        Text="{Binding Name}" />
                                         </StackPanel>
                                     </HierarchicalDataTemplate>
                                     <DataTemplate DataType="{x:Type sample:Member}">
                                         <StackPanel Orientation="Horizontal">
-                                            <controls:EmojiIcon Style="{StaticResource NodeIconStyle}"
+                                            <controls:EmojiIcon Style="{StaticResource HierarchyNodeEmojiIcon}"
                                                                 Glyph="&#x1F9D1;&#x200D;&#x1F4BC;" />
-                                            <TextBlock VerticalAlignment="Center"
+                                            <TextBlock Style="{StaticResource HierarchyNodeTextBlock}"
                                                        Text="{Binding Name}" />
                                         </StackPanel>
                                     </DataTemplate>
@@ -126,6 +171,7 @@
                     </StackPanel>
                 </Border>
 
+                <!-- Load on demand -->
                 <Border Grid.Row="1" Grid.Column="0"
                         Style="{StaticResource CardBorder}">
                     <StackPanel>
@@ -135,28 +181,17 @@
                                    Text="Child folders are loaded when a folder is expanded." />
                         <StackPanel Style="{StaticResource SampleStack}">
                             <TreeView ItemsSource="{Binding Folders}"
-                                      AutomationProperties.Name="Folders">
-                                <TreeView.ItemContainerStyle>
-                                    <Style TargetType="{x:Type TreeViewItem}"
-                                           BasedOn="{StaticResource {x:Type TreeViewItem}}">
-                                        <Setter Property="AutomationProperties.Name" Value="{Binding Name}" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsPlaceholder}"
-                                                         Value="True">
-                                                <Setter Property="AutomationProperties.Name" Value="Loading…" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TreeView.ItemContainerStyle>
+                                      AutomationProperties.Name="Folders"
+                                      ItemContainerStyle="{StaticResource HierarchyFolderTreeViewItem}">
                                 <TreeView.Resources>
                                     <HierarchicalDataTemplate ItemsSource="{Binding Children}"
                                                               DataType="{x:Type sample:FolderNode}">
                                         <StackPanel Orientation="Horizontal">
                                             <controls:EmojiIcon x:Name="FolderIcon"
-                                                                Style="{StaticResource NodeIconStyle}"
+                                                                Style="{StaticResource HierarchyNodeEmojiIcon}"
                                                                 Glyph="&#x1F4C1;" />
                                             <TextBlock x:Name="FolderName"
-                                                       VerticalAlignment="Center"
+                                                       Style="{StaticResource HierarchyNodeTextBlock}"
                                                        Text="{Binding Name}" />
                                         </StackPanel>
                                         <HierarchicalDataTemplate.Triggers>
@@ -174,23 +209,11 @@
                                 </i:Interaction.Behaviors>
                             </TreeView>
                         </StackPanel>
-                        <TextBlock>
-                            <TextBlock.Style>
-                                <Style TargetType="{x:Type TextBlock}"
-                                       BasedOn="{StaticResource SampleResultTextBlock}">
-                                    <Setter Property="Text" Value="{Binding LoadedCount, StringFormat='Loaded: {0} folders'}" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding LoadedCount}"
-                                                     Value="1">
-                                            <Setter Property="Text" Value="Loaded: 1 folder" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
+                        <TextBlock Style="{StaticResource HierarchyLoadedTextBlock}" />
                     </StackPanel>
                 </Border>
             </Grid>
+
         </StackPanel>
     </ScrollViewer>
 

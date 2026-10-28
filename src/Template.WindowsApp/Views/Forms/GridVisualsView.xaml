@@ -16,6 +16,9 @@
              d:DesignWidth="800" d:DesignHeight="600">
 
     <UserControl.Resources>
+
+        <!-- Converter -->
+
         <converters:ServerGroupSummaryConverter x:Key="GroupSummaryConverter" />
         <s:MapToTextConverter x:Key="GroupByToPropertyConverter"
                               DefaultValue="">
@@ -26,48 +29,252 @@
                                   Value="Status" />
             </s:MapToTextConverter.Entries>
         </s:MapToTextConverter>
-        <Style x:Key="DetailLabelStyle"
+
+        <!-- Toolbar -->
+
+        <Style x:Key="GridVisualsGroupByTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <!-- Groups -->
+
+        <Style x:Key="GridVisualsGroupItem"
+               TargetType="{x:Type GroupItem}"
+               d:DataContext="{d:DesignInstance Type={x:Type CollectionViewGroup}}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type GroupItem}">
+                        <Expander Padding="0"
+                                  IsExpanded="True">
+                            <Expander.Header>
+                                <StackPanel Orientation="Horizontal"
+                                            Margin="12,0,0,0">
+                                    <TextBlock Text="{Binding Name}"
+                                               FontWeight="SemiBold" />
+                                    <TextBlock Margin="16,0,0,0"
+                                               Text="{Binding Items, Converter={StaticResource GroupSummaryConverter}}"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                </StackPanel>
+                            </Expander.Header>
+                            <ItemsPresenter />
+                        </Expander>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Details -->
+
+        <Style x:Key="GridVisualsDetailsGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Margin" Value="16,8,16,16" />
+        </Style>
+
+        <Style x:Key="GridVisualsDetailLabelTextBlock"
                TargetType="{x:Type TextBlock}">
             <Setter Property="Margin" Value="0,0,16,8" />
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
         </Style>
-        <Style x:Key="DetailValueStyle"
+
+        <Style x:Key="GridVisualsDetailValueTextBlock"
                TargetType="{x:Type TextBlock}">
             <Setter Property="Margin" Value="0,0,0,8" />
         </Style>
-        <Style x:Key="ServerCellStyle"
+
+        <Style x:Key="GridVisualsLatencyChart"
+               TargetType="{x:Type controls:LineChart}">
+            <Setter Property="Height" Value="120" />
+            <Setter Property="Fill" Value="{StaticResource ChartBlueSuperLightBrush}" />
+            <Setter Property="Stroke" Value="{StaticResource ChartBlueBrush}" />
+            <Setter Property="GridBrush" Value="{DynamicResource DividerStrokeColorDefaultBrush}" />
+            <Setter Property="LabelBrush" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
+        <Style x:Key="GridVisualsDetailsNoDataTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
+        <!-- Cells -->
+
+        <Style x:Key="GridVisualsServerCell"
                TargetType="{x:Type DataGridCell}"
                BasedOn="{StaticResource DataGridCell}">
             <Setter Property="Padding" Value="0" />
         </Style>
-        <Style x:Key="CellTextStyle"
+
+        <Style x:Key="GridVisualsCellGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Margin" Value="12,0" />
+        </Style>
+
+        <Style x:Key="GridVisualsHitGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+
+        <Style x:Key="GridVisualsCellTextBlock"
                TargetType="{x:Type TextBlock}">
             <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
-        <Style x:Key="NoDataTextStyle"
+
+        <Style x:Key="GridVisualsNumberTextBlock"
                TargetType="{x:Type TextBlock}"
-               BasedOn="{StaticResource CellTextStyle}">
+               BasedOn="{StaticResource GridVisualsCellTextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+
+        <Style x:Key="GridVisualsNoDataTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource GridVisualsCellTextBlock}">
             <Setter Property="Text" Value="No data" />
             <Setter Property="Visibility" Value="Collapsed" />
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}" />
         </Style>
+
+        <Style x:Key="GridVisualsServerNameTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource GridVisualsCellTextBlock}">
+            <Setter Property="Margin" Value="12,0" />
+            <Setter Property="FontFamily" Value="{StaticResource CodeFontFamily}" />
+        </Style>
+
+        <Style x:Key="GridVisualsStatusBorder"
+               TargetType="{x:Type Border}">
+            <Setter Property="Margin" Value="12,0" />
+            <Setter Property="Padding" Value="6,2,8,2" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Background" Value="{DynamicResource SystemFillColorSuccessBackgroundBrush}" />
+        </Style>
+
+        <Style x:Key="GridVisualsStatusIconGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="GridVisualsStatusIconBackgroundTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="{DynamicResource SystemFillColorSuccessBrush}" />
+        </Style>
+
+        <Style x:Key="GridVisualsStatusIconGlyphTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+        </Style>
+
+        <Style x:Key="GridVisualsStatusLabelTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+        </Style>
+
+        <Style x:Key="GridVisualsCpuDataBar"
+               TargetType="{x:Type controls:DataBar}">
+            <Setter Property="Height" Value="12" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Fill" Value="{StaticResource ChartBlueBrush}" />
+        </Style>
+
+        <Style x:Key="GridVisualsMemoryProgressBar"
+               TargetType="{x:Type ProgressBar}"
+               BasedOn="{StaticResource {x:Type ProgressBar}}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="GridVisualsErrorsGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+
+        <Style x:Key="GridVisualsErrorArrowTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Width" Value="12" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextAlignment" Value="Center" />
+            <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+        </Style>
+
+        <Style x:Key="GridVisualsErrorChangeTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource GridVisualsCellTextBlock}">
+            <Setter Property="Width" Value="16" />
+            <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+        </Style>
+
+        <Style x:Key="GridVisualsLatencySparkline"
+               TargetType="{x:Type controls:Sparkline}">
+            <Setter Property="Height" Value="24" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Stroke" Value="{StaticResource ChartBlueBrush}" />
+        </Style>
+
+        <Style x:Key="GridVisualsUptimeBorder"
+               TargetType="{x:Type Border}">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+
+        <Style x:Key="GridVisualsUptimeTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource GridVisualsNumberTextBlock}">
+            <Setter Property="Margin" Value="12,0" />
+        </Style>
+
+        <!-- Hint -->
+
+        <Style x:Key="GridVisualsHintTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
     </UserControl.Resources>
 
+    <!-- Content -->
     <ScrollViewer Style="{StaticResource RootScroll}"
                   Focusable="False">
         <StackPanel Style="{StaticResource PageStack}">
+
+            <!-- Header -->
             <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Grid visuals" />
             <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
                        Text="Show the state of each server in the cells with badges, bars, progress, colors and small trend lines, group the servers and open a row for details." />
 
             <Border Style="{StaticResource CardBorder}">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Margin="0,0,12,0"
-                                   VerticalAlignment="Center"
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="16" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="12" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="12" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Toolbar -->
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="12" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"
+                                   Style="{StaticResource GridVisualsGroupByTextBlock}"
                                    Text="Group by" />
-                        <ComboBox Width="160"
+                        <ComboBox Grid.Column="2"
+                                  Style="{StaticResource SampleNarrowComboBox}"
                                   AutomationProperties.Name="Group by"
                                   SelectedValue="{Binding GroupBy}"
                                   SelectedValuePath="Tag">
@@ -78,13 +285,14 @@
                             <ComboBoxItem Content="Status"
                                           Tag="{x:Static module:ServerGrouping.Status}" />
                         </ComboBox>
-                    </StackPanel>
+                    </Grid>
 
-                    <DataGrid Margin="0,16,0,0"
+                    <!-- Servers -->
+                    <DataGrid Grid.Row="2"
                               ItemsSource="{Binding Items}"
                               SelectionMode="Single"
                               AutoGenerateColumns="False" AutomationProperties.Name="Servers" CanUserAddRows="False" CanUserDeleteRows="False"
-                              CellStyle="{StaticResource ServerCellStyle}"
+                              CellStyle="{StaticResource GridVisualsServerCell}"
                               HeadersVisibility="Column" IsReadOnly="True" MinRowHeight="40" RowDetailsVisibilityMode="VisibleWhenSelected"
                               SelectionUnit="FullRow">
                         <i:Interaction.Behaviors>
@@ -92,61 +300,30 @@
                             <behaviors:DataGridGroupBehavior PropertyName="{Binding GroupBy, Converter={StaticResource GroupByToPropertyConverter}}" />
                         </i:Interaction.Behaviors>
                         <DataGrid.GroupStyle>
-                            <GroupStyle>
-                                <GroupStyle.ContainerStyle>
-                                    <Style TargetType="{x:Type GroupItem}"
-                                           d:DataContext="{d:DesignInstance Type={x:Type CollectionViewGroup}}">
-                                        <Setter Property="Template">
-                                            <Setter.Value>
-                                                <ControlTemplate TargetType="{x:Type GroupItem}">
-                                                    <Expander Padding="0"
-                                                              IsExpanded="True">
-                                                        <Expander.Header>
-                                                            <StackPanel Orientation="Horizontal"
-                                                                        Margin="12,0,0,0">
-                                                                <TextBlock Text="{Binding Name}"
-                                                                           FontWeight="SemiBold" />
-                                                                <TextBlock Margin="16,0,0,0"
-                                                                           Text="{Binding Items, Converter={StaticResource GroupSummaryConverter}}"
-                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                                                            </StackPanel>
-                                                        </Expander.Header>
-                                                        <ItemsPresenter />
-                                                    </Expander>
-                                                </ControlTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Style>
-                                </GroupStyle.ContainerStyle>
-                            </GroupStyle>
+                            <GroupStyle ContainerStyle="{StaticResource GridVisualsGroupItem}" />
                         </DataGrid.GroupStyle>
                         <DataGrid.RowDetailsTemplate>
                             <DataTemplate DataType="{x:Type sample:ServerRow}">
-                                <Grid Margin="16,8,16,16">
+                                <Grid Style="{StaticResource GridVisualsDetailsGrid}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="32" />
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
                                     <StackPanel x:Name="Chart"
                                                 Grid.Column="0">
-                                        <TextBlock Style="{StaticResource DetailLabelStyle}"
+                                        <TextBlock Style="{StaticResource GridVisualsDetailLabelTextBlock}"
                                                    Text="Latency in the last 24 hours" />
-                                        <controls:LineChart Height="120"
-                                                            Fill="{StaticResource ChartBlueSuperLightBrush}"
-                                                            Stroke="{StaticResource ChartBlueBrush}"
-                                                            GridBrush="{DynamicResource DividerStrokeColorDefaultBrush}"
-                                                            LabelBrush="{DynamicResource TextFillColorSecondaryBrush}"
+                                        <controls:LineChart Style="{StaticResource GridVisualsLatencyChart}"
                                                             Labels="{x:Static module:GridVisualsViewModel.HourLabels}"
                                                             Values="{Binding Latency}" />
                                     </StackPanel>
                                     <TextBlock x:Name="NoData"
                                                Grid.Column="0"
-                                               VerticalAlignment="Center"
+                                               Style="{StaticResource GridVisualsDetailsNoDataTextBlock}"
                                                Visibility="Collapsed"
-                                               Text="No data in the last 24 hours."
-                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                                    <Grid Grid.Column="1"
-                                          Margin="32,0,0,0">
+                                               Text="No data in the last 24 hours." />
+                                    <Grid Grid.Column="2">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="Auto" />
@@ -158,11 +335,11 @@
                                             <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
                                         <TextBlock Grid.Row="0" Grid.Column="0"
-                                                   Style="{StaticResource DetailLabelStyle}"
+                                                   Style="{StaticResource GridVisualsDetailLabelTextBlock}"
                                                    Text="Latency" />
                                         <TextBlock x:Name="LatencyText"
                                                    Grid.Row="0" Grid.Column="1"
-                                                   Style="{StaticResource DetailValueStyle}">
+                                                   Style="{StaticResource GridVisualsDetailValueTextBlock}">
                                             <TextBlock.Text>
                                                 <MultiBinding StringFormat="{}min {0:0} ms · max {1:0} ms · now {2:0} ms">
                                                     <Binding Path="LatencyMin" />
@@ -172,11 +349,11 @@
                                             </TextBlock.Text>
                                         </TextBlock>
                                         <TextBlock Grid.Row="1" Grid.Column="0"
-                                                   Style="{StaticResource DetailLabelStyle}"
+                                                   Style="{StaticResource GridVisualsDetailLabelTextBlock}"
                                                    Text="Memory" />
                                         <TextBlock x:Name="MemoryText"
                                                    Grid.Row="1" Grid.Column="1"
-                                                   Style="{StaticResource DetailValueStyle}">
+                                                   Style="{StaticResource GridVisualsDetailValueTextBlock}">
                                             <TextBlock.Text>
                                                 <MultiBinding StringFormat="{}{0:0.0} of {1:0} GB">
                                                     <Binding Path="MemoryUsed" />
@@ -185,17 +362,17 @@
                                             </TextBlock.Text>
                                         </TextBlock>
                                         <TextBlock Grid.Row="2" Grid.Column="0"
-                                                   Style="{StaticResource DetailLabelStyle}"
+                                                   Style="{StaticResource GridVisualsDetailLabelTextBlock}"
                                                    Text="Uptime (30 days)" />
                                         <TextBlock Grid.Row="2" Grid.Column="1"
-                                                   Style="{StaticResource DetailValueStyle}"
+                                                   Style="{StaticResource GridVisualsDetailValueTextBlock}"
                                                    Text="{Binding Uptime, StringFormat={}{0:0.00}%}" />
                                         <TextBlock Grid.Row="3" Grid.Column="0"
-                                                   Style="{StaticResource DetailLabelStyle}"
+                                                   Style="{StaticResource GridVisualsDetailLabelTextBlock}"
                                                    Text="Errors" />
                                         <TextBlock x:Name="ErrorsText"
                                                    Grid.Row="3" Grid.Column="1"
-                                                   Style="{StaticResource DetailValueStyle}">
+                                                   Style="{StaticResource GridVisualsDetailValueTextBlock}">
                                             <TextBlock.Text>
                                                 <MultiBinding StringFormat="{}{0} today · {1} yesterday">
                                                     <Binding Path="Errors" />
@@ -223,10 +400,8 @@
                                                     SortMemberPath="Name">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate DataType="{x:Type sample:ServerRow}">
-                                        <TextBlock Style="{StaticResource CellTextStyle}"
-                                                   Margin="12,0"
-                                                   Text="{Binding Name}"
-                                                   FontFamily="{StaticResource CodeFontFamily}" />
+                                        <TextBlock Style="{StaticResource GridVisualsServerNameTextBlock}"
+                                                   Text="{Binding Name}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -237,29 +412,27 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate DataType="{x:Type sample:ServerRow}">
                                         <Border x:Name="Badge"
-                                                Margin="12,0" Padding="6,2,8,2"
-                                                HorizontalAlignment="Left" VerticalAlignment="Center"
-                                                Background="{DynamicResource SystemFillColorSuccessBackgroundBrush}">
-                                            <StackPanel Orientation="Horizontal">
-                                                <Grid VerticalAlignment="Center">
+                                                Style="{StaticResource GridVisualsStatusBorder}">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="6" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <Grid Grid.Column="0"
+                                                      Style="{StaticResource GridVisualsStatusIconGrid}">
                                                     <TextBlock x:Name="IconBackground"
-                                                               Text="&#xF136;"
-                                                               FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                                               FontSize="14"
-                                                               Foreground="{DynamicResource SystemFillColorSuccessBrush}" />
+                                                               Style="{StaticResource GridVisualsStatusIconBackgroundTextBlock}"
+                                                               Text="&#xF136;" />
                                                     <TextBlock x:Name="IconGlyph"
-                                                               Text="&#xF13E;"
-                                                               FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                                               FontSize="14"
-                                                               Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+                                                               Style="{StaticResource GridVisualsStatusIconGlyphTextBlock}"
+                                                               Text="&#xF13E;" />
                                                 </Grid>
                                                 <TextBlock x:Name="Label"
-                                                           Margin="6,0,0,0"
-                                                           VerticalAlignment="Center"
-                                                           Text="Healthy"
-                                                           FontSize="12"
-                                                           Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
-                                            </StackPanel>
+                                                           Grid.Column="2"
+                                                           Style="{StaticResource GridVisualsStatusLabelTextBlock}"
+                                                           Text="Healthy" />
+                                            </Grid>
                                         </Border>
                                         <DataTemplate.Triggers>
                                             <DataTrigger Binding="{Binding Status}"
@@ -286,24 +459,21 @@
                                                     SortMemberPath="Cpu">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate DataType="{x:Type sample:ServerRow}">
-                                        <Grid Margin="12,0">
+                                        <Grid Style="{StaticResource GridVisualsCellGrid}">
                                             <Grid x:Name="Content">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*" />
                                                     <ColumnDefinition Width="44" />
                                                 </Grid.ColumnDefinitions>
                                                 <controls:DataBar x:Name="Bar"
-                                                                  Height="12"
-                                                                  VerticalAlignment="Center"
-                                                                  Value="{Binding Cpu, TargetNullValue=0}"
-                                                                  Fill="{StaticResource ChartBlueBrush}" />
+                                                                  Style="{StaticResource GridVisualsCpuDataBar}"
+                                                                  Value="{Binding Cpu, TargetNullValue=0}" />
                                                 <TextBlock Grid.Column="1"
-                                                           Style="{StaticResource CellTextStyle}"
-                                                           HorizontalAlignment="Right"
+                                                           Style="{StaticResource GridVisualsNumberTextBlock}"
                                                            Text="{Binding Cpu, StringFormat={}{0:0}%}" />
                                             </Grid>
                                             <TextBlock x:Name="NoData"
-                                                       Style="{StaticResource NoDataTextStyle}" />
+                                                       Style="{StaticResource GridVisualsNoDataTextBlock}" />
                                         </Grid>
                                         <DataTemplate.Triggers>
                                             <DataTrigger Binding="{Binding CpuLevel}"
@@ -333,9 +503,9 @@
                                                     SortMemberPath="MemoryPercent">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate DataType="{x:Type sample:ServerRow}">
-                                        <Grid Margin="12,0">
+                                        <Grid Style="{StaticResource GridVisualsCellGrid}">
                                             <Grid x:Name="Content"
-                                                  Background="Transparent">
+                                                  Style="{StaticResource GridVisualsHitGrid}">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*" />
                                                     <ColumnDefinition Width="96" />
@@ -352,11 +522,10 @@
                                                     </TextBlock>
                                                 </Grid.ToolTip>
                                                 <ProgressBar x:Name="Bar"
-                                                             VerticalAlignment="Center"
+                                                             Style="{StaticResource GridVisualsMemoryProgressBar}"
                                                              Value="{Binding MemoryPercent, TargetNullValue=0, Mode=OneWay}" />
                                                 <TextBlock Grid.Column="1"
-                                                           Style="{StaticResource CellTextStyle}"
-                                                           HorizontalAlignment="Right">
+                                                           Style="{StaticResource GridVisualsNumberTextBlock}">
                                                     <TextBlock.Text>
                                                         <MultiBinding StringFormat="{}{0:0.0} / {1:0} GB">
                                                             <Binding Path="MemoryUsed" />
@@ -366,7 +535,7 @@
                                                 </TextBlock>
                                             </Grid>
                                             <TextBlock x:Name="NoData"
-                                                       Style="{StaticResource NoDataTextStyle}" />
+                                                       Style="{StaticResource GridVisualsNoDataTextBlock}" />
                                         </Grid>
                                         <DataTemplate.Triggers>
                                             <DataTrigger Binding="{Binding MemoryLevel}"
@@ -397,29 +566,30 @@
                                                     SortMemberPath="Errors">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate DataType="{x:Type sample:ServerRow}">
-                                        <Grid Margin="12,0">
-                                            <StackPanel x:Name="Content"
-                                                        Orientation="Horizontal"
-                                                        HorizontalAlignment="Right">
-                                                <TextBlock Style="{StaticResource CellTextStyle}"
+                                        <Grid Style="{StaticResource GridVisualsCellGrid}">
+                                            <Grid x:Name="Content"
+                                                  Style="{StaticResource GridVisualsErrorsGrid}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="8" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="2" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0"
+                                                           Style="{StaticResource GridVisualsCellTextBlock}"
                                                            Text="{Binding Errors}" />
                                                 <TextBlock x:Name="Arrow"
-                                                           Width="12"
-                                                           Margin="8,0,2,0"
-                                                           VerticalAlignment="Center"
-                                                           TextAlignment="Center"
-                                                           Text="&#xF090;"
-                                                           FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                                           FontSize="10"
-                                                           Foreground="{DynamicResource SystemFillColorCriticalBrush}" />
+                                                           Grid.Column="2"
+                                                           Style="{StaticResource GridVisualsErrorArrowTextBlock}"
+                                                           Text="&#xF090;" />
                                                 <TextBlock x:Name="Change"
-                                                           Style="{StaticResource CellTextStyle}"
-                                                           Width="16"
-                                                           Text="{Binding ErrorChangeAmount}"
-                                                           Foreground="{DynamicResource SystemFillColorCriticalBrush}" />
-                                            </StackPanel>
+                                                           Grid.Column="4"
+                                                           Style="{StaticResource GridVisualsErrorChangeTextBlock}"
+                                                           Text="{Binding ErrorChangeAmount}" />
+                                            </Grid>
                                             <TextBlock x:Name="NoData"
-                                                       Style="{StaticResource NoDataTextStyle}" />
+                                                       Style="{StaticResource GridVisualsNoDataTextBlock}" />
                                         </Grid>
                                         <DataTemplate.Triggers>
                                             <DataTrigger Binding="{Binding ErrorDirection}"
@@ -455,9 +625,9 @@
                                                     SortMemberPath="LatencyNow">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate DataType="{x:Type sample:ServerRow}">
-                                        <Grid Margin="12,0">
+                                        <Grid Style="{StaticResource GridVisualsCellGrid}">
                                             <Grid x:Name="Content"
-                                                  Background="Transparent">
+                                                  Style="{StaticResource GridVisualsHitGrid}">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*" />
                                                     <ColumnDefinition Width="64" />
@@ -474,17 +644,14 @@
                                                     </TextBlock>
                                                 </Grid.ToolTip>
                                                 <controls:Sparkline x:Name="Line"
-                                                                    Height="24"
-                                                                    VerticalAlignment="Center"
-                                                                    Stroke="{StaticResource ChartBlueBrush}"
+                                                                    Style="{StaticResource GridVisualsLatencySparkline}"
                                                                     Values="{Binding Latency}" />
                                                 <TextBlock Grid.Column="1"
-                                                           Style="{StaticResource CellTextStyle}"
-                                                           HorizontalAlignment="Right"
+                                                           Style="{StaticResource GridVisualsNumberTextBlock}"
                                                            Text="{Binding LatencyNow, StringFormat={}{0:0} ms}" />
                                             </Grid>
                                             <TextBlock x:Name="NoData"
-                                                       Style="{StaticResource NoDataTextStyle}" />
+                                                       Style="{StaticResource GridVisualsNoDataTextBlock}" />
                                         </Grid>
                                         <DataTemplate.Triggers>
                                             <DataTrigger Binding="{Binding Status}"
@@ -508,11 +675,9 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate DataType="{x:Type sample:ServerRow}">
                                         <Border x:Name="Cell"
-                                                Background="Transparent">
+                                                Style="{StaticResource GridVisualsUptimeBorder}">
                                             <TextBlock x:Name="Value"
-                                                       Style="{StaticResource CellTextStyle}"
-                                                       Margin="12,0"
-                                                       HorizontalAlignment="Right"
+                                                       Style="{StaticResource GridVisualsUptimeTextBlock}"
                                                        Text="{Binding Uptime, StringFormat={}{0:0.00}%}" />
                                         </Border>
                                         <DataTemplate.Triggers>
@@ -533,7 +698,8 @@
                         </DataGrid.Columns>
                     </DataGrid>
 
-                    <TextBlock Margin="0,12,0,0">
+                    <!-- Summary -->
+                    <TextBlock Grid.Row="4">
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}Servers {0} · Warning {1} · Down {2} · CPU average {3:0}% · Errors {4}">
                                 <Binding Path="ServerCount" />
@@ -545,13 +711,14 @@
                         </TextBlock.Text>
                     </TextBlock>
 
-                    <TextBlock Margin="0,12,0,0"
-                               TextWrapping="Wrap"
-                               Text="CPU and memory turn yellow at 80% and red at 90%. Uptime over 30 days turns yellow below 99.9% and red below 99%. Errors compare today with yesterday. Latency covers the last 24 hours."
-                               FontSize="12"
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                </StackPanel>
+                    <!-- Hint -->
+                    <TextBlock Grid.Row="6"
+                               Style="{StaticResource GridVisualsHintTextBlock}"
+                               Text="CPU and memory turn yellow at 80% and red at 90%. Uptime over 30 days turns yellow below 99.9% and red below 99%. Errors compare today with yesterday. Latency covers the last 24 hours." />
+
+                </Grid>
             </Border>
+
         </StackPanel>
     </ScrollViewer>
 

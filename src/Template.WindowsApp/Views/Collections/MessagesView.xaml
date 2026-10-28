@@ -15,6 +15,9 @@
              d:DesignWidth="1000" d:DesignHeight="800">
 
     <UserControl.Resources>
+
+        <!-- Color -->
+
         <SolidColorBrush x:Key="AvatarPurpleBrush"
                          Color="#8F3BB8" />
         <SolidColorBrush x:Key="AvatarGreenBrush"
@@ -24,19 +27,110 @@
         <SolidColorBrush x:Key="AvatarBlueBrush"
                          Color="#1F60C4" />
 
+        <!-- Converter -->
+
         <s:CompareToBoolConverter x:Key="NarrowConverter"
                                   Expression="{x:Static s:CompareExpressions.LessThan}"
                                   TrueValue="True"
                                   FalseValue="False" />
 
-        <CollectionViewSource x:Key="ConversationSource"
-                              Source="{Binding Conversations}">
-            <CollectionViewSource.GroupDescriptions>
-                <PropertyGroupDescription PropertyName="Kind" />
-            </CollectionViewSource.GroupDescriptions>
-        </CollectionViewSource>
+        <!-- Layout -->
 
-        <Style x:Key="AvatarStyle"
+        <Style x:Key="MessagesCardBorder"
+               TargetType="{x:Type Border}"
+               BasedOn="{StaticResource CardBorder}">
+            <Setter Property="Padding" Value="0" />
+        </Style>
+
+        <Style x:Key="MessagesListPaneBorder"
+               TargetType="{x:Type Border}">
+            <Setter Property="BorderThickness" Value="0,0,1,0" />
+            <Setter Property="BorderBrush" Value="{DynamicResource DividerStrokeColorDefaultBrush}" />
+        </Style>
+
+        <Style x:Key="MessagesConversationListBox"
+               TargetType="{x:Type ListBox}"
+               BasedOn="{StaticResource {x:Type ListBox}}">
+            <Setter Property="Padding" Value="0,4,0,8" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+
+        <Style x:Key="MessagesMainPaneGrid"
+               TargetType="{x:Type Grid}">
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsThreadOpen}" Value="True" />
+                        <Condition Binding="{Binding ActualWidth, ElementName=Card, Converter={StaticResource NarrowConverter}, ConverterParameter=920}" Value="False" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Margin" Value="0,0,320,0" />
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsThreadOpen}" Value="True" />
+                        <Condition Binding="{Binding ActualWidth, ElementName=Card, Converter={StaticResource NarrowConverter}, ConverterParameter=920}" Value="True" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Visibility" Value="Hidden" />
+                </MultiDataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="MessagesHeaderPresenter"
+               TargetType="{x:Type ContentPresenter}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="MessagesMessageItemsControl"
+               TargetType="{x:Type ItemsControl}">
+            <Setter Property="Margin" Value="0,4,0,12" />
+        </Style>
+
+        <Style x:Key="MessagesThreadPaneBorder"
+               TargetType="{x:Type Border}">
+            <Setter Property="Width" Value="320" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="BorderThickness" Value="1,0,0,0" />
+            <Setter Property="BorderBrush" Value="{DynamicResource DividerStrokeColorDefaultBrush}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ActualWidth, ElementName=Card, Converter={StaticResource NarrowConverter}, ConverterParameter=920}"
+                             Value="True">
+                    <Setter Property="Width" Value="Auto" />
+                    <Setter Property="HorizontalAlignment" Value="Stretch" />
+                    <Setter Property="BorderThickness" Value="0" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsThreadOpen}"
+                             Value="False">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="MessagesThreadTitleStack"
+               TargetType="{x:Type StackPanel}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="MessagesThreadStack"
+               TargetType="{x:Type StackPanel}">
+            <Setter Property="Margin" Value="0,16,0,12" />
+        </Style>
+
+        <Style x:Key="MessagesThreadRepliesGrid"
+               TargetType="{x:Type Grid}"
+               d:DataContext="{d:DesignInstance Type={x:Type sample:Message}}">
+            <Setter Property="Margin" Value="16,8,16,4" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Replies.Count}"
+                             Value="0">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Avatar -->
+
+        <Style x:Key="MessagesAvatarBorder"
                TargetType="{x:Type Border}"
                d:DataContext="{d:DesignInstance Type={x:Type sample:Person}}">
             <Setter Property="Width" Value="32" />
@@ -57,13 +151,18 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-        <Style x:Key="SmallAvatarStyle"
+        <Style x:Key="MessagesSmallAvatarBorder"
                TargetType="{x:Type Border}"
-               BasedOn="{StaticResource AvatarStyle}">
+               BasedOn="{StaticResource MessagesAvatarBorder}">
             <Setter Property="Width" Value="20" />
             <Setter Property="Height" Value="20" />
         </Style>
-        <Style x:Key="AvatarTextStyle"
+        <Style x:Key="MessagesReplierAvatarBorder"
+               TargetType="{x:Type Border}"
+               BasedOn="{StaticResource MessagesSmallAvatarBorder}">
+            <Setter Property="Margin" Value="0,0,2,0" />
+        </Style>
+        <Style x:Key="MessagesAvatarTextBlock"
                TargetType="{x:Type TextBlock}">
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
@@ -71,12 +170,12 @@
             <Setter Property="FontWeight" Value="SemiBold" />
             <Setter Property="Foreground" Value="White" />
         </Style>
-        <Style x:Key="SmallAvatarTextStyle"
+        <Style x:Key="MessagesSmallAvatarTextBlock"
                TargetType="{x:Type TextBlock}"
-               BasedOn="{StaticResource AvatarTextStyle}">
+               BasedOn="{StaticResource MessagesAvatarTextBlock}">
             <Setter Property="FontSize" Value="9" />
         </Style>
-        <Style x:Key="PresenceStyle"
+        <Style x:Key="MessagesPresenceBorder"
                TargetType="{x:Type Border}"
                d:DataContext="{d:DesignInstance Type={x:Type sample:Person}}">
             <Setter Property="Width" Value="12" />
@@ -94,9 +193,9 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-        <Style x:Key="SmallPresenceStyle"
+        <Style x:Key="MessagesSmallPresenceBorder"
                TargetType="{x:Type Border}"
-               BasedOn="{StaticResource PresenceStyle}">
+               BasedOn="{StaticResource MessagesPresenceBorder}">
             <Setter Property="Width" Value="10" />
             <Setter Property="Height" Value="10" />
             <Setter Property="Margin" Value="0,0,-3,-3" />
@@ -104,33 +203,41 @@
         <DataTemplate x:Key="AvatarTemplate"
                       DataType="{x:Type sample:Person}">
             <Grid>
-                <Border Style="{StaticResource AvatarStyle}">
-                    <TextBlock Style="{StaticResource AvatarTextStyle}"
+                <Border Style="{StaticResource MessagesAvatarBorder}">
+                    <TextBlock Style="{StaticResource MessagesAvatarTextBlock}"
                                Text="{Binding Initials}" />
                 </Border>
-                <Border Style="{StaticResource PresenceStyle}" />
+                <Border Style="{StaticResource MessagesPresenceBorder}" />
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="ListAvatarTemplate"
                       DataType="{x:Type sample:Person}">
             <Grid>
-                <Border Style="{StaticResource SmallAvatarStyle}">
-                    <TextBlock Style="{StaticResource SmallAvatarTextStyle}"
+                <Border Style="{StaticResource MessagesSmallAvatarBorder}">
+                    <TextBlock Style="{StaticResource MessagesSmallAvatarTextBlock}"
                                Text="{Binding Initials}" />
                 </Border>
-                <Border Style="{StaticResource SmallPresenceStyle}" />
+                <Border Style="{StaticResource MessagesSmallPresenceBorder}" />
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="ReplierTemplate"
                       DataType="{x:Type sample:Person}">
-            <Border Style="{StaticResource SmallAvatarStyle}"
-                    Margin="0,0,2,0">
-                <TextBlock Style="{StaticResource SmallAvatarTextStyle}"
+            <Border Style="{StaticResource MessagesReplierAvatarBorder}">
+                <TextBlock Style="{StaticResource MessagesSmallAvatarTextBlock}"
                            Text="{Binding Initials}" />
             </Border>
         </DataTemplate>
 
-        <Style x:Key="PaneHeaderTextStyle"
+        <!-- Conversations -->
+
+        <CollectionViewSource x:Key="ConversationSource"
+                              Source="{Binding Conversations}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="Kind" />
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+
+        <Style x:Key="MessagesPaneHeaderTextBlock"
                TargetType="{x:Type TextBlock}">
             <Setter Property="Margin" Value="16,12,16,6" />
             <Setter Property="FontSize" Value="12" />
@@ -140,7 +247,7 @@
         <DataTemplate x:Key="GroupHeaderTemplate"
                       DataType="{x:Type CollectionViewGroup}">
             <TextBlock x:Name="Header"
-                       Style="{StaticResource PaneHeaderTextStyle}"
+                       Style="{StaticResource MessagesPaneHeaderTextBlock}"
                        Text="Channels" />
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding Name}"
@@ -150,7 +257,7 @@
                 </DataTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>
-        <Style x:Key="GroupItemStyle"
+        <Style x:Key="MessagesGroupItem"
                TargetType="{x:Type GroupItem}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -163,7 +270,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="ConversationItemStyle"
+        <Style x:Key="MessagesConversationListBoxItem"
                TargetType="{x:Type ListBoxItem}"
                d:DataContext="{d:DesignInstance Type={x:Type sample:Conversation}}">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -209,39 +316,73 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <Style x:Key="MessagesConversationGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Height" Value="32" />
+        </Style>
+
+        <Style x:Key="MessagesConversationNameTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+            <Setter Property="FontSize" Value="14" />
+        </Style>
+
+        <Style x:Key="MessagesChannelNameTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource MessagesConversationNameTextBlock}">
+            <Setter Property="Margin" Value="16,0,8,0" />
+        </Style>
+
+        <Style x:Key="MessagesDirectGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Margin" Value="16,0,8,0" />
+        </Style>
+
+        <Style x:Key="MessagesDirectAvatarPresenter"
+               TargetType="{x:Type ContentPresenter}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="MessagesUnreadBadgeBorder"
+               TargetType="{x:Type Border}"
+               BasedOn="{StaticResource CountBadgeBorder}">
+            <Setter Property="Margin" Value="0,0,12,0" />
+        </Style>
+
         <DataTemplate x:Key="ConversationTemplate"
                       DataType="{x:Type sample:Conversation}">
             <Grid x:Name="Row"
-                  Height="32">
+                  Style="{StaticResource MessagesConversationGrid}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <TextBlock x:Name="ChannelName"
                            Grid.Column="0"
-                           Margin="16,0,8,0"
-                           VerticalAlignment="Center"
-                           TextTrimming="CharacterEllipsis"
-                           Text="{Binding Name, StringFormat='# {0}'}"
-                           FontSize="14" />
-                <StackPanel x:Name="Direct"
-                            Grid.Column="0"
-                            Orientation="Horizontal"
-                            Margin="16,0,8,0"
-                            Visibility="Collapsed">
-                    <ContentPresenter VerticalAlignment="Center"
+                           Style="{StaticResource MessagesChannelNameTextBlock}"
+                           Text="{Binding Name, StringFormat='# {0}'}" />
+                <Grid x:Name="Direct"
+                      Grid.Column="0"
+                      Style="{StaticResource MessagesDirectGrid}"
+                      Visibility="Collapsed">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="12" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <ContentPresenter Grid.Column="0"
+                                      Style="{StaticResource MessagesDirectAvatarPresenter}"
                                       Content="{Binding Person}"
                                       ContentTemplate="{StaticResource ListAvatarTemplate}" />
-                    <TextBlock Margin="12,0,0,0"
-                               VerticalAlignment="Center"
-                               TextTrimming="CharacterEllipsis"
-                               Text="{Binding Name}"
-                               FontSize="14" />
-                </StackPanel>
+                    <TextBlock Grid.Column="2"
+                               Style="{StaticResource MessagesConversationNameTextBlock}"
+                               Text="{Binding Name}" />
+                </Grid>
                 <Border x:Name="Badge"
                         Grid.Column="1"
-                        Style="{StaticResource CountBadgeBorder}"
-                        Margin="0,0,12,0">
+                        Style="{StaticResource MessagesUnreadBadgeBorder}">
                     <TextBlock Style="{StaticResource CountBadgeTextBlock}"
                                Text="{Binding UnreadCount}" />
                 </Border>
@@ -260,30 +401,39 @@
             </DataTemplate.Triggers>
         </DataTemplate>
 
-        <Style x:Key="HeaderStyle"
+        <!-- Header -->
+
+        <Style x:Key="MessagesHeaderBorder"
                TargetType="{x:Type Border}">
             <Setter Property="Height" Value="60" />
             <Setter Property="Padding" Value="16,0,8,0" />
             <Setter Property="BorderThickness" Value="0,0,0,1" />
             <Setter Property="BorderBrush" Value="{DynamicResource DividerStrokeColorDefaultBrush}" />
         </Style>
-        <Style x:Key="HeaderTitleTextStyle"
+        <Style x:Key="MessagesHeaderTitleTextBlock"
                TargetType="{x:Type TextBlock}">
             <Setter Property="FontSize" Value="16" />
             <Setter Property="FontWeight" Value="SemiBold" />
         </Style>
-        <Style x:Key="HeaderCaptionTextStyle"
+        <Style x:Key="MessagesHeaderCaptionTextBlock"
                TargetType="{x:Type TextBlock}">
             <Setter Property="FontSize" Value="12" />
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+        <Style x:Key="MessagesPresenceMarkBorder"
+               TargetType="{x:Type Border}">
+            <Setter Property="Width" Value="8" />
+            <Setter Property="Height" Value="8" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Background" Value="{DynamicResource SystemFillColorSuccessBrush}" />
         </Style>
         <DataTemplate x:Key="ConversationHeaderTemplate"
                       DataType="{x:Type sample:Conversation}">
             <Grid>
                 <StackPanel x:Name="Channel">
-                    <TextBlock Style="{StaticResource HeaderTitleTextStyle}"
+                    <TextBlock Style="{StaticResource MessagesHeaderTitleTextBlock}"
                                Text="{Binding Name, StringFormat='# {0}'}" />
-                    <TextBlock Style="{StaticResource HeaderCaptionTextStyle}">
+                    <TextBlock Style="{StaticResource MessagesHeaderCaptionTextBlock}">
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}{0} members · {1}">
                                 <Binding Path="Members" />
@@ -297,18 +447,22 @@
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type sample:Person}">
                             <StackPanel>
-                                <TextBlock Style="{StaticResource HeaderTitleTextStyle}"
+                                <TextBlock Style="{StaticResource MessagesHeaderTitleTextBlock}"
                                            Text="{Binding Name}" />
-                                <StackPanel Orientation="Horizontal">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="6" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
                                     <Border x:Name="PresenceMark"
-                                            Width="8" Height="8"
-                                            VerticalAlignment="Center"
-                                            Background="{DynamicResource SystemFillColorSuccessBrush}" />
+                                            Grid.Column="0"
+                                            Style="{StaticResource MessagesPresenceMarkBorder}" />
                                     <TextBlock x:Name="PresenceText"
-                                               Style="{StaticResource HeaderCaptionTextStyle}"
-                                               Margin="6,0,0,0"
+                                               Grid.Column="2"
+                                               Style="{StaticResource MessagesHeaderCaptionTextBlock}"
                                                Text="Active" />
-                                </StackPanel>
+                                </Grid>
                             </StackPanel>
                             <DataTemplate.Triggers>
                                 <DataTrigger Binding="{Binding Presence}"
@@ -331,7 +485,7 @@
         <DataTemplate x:Key="ThreadCaptionTemplate"
                       DataType="{x:Type sample:Conversation}">
             <TextBlock x:Name="Caption"
-                       Style="{StaticResource HeaderCaptionTextStyle}"
+                       Style="{StaticResource MessagesHeaderCaptionTextBlock}"
                        Text="{Binding Name, StringFormat='# {0}'}" />
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding Kind}"
@@ -341,7 +495,9 @@
             </DataTemplate.Triggers>
         </DataTemplate>
 
-        <Style x:Key="SubtleIconButtonStyle"
+        <!-- Action -->
+
+        <Style x:Key="MessagesSubtleIconButton"
                TargetType="{x:Type Button}">
             <Setter Property="Width" Value="32" />
             <Setter Property="Height" Value="32" />
@@ -368,7 +524,14 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="AddReactionButtonStyle"
+        <Style x:Key="MessagesCloseThreadButton"
+               TargetType="{x:Type Button}"
+               BasedOn="{StaticResource MessagesSubtleIconButton}">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="12" />
+        </Style>
+        <Style x:Key="MessagesAddReactionDropDownButton"
                TargetType="{x:Type controls:DropDownButton}">
             <Setter Property="Focusable" Value="False" />
             <Setter Property="IsTabStop" Value="False" />
@@ -378,7 +541,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type controls:DropDownButton}">
                         <Button x:Name="PART_Button"
-                                Style="{StaticResource SubtleIconButtonStyle}"
+                                Style="{StaticResource MessagesSubtleIconButton}"
                                 Focusable="False"
                                 Content="&#xF353;"
                                 AutomationProperties.Name="Add reaction" />
@@ -386,7 +549,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="MenuEmojiStyle"
+        <Style x:Key="MessagesMenuEmojiIcon"
                TargetType="{x:Type controls:EmojiIcon}">
             <Setter Property="FontSize" Value="16" />
         </Style>
@@ -398,7 +561,7 @@
                       CommandParameter="{Binding PlacementTarget.(FrameworkElement.DataContext), RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
                       Header="Like">
                 <MenuItem.Icon>
-                    <controls:EmojiIcon Style="{StaticResource MenuEmojiStyle}"
+                    <controls:EmojiIcon Style="{StaticResource MessagesMenuEmojiIcon}"
                                         Glyph="&#x1F44D;" />
                 </MenuItem.Icon>
             </MenuItem>
@@ -406,7 +569,7 @@
                       CommandParameter="{Binding PlacementTarget.(FrameworkElement.DataContext), RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
                       Header="Heart">
                 <MenuItem.Icon>
-                    <controls:EmojiIcon Style="{StaticResource MenuEmojiStyle}"
+                    <controls:EmojiIcon Style="{StaticResource MessagesMenuEmojiIcon}"
                                         Glyph="&#x2764;&#xFE0F;" />
                 </MenuItem.Icon>
             </MenuItem>
@@ -414,7 +577,7 @@
                       CommandParameter="{Binding PlacementTarget.(FrameworkElement.DataContext), RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
                       Header="Accept">
                 <MenuItem.Icon>
-                    <controls:EmojiIcon Style="{StaticResource MenuEmojiStyle}"
+                    <controls:EmojiIcon Style="{StaticResource MessagesMenuEmojiIcon}"
                                         Glyph="&#x2705;" />
                 </MenuItem.Icon>
             </MenuItem>
@@ -422,12 +585,12 @@
                       CommandParameter="{Binding PlacementTarget.(FrameworkElement.DataContext), RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
                       Header="Laugh">
                 <MenuItem.Icon>
-                    <controls:EmojiIcon Style="{StaticResource MenuEmojiStyle}"
+                    <controls:EmojiIcon Style="{StaticResource MessagesMenuEmojiIcon}"
                                         Glyph="&#x1F604;" />
                 </MenuItem.Icon>
             </MenuItem>
         </ContextMenu>
-        <Style x:Key="ActionsStyle"
+        <Style x:Key="MessagesActionsBorder"
                TargetType="{x:Type Border}">
             <Setter Property="Margin" Value="0,-16,24,0" />
             <Setter Property="HorizontalAlignment" Value="Right" />
@@ -437,7 +600,10 @@
             <Setter Property="Background" Value="{DynamicResource SolidBackgroundFillColorQuarternaryBrush}" />
             <Setter Property="Visibility" Value="Collapsed" />
         </Style>
-        <Style x:Key="ReactionButtonStyle"
+
+        <!-- Reaction -->
+
+        <Style x:Key="MessagesReactionButton"
                TargetType="{x:Type Button}"
                d:DataContext="{d:DesignInstance Type={x:Type sample:Reaction}}">
             <Setter Property="Margin" Value="0,6,6,0" />
@@ -493,21 +659,35 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+        <Style x:Key="MessagesReactionEmojiIcon"
+               TargetType="{x:Type controls:EmojiIcon}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="14" />
+        </Style>
+        <Style x:Key="MessagesReactionCountTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="12" />
+        </Style>
         <DataTemplate x:Key="ReactionTemplate"
                       DataType="{x:Type sample:Reaction}">
-            <Button Style="{StaticResource ReactionButtonStyle}"
+            <Button Style="{StaticResource MessagesReactionButton}"
                     Command="{Binding DataContext.ToggleReactionCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
                     CommandParameter="{Binding}">
-                <StackPanel Orientation="Horizontal">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="6" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
                     <controls:EmojiIcon x:Name="Glyph"
-                                        VerticalAlignment="Center"
-                                        Glyph="&#x1F44D;"
-                                        FontSize="14" />
-                    <TextBlock Margin="6,0,0,0"
-                               VerticalAlignment="Center"
-                               Text="{Binding Count}"
-                               FontSize="12" />
-                </StackPanel>
+                                        Grid.Column="0"
+                                        Style="{StaticResource MessagesReactionEmojiIcon}"
+                                        Glyph="&#x1F44D;" />
+                    <TextBlock Grid.Column="2"
+                               Style="{StaticResource MessagesReactionCountTextBlock}"
+                               Text="{Binding Count}" />
+                </Grid>
             </Button>
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding Kind}"
@@ -524,7 +704,7 @@
                 </DataTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>
-        <Style x:Key="ReactionsStyle"
+        <Style x:Key="MessagesReactionsItemsControl"
                TargetType="{x:Type ItemsControl}">
             <Setter Property="Focusable" Value="False" />
             <Setter Property="ItemTemplate" Value="{StaticResource ReactionTemplate}" />
@@ -536,7 +716,10 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="ReplyCountTextStyle"
+
+        <!-- Reply summary -->
+
+        <Style x:Key="MessagesReplyCountTextBlock"
                TargetType="{x:Type TextBlock}"
                d:DataContext="{d:DesignInstance Type={x:Type sample:Message}}">
             <Setter Property="VerticalAlignment" Value="Center" />
@@ -549,7 +732,12 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-        <Style x:Key="ReplySummaryButtonStyle"
+        <Style x:Key="MessagesThreadReplyCountTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource MessagesReplyCountTextBlock}">
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+        <Style x:Key="MessagesReplySummaryButton"
                TargetType="{x:Type Button}"
                d:DataContext="{d:DesignInstance Type={x:Type sample:Message}}">
             <Setter Property="Margin" Value="-4,4,0,0" />
@@ -573,7 +761,7 @@
                                         </ItemsPanelTemplate>
                                     </ItemsControl.ItemsPanel>
                                 </ItemsControl>
-                                <TextBlock Style="{StaticResource ReplyCountTextStyle}"
+                                <TextBlock Style="{StaticResource MessagesReplyCountTextBlock}"
                                            Margin="6,0,0,0"
                                            FontWeight="SemiBold"
                                            Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
@@ -607,31 +795,38 @@
             </Style.Triggers>
         </Style>
 
-        <Style x:Key="LineStyle"
+        <!-- Message -->
+
+        <Style x:Key="MessagesLineBorder"
                TargetType="{x:Type Border}">
             <Setter Property="Height" Value="1" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Background" Value="{DynamicResource DividerStrokeColorDefaultBrush}" />
         </Style>
-        <Style x:Key="DateLabelStyle"
+        <Style x:Key="MessagesNewLineBorder"
+               TargetType="{x:Type Border}"
+               BasedOn="{StaticResource MessagesLineBorder}">
+            <Setter Property="Background" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+        </Style>
+        <Style x:Key="MessagesDateLabelBorder"
                TargetType="{x:Type Border}">
             <Setter Property="Padding" Value="12,2" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="BorderBrush" Value="{DynamicResource DividerStrokeColorDefaultBrush}" />
         </Style>
-        <Style x:Key="NameTextStyle"
+        <Style x:Key="MessagesNameTextBlock"
                TargetType="{x:Type TextBlock}">
             <Setter Property="FontSize" Value="14" />
             <Setter Property="FontWeight" Value="SemiBold" />
         </Style>
-        <Style x:Key="TimeTextStyle"
+        <Style x:Key="MessagesTimeTextBlock"
                TargetType="{x:Type TextBlock}">
             <Setter Property="Margin" Value="8,0,0,0" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="FontSize" Value="12" />
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
         </Style>
-        <Style x:Key="HoverTimeTextStyle"
+        <Style x:Key="MessagesHoverTimeTextBlock"
                TargetType="{x:Type TextBlock}">
             <Setter Property="Margin" Value="0,4,0,0" />
             <Setter Property="HorizontalAlignment" Value="Center" />
@@ -640,13 +835,13 @@
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
             <Setter Property="Visibility" Value="Collapsed" />
         </Style>
-        <Style x:Key="MessageTextStyle"
+        <Style x:Key="MessagesMessageTextBlock"
                TargetType="{x:Type TextBlock}">
             <Setter Property="Margin" Value="0,2,0,0" />
             <Setter Property="FontSize" Value="14" />
             <Setter Property="TextWrapping" Value="Wrap" />
         </Style>
-        <Style x:Key="AttachmentStyle"
+        <Style x:Key="MessagesAttachmentBorder"
                TargetType="{x:Type Border}">
             <Setter Property="Margin" Value="0,6,0,0" />
             <Setter Property="Padding" Value="12,8,16,8" />
@@ -655,32 +850,86 @@
             <Setter Property="BorderBrush" Value="{DynamicResource CardStrokeColorDefaultBrush}" />
             <Setter Property="Background" Value="{DynamicResource ControlFillColorDefaultBrush}" />
         </Style>
+
+        <Style x:Key="MessagesAttachmentIconTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="Foreground" Value="{DynamicResource AccentTextFillColorPrimaryBrush}" />
+        </Style>
+
+        <Style x:Key="MessagesAttachmentNameTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+
+        <Style x:Key="MessagesAttachmentSizeTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
+        <Style x:Key="MessagesSeparatorGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Margin" Value="16,12,16,6" />
+        </Style>
+
+        <Style x:Key="MessagesDateTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+
+        <Style x:Key="MessagesNewTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource MessagesDateTextBlock}">
+            <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+        </Style>
+
+        <Style x:Key="MessagesRowGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+
+        <Style x:Key="MessagesBodyGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Margin" Value="16,6,16,2" />
+        </Style>
+
+        <Style x:Key="MessagesAvatarPresenter"
+               TargetType="{x:Type ContentPresenter}">
+            <Setter Property="VerticalAlignment" Value="Top" />
+        </Style>
         <DataTemplate DataType="{x:Type sample:Attachment}">
-            <Border Style="{StaticResource AttachmentStyle}">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock VerticalAlignment="Center"
-                               Text="&#xEA90;"
-                               FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                               FontSize="24"
-                               Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
-                    <StackPanel Margin="12,0,0,0">
-                        <TextBlock Text="{Binding Name}"
-                                   FontSize="14" FontWeight="SemiBold" />
-                        <TextBlock Text="{Binding Kilobytes, StringFormat='PDF document · {0} KB'}"
-                                   FontSize="12"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+            <Border Style="{StaticResource MessagesAttachmentBorder}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="12" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0"
+                               Style="{StaticResource MessagesAttachmentIconTextBlock}"
+                               Text="&#xEA90;" />
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Style="{StaticResource MessagesAttachmentNameTextBlock}"
+                                   Text="{Binding Name}" />
+                        <TextBlock Style="{StaticResource MessagesAttachmentSizeTextBlock}"
+                                   Text="{Binding Kilobytes, StringFormat='PDF document · {0} KB'}" />
                     </StackPanel>
-                </StackPanel>
+                </Grid>
             </Border>
         </DataTemplate>
         <DataTemplate x:Key="MessageContentTemplate"
                       DataType="{x:Type sample:Message}">
             <StackPanel>
-                <TextBlock Style="{StaticResource MessageTextStyle}"
+                <TextBlock Style="{StaticResource MessagesMessageTextBlock}"
                            Text="{Binding Text}" />
                 <ContentControl Focusable="False"
                                 Content="{Binding Attachment}" />
-                <ItemsControl Style="{StaticResource ReactionsStyle}"
+                <ItemsControl Style="{StaticResource MessagesReactionsItemsControl}"
                               ItemsSource="{Binding Reactions}" />
             </StackPanel>
         </DataTemplate>
@@ -688,7 +937,7 @@
                       DataType="{x:Type sample:Message}">
             <StackPanel>
                 <Grid x:Name="DateSeparator"
-                      Margin="16,12,16,6"
+                      Style="{StaticResource MessagesSeparatorGrid}"
                       Visibility="Collapsed">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -696,36 +945,34 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Border Grid.Column="0"
-                            Style="{StaticResource LineStyle}" />
+                            Style="{StaticResource MessagesLineBorder}" />
                     <Border Grid.Column="1"
-                            Style="{StaticResource DateLabelStyle}">
+                            Style="{StaticResource MessagesDateLabelBorder}">
                         <TextBlock x:Name="DateText"
-                                   Text="Yesterday"
-                                   FontSize="12" FontWeight="SemiBold" />
+                                   Style="{StaticResource MessagesDateTextBlock}"
+                                   Text="Yesterday" />
                     </Border>
                     <Border Grid.Column="2"
-                            Style="{StaticResource LineStyle}" />
+                            Style="{StaticResource MessagesLineBorder}" />
                 </Grid>
                 <Grid x:Name="NewSeparator"
-                      Margin="16,12,16,6"
+                      Style="{StaticResource MessagesSeparatorGrid}"
                       Visibility="Collapsed">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="8" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <Border Grid.Column="0"
-                            Style="{StaticResource LineStyle}"
-                            Background="{DynamicResource SystemFillColorCriticalBrush}" />
-                    <TextBlock Grid.Column="1"
-                               Margin="8,0,0,0"
-                               Text="New"
-                               FontSize="12" FontWeight="SemiBold"
-                               Foreground="{DynamicResource SystemFillColorCriticalBrush}" />
+                            Style="{StaticResource MessagesNewLineBorder}" />
+                    <TextBlock Grid.Column="2"
+                               Style="{StaticResource MessagesNewTextBlock}"
+                               Text="New" />
                 </Grid>
                 <Grid x:Name="Row"
-                      Background="Transparent">
+                      Style="{StaticResource MessagesRowGrid}">
                     <Grid x:Name="Body"
-                          Margin="16,6,16,2">
+                          Style="{StaticResource MessagesBodyGrid}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="32" />
                             <ColumnDefinition Width="12" />
@@ -733,35 +980,35 @@
                         </Grid.ColumnDefinitions>
                         <ContentPresenter x:Name="Avatar"
                                           Grid.Column="0"
-                                          VerticalAlignment="Top"
+                                          Style="{StaticResource MessagesAvatarPresenter}"
                                           Content="{Binding Author}"
                                           ContentTemplate="{StaticResource AvatarTemplate}" />
                         <TextBlock x:Name="HoverTime"
                                    Grid.Column="0"
-                                   Style="{StaticResource HoverTimeTextStyle}"
+                                   Style="{StaticResource MessagesHoverTimeTextBlock}"
                                    Text="{Binding Time, StringFormat=HH:mm}" />
                         <StackPanel Grid.Column="2">
                             <StackPanel x:Name="Header"
                                         Orientation="Horizontal">
-                                <TextBlock Style="{StaticResource NameTextStyle}"
+                                <TextBlock Style="{StaticResource MessagesNameTextBlock}"
                                            Text="{Binding Author.Name}" />
-                                <TextBlock Style="{StaticResource TimeTextStyle}"
+                                <TextBlock Style="{StaticResource MessagesTimeTextBlock}"
                                            Text="{Binding Time, StringFormat=HH:mm}" />
                             </StackPanel>
                             <ContentPresenter Content="{Binding}"
                                               ContentTemplate="{StaticResource MessageContentTemplate}" />
-                            <Button Style="{StaticResource ReplySummaryButtonStyle}"
+                            <Button Style="{StaticResource MessagesReplySummaryButton}"
                                     Command="{Binding DataContext.OpenThreadCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
                                     CommandParameter="{Binding}" />
                         </StackPanel>
                     </Grid>
                     <Border x:Name="Actions"
-                            Style="{StaticResource ActionsStyle}">
+                            Style="{StaticResource MessagesActionsBorder}">
                         <StackPanel Orientation="Horizontal">
                             <controls:DropDownButton x:Name="AddReaction"
-                                                     Style="{StaticResource AddReactionButtonStyle}"
+                                                     Style="{StaticResource MessagesAddReactionDropDownButton}"
                                                      ContextMenu="{StaticResource ReactionMenu}" />
-                            <Button Style="{StaticResource SubtleIconButtonStyle}"
+                            <Button Style="{StaticResource MessagesSubtleIconButton}"
                                     Command="{Binding DataContext.OpenThreadCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
                                     CommandParameter="{Binding}"
                                     Focusable="False"
@@ -815,22 +1062,22 @@
         <DataTemplate x:Key="ThreadRootTemplate"
                       DataType="{x:Type sample:Message}">
             <Grid x:Name="Row"
-                  Background="Transparent">
-                <Grid Margin="16,6,16,2">
+                  Style="{StaticResource MessagesRowGrid}">
+                <Grid Style="{StaticResource MessagesBodyGrid}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="32" />
                         <ColumnDefinition Width="12" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <ContentPresenter Grid.Column="0"
-                                      VerticalAlignment="Top"
+                                      Style="{StaticResource MessagesAvatarPresenter}"
                                       Content="{Binding Author}"
                                       ContentTemplate="{StaticResource AvatarTemplate}" />
                     <StackPanel Grid.Column="2">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Style="{StaticResource NameTextStyle}"
+                            <TextBlock Style="{StaticResource MessagesNameTextBlock}"
                                        Text="{Binding Author.Name}" />
-                            <TextBlock Style="{StaticResource TimeTextStyle}"
+                            <TextBlock Style="{StaticResource MessagesTimeTextBlock}"
                                        Text="{Binding Time, StringFormat=HH:mm}" />
                         </StackPanel>
                         <ContentPresenter Content="{Binding}"
@@ -838,9 +1085,9 @@
                     </StackPanel>
                 </Grid>
                 <Border x:Name="Actions"
-                        Style="{StaticResource ActionsStyle}">
+                        Style="{StaticResource MessagesActionsBorder}">
                     <controls:DropDownButton x:Name="AddReaction"
-                                             Style="{StaticResource AddReactionButtonStyle}"
+                                             Style="{StaticResource MessagesAddReactionDropDownButton}"
                                              ContextMenu="{StaticResource ReactionMenu}" />
                 </Border>
             </Grid>
@@ -859,9 +1106,9 @@
         <DataTemplate x:Key="ReplyTemplate"
                       DataType="{x:Type sample:Message}">
             <Grid x:Name="Row"
-                  Background="Transparent">
+                  Style="{StaticResource MessagesRowGrid}">
                 <Grid x:Name="Body"
-                      Margin="16,6,16,2">
+                      Style="{StaticResource MessagesBodyGrid}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="32" />
                         <ColumnDefinition Width="12" />
@@ -869,19 +1116,19 @@
                     </Grid.ColumnDefinitions>
                     <ContentPresenter x:Name="Avatar"
                                       Grid.Column="0"
-                                      VerticalAlignment="Top"
+                                      Style="{StaticResource MessagesAvatarPresenter}"
                                       Content="{Binding Author}"
                                       ContentTemplate="{StaticResource AvatarTemplate}" />
                     <TextBlock x:Name="HoverTime"
                                Grid.Column="0"
-                               Style="{StaticResource HoverTimeTextStyle}"
+                               Style="{StaticResource MessagesHoverTimeTextBlock}"
                                Text="{Binding Time, StringFormat=HH:mm}" />
                     <StackPanel Grid.Column="2">
                         <StackPanel x:Name="Header"
                                     Orientation="Horizontal">
-                            <TextBlock Style="{StaticResource NameTextStyle}"
+                            <TextBlock Style="{StaticResource MessagesNameTextBlock}"
                                        Text="{Binding Author.Name}" />
-                            <TextBlock Style="{StaticResource TimeTextStyle}"
+                            <TextBlock Style="{StaticResource MessagesTimeTextBlock}"
                                        Text="{Binding Time, StringFormat=HH:mm}" />
                         </StackPanel>
                         <ContentPresenter Content="{Binding}"
@@ -889,9 +1136,9 @@
                     </StackPanel>
                 </Grid>
                 <Border x:Name="Actions"
-                        Style="{StaticResource ActionsStyle}">
+                        Style="{StaticResource MessagesActionsBorder}">
                     <controls:DropDownButton x:Name="AddReaction"
-                                             Style="{StaticResource AddReactionButtonStyle}"
+                                             Style="{StaticResource MessagesAddReactionDropDownButton}"
                                              ContextMenu="{StaticResource ReactionMenu}" />
                 </Border>
             </Grid>
@@ -921,7 +1168,9 @@
             </DataTemplate.Triggers>
         </DataTemplate>
 
-        <Style x:Key="ComposerTextBoxStyle"
+        <!-- Composer -->
+
+        <Style x:Key="MessagesComposerTextBox"
                TargetType="{x:Type TextBox}"
                BasedOn="{StaticResource {x:Type TextBox}}">
             <Setter Property="MaxHeight" Value="120" />
@@ -929,9 +1178,9 @@
             <Setter Property="TextWrapping" Value="Wrap" />
             <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
         </Style>
-        <Style x:Key="MessageTextBoxStyle"
+        <Style x:Key="MessagesMessageComposerTextBox"
                TargetType="{x:Type TextBox}"
-               BasedOn="{StaticResource ComposerTextBoxStyle}"
+               BasedOn="{StaticResource MessagesComposerTextBox}"
                d:DataContext="{d:DesignInstance Type={x:Type module:MessagesViewModel}}">
             <Setter Property="behaviors:TextBoxOption.PlaceholderText" Value="{Binding Selected.Name, StringFormat='Message #{0}', FallbackValue=''}" />
             <Style.Triggers>
@@ -941,8 +1190,27 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+
+        <Style x:Key="MessagesComposerGrid"
+               TargetType="{x:Type Grid}">
+            <Setter Property="Margin" Value="16,8,16,16" />
+        </Style>
+
+        <Style x:Key="MessagesSendButton"
+               TargetType="{x:Type Button}"
+               BasedOn="{StaticResource AccentButton}">
+            <Setter Property="Width" Value="40" />
+            <Setter Property="Height" Value="32" />
+            <Setter Property="MinWidth" Value="0" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}" />
+            <Setter Property="FontSize" Value="14" />
+        </Style>
+
     </UserControl.Resources>
 
+    <!-- Content -->
     <Grid Style="{StaticResource PageGrid}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -950,6 +1218,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+        <!-- Header -->
         <TextBlock Grid.Row="0"
                    Style="{StaticResource PageTitleTextBlock}"
                    Text="Messages" />
@@ -959,68 +1228,47 @@
 
         <Border x:Name="Card"
                 Grid.Row="2"
-                Style="{StaticResource CardBorder}"
-                Padding="0">
+                Style="{StaticResource MessagesCardBorder}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="200" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
+                <!-- Conversations -->
                 <Border Grid.Column="0"
-                        BorderBrush="{DynamicResource DividerStrokeColorDefaultBrush}"
-                        BorderThickness="0,0,1,0">
-                    <ListBox Padding="0,4,0,8"
+                        Style="{StaticResource MessagesListPaneBorder}">
+                    <ListBox Style="{StaticResource MessagesConversationListBox}"
                              ItemsSource="{Binding Source={StaticResource ConversationSource}}"
                              ItemTemplate="{StaticResource ConversationTemplate}"
                              SelectedItem="{Binding Selected}"
-                             Background="Transparent"
-                             BorderThickness="0"
                              AutomationProperties.Name="Conversations"
-                             ItemContainerStyle="{StaticResource ConversationItemStyle}"
+                             ItemContainerStyle="{StaticResource MessagesConversationListBoxItem}"
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                         <ListBox.GroupStyle>
-                            <GroupStyle ContainerStyle="{StaticResource GroupItemStyle}"
+                            <GroupStyle ContainerStyle="{StaticResource MessagesGroupItem}"
                                         HeaderTemplate="{StaticResource GroupHeaderTemplate}" />
                         </ListBox.GroupStyle>
                     </ListBox>
                 </Border>
 
                 <Grid Grid.Column="1">
-                    <Grid>
-                        <Grid.Style>
-                            <Style TargetType="{x:Type Grid}">
-                                <Style.Triggers>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding IsThreadOpen}" Value="True" />
-                                            <Condition Binding="{Binding ActualWidth, ElementName=Card, Converter={StaticResource NarrowConverter}, ConverterParameter=920}" Value="False" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="Margin" Value="0,0,320,0" />
-                                    </MultiDataTrigger>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding IsThreadOpen}" Value="True" />
-                                            <Condition Binding="{Binding ActualWidth, ElementName=Card, Converter={StaticResource NarrowConverter}, ConverterParameter=920}" Value="True" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="Visibility" Value="Hidden" />
-                                    </MultiDataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Style>
+
+                    <!-- Messages -->
+                    <Grid Style="{StaticResource MessagesMainPaneGrid}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Border Grid.Row="0"
-                                Style="{StaticResource HeaderStyle}">
-                            <ContentPresenter VerticalAlignment="Center"
+                                Style="{StaticResource MessagesHeaderBorder}">
+                            <ContentPresenter Style="{StaticResource MessagesHeaderPresenter}"
                                               Content="{Binding Selected}"
                                               ContentTemplate="{StaticResource ConversationHeaderTemplate}" />
                         </Border>
                         <ScrollViewer Grid.Row="1"
-                                      HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
+                                      Style="{StaticResource PaneScroll}"
                                       AutomationProperties.Name="Messages">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="Loaded">
@@ -1030,19 +1278,20 @@
                                     <i:CallMethodAction MethodName="ScrollToEnd" />
                                 </s:EventRequestTrigger>
                             </i:Interaction.Triggers>
-                            <ItemsControl Margin="0,4,0,12"
+                            <ItemsControl Style="{StaticResource MessagesMessageItemsControl}"
                                           ItemsSource="{Binding Selected.Messages, FallbackValue={x:Null}}"
                                           ItemTemplate="{StaticResource MessageTemplate}"
                                           Focusable="False" />
                         </ScrollViewer>
                         <Grid Grid.Row="2"
-                              Margin="16,8,16,16">
+                              Style="{StaticResource MessagesComposerGrid}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="8" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <TextBox Grid.Column="0"
-                                     Style="{StaticResource MessageTextBoxStyle}"
+                                     Style="{StaticResource MessagesMessageComposerTextBox}"
                                      Text="{Binding Selected.Draft, UpdateSourceTrigger=PropertyChanged, FallbackValue=''}"
                                      AutomationProperties.Name="Message">
                                 <TextBox.InputBindings>
@@ -1050,41 +1299,18 @@
                                                 Command="{Binding SendCommand}" />
                                 </TextBox.InputBindings>
                             </TextBox>
-                            <Button Grid.Column="1"
-                                    Style="{DynamicResource AccentButtonStyle}"
-                                    Width="40" Height="32" MinWidth="0"
-                                    Margin="8,0,0,0" Padding="0"
-                                    VerticalAlignment="Bottom"
+                            <Button Grid.Column="2"
+                                    Style="{StaticResource MessagesSendButton}"
                                     Command="{Binding SendCommand}"
                                     Focusable="False"
                                     Content="&#xE724;"
-                                    FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                    FontSize="14"
                                     ToolTip="Send"
                                     AutomationProperties.Name="Send" />
                         </Grid>
                     </Grid>
 
-                    <Border BorderBrush="{DynamicResource DividerStrokeColorDefaultBrush}">
-                        <Border.Style>
-                            <Style TargetType="{x:Type Border}">
-                                <Setter Property="Width" Value="320" />
-                                <Setter Property="HorizontalAlignment" Value="Right" />
-                                <Setter Property="BorderThickness" Value="1,0,0,0" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ActualWidth, ElementName=Card, Converter={StaticResource NarrowConverter}, ConverterParameter=920}"
-                                                 Value="True">
-                                        <Setter Property="Width" Value="Auto" />
-                                        <Setter Property="HorizontalAlignment" Value="Stretch" />
-                                        <Setter Property="BorderThickness" Value="0" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsThreadOpen}"
-                                                 Value="False">
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
+                    <!-- Thread -->
+                    <Border Style="{StaticResource MessagesThreadPaneBorder}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -1092,25 +1318,23 @@
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Border Grid.Row="0"
-                                    Style="{StaticResource HeaderStyle}">
+                                    Style="{StaticResource MessagesHeaderBorder}">
                                 <Grid>
-                                    <StackPanel VerticalAlignment="Center">
-                                        <TextBlock Style="{StaticResource HeaderTitleTextStyle}"
+                                    <StackPanel Style="{StaticResource MessagesThreadTitleStack}">
+                                        <TextBlock Style="{StaticResource MessagesHeaderTitleTextBlock}"
                                                    Text="Thread" />
                                         <ContentPresenter Content="{Binding Selected}"
                                                           ContentTemplate="{StaticResource ThreadCaptionTemplate}" />
                                     </StackPanel>
-                                    <Button Style="{StaticResource SubtleIconButtonStyle}"
-                                            HorizontalAlignment="Right" VerticalAlignment="Center"
+                                    <Button Style="{StaticResource MessagesCloseThreadButton}"
                                             Command="{Binding CloseThreadCommand}"
                                             Content="&#xE711;"
-                                            FontSize="12"
                                             ToolTip="Close thread"
                                             AutomationProperties.Name="Close thread" />
                                 </Grid>
                             </Border>
                             <ScrollViewer Grid.Row="1"
-                                          HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
+                                          Style="{StaticResource PaneScroll}"
                                           AutomationProperties.Name="Thread">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Loaded">
@@ -1120,32 +1344,20 @@
                                         <i:CallMethodAction MethodName="ScrollToEnd" />
                                     </s:EventRequestTrigger>
                                 </i:Interaction.Triggers>
-                                <StackPanel Margin="0,16,0,12">
+                                <StackPanel Style="{StaticResource MessagesThreadStack}">
                                     <ContentPresenter Content="{Binding Thread}"
                                                       ContentTemplate="{StaticResource ThreadRootTemplate}" />
                                     <Grid DataContext="{Binding Thread}"
-                                          Margin="16,8,16,4">
-                                        <Grid.Style>
-                                            <Style TargetType="{x:Type Grid}"
-                                                   d:DataContext="{d:DesignInstance Type={x:Type sample:Message}}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Replies.Count}"
-                                                                 Value="0">
-                                                        <Setter Property="Visibility" Value="Collapsed" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Grid.Style>
+                                          Style="{StaticResource MessagesThreadRepliesGrid}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="8" />
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0"
-                                                   Style="{StaticResource ReplyCountTextStyle}"
-                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                                        <Border Grid.Column="1"
-                                                Style="{StaticResource LineStyle}"
-                                                Margin="8,0,0,0" />
+                                                   Style="{StaticResource MessagesThreadReplyCountTextBlock}" />
+                                        <Border Grid.Column="2"
+                                                Style="{StaticResource MessagesLineBorder}" />
                                     </Grid>
                                     <ItemsControl ItemsSource="{Binding Thread.Replies, FallbackValue={x:Null}}"
                                                   ItemTemplate="{StaticResource ReplyTemplate}"
@@ -1153,13 +1365,14 @@
                                 </StackPanel>
                             </ScrollViewer>
                             <Grid Grid.Row="2"
-                                  Margin="16,8,16,16">
+                                  Style="{StaticResource MessagesComposerGrid}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="8" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBox Grid.Column="0"
-                                         Style="{StaticResource ComposerTextBoxStyle}"
+                                         Style="{StaticResource MessagesComposerTextBox}"
                                          behaviors:TextBoxOption.PlaceholderText="Reply…"
                                          Text="{Binding ReplyDraft, UpdateSourceTrigger=PropertyChanged}"
                                          AutomationProperties.Name="Reply">
@@ -1168,24 +1381,21 @@
                                                     Command="{Binding ReplyCommand}" />
                                     </TextBox.InputBindings>
                                 </TextBox>
-                                <Button Grid.Column="1"
-                                        Style="{DynamicResource AccentButtonStyle}"
-                                        Width="40" Height="32" MinWidth="0"
-                                        Margin="8,0,0,0" Padding="0"
-                                        VerticalAlignment="Bottom"
+                                <Button Grid.Column="2"
+                                        Style="{StaticResource MessagesSendButton}"
                                         Command="{Binding ReplyCommand}"
                                         Focusable="False"
                                         Content="&#xE724;"
-                                        FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                        FontSize="14"
                                         ToolTip="Send reply"
                                         AutomationProperties.Name="Send reply" />
                             </Grid>
                         </Grid>
                     </Border>
+
                 </Grid>
             </Grid>
         </Border>
+
     </Grid>
 
 </UserControl>
