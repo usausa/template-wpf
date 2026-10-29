@@ -462,7 +462,7 @@
            TargetType="{x:Type TextBlock}">
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="FontSize" Value="11" />
+        <Setter Property="FontSize" Value="12" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="Foreground" Value="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
     </Style>
@@ -471,14 +471,8 @@
            TargetType="{x:Type Border}"
            BasedOn="{StaticResource CountBadgeBorder}">
         <Setter Property="MinWidth" Value="16" />
-        <Setter Property="Height" Value="14" />
+        <Setter Property="Height" Value="16" />
         <Setter Property="Padding" Value="4,0" />
-    </Style>
-
-    <Style x:Key="SmallCountBadgeTextBlock"
-           TargetType="{x:Type TextBlock}"
-           BasedOn="{StaticResource CountBadgeTextBlock}">
-        <Setter Property="FontSize" Value="10" />
     </Style>
 
 </ResourceDictionary>

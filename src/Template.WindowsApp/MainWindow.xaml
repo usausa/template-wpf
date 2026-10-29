@@ -252,7 +252,7 @@
                                                     FontSize="16" />
                                 <Border Grid.Column="0"
                                         Style="{StaticResource SideBarIconBadgeBorder}">
-                                    <TextBlock Style="{StaticResource SmallCountBadgeTextBlock}"
+                                    <TextBlock Style="{StaticResource CountBadgeTextBlock}"
                                                Text="{Binding Badge}" />
                                 </Border>
                                 <TextBlock Grid.Column="1"
@@ -871,7 +871,7 @@
                 <TextBlock Style="{StaticResource TitleBarBellGlyphTextBlock}"
                            Text="&#xEA8F;" />
                 <Border Style="{StaticResource BellBadgeBorder}">
-                    <TextBlock Style="{StaticResource SmallCountBadgeTextBlock}"
+                    <TextBlock Style="{StaticResource CountBadgeTextBlock}"
                                Text="{Binding Notifications.UnreadCount}" />
                 </Border>
             </Grid>
@@ -922,7 +922,7 @@
                                                         Glyph="{Binding Emoji}" />
                                     <Border Grid.Column="0"
                                             Style="{StaticResource SideBarIconBadgeBorder}">
-                                        <TextBlock Style="{StaticResource SmallCountBadgeTextBlock}"
+                                        <TextBlock Style="{StaticResource CountBadgeTextBlock}"
                                                    Text="{Binding Badge}" />
                                     </Border>
                                     <TextBlock Grid.Column="1"

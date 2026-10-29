@@ -154,8 +154,8 @@
         <Style x:Key="MessagesSmallAvatarBorder"
                TargetType="{x:Type Border}"
                BasedOn="{StaticResource MessagesAvatarBorder}">
-            <Setter Property="Width" Value="20" />
-            <Setter Property="Height" Value="20" />
+            <Setter Property="Width" Value="24" />
+            <Setter Property="Height" Value="24" />
         </Style>
         <Style x:Key="MessagesReplierAvatarBorder"
                TargetType="{x:Type Border}"
@@ -166,14 +166,9 @@
                TargetType="{x:Type TextBlock}">
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="FontSize" Value="13" />
+            <Setter Property="FontSize" Value="12" />
             <Setter Property="FontWeight" Value="SemiBold" />
             <Setter Property="Foreground" Value="White" />
-        </Style>
-        <Style x:Key="MessagesSmallAvatarTextBlock"
-               TargetType="{x:Type TextBlock}"
-               BasedOn="{StaticResource MessagesAvatarTextBlock}">
-            <Setter Property="FontSize" Value="9" />
         </Style>
         <Style x:Key="MessagesPresenceBorder"
                TargetType="{x:Type Border}"
@@ -214,7 +209,7 @@
                       DataType="{x:Type sample:Person}">
             <Grid>
                 <Border Style="{StaticResource MessagesSmallAvatarBorder}">
-                    <TextBlock Style="{StaticResource MessagesSmallAvatarTextBlock}"
+                    <TextBlock Style="{StaticResource MessagesAvatarTextBlock}"
                                Text="{Binding Initials}" />
                 </Border>
                 <Border Style="{StaticResource MessagesSmallPresenceBorder}" />
@@ -223,7 +218,7 @@
         <DataTemplate x:Key="ReplierTemplate"
                       DataType="{x:Type sample:Person}">
             <Border Style="{StaticResource MessagesReplierAvatarBorder}">
-                <TextBlock Style="{StaticResource MessagesSmallAvatarTextBlock}"
+                <TextBlock Style="{StaticResource MessagesAvatarTextBlock}"
                            Text="{Binding Initials}" />
             </Border>
         </DataTemplate>
@@ -831,7 +826,7 @@
             <Setter Property="Margin" Value="0,4,0,0" />
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Top" />
-            <Setter Property="FontSize" Value="11" />
+            <Setter Property="FontSize" Value="12" />
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
             <Setter Property="Visibility" Value="Collapsed" />
         </Style>

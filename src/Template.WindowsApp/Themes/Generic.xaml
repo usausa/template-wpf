@@ -953,7 +953,6 @@
                                     Command="{TemplateBinding RemoveCommand}"
                                     CommandParameter="{TemplateBinding RemoveCommandParameter}"
                                     Content="&#xE711;"
-                                    FontSize="10"
                                     ToolTip="Remove"
                                     AutomationProperties.Name="{Binding Text, RelativeSource={RelativeSource TemplatedParent}, StringFormat='Remove {0}'}" />
                         </StackPanel>
@@ -1088,7 +1087,6 @@
                                     Margin="4,0,0,0"
                                     Focusable="False"
                                     Content="&#xE711;"
-                                    FontSize="10"
                                     ToolTip="Close tab"
                                     AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource TemplatedParent}, StringFormat='Close {0}'}" />
                         </Grid>
