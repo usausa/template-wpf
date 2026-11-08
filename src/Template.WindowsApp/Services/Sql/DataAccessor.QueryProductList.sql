@@ -2,7 +2,7 @@ SELECT
     *
 FROM
     Product
-/*% if (keyword != null) { */
+/*% if (keyword is not null) { */
 WHERE
     Code LIKE /*@ keyword */'' ESCAPE '\'
     OR Name LIKE /*@ keyword */'' ESCAPE '\'

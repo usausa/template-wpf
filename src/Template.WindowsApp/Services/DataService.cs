@@ -17,7 +17,6 @@ public sealed record DatabaseInfo(
     long DataCount,
     long BulkDataCount);
 
-// ReSharper disable once ClassNeverInstantiated.Global
 public sealed class DataService
 {
     private const char LikeEscape = '\\';

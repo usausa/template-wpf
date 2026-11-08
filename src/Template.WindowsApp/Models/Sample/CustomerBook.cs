@@ -4,6 +4,7 @@ using Template.WindowsApp.Models.Entity;
 
 public static class CustomerSample
 {
+    // ReSharper disable StringLiteralTypo
     public static IReadOnlyList<CustomerEntity> LoadCustomers() =>
     [
         new() { Id = 1, Name = "Emma Wilson", Company = "Contoso", Email = "emma.wilson@contoso.com", Phone = "+1 555-0101", City = "Seattle" },
@@ -27,4 +28,5 @@ public static class CustomerSample
         new() { Id = 19, Name = "Evelyn Clark", Company = "School of Fine Art", Email = "evelyn.clark@fineartschool.net", Phone = "+1 555-0119", City = "Philadelphia" },
         new() { Id = 20, Name = "Daniel Lewis", Company = "Humongous Insurance", Email = "daniel.lewis@humongousinsurance.com", Phone = "+1 555-0120", City = "Minneapolis" }
     ];
+    // ReSharper restore StringLiteralTypo
 }

@@ -4,7 +4,6 @@ using System.Windows.Threading;
 
 using Template.WindowsApp.Models;
 
-// ReSharper disable once ClassNeverInstantiated.Global
 public sealed class NotificationCenter : NotificationObject
 {
     private const int MaxCount = 3;

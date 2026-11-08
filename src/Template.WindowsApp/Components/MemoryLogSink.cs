@@ -4,7 +4,6 @@ using Serilog.Core;
 using Serilog.Events;
 using Serilog.Formatting.Display;
 
-// ReSharper disable once ClassNeverInstantiated.Global
 public sealed class MemoryLogSink : ILogEventSink, IDisposable
 {
     public const int Capacity = 1000;

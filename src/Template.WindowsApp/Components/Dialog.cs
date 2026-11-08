@@ -6,7 +6,6 @@ using Template.WindowsApp.Shell;
 using Template.WindowsApp.Views;
 using Template.WindowsApp.Views.Dialogs;
 
-// ReSharper disable once ClassNeverInstantiated.Global
 public sealed class Dialog : IDialog
 {
     private const string AllFilesFilter = "All files (*.*)|*.*";

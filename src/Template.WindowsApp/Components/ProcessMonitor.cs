@@ -3,7 +3,6 @@ namespace Template.WindowsApp.Components;
 using System.Diagnostics;
 using System.Windows.Threading;
 
-// ReSharper disable once ClassNeverInstantiated.Global
 public sealed class ProcessMonitor : IDisposable
 {
     public const int Capacity = 60;

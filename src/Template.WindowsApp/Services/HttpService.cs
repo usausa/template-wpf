@@ -37,7 +37,6 @@ public sealed class PostPatchRequest
 // Service
 //--------------------------------------------------------------------------------
 
-// ReSharper disable once ClassNeverInstantiated.Global
 public sealed class HttpService
 {
     private readonly IHttpClientFactory httpClientFactory;

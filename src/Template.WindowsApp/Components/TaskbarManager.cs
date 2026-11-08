@@ -5,7 +5,6 @@ using System.Windows.Shell;
 using Template.WindowsApp.Shell;
 using Template.WindowsApp.Views;
 
-// ReSharper disable once ClassNeverInstantiated.Global
 public sealed class TaskbarManager : NotificationObject, IDisposable
 {
     private const string FavoriteCategory = "Favorites";

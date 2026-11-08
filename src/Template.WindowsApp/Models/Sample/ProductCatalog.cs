@@ -15,7 +15,9 @@ public static class ProductSample
         ["Excel course", "Word course", "Security course", "Cloud course", "Network course", "Python course", "SQL course", "Design course", "Project course", "Leadership course"]
     ];
 
+    // ReSharper disable StringLiteralTypo
     private static readonly string[] Suppliers = ["Contoso", "Fabrikam", "Northwind Traders", "Litware", "Proseware", "Adventure Works"];
+    // ReSharper restore StringLiteralTypo
 
     private static readonly string[] Warehouses = ["Tokyo", "Osaka", "Nagoya", "Fukuoka"];
 
