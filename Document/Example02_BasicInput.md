@@ -23,7 +23,7 @@
 </p>
 
 - TextBox (placeholder) / PasswordBox / Multi-line / RichTextBox / Read-only / NumberBox
-- AutoSuggestBox / Search box
+- AutoSuggestBox / Search box / Masked
 
 ## Date & time
 

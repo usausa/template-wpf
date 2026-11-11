@@ -1,5 +1,7 @@
 # Template project for WPF
 
+[Template](https://usausa.github.io/template/) project for WPF.
+
 # 📸 Image
 
 <p>
@@ -47,11 +49,20 @@
 | Category | Feature |
 | --- | --- |
 | Window | Custom title bar / Snap layouts / Fluent theme (Light / Dark) / Window placement / Per-monitor DPI |
-| Shell | Side bar (groups, favorites, unread counts) / Recent pages / Back and forward / Command palette / Notifications (history) / Busy indicator / Settings (search) |
+| Shell | Side bar (groups, favorites, unread counts) / Recent pages / Back and forward / Command palette / Notifications (history) / Busy indicator / Settings (search) ([list](Document/ShellAndControls.md#shell)) |
 | App | Single instance / Startup arguments / Error window / Update notice / Taskbar progress and badge / Jump list |
 | Basic | Navigation / Dialog (in-window) / Setting / Logging / DI (source generator) / Leak detection / Color emoji / Unit tests |
+| Controls | AppWindow / ContentDialog / InfoBar / AutoSuggestBox / NumberBox / ToggleSwitch / TimePicker / DropDownButton / SplitButton / TabView / SettingsCard / EmojiIcon / Charts ([list](Document/ShellAndControls.md#controls)) |
 | Data | SQLite |
 | Network | Web API |
+
+# 🔗 Related Projects
+
+| Project | Description |
+| --- | --- |
+| [template-avalonia-desktop](https://github.com/usausa/template-avalonia-desktop) | Avalonia desktop application template |
+| [template-avalonia-embedded](https://github.com/usausa/template-avalonia-embedded) | Avalonia application template for Raspberry Pi embedded devices |
+| [template-avalonia-linux](https://github.com/usausa/template-avalonia-linux) | Avalonia application template for Linux kiosk terminals |
 
 # 📦 My Libraries
 
