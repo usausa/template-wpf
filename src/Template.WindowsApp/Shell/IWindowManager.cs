@@ -153,7 +153,7 @@ public sealed class WindowManager : NotificationObject, IWindowManager
         }
         foreach (var pair in (setting.CommandCounts ?? string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries))
         {
-            var separator = pair.LastIndexOf('=');
+            var separator = pair.LastIndexOf('=', StringComparison.Ordinal);
             if ((separator > 0) && Int32.TryParse(pair.AsSpan(separator + 1), NumberStyles.None, CultureInfo.InvariantCulture, out var count))
             {
                 CommandCounts[pair[..separator]] = count;

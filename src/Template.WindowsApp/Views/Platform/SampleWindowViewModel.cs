@@ -19,6 +19,9 @@ public sealed partial class SampleWindowViewModel : ExtendViewModelBase
     [ObservableProperty]
     public partial bool ShowIcon { get; set; }
 
+    [ObservableProperty]
+    public partial bool IsLocked { get; set; }
+
     public SampleWindowViewModel()
     {
         Title = String.Create(CultureInfo.CurrentCulture, $"Window {++sequence}");

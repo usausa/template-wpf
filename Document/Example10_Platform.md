@@ -7,7 +7,7 @@
 </p>
 
 - New window / Tool window / Compact overlay
-- Always on top / Resizable / Show in taskbar / Title bar icon (in the opened window)
+- Always on top / Resizable / Show in taskbar / Title bar icon / Locked (in the opened window)
 
 ## Clipboard & drag
 

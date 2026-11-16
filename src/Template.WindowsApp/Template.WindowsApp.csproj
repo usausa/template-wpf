@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <StartupObject>Template.WindowsApp.Program</StartupObject>
-    <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
+    <TargetFramework>net11.0-windows10.0.26100.0</TargetFramework>
     <UseWPF>true</UseWPF>
     <SatelliteResourceLanguages>en;ja</SatelliteResourceLanguages>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -14,14 +14,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BunnyTail.DependencyInjection" Version="0.10.0" />
-    <PackageReference Include="BunnyTail.XamlProperty.Wpf" Version="1.5.0" />
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.15" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.15" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.15" />
-    <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="10.0.15" />
+    <PackageReference Include="BunnyTail.DependencyInjection" Version="1.0.0" />
+    <PackageReference Include="BunnyTail.XamlProperty.Wpf" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="11.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="11.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="11.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="11.0.0" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.161" />
-    <PackageReference Include="Rester" Version="2.17.0" />
+    <PackageReference Include="Rester" Version="3.0.0" />
     <PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0" />
     <PackageReference Include="Serilog.Extensions.Hosting" Version="10.0.0" />
     <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.0" />
@@ -31,9 +31,9 @@
     <PackageReference Include="System.Reactive" Version="7.0.0" />
     <PackageReference Include="System.Reactive.Wpf" Version="7.0.0" />
     <PackageReference Include="Usa.Smart.Core" Version="3.0.0" />
-    <PackageReference Include="Usa.Smart.Data" Version="2.11.0" />
-    <PackageReference Include="Usa.Smart.Data.Accessor" Version="3.0.0-beta16" />
-    <PackageReference Include="Usa.Smart.Mapper" Version="1.0.0-beta14" />
+    <PackageReference Include="Usa.Smart.Data" Version="3.0.0" />
+    <PackageReference Include="Usa.Smart.Data.Accessor" Version="3.0.0" />
+    <PackageReference Include="Usa.Smart.Mapper" Version="1.0.0" />
     <PackageReference Include="Usa.Smart.Mvvm" Version="3.0.0" />
     <PackageReference Include="Usa.Smart.Navigation" Version="3.21.0" />
     <PackageReference Include="Usa.Smart.Navigation.Extensions.DependencyInjection" Version="3.21.0" />

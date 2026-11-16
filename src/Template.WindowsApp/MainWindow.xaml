@@ -799,6 +799,19 @@
                          ProgressValue="{Binding Taskbar.Value}" />
     </controls:AppWindow.TaskbarItemInfo>
 
+    <controls:AppWindow.IsLocked>
+        <MultiBinding>
+            <MultiBinding.Converter>
+                <s:AllConverter />
+            </MultiBinding.Converter>
+            <Binding Path="BusyState.IsBusy" />
+            <Binding Path="IsNavigating"
+                     Converter="{StaticResource ReverseConverter}" />
+            <Binding Path="Dialogs.Current"
+                     Converter="{s:NullToBool}" />
+        </MultiBinding>
+    </controls:AppWindow.IsLocked>
+
     <i:Interaction.Behaviors>
         <behaviors:MouseBackForwardBehavior BackCommand="{Binding GoBackCommand}"
                                             ForwardCommand="{Binding GoForwardCommand}" />

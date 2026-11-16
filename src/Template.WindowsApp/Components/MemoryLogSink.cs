@@ -64,7 +64,7 @@ public sealed class MemoryLogSink : ILogEventSink, IDisposable
     {
         if (logEvent.Properties.TryGetValue(Constants.SourceContextPropertyName, out var value) && (value is ScalarValue { Value: string context }))
         {
-            return context[(context.LastIndexOf('.') + 1)..];
+            return context[(context.LastIndexOf('.', StringComparison.Ordinal) + 1)..];
         }
 
         return string.Empty;

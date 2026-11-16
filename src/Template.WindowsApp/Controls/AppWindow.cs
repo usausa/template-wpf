@@ -2,6 +2,7 @@ namespace Template.WindowsApp.Controls;
 
 using System.Windows.Controls;
 using System.Windows.Interop;
+using System.Windows.Shell;
 
 using BunnyTail.XamlProperty;
 
@@ -17,6 +18,10 @@ public partial class AppWindow : Window
 
     private FrameworkElement? overlayTitleBar;
 
+    private NativeMethods.Rect? lockedBounds;
+
+    private bool lockedZoomed;
+
     [DependencyProperty]
     public partial object? LeftHeader { get; set; }
 
@@ -31,6 +36,9 @@ public partial class AppWindow : Window
 
     [DependencyProperty]
     public partial object? OverlayContent { get; set; }
+
+    [DependencyProperty(PropertyChanged = nameof(OnIsLockedChanged))]
+    public partial bool IsLocked { get; set; }
 
     static AppWindow()
     {
@@ -49,6 +57,10 @@ public partial class AppWindow : Window
         if (PresentationSource.FromVisual(this) is HwndSource source)
         {
             source.AddHook(WndProc);
+            if (IsLocked)
+            {
+                Lock(source.Handle);
+            }
         }
     }
 
@@ -102,7 +114,22 @@ public partial class AppWindow : Window
     {
         switch (msg)
         {
-            case NativeMethods.WmNcHitTest when IsOverMaximizeButton(lParam):
+            case NativeMethods.WmSysCommand when IsLocked && IsLockedCommand(NativeMethods.ToSystemCommand(wParam)):
+                handled = true;
+                break;
+            case NativeMethods.WmInitMenuPopup when IsLocked && NativeMethods.IsSystemMenu(hwnd, wParam):
+                NativeMethods.GraySystemMenu(hwnd, WindowState == WindowState.Maximized);
+                break;
+            case NativeMethods.WmWindowPosChanging when IsLocked && (lockedBounds is { } bounds) && !NativeMethods.IsIconic(hwnd) && (NativeMethods.IsZoomed(hwnd) == lockedZoomed):
+                NativeMethods.KeepWindowPos(lParam, bounds);
+                break;
+            case NativeMethods.WmWindowPosChanged when IsLocked && !NativeMethods.IsIconic(hwnd) && ((lockedBounds is null) || (NativeMethods.IsZoomed(hwnd) != lockedZoomed)):
+                StoreLockedBounds(hwnd);
+                break;
+            case NativeMethods.WmNcHitTest when IsLocked && IsOnResizeBorder(hwnd, lParam):
+                handled = true;
+                return NativeMethods.HtBorder;
+            case NativeMethods.WmNcHitTest when !IsLocked && IsOverMaximizeButton(lParam):
                 handled = true;
                 return NativeMethods.HtMaxButton;
             case NativeMethods.WmNcMouseMove when maximizeButton is { } button:
@@ -135,6 +162,63 @@ public partial class AppWindow : Window
         }
 
         return IntPtr.Zero;
+    }
+
+    private void OnIsLockedChanged()
+    {
+        var hwnd = new WindowInteropHelper(this).Handle;
+        if (hwnd == IntPtr.Zero)
+        {
+            return;
+        }
+
+        if (IsLocked)
+        {
+            Lock(hwnd);
+        }
+        else
+        {
+            lockedBounds = null;
+            NativeMethods.ResetSystemMenu(hwnd);
+        }
+    }
+
+    private void Lock(IntPtr hwnd)
+    {
+        StoreLockedBounds(hwnd);
+        NativeMethods.GraySystemMenu(hwnd, WindowState == WindowState.Maximized);
+    }
+
+    private void StoreLockedBounds(IntPtr hwnd)
+    {
+        lockedBounds = !NativeMethods.IsIconic(hwnd) && NativeMethods.GetWindowRect(hwnd, out var rect) ? rect : null;
+        lockedZoomed = NativeMethods.IsZoomed(hwnd);
+    }
+
+    private bool IsLockedCommand(int command) =>
+        command switch
+        {
+            NativeMethods.ScClose or NativeMethods.ScMaximize or NativeMethods.ScMove or NativeMethods.ScSize => true,
+            NativeMethods.ScRestore => WindowState == WindowState.Maximized,
+            _ => false
+        };
+
+    private bool IsOnResizeBorder(IntPtr hwnd, IntPtr lParam)
+    {
+        if ((WindowState != WindowState.Normal) || (WindowChrome.GetWindowChrome(this) is not { } chrome) || !NativeMethods.GetWindowRect(hwnd, out var rect))
+        {
+            return false;
+        }
+
+        var dpi = VisualTreeHelper.GetDpi(this);
+        var border = chrome.ResizeBorderThickness;
+        var value = lParam.ToInt64();
+        var x = unchecked((short)value);
+        var y = unchecked((short)(value >> 16));
+        return (x < rect.Left + (border.Left * dpi.DpiScaleX)) ||
+               (x >= rect.Right - (border.Right * dpi.DpiScaleX)) ||
+               (y < rect.Top + (border.Top * dpi.DpiScaleY)) ||
+               (y >= rect.Bottom - (border.Bottom * dpi.DpiScaleY));
     }
 
     private bool IsOverMaximizeButton(IntPtr lParam)

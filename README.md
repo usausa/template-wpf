@@ -48,7 +48,7 @@
 
 | Category | Feature |
 | --- | --- |
-| Window | Custom title bar / Snap layouts / Fluent theme (Light / Dark) / Window placement / Per-monitor DPI |
+| Window | Custom title bar / Snap layouts / Fluent theme (Light / Dark) / Window placement / Per-monitor DPI / Lock while busy |
 | Shell | Side bar (groups, favorites, unread counts) / Recent pages / Back and forward / Command palette / Notifications (history) / Busy indicator / Settings (search) ([list](Document/ShellAndControls.md#shell)) |
 | App | Single instance / Startup arguments / Error window / Update notice / Taskbar progress and badge / Jump list |
 | Basic | Navigation / Dialog (in-window) / Setting / Logging / DI (source generator) / Leak detection / Color emoji / Unit tests |

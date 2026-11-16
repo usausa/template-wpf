@@ -34,7 +34,7 @@ Custom controls in `Controls` (charts in `Controls/Charts`). The control templat
 
 | Control | Base | Description | Used in |
 | --- | --- | --- | --- |
-| AppWindow | Window | Window with the custom title bar (caption buttons, snap layouts) | Main window, Sample window, Memory window, Error window |
+| AppWindow | Window | Window with the custom title bar (caption buttons, snap layouts) and a lock that blocks closing, maximizing, moving and resizing | Main window, Sample window, Memory window, Error window |
 | CaptionButton | Button | Minimize, maximize and close buttons of AppWindow | AppWindow |
 | TitleBarPanel | Panel | Lays out the title bar contents | AppWindow |
 | ContentDialog | ContentControl | Modal dialog inside the window | Dialogs (message, input, progress), Editable grid (bulk change) |

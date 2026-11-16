@@ -10,10 +10,11 @@
                     mc:Ignorable="d"
                     x:Class="Template.WindowsApp.Views.Platform.SampleWindow"
                     d:DataContext="{d:DesignInstance Type={x:Type module:SampleWindowViewModel}}"
-                    Width="560" Height="680" MinWidth="400" MinHeight="300"
+                    Width="560" Height="760" MinWidth="400" MinHeight="300"
                     ShowInTaskbar="{Binding ShowInTaskbar}"
                     Title="{Binding Title}"
                     Icon="../../App.ico"
+                    IsLocked="{Binding IsLocked}"
                     ShowIconOnTitleBar="{Binding ShowIcon}"
                     Topmost="{Binding IsTopmost}">
 
@@ -184,6 +185,33 @@
                                                Style="{StaticResource SampleWindowToggleSwitch}"
                                                IsChecked="{Binding ShowIcon}"
                                                AutomationProperties.Name="Title bar icon" />
+                    </Grid>
+                </Border>
+
+                <!-- Locked -->
+                <Border Style="{StaticResource CardBorder}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40" />
+                            <ColumnDefinition Width="8" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="16" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"
+                                   Style="{StaticResource SampleWindowIconTextBlock}"
+                                   Text="&#xE72E;" />
+                        <StackPanel Grid.Column="2"
+                                    Style="{StaticResource CardRowTitleStack}">
+                            <TextBlock Style="{StaticResource CardTitleTextBlock}"
+                                       Text="Locked" />
+                            <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                       Text="Block closing, maximizing, moving and resizing this window" />
+                        </StackPanel>
+                        <controls:ToggleSwitch Grid.Column="4"
+                                               Style="{StaticResource SampleWindowToggleSwitch}"
+                                               IsChecked="{Binding IsLocked}"
+                                               AutomationProperties.Name="Locked" />
                     </Grid>
                 </Border>
 

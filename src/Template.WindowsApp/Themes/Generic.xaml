@@ -41,6 +41,11 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.4" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <Style x:Key="CloseCaptionButton"
@@ -332,10 +337,15 @@
                         <Trigger Property="ResizeMode" Value="CanMinimize">
                             <Setter TargetName="PART_MaximizeButton" Property="Visibility" Value="Collapsed" />
                         </Trigger>
+                        <Trigger Property="IsLocked" Value="True">
+                            <Setter TargetName="PART_MaximizeButton" Property="IsEnabled" Value="False" />
+                            <Setter TargetName="PART_CloseButton" Property="IsEnabled" Value="False" />
+                        </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="ResizeMode" Value="CanResizeWithGrip" />
                                 <Condition Property="WindowState" Value="Normal" />
+                                <Condition Property="IsLocked" Value="False" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="WindowResizeGrip" Property="Visibility" Value="Visible" />
                         </MultiTrigger>

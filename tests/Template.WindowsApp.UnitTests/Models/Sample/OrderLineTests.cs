@@ -173,16 +173,16 @@ public sealed class OrderLineTests
     }
 
     [Theory]
-    [InlineData(12.34, true)]
-    [InlineData(12.345, false)]
-    [InlineData(0, false)]
-    public void TryPasteAcceptsUnitPriceWithTwoDecimals(double price, bool expected)
+    [InlineData("12.34", true)]
+    [InlineData("12.345", false)]
+    [InlineData("0", false)]
+    public void TryPasteAcceptsUnitPriceWithTwoDecimals(string price, bool expected)
     {
         // Arrange
         var line = OrderLine.Create(MakeEmptyValues(), Time);
 
         // Act
-        var pasted = line.TryPaste(nameof(OrderLine.UnitPrice), ((decimal)price).ToString(CultureInfo.CurrentCulture));
+        var pasted = line.TryPaste(nameof(OrderLine.UnitPrice), Decimal.Parse(price, CultureInfo.InvariantCulture).ToString(CultureInfo.CurrentCulture));
 
         // Assert
         Assert.Equal(expected, pasted);
