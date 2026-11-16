@@ -6,7 +6,18 @@ using System.Windows.Controls.Primitives;
 
 using BunnyTail.XamlProperty;
 
-using Template.WindowsApp.Models;
+public enum TabViewWidthMode
+{
+    Equal,
+    SizeToContent,
+    Compact
+}
+
+public enum TabViewCloseButtonOverlayMode
+{
+    Always,
+    OnPointerOver
+}
 
 [TemplatePart(Name = ScrollViewerPartName, Type = typeof(ScrollViewer))]
 [TemplatePart(Name = AddButtonPartName, Type = typeof(ButtonBase))]

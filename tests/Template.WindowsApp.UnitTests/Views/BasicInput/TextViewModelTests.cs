@@ -1,5 +1,6 @@
 namespace Template.WindowsApp.Views.BasicInput;
 
+using Template.WindowsApp.Controls;
 using Template.WindowsApp.Models;
 
 [Collection(ViewModelTestGroup.Name)]
@@ -196,6 +197,21 @@ public sealed class TextViewModelTests
         Assert.Empty(viewModel.CustomerSuggestions);
         Assert.Null(viewModel.SelectedCustomer);
         Assert.Null(viewModel.CustomerQuery);
+    }
+
+    [Fact]
+    public void ResetClearsPhoneNumber()
+    {
+        // Arrange
+        using var viewModel = new TextViewModel();
+        viewModel.OnActivated();
+        viewModel.PhoneNumber = "09012345678";
+
+        // Act
+        viewModel.ResetCommand.Execute(null);
+
+        // Assert
+        Assert.Equal(string.Empty, viewModel.PhoneNumber);
     }
 
     private static string[] CityNames(TextViewModel viewModel) =>

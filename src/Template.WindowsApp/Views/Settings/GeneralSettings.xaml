@@ -2,8 +2,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:shell="clr-namespace:Template.WindowsApp.Shell"
              xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
-             xmlns:settings="clr-namespace:Template.WindowsApp.Settings"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Settings"
              mc:Ignorable="d"
              x:Class="Template.WindowsApp.Views.Settings.GeneralSettings"
@@ -44,9 +44,9 @@
                       SelectedValue="{Binding WindowManager.StartPage}"
                       SelectedValuePath="Tag">
                 <ComboBoxItem Content="Home"
-                              Tag="{x:Static settings:StartPage.Home}" />
+                              Tag="{x:Static shell:StartPage.Home}" />
                 <ComboBoxItem Content="Last opened page"
-                              Tag="{x:Static settings:StartPage.LastPage}" />
+                              Tag="{x:Static shell:StartPage.LastPage}" />
             </ComboBox>
         </controls:SettingsCard>
 

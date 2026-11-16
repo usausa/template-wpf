@@ -1,5 +1,6 @@
 namespace Template.WindowsApp.Views.Forms;
 
+using Template.WindowsApp.Helpers.Validations;
 using Template.WindowsApp.Shell;
 
 // ReSharper disable once ClassNeverInstantiated.Global

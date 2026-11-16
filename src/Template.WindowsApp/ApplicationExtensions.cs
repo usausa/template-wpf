@@ -4,6 +4,7 @@ using System.Net.Http.Headers;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using System.Text.Unicode;
 
 using BunnyTail.DependencyInjection;
@@ -67,8 +68,9 @@ public static partial class ApplicationExtensions
         builder.Services.AddSingleton(TimeProvider.System);
 
         // Setting
-        builder.Services.AddOptions<ClientSettings>().BindConfiguration("Client").ValidateDataAnnotations().ValidateOnStart();
-        builder.Services.AddSingleton(static p => p.GetRequiredService<IOptions<ClientSettings>>().Value);
+        builder.Services.AddOptions<ClientSetting>().BindConfiguration("Client").ValidateDataAnnotations().ValidateOnStart();
+        builder.Services.AddSingleton(static p => p.GetRequiredService<IOptions<ClientSetting>>().Value);
+        builder.Services.AddSingleton(static p => p.GetRequiredService<ClientSetting>().Greet);
 
         // Messenger
         builder.Services.AddSingleton<IReactiveMessenger>(ReactiveMessenger.Default);
@@ -120,6 +122,9 @@ public static partial class ApplicationExtensions
         // Data
         var connectionString = builder.Configuration.GetConnectionString("Default");
         builder.Services.AddSingleton<IDbProvider>(new DelegateDbProvider(() => new SqliteConnection(connectionString)));
+        builder.Services.AddSingleton<IDialect>(new DelegateDialect(
+            static ex => ex is SqliteException { SqliteExtendedErrorCode: 1555 or 2067 },
+            static x => Regex.Replace(x, @"[%_\\]", @"\$0")));
         builder.Services.AddDataAccessors();
 
         // Service

@@ -5,6 +5,7 @@
                     xmlns:s="http://smart/windows"
                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                     xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
+                    xmlns:charts="clr-namespace:Template.WindowsApp.Controls.Charts"
                     xmlns:components="clr-namespace:Template.WindowsApp.Components"
                     xmlns:module="clr-namespace:Template.WindowsApp.Views.Platform"
                     mc:Ignorable="d"
@@ -32,7 +33,7 @@
         </Style>
 
         <Style x:Key="MemoryWindowLineChart"
-               TargetType="{x:Type controls:LineChart}">
+               TargetType="{x:Type charts:LineChart}">
             <Setter Property="Fill" Value="{StaticResource ChartBlueSuperLightBrush}" />
             <Setter Property="Stroke" Value="{StaticResource ChartBlueBrush}" />
             <Setter Property="GridBrush" Value="{DynamicResource DividerStrokeColorDefaultBrush}" />
@@ -71,11 +72,11 @@
         </Grid>
 
         <!-- Chart -->
-        <controls:LineChart Grid.Row="2"
-                            Style="{StaticResource MemoryWindowLineChart}"
-                            Capacity="{x:Static components:ProcessMonitor.Capacity}"
-                            Labels="{Binding MemoryLabels}"
-                            Values="{Binding MemoryValues}" />
+        <charts:LineChart Grid.Row="2"
+                          Style="{StaticResource MemoryWindowLineChart}"
+                          Capacity="{x:Static components:ProcessMonitor.Capacity}"
+                          Labels="{Binding MemoryLabels}"
+                          Values="{Binding MemoryValues}" />
 
     </Grid>
 

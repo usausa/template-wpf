@@ -33,6 +33,7 @@
     "xmlns:animations",
     "xmlns:behaviors",
     "xmlns:controls",
+    "xmlns:charts",
     "xmlns:converters",
     "xmlns:effects",
     "xmlns:markup",
@@ -41,6 +42,7 @@
     "xmlns:enums",
     "xmlns:logic",
     "xmlns:helpers",
+    "xmlns:validations",
 
     "xmlns:components",
     "xmlns:services",

@@ -1,4 +1,4 @@
-namespace Template.WindowsApp.Views;
+namespace Template.WindowsApp.Helpers.Validations;
 
 using System.Reflection;
 

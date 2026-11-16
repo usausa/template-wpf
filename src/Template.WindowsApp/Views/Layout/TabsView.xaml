@@ -6,7 +6,6 @@
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:behaviors="clr-namespace:Template.WindowsApp.Behaviors"
              xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
-             xmlns:models="clr-namespace:Template.WindowsApp.Models"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Layout"
              mc:Ignorable="d"
              x:Class="Template.WindowsApp.Views.Layout.TabsView"
@@ -131,11 +130,11 @@
                           SelectedValue="{Binding WidthMode}"
                           SelectedValuePath="Tag">
                     <ComboBoxItem Content="Equal"
-                                  Tag="{x:Static models:TabViewWidthMode.Equal}" />
+                                  Tag="{x:Static controls:TabViewWidthMode.Equal}" />
                     <ComboBoxItem Content="Size to content"
-                                  Tag="{x:Static models:TabViewWidthMode.SizeToContent}" />
+                                  Tag="{x:Static controls:TabViewWidthMode.SizeToContent}" />
                     <ComboBoxItem Content="Compact"
-                                  Tag="{x:Static models:TabViewWidthMode.Compact}" />
+                                  Tag="{x:Static controls:TabViewWidthMode.Compact}" />
                 </ComboBox>
             </StackPanel>
             <StackPanel Grid.Column="2">

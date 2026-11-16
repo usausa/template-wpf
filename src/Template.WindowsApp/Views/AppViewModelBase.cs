@@ -1,5 +1,7 @@
 namespace Template.WindowsApp.Views;
 
+using Template.WindowsApp.Helpers.Validations;
+
 [ObservableGeneratorOption(Reactive = true, ViewModel = true)]
 public abstract class AppViewModelBase :
     ExtendViewModelBase,

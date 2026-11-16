@@ -7,7 +7,7 @@ using BunnyTail.XamlProperty;
 
 using Microsoft.Xaml.Behaviors;
 
-using Template.WindowsApp.Models;
+public sealed record ItemMove(int OldIndex, int NewIndex);
 
 public sealed partial class TabReorderBehavior : Behavior<TabControl>
 {

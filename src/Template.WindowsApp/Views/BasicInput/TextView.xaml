@@ -103,6 +103,20 @@
             </Style.Triggers>
         </Style>
 
+        <!-- Masked -->
+
+        <Style x:Key="TextMaskedResultTextBlock"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource SampleResultTextBlock}">
+            <Setter Property="Text" Value="{Binding PhoneNumber, StringFormat='Value: {0}'}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding PhoneNumber}"
+                             Value="">
+                    <Setter Property="Text" Value="Value: none" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
     </UserControl.Resources>
 
     <!-- Content -->
@@ -113,7 +127,7 @@
             <TextBlock Style="{StaticResource PageTitleTextBlock}"
                        Text="Text" />
             <TextBlock Style="{StaticResource PageDescriptionTextBlock}"
-                       Text="Text boxes, password boxes, number boxes, auto-suggest boxes and rich text." />
+                       Text="Text boxes, masked input, password boxes, number boxes, auto-suggest boxes and rich text." />
 
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -122,6 +136,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -316,6 +331,27 @@
                             </controls:AutoSuggestBox>
                         </StackPanel>
                         <TextBlock Style="{StaticResource TextCustomerResultTextBlock}" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Masked -->
+                <Border Grid.Row="4" Grid.Column="0"
+                        Style="{StaticResource CardBorder}">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource CardTitleTextBlock}"
+                                   Text="Masked" />
+                        <TextBlock Style="{StaticResource CardCaptionTextBlock}"
+                                   Text="Input in a fixed format, like a phone number." />
+                        <StackPanel Style="{StaticResource SampleStack}">
+                            <TextBox Style="{StaticResource SampleTextBox}"
+                                     AutomationProperties.Name="Phone number">
+                                <i:Interaction.Behaviors>
+                                    <s:MaskedTextBehavior Value="{Binding PhoneNumber}"
+                                                          IncludeLiterals="False" Mask="000-0000-0000" />
+                                </i:Interaction.Behaviors>
+                            </TextBox>
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource TextMaskedResultTextBlock}" />
                     </StackPanel>
                 </Border>
             </Grid>

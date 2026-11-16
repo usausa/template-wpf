@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:s="http://smart/windows"
-             xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
+             xmlns:charts="clr-namespace:Template.WindowsApp.Controls.Charts"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Graphics"
              mc:Ignorable="d"
              x:Class="Template.WindowsApp.Views.Graphics.ChartsView"
@@ -16,7 +16,7 @@
         <!-- Line -->
 
         <Style x:Key="ChartsLineChart"
-               TargetType="{x:Type controls:LineChart}">
+               TargetType="{x:Type charts:LineChart}">
             <Setter Property="MinHeight" Value="160" />
             <Setter Property="Margin" Value="0,16,0,0" />
             <Setter Property="Fill" Value="{StaticResource ChartBlueSuperLightBrush}" />
@@ -28,7 +28,7 @@
         <!-- Bar -->
 
         <Style x:Key="ChartsBarChart"
-               TargetType="{x:Type controls:BarChart}">
+               TargetType="{x:Type charts:BarChart}">
             <Setter Property="MinHeight" Value="160" />
             <Setter Property="Margin" Value="0,16,0,0" />
             <Setter Property="Fill" Value="{StaticResource ChartBlueBrush}" />
@@ -46,7 +46,7 @@
         </x:Array>
 
         <Style x:Key="ChartsDonutChart"
-               TargetType="{x:Type controls:DonutChart}">
+               TargetType="{x:Type charts:DonutChart}">
             <Setter Property="MinHeight" Value="160" />
             <Setter Property="Fills" Value="{StaticResource ShareFills}" />
         </Style>
@@ -131,10 +131,10 @@
                             <TextBlock Grid.Row="1"
                                        Style="{StaticResource CardCaptionTextBlock}"
                                        Text="Monthly values over a year." />
-                            <controls:LineChart Grid.Row="2"
-                                                Style="{StaticResource ChartsLineChart}"
-                                                Labels="{Binding MonthLabels}"
-                                                Values="{Binding MonthValues}" />
+                            <charts:LineChart Grid.Row="2"
+                                              Style="{StaticResource ChartsLineChart}"
+                                              Labels="{Binding MonthLabels}"
+                                              Values="{Binding MonthValues}" />
                         </Grid>
                     </Border>
 
@@ -153,10 +153,10 @@
                             <TextBlock Grid.Row="1"
                                        Style="{StaticResource CardCaptionTextBlock}"
                                        Text="Values by category." />
-                            <controls:BarChart Grid.Row="2"
-                                               Style="{StaticResource ChartsBarChart}"
-                                               Labels="{Binding CategoryLabels}"
-                                               Values="{Binding CategoryValues}" />
+                            <charts:BarChart Grid.Row="2"
+                                             Style="{StaticResource ChartsBarChart}"
+                                             Labels="{Binding CategoryLabels}"
+                                             Values="{Binding CategoryValues}" />
                         </Grid>
                     </Border>
 
@@ -182,9 +182,9 @@
                                     <ColumnDefinition Width="24" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <controls:DonutChart Grid.Column="0"
-                                                     Style="{StaticResource ChartsDonutChart}"
-                                                     Values="{Binding ShareValues}" />
+                                <charts:DonutChart Grid.Column="0"
+                                                   Style="{StaticResource ChartsDonutChart}"
+                                                   Values="{Binding ShareValues}" />
                                 <Grid Grid.Column="2"
                                       Style="{StaticResource ChartsLegendGrid}">
                                     <Grid.ColumnDefinitions>

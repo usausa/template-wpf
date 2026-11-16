@@ -1,6 +1,7 @@
 namespace Template.WindowsApp.Mocks;
 
 using System.IO;
+using System.Text.RegularExpressions;
 
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +25,7 @@ public sealed class TestDatabase : IDisposable
         provider = new ServiceCollection()
             .AddSingleton(timeProvider)
             .AddSingleton<IDbProvider>(new DelegateDbProvider(() => new SqliteConnection(connectionString)))
+            .AddSingleton<IDialect>(new DelegateDialect(static ex => ex is SqliteException { SqliteExtendedErrorCode: 1555 or 2067 }, static x => Regex.Replace(x, @"[%_\\]", @"\$0")))
             .AddDataAccessors()
             .AddSingleton<DataService>()
             .BuildServiceProvider();

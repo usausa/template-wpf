@@ -5,7 +5,6 @@
              xmlns:s="http://smart/windows"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:behaviors="clr-namespace:Template.WindowsApp.Behaviors"
-             xmlns:models="clr-namespace:Template.WindowsApp.Models"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Platform"
              mc:Ignorable="d"
              x:Class="Template.WindowsApp.Views.Platform.ClipboardDragView"
@@ -76,7 +75,7 @@
             <Setter Property="BorderBrush" Value="{DynamicResource ControlStrongStrokeColorDefaultBrush}" />
             <Setter Property="BorderThickness" Value="1" />
             <Style.Triggers>
-                <Trigger Property="behaviors:DropBehavior.IsDragOver" Value="True">
+                <Trigger Property="behaviors:DropTargetBehavior.IsDragOver" Value="True">
                     <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
                     <Setter Property="BorderBrush" Value="{DynamicResource AccentFillColorDefaultBrush}" />
                 </Trigger>
@@ -336,8 +335,8 @@
                             <Border Grid.Row="2"
                                     Style="{StaticResource ClipboardDragDropBorder}">
                                 <i:Interaction.Behaviors>
-                                    <behaviors:DropBehavior FilesCommand="{Binding DropFilesCommand}"
-                                                            TextCommand="{Binding DropTextCommand}" />
+                                    <behaviors:DropTargetBehavior FilesCommand="{Binding DropFilesCommand}"
+                                                                  TextCommand="{Binding DropTextCommand}" />
                                 </i:Interaction.Behaviors>
                                 <TextBlock Style="{StaticResource ClipboardDragDropHintTextBlock}"
                                            IsHitTestVisible="False"
@@ -348,7 +347,7 @@
                                 <ItemsControl ItemsSource="{Binding DroppedItems}"
                                               Focusable="False">
                                     <ItemsControl.ItemTemplate>
-                                        <DataTemplate DataType="{x:Type models:DroppedItem}">
+                                        <DataTemplate DataType="{x:Type module:DroppedItem}">
                                             <Grid Style="{StaticResource ClipboardDragDroppedGrid}">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*" />

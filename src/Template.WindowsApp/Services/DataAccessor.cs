@@ -2,7 +2,6 @@ namespace Template.WindowsApp.Services;
 
 using Smart.Data.Accessor.Attributes;
 
-using Template.WindowsApp.Models;
 using Template.WindowsApp.Models.Entity;
 
 [DataAccessor]

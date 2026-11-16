@@ -6,7 +6,6 @@
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:behaviors="clr-namespace:Template.WindowsApp.Behaviors"
              xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
-             xmlns:converters="clr-namespace:Template.WindowsApp.Converters"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.BasicInput"
              mc:Ignorable="d"
              x:Class="Template.WindowsApp.Views.BasicInput.DateTimeView"
@@ -18,7 +17,8 @@
 
         <!-- Converter -->
 
-        <converters:ShortDateConverter x:Key="ShortDateConverter" />
+        <s:FormatConverter x:Key="CurrentCultureFormatConverter"
+                           UseCurrentCulture="True" />
 
         <!-- Calendar -->
 
@@ -73,7 +73,7 @@
                                         SelectedDate="{Binding Date}" />
                         </StackPanel>
                         <TextBlock Style="{StaticResource SampleResultTextBlock}"
-                                   Text="{Binding Date, Converter={StaticResource ShortDateConverter}, StringFormat='Selected: {0}', TargetNullValue='Selected: -'}" />
+                                   Text="{Binding Date, Converter={StaticResource CurrentCultureFormatConverter}, ConverterParameter=d, StringFormat='Selected: {0}', TargetNullValue='Selected: -'}" />
                     </StackPanel>
                 </Border>
 
@@ -98,7 +98,7 @@
                             </DatePicker>
                         </StackPanel>
                         <TextBlock Style="{StaticResource SampleResultTextBlock}"
-                                   Text="{Binding LimitedDate, Converter={StaticResource ShortDateConverter}, StringFormat='Selected: {0}', TargetNullValue='Selected: -'}" />
+                                   Text="{Binding LimitedDate, Converter={StaticResource CurrentCultureFormatConverter}, ConverterParameter=d, StringFormat='Selected: {0}', TargetNullValue='Selected: -'}" />
                     </StackPanel>
                 </Border>
 
@@ -116,7 +116,7 @@
                                       SelectedDate="{Binding CalendarDate}" />
                         </StackPanel>
                         <TextBlock Style="{StaticResource SampleResultTextBlock}"
-                                   Text="{Binding CalendarDate, Converter={StaticResource ShortDateConverter}, StringFormat='Selected: {0}', TargetNullValue='Selected: -'}" />
+                                   Text="{Binding CalendarDate, Converter={StaticResource CurrentCultureFormatConverter}, ConverterParameter=d, StringFormat='Selected: {0}', TargetNullValue='Selected: -'}" />
                     </StackPanel>
                 </Border>
 
@@ -153,9 +153,11 @@
                                         <Setter.Value>
                                             <MultiBinding StringFormat="Selected: {0} – {1} ({2} days)">
                                                 <Binding Path="RangeStart"
-                                                         Converter="{StaticResource ShortDateConverter}" />
+                                                         Converter="{StaticResource CurrentCultureFormatConverter}"
+                                                         ConverterParameter="d" />
                                                 <Binding Path="RangeEnd"
-                                                         Converter="{StaticResource ShortDateConverter}" />
+                                                         Converter="{StaticResource CurrentCultureFormatConverter}"
+                                                         ConverterParameter="d" />
                                                 <Binding Path="RangeDays" />
                                             </MultiBinding>
                                         </Setter.Value>
@@ -163,7 +165,7 @@
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding RangeDays}"
                                                      Value="1">
-                                            <Setter Property="Text" Value="{Binding RangeStart, Converter={StaticResource ShortDateConverter}, StringFormat='Selected: {0} (1 day)'}" />
+                                            <Setter Property="Text" Value="{Binding RangeStart, Converter={StaticResource CurrentCultureFormatConverter}, ConverterParameter=d, StringFormat='Selected: {0} (1 day)'}" />
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding RangeDays}"
                                                      Value="0">

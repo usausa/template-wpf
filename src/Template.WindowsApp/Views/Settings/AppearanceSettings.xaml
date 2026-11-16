@@ -2,9 +2,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:s="http://smart/windows"
+             xmlns:shell="clr-namespace:Template.WindowsApp.Shell"
              xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
-             xmlns:converters="clr-namespace:Template.WindowsApp.Converters"
-             xmlns:settings="clr-namespace:Template.WindowsApp.Settings"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Settings"
              mc:Ignorable="d"
              x:Class="Template.WindowsApp.Views.Settings.AppearanceSettings"
@@ -15,7 +15,16 @@
 
         <!-- Converter -->
 
-        <converters:ThemeTextConverter x:Key="ThemeToTextConverter" />
+        <s:MapToTextConverter x:Key="ThemeToTextConverter">
+            <s:MapToTextConverter.Entries>
+                <s:MapToTextEntry Key="{x:Static shell:AppTheme.Light}"
+                                  Value="Light" />
+                <s:MapToTextEntry Key="{x:Static shell:AppTheme.Dark}"
+                                  Value="Dark" />
+                <s:MapToTextEntry Key="{x:Static shell:AppTheme.System}"
+                                  Value="Use system setting" />
+            </s:MapToTextConverter.Entries>
+        </s:MapToTextConverter>
 
         <!-- App theme -->
 
@@ -82,7 +91,7 @@
         </ControlTemplate>
 
         <DataTemplate x:Key="ThemeChoiceTemplate"
-                      DataType="{x:Type settings:AppTheme}">
+                      DataType="{x:Type shell:AppTheme}">
             <Grid>
                 <ContentControl x:Name="LightPreview"
                                 Template="{StaticResource LightThemePreviewTemplate}" />
@@ -92,12 +101,12 @@
             </Grid>
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding}"
-                             Value="{x:Static settings:AppTheme.Dark}">
+                             Value="{x:Static shell:AppTheme.Dark}">
                     <Setter TargetName="LightPreview" Property="Visibility" Value="Collapsed" />
                     <Setter TargetName="DarkPreview" Property="Visibility" Value="Visible" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding}"
-                             Value="{x:Static settings:AppTheme.System}">
+                             Value="{x:Static shell:AppTheme.System}">
                     <Setter TargetName="DarkPreview" Property="Visibility" Value="Visible" />
                     <Setter TargetName="DarkPreview" Property="Clip">
                         <Setter.Value>

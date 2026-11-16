@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:s="http://smart/windows"
              xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
+             xmlns:charts="clr-namespace:Template.WindowsApp.Controls.Charts"
              xmlns:sample="clr-namespace:Template.WindowsApp.Models.Sample"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Graphics"
              mc:Ignorable="d"
@@ -122,7 +123,7 @@
         </Style>
 
         <Style x:Key="LiveDataLineChart"
-               TargetType="{x:Type controls:LineChart}">
+               TargetType="{x:Type charts:LineChart}">
             <Setter Property="MinHeight" Value="150" />
             <Setter Property="Fill" Value="{StaticResource ChartBlueSuperLightBrush}" />
             <Setter Property="Stroke" Value="{StaticResource ChartBlueBrush}" />
@@ -304,12 +305,12 @@
                                                        Text="{Binding DeltaText}" />
                                         </Grid>
                                     </Grid>
-                                    <controls:LineChart Grid.Row="4"
-                                                        Style="{StaticResource LiveDataLineChart}"
-                                                        Minimum="{Binding Minimum}"
-                                                        Maximum="{Binding Maximum}"
-                                                        Capacity="{x:Static sample:LiveSensor.Capacity}"
-                                                        Values="{Binding Values}" />
+                                    <charts:LineChart Grid.Row="4"
+                                                      Style="{StaticResource LiveDataLineChart}"
+                                                      Minimum="{Binding Minimum}"
+                                                      Maximum="{Binding Maximum}"
+                                                      Capacity="{x:Static sample:LiveSensor.Capacity}"
+                                                      Values="{Binding Values}" />
                                 </Grid>
                             </Border>
                             <DataTemplate.Triggers>

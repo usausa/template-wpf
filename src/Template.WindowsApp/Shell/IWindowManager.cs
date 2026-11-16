@@ -10,6 +10,35 @@ using Template.WindowsApp.Settings;
 using Template.WindowsApp.Views;
 using Template.WindowsApp.Views.Platform;
 
+public enum AppTheme
+{
+    Light,
+    Dark,
+    System
+}
+
+public enum StartPage
+{
+    Home,
+    LastPage
+}
+
+public sealed class GridLayout
+{
+    public int FrozenColumnCount { get; init; }
+
+    public IReadOnlyList<GridColumnLayout> Columns { get; init; } = [];
+}
+
+public sealed class GridColumnLayout
+{
+    public string Key { get; init; } = string.Empty;
+
+    public bool IsVisible { get; init; } = true;
+
+    public double? Width { get; init; }
+}
+
 public interface IWindowManager
 {
     bool IsPaneOpen { get; set; }
@@ -49,7 +78,7 @@ public sealed class WindowManager : NotificationObject, IWindowManager
 
     private readonly NotificationCenter notificationCenter;
 
-    private readonly WindowSettings settings = new();
+    private readonly WindowSetting setting = new();
 
     private readonly List<KeyValuePair<WindowId, Window>> windows = [];
 
@@ -96,33 +125,33 @@ public sealed class WindowManager : NotificationObject, IWindowManager
 
     public Window Load()
     {
-        if (settings.UpgradeRequired)
+        if (setting.UpgradeRequired)
         {
-            settings.Upgrade();
-            settings.UpgradeRequired = false;
-            settings.Save();
+            setting.Upgrade();
+            setting.UpgradeRequired = false;
+            setting.Save();
         }
 
         var mainWindow = provider.GetRequiredService<MainWindow>();
 
-        if (settings.MainWindowPlacement is not null)
+        if (setting.MainWindowPlacement is not null)
         {
-            RestorePlacement(mainWindow, settings.MainWindowPlacement);
+            RestorePlacement(mainWindow, setting.MainWindowPlacement);
         }
-        IsPaneOpen = settings.IsPaneOpen;
-        Theme = Enum.TryParse<AppTheme>(settings.Theme, out var theme) ? theme : AppTheme.Light;
-        StartPage = Enum.TryParse<StartPage>(settings.StartPage, out var startPage) ? startPage : StartPage.Home;
-        LastView = Enum.TryParse<ViewId>(settings.LastView, out var lastView) && Enum.IsDefined(lastView) ? lastView : null;
-        notificationCenter.ShowsPopups = settings.ShowsPopups;
-        notificationCenter.ShowsInformational = settings.ShowsInformational;
-        notificationCenter.ShowsSuccess = settings.ShowsSuccess;
-        notificationCenter.ShowsWarning = settings.ShowsWarning;
-        notificationCenter.ShowsError = settings.ShowsError;
-        foreach (var id in (settings.RecentCommands ?? string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries))
+        IsPaneOpen = setting.IsPaneOpen;
+        Theme = Enum.TryParse<AppTheme>(setting.Theme, out var theme) ? theme : AppTheme.Light;
+        StartPage = Enum.TryParse<StartPage>(setting.StartPage, out var startPage) ? startPage : StartPage.Home;
+        LastView = Enum.TryParse<ViewId>(setting.LastView, out var lastView) && Enum.IsDefined(lastView) ? lastView : null;
+        notificationCenter.ShowsPopups = setting.ShowsPopups;
+        notificationCenter.ShowsInformational = setting.ShowsInformational;
+        notificationCenter.ShowsSuccess = setting.ShowsSuccess;
+        notificationCenter.ShowsWarning = setting.ShowsWarning;
+        notificationCenter.ShowsError = setting.ShowsError;
+        foreach (var id in (setting.RecentCommands ?? string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries))
         {
             RecentCommands.Add(id);
         }
-        foreach (var pair in (settings.CommandCounts ?? string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries))
+        foreach (var pair in (setting.CommandCounts ?? string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries))
         {
             var separator = pair.LastIndexOf('=');
             if ((separator > 0) && Int32.TryParse(pair.AsSpan(separator + 1), NumberStyles.None, CultureInfo.InvariantCulture, out var count))
@@ -131,11 +160,11 @@ public sealed class WindowManager : NotificationObject, IWindowManager
             }
         }
         menu.Restore(
-            (settings.FavoriteViews ?? string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries),
-            (settings.RecentViews ?? string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries));
-        RestoreGridLayouts(settings.GridLayouts);
+            (setting.FavoriteViews ?? string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries),
+            (setting.RecentViews ?? string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries));
+        RestoreGridLayouts(setting.GridLayouts);
 
-        if (!String.IsNullOrEmpty(settings.LastVersion) && (settings.LastVersion != CurrentVersion))
+        if (!String.IsNullOrEmpty(setting.LastVersion) && (setting.LastVersion != CurrentVersion))
         {
             notificationCenter.Show(InfoBarSeverity.Informational, "Updated", $"Version {CurrentVersion} is now installed.");
         }
@@ -145,7 +174,7 @@ public sealed class WindowManager : NotificationObject, IWindowManager
         return mainWindow;
     }
 
-    private static void RestorePlacement(Window window, MainWindowPlacement placement)
+    private static void RestorePlacement(Window window, WindowPlacementSetting placement)
     {
         var left = SystemParameters.VirtualScreenLeft;
         var top = SystemParameters.VirtualScreenTop;
@@ -196,7 +225,7 @@ public sealed class WindowManager : NotificationObject, IWindowManager
     {
         var mainWindow = provider.GetRequiredService<MainWindow>();
 
-        settings.MainWindowPlacement = new MainWindowPlacement
+        setting.MainWindowPlacement = new WindowPlacementSetting
         {
             Left = (int)mainWindow.Left,
             Top = (int)mainWindow.Top,
@@ -204,23 +233,23 @@ public sealed class WindowManager : NotificationObject, IWindowManager
             Height = (int)mainWindow.Height,
             Maximized = mainWindow.WindowState == WindowState.Maximized
         };
-        settings.IsPaneOpen = IsPaneOpen;
-        settings.Theme = Theme.ToString();
-        settings.StartPage = StartPage.ToString();
-        settings.LastView = LastView?.ToString();
-        settings.ShowsPopups = notificationCenter.ShowsPopups;
-        settings.ShowsInformational = notificationCenter.ShowsInformational;
-        settings.ShowsSuccess = notificationCenter.ShowsSuccess;
-        settings.ShowsWarning = notificationCenter.ShowsWarning;
-        settings.ShowsError = notificationCenter.ShowsError;
-        settings.RecentCommands = string.Join(',', RecentCommands);
-        settings.CommandCounts = string.Join(',', CommandCounts.Select(static x => String.Create(CultureInfo.InvariantCulture, $"{x.Key}={x.Value}")));
-        settings.RecentViews = string.Join(',', menu.RecentPages.Select(static x => x.Id));
-        settings.FavoriteViews = string.Join(',', menu.Favorites.Items.Select(static x => x.Id));
-        settings.GridLayouts = JsonSerializer.Serialize(GridLayouts);
-        settings.LastVersion = CurrentVersion;
+        setting.IsPaneOpen = IsPaneOpen;
+        setting.Theme = Theme.ToString();
+        setting.StartPage = StartPage.ToString();
+        setting.LastView = LastView?.ToString();
+        setting.ShowsPopups = notificationCenter.ShowsPopups;
+        setting.ShowsInformational = notificationCenter.ShowsInformational;
+        setting.ShowsSuccess = notificationCenter.ShowsSuccess;
+        setting.ShowsWarning = notificationCenter.ShowsWarning;
+        setting.ShowsError = notificationCenter.ShowsError;
+        setting.RecentCommands = string.Join(',', RecentCommands);
+        setting.CommandCounts = string.Join(',', CommandCounts.Select(static x => String.Create(CultureInfo.InvariantCulture, $"{x.Key}={x.Value}")));
+        setting.RecentViews = string.Join(',', menu.RecentPages.Select(static x => x.Id));
+        setting.FavoriteViews = string.Join(',', menu.Favorites.Items.Select(static x => x.Id));
+        setting.GridLayouts = JsonSerializer.Serialize(GridLayouts);
+        setting.LastVersion = CurrentVersion;
 
-        settings.Save();
+        setting.Save();
     }
 
     public int Count(WindowId id) => windows.Count(x => x.Key == id);

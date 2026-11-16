@@ -7,6 +7,12 @@ using BunnyTail.XamlProperty;
 
 using Template.WindowsApp.Models;
 
+public enum SettingsCardContentAlignment
+{
+    Right,
+    Vertical
+}
+
 public sealed partial class SettingsCard : ContentControl
 {
     private const CompareOptions MatchOptions = CompareOptions.IgnoreCase | CompareOptions.IgnoreKanaType | CompareOptions.IgnoreWidth;

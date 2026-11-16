@@ -4,7 +4,6 @@ using System.Runtime.InteropServices;
 
 using Template.WindowsApp.Components;
 using Template.WindowsApp.Extender;
-using Template.WindowsApp.Settings;
 using Template.WindowsApp.Shell;
 
 public enum SettingsPage

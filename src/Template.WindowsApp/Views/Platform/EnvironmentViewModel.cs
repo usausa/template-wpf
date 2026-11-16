@@ -6,8 +6,11 @@ using System.Runtime.InteropServices;
 using Microsoft.Extensions.Hosting;
 
 using Template.WindowsApp.Components;
-using Template.WindowsApp.Models;
 using Template.WindowsApp.Shell;
+
+public sealed record EnvironmentEntry(string Name, string Value, bool IsCode = false);
+
+public sealed record EnvironmentSection(string Title, IReadOnlyList<EnvironmentEntry> Entries);
 
 // ReSharper disable once ClassNeverInstantiated.Global
 public sealed partial class EnvironmentViewModel : AppViewModelBase, IShellCommandProvider

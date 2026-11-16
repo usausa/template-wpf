@@ -3,8 +3,9 @@ namespace Template.WindowsApp.Views.Platform;
 using System.Windows.Media.Imaging;
 
 using Template.WindowsApp.Components;
-using Template.WindowsApp.Models;
 using Template.WindowsApp.Shell;
+
+public sealed record DroppedItem(string Name, string Detail);
 
 // ReSharper disable once ClassNeverInstantiated.Global
 public sealed partial class ClipboardDragViewModel : AppViewModelBase, IShellCommandProvider

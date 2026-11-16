@@ -1,4 +1,4 @@
-namespace Template.WindowsApp.Controls;
+namespace Template.WindowsApp.Controls.Charts;
 
 using System.Collections.Specialized;
 using System.Windows.Documents;

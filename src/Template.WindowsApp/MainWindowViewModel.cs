@@ -12,7 +12,7 @@ public sealed partial class MainWindowViewModel : ExtendViewModelBase
 {
     private readonly NavigationHistory history = new();
 
-    private IDisposable? navigatingBusy;
+    private BusyStateScope? navigatingBusy;
 
     public IWindowManager WindowManager { get; }
 

@@ -4,7 +4,6 @@ using System.Globalization;
 using System.IO;
 
 using Template.WindowsApp.Mocks;
-using Template.WindowsApp.Models;
 using Template.WindowsApp.Models.Entity;
 using Template.WindowsApp.Models.Sample;
 

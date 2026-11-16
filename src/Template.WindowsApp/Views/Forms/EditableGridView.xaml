@@ -6,8 +6,8 @@
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:behaviors="clr-namespace:Template.WindowsApp.Behaviors"
              xmlns:converters="clr-namespace:Template.WindowsApp.Converters"
+             xmlns:validations="clr-namespace:Template.WindowsApp.Helpers.Validations"
              xmlns:sample="clr-namespace:Template.WindowsApp.Models.Sample"
-             xmlns:views="clr-namespace:Template.WindowsApp.Views"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Forms"
              mc:Ignorable="d"
              x:Class="Template.WindowsApp.Views.Forms.EditableGridView"
@@ -19,7 +19,8 @@
 
         <!-- Converter -->
 
-        <converters:ShortDateConverter x:Key="ShortDateConverter" />
+        <s:FormatConverter x:Key="CurrentCultureFormatConverter"
+                           UseCurrentCulture="True" />
         <converters:OrderLineCellConverter x:Key="CellConverter" />
 
         <!-- Toolbar -->
@@ -408,7 +409,7 @@
                                         Command="{Binding DeleteCommand}" />
                         </DataGrid.InputBindings>
                         <DataGrid.RowValidationRules>
-                            <views:OrderLineValidationRule ValidationStep="UpdatedValue" />
+                            <validations:OrderLineValidationRule ValidationStep="UpdatedValue" />
                         </DataGrid.RowValidationRules>
                         <i:Interaction.Behaviors>
                             <behaviors:EditableGridBehavior CancelRequest="{Binding CancelRequest}"
@@ -454,12 +455,12 @@
                                                 IsReadOnly="True" />
                             <DataGridTemplateColumn Width="128" MinWidth="128"
                                                     Header="Delivery"
-                                                    ClipboardContentBinding="{Binding Delivery, Converter={StaticResource ShortDateConverter}}"
+                                                    ClipboardContentBinding="{Binding Delivery, Converter={StaticResource CurrentCultureFormatConverter}, ConverterParameter=d}"
                                                     SortMemberPath="Delivery">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate DataType="{x:Type sample:OrderLine}">
                                         <TextBlock Style="{StaticResource EditableGridCellTextBlock}"
-                                                   Text="{Binding Delivery, Converter={StaticResource ShortDateConverter}}" />
+                                                   Text="{Binding Delivery, Converter={StaticResource CurrentCultureFormatConverter}, ConverterParameter=d}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>

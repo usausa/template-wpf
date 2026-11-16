@@ -1,5 +1,6 @@
 namespace Template.WindowsApp.Views.BasicInput;
 
+using Template.WindowsApp.Controls;
 using Template.WindowsApp.Models;
 using Template.WindowsApp.Shell;
 
@@ -90,6 +91,9 @@ public sealed partial class TextViewModel : AppViewModelBase, IShellCommandProvi
     [ObservableProperty]
     public partial string? CustomerQuery { get; set; }
 
+    [ObservableProperty]
+    public partial string PhoneNumber { get; set; }
+
     public EventRequest ClearPasswordRequest { get; } = new();
 
     public IObserveCommand SubmitCityCommand { get; }
@@ -108,6 +112,7 @@ public sealed partial class TextViewModel : AppViewModelBase, IShellCommandProvi
         CitySuggestions = [];
         CustomerText = string.Empty;
         CustomerSuggestions = [];
+        PhoneNumber = string.Empty;
 
         SubscribeMultiLineText(x => LineCount = CountLines(x));
         SubscribeCityText(x => CitySuggestions = SuggestCities(x));
@@ -151,6 +156,7 @@ public sealed partial class TextViewModel : AppViewModelBase, IShellCommandProvi
         CustomerText = string.Empty;
         SelectedCustomer = null;
         CustomerQuery = null;
+        PhoneNumber = string.Empty;
         ClearPasswordRequest.Request();
     }
 

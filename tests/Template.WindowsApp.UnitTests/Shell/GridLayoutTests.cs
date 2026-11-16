@@ -1,4 +1,4 @@
-namespace Template.WindowsApp.Settings;
+namespace Template.WindowsApp.Shell;
 
 using System.Text.Json;
 

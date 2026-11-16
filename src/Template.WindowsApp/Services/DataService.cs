@@ -4,9 +4,22 @@ using Microsoft.Data.Sqlite;
 
 using Smart.Data;
 
-using Template.WindowsApp.Models;
+using Template.WindowsApp.Helpers.Data;
 using Template.WindowsApp.Models.Entity;
 using Template.WindowsApp.Models.Sample;
+
+public enum ProductSort
+{
+    Code,
+    Name,
+    Category,
+    Supplier,
+    Warehouse,
+    Price,
+    Stock,
+    Updated,
+    IsActive
+}
 
 public sealed record DatabaseInfo(
     string Path,
@@ -19,21 +32,23 @@ public sealed record DatabaseInfo(
 
 public sealed class DataService
 {
-    private const char LikeEscape = '\\';
-
     private readonly TimeProvider timeProvider;
 
     private readonly IDbProvider provider;
+
+    private readonly IDialect dialect;
 
     private readonly DataAccessor accessor;
 
     public DataService(
         TimeProvider timeProvider,
         IDbProvider provider,
+        IDialect dialect,
         DataAccessor accessor)
     {
         this.timeProvider = timeProvider;
         this.provider = provider;
+        this.dialect = dialect;
         this.accessor = accessor;
     }
 
@@ -113,10 +128,10 @@ public sealed class DataService
     //--------------------------------------------------------------------------------
 
     public long CountProducts(string keyword) =>
-        accessor.CountProductMatch(MakeLikePattern(keyword));
+        accessor.CountProductMatch(dialect.Match(keyword));
 
     public IReadOnlyList<ProductEntity> QueryProducts(string keyword, ProductSort sort, bool desc, int offset, int limit) =>
-        accessor.QueryProductList(MakeLikePattern(keyword), sort, desc, limit, offset);
+        accessor.QueryProductList(dialect.Match(keyword), sort, desc, limit, offset);
 
     public ValueTask<int> UpdateProductAsync(ProductEntity entity) =>
         accessor.UpdateProductAsync(entity);
@@ -190,7 +205,7 @@ public sealed class DataService
             await accessor.InsertDataAsync(entity).ConfigureAwait(false);
             return true;
         }
-        catch (SqliteException e) when (e.SqliteErrorCode == SQLitePCL.raw.SQLITE_CONSTRAINT)
+        catch (DbException e) when (dialect.IsDuplicate(e))
         {
             return false;
         }
@@ -228,27 +243,4 @@ public sealed class DataService
 
     public IReadOnlyList<BulkDataEntity> QueryAllBulkData() =>
         accessor.QueryAllBulkDataList();
-
-    //--------------------------------------------------------------------------------
-    // Helper
-    //--------------------------------------------------------------------------------
-
-    private static string? MakeLikePattern(string keyword)
-    {
-        if (String.IsNullOrWhiteSpace(keyword))
-        {
-            return null;
-        }
-
-        var builder = new StringBuilder("%");
-        foreach (var c in keyword.Trim())
-        {
-            if (c is '%' or '_' or LikeEscape)
-            {
-                builder.Append(LikeEscape);
-            }
-            builder.Append(c);
-        }
-        return builder.Append('%').ToString();
-    }
 }

@@ -979,9 +979,9 @@
         </Border>
 
         <!-- Pages -->
-        <Canvas Grid.Column="1"
-                navigation:NavigationContainer.Navigator="{Binding Navigator}"
-                ClipToBounds="True" />
+        <Grid Grid.Column="1"
+              navigation:NavigationContainer.Navigator="{Binding Navigator}"
+              ClipToBounds="True" />
 
         <!-- Busy -->
         <ProgressBar Grid.Column="0" Grid.ColumnSpan="2"

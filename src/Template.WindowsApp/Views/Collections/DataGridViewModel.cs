@@ -1,10 +1,9 @@
 namespace Template.WindowsApp.Views.Collections;
 
-using Template.WindowsApp.Models;
+using Template.WindowsApp.Behaviors;
 using Template.WindowsApp.Models.Entity;
 using Template.WindowsApp.Models.Sample;
 using Template.WindowsApp.Services;
-using Template.WindowsApp.Settings;
 using Template.WindowsApp.Shell;
 
 // ReSharper disable once ClassNeverInstantiated.Global

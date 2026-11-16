@@ -1,7 +1,7 @@
 namespace Template.WindowsApp.Views.Layout;
 
+using Template.WindowsApp.Behaviors;
 using Template.WindowsApp.Controls;
-using Template.WindowsApp.Models;
 using Template.WindowsApp.Shell;
 
 public sealed partial class DocumentTab : ObservableObject

@@ -5,6 +5,7 @@
              xmlns:s="http://smart/windows"
              xmlns:shell="clr-namespace:Template.WindowsApp.Shell"
              xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
+             xmlns:charts="clr-namespace:Template.WindowsApp.Controls.Charts"
              xmlns:components="clr-namespace:Template.WindowsApp.Components"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Home"
              mc:Ignorable="d"
@@ -51,7 +52,7 @@
         </Style>
 
         <Style x:Key="HomeLineChart"
-               TargetType="{x:Type controls:LineChart}">
+               TargetType="{x:Type charts:LineChart}">
             <Setter Property="MinHeight" Value="80" />
             <Setter Property="Margin" Value="0,16,0,0" />
             <Setter Property="Fill" Value="{StaticResource ChartBlueSuperLightBrush}" />
@@ -61,7 +62,7 @@
         </Style>
 
         <Style x:Key="HomeBarChart"
-               TargetType="{x:Type controls:BarChart}">
+               TargetType="{x:Type charts:BarChart}">
             <Setter Property="MinHeight" Value="80" />
             <Setter Property="Margin" Value="0,16,0,0" />
             <Setter Property="Fill" Value="{StaticResource ChartBlueBrush}" />
@@ -225,11 +226,11 @@
                                 <TextBlock Grid.Row="0"
                                            Style="{StaticResource CardStrongTextBlock}"
                                            Text="Memory, last 60 seconds" />
-                                <controls:LineChart Grid.Row="1"
-                                                    Style="{StaticResource HomeLineChart}"
-                                                    Capacity="{x:Static components:ProcessMonitor.Capacity}"
-                                                    Labels="{Binding MemoryLabels}"
-                                                    Values="{Binding MemoryValues}" />
+                                <charts:LineChart Grid.Row="1"
+                                                  Style="{StaticResource HomeLineChart}"
+                                                  Capacity="{x:Static components:ProcessMonitor.Capacity}"
+                                                  Labels="{Binding MemoryLabels}"
+                                                  Values="{Binding MemoryValues}" />
                             </Grid>
                         </Border>
                         <Border Style="{StaticResource HomeTileBorder}">
@@ -241,10 +242,10 @@
                                 <TextBlock Grid.Row="0"
                                            Style="{StaticResource CardStrongTextBlock}"
                                            Text="Log entries by level" />
-                                <controls:BarChart Grid.Row="1"
-                                                   Style="{StaticResource HomeBarChart}"
-                                                   Labels="{Binding LevelLabels}"
-                                                   Values="{Binding LevelValues}" />
+                                <charts:BarChart Grid.Row="1"
+                                                 Style="{StaticResource HomeBarChart}"
+                                                 Labels="{Binding LevelLabels}"
+                                                 Values="{Binding LevelValues}" />
                             </Grid>
                         </Border>
                     </UniformGrid>

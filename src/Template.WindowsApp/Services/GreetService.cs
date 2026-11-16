@@ -1,19 +1,23 @@
 namespace Template.WindowsApp.Services;
 
-using Template.WindowsApp.Settings;
+public sealed class GreetOption
+{
+    [Required]
+    public string Message { get; set; } = default!;
+}
 
 // ReSharper disable once ClassNeverInstantiated.Global
 public sealed class GreetService
 {
     private readonly TimeProvider timeProvider;
 
-    private readonly ClientSettings settings;
+    private readonly GreetOption option;
 
-    public GreetService(TimeProvider timeProvider, ClientSettings settings)
+    public GreetService(TimeProvider timeProvider, GreetOption option)
     {
         this.timeProvider = timeProvider;
-        this.settings = settings;
+        this.option = option;
     }
 
-    public string MakeMessage() => $"{settings.Greeting} ({timeProvider.GetLocalNow():HH:mm:ss})";
+    public string MakeMessage() => $"{option.Message} ({timeProvider.GetLocalNow():HH:mm:ss})";
 }

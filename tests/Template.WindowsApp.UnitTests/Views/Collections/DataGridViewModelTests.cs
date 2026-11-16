@@ -4,9 +4,8 @@ using System.ComponentModel;
 
 using NSubstitute;
 
+using Template.WindowsApp.Behaviors;
 using Template.WindowsApp.Mocks;
-using Template.WindowsApp.Models;
-using Template.WindowsApp.Settings;
 using Template.WindowsApp.Shell;
 
 [Collection(ViewModelTestGroup.Name)]

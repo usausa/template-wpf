@@ -4,12 +4,12 @@ using BunnyTail.XamlProperty;
 
 using Microsoft.Xaml.Behaviors;
 
-public sealed partial class DropBehavior : Behavior<FrameworkElement>
+public sealed partial class DropTargetBehavior : Behavior<FrameworkElement>
 {
     private static readonly DependencyPropertyKey IsDragOverPropertyKey = DependencyProperty.RegisterAttachedReadOnly(
         "IsDragOver",
         typeof(bool),
-        typeof(DropBehavior),
+        typeof(DropTargetBehavior),
         new PropertyMetadata(false));
 
     public static readonly DependencyProperty IsDragOverProperty = IsDragOverPropertyKey.DependencyProperty;

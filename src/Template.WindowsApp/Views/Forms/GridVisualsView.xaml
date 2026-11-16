@@ -5,7 +5,7 @@
              xmlns:s="http://smart/windows"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:behaviors="clr-namespace:Template.WindowsApp.Behaviors"
-             xmlns:controls="clr-namespace:Template.WindowsApp.Controls"
+             xmlns:charts="clr-namespace:Template.WindowsApp.Controls.Charts"
              xmlns:converters="clr-namespace:Template.WindowsApp.Converters"
              xmlns:sample="clr-namespace:Template.WindowsApp.Models.Sample"
              xmlns:module="clr-namespace:Template.WindowsApp.Views.Forms"
@@ -83,7 +83,7 @@
         </Style>
 
         <Style x:Key="GridVisualsLatencyChart"
-               TargetType="{x:Type controls:LineChart}">
+               TargetType="{x:Type charts:LineChart}">
             <Setter Property="Height" Value="120" />
             <Setter Property="Fill" Value="{StaticResource ChartBlueSuperLightBrush}" />
             <Setter Property="Stroke" Value="{StaticResource ChartBlueBrush}" />
@@ -177,7 +177,7 @@
         </Style>
 
         <Style x:Key="GridVisualsCpuDataBar"
-               TargetType="{x:Type controls:DataBar}">
+               TargetType="{x:Type charts:DataBar}">
             <Setter Property="Height" Value="12" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Fill" Value="{StaticResource ChartBlueBrush}" />
@@ -212,7 +212,7 @@
         </Style>
 
         <Style x:Key="GridVisualsLatencySparkline"
-               TargetType="{x:Type controls:Sparkline}">
+               TargetType="{x:Type charts:Sparkline}">
             <Setter Property="Height" Value="24" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Stroke" Value="{StaticResource ChartBlueBrush}" />
@@ -314,9 +314,9 @@
                                                 Grid.Column="0">
                                         <TextBlock Style="{StaticResource GridVisualsDetailLabelTextBlock}"
                                                    Text="Latency in the last 24 hours" />
-                                        <controls:LineChart Style="{StaticResource GridVisualsLatencyChart}"
-                                                            Labels="{x:Static module:GridVisualsViewModel.HourLabels}"
-                                                            Values="{Binding Latency}" />
+                                        <charts:LineChart Style="{StaticResource GridVisualsLatencyChart}"
+                                                          Labels="{x:Static module:GridVisualsViewModel.HourLabels}"
+                                                          Values="{Binding Latency}" />
                                     </StackPanel>
                                     <TextBlock x:Name="NoData"
                                                Grid.Column="0"
@@ -465,9 +465,9 @@
                                                     <ColumnDefinition Width="*" />
                                                     <ColumnDefinition Width="44" />
                                                 </Grid.ColumnDefinitions>
-                                                <controls:DataBar x:Name="Bar"
-                                                                  Style="{StaticResource GridVisualsCpuDataBar}"
-                                                                  Value="{Binding Cpu, TargetNullValue=0}" />
+                                                <charts:DataBar x:Name="Bar"
+                                                                Style="{StaticResource GridVisualsCpuDataBar}"
+                                                                Value="{Binding Cpu, TargetNullValue=0}" />
                                                 <TextBlock Grid.Column="1"
                                                            Style="{StaticResource GridVisualsNumberTextBlock}"
                                                            Text="{Binding Cpu, StringFormat={}{0:0}%}" />
@@ -643,9 +643,9 @@
                                                         </TextBlock.Text>
                                                     </TextBlock>
                                                 </Grid.ToolTip>
-                                                <controls:Sparkline x:Name="Line"
-                                                                    Style="{StaticResource GridVisualsLatencySparkline}"
-                                                                    Values="{Binding Latency}" />
+                                                <charts:Sparkline x:Name="Line"
+                                                                  Style="{StaticResource GridVisualsLatencySparkline}"
+                                                                  Values="{Binding Latency}" />
                                                 <TextBlock Grid.Column="1"
                                                            Style="{StaticResource GridVisualsNumberTextBlock}"
                                                            Text="{Binding LatencyNow, StringFormat={}{0:0} ms}" />

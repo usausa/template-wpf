@@ -5,7 +5,7 @@ using System.Windows.Controls.Primitives;
 
 using BunnyTail.XamlProperty;
 
-using Template.WindowsApp.Models;
+public sealed record AutoSuggestBoxQuery(string QueryText, object? ChosenSuggestion);
 
 [TemplatePart(Name = TextBoxPartName, Type = typeof(TextBox))]
 [TemplatePart(Name = SuggestionsListPartName, Type = typeof(ListBox))]

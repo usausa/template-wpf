@@ -33,6 +33,7 @@ global using Smart;
 global using Smart.Collections.Generic;
 global using Smart.ComponentModel;
 global using Smart.Mvvm;
+global using Smart.Mvvm.Collections;
 global using Smart.Mvvm.Messaging;
 global using Smart.Mvvm.ViewModels;
 global using Smart.Navigation;
