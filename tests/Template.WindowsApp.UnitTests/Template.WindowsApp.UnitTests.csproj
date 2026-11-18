@@ -5,7 +5,6 @@
     <OutputType>Exe</OutputType>
     <UseWPF>true</UseWPF>
     <RootNamespace>Template.WindowsApp</RootNamespace>
-    <CodeAnalysisRuleSet>..\..\Analyzers.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <PropertyGroup>
