@@ -1,6 +1,8 @@
 namespace Template.WindowsApp.Shell;
 
 using System.Text.Json;
+using System.Windows.Automation.Peers;
+using System.Windows.Threading;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -219,6 +221,27 @@ public sealed class WindowManager : NotificationObject, IWindowManager
             AppTheme.System => ThemeMode.System,
             _ => ThemeMode.Light
         };
+        _ = Application.Current.Dispatcher.InvokeAsync(RefreshAutomationTree, DispatcherPriority.Loaded);
+    }
+
+    private static void RefreshAutomationTree()
+    {
+        foreach (var window in Application.Current.Windows.OfType<Window>())
+        {
+            if (UIElementAutomationPeer.FromElement(window) is { } peer)
+            {
+                ResetAutomationChildren(peer);
+            }
+        }
+    }
+
+    private static void ResetAutomationChildren(AutomationPeer peer)
+    {
+        peer.ResetChildrenCache();
+        foreach (var child in peer.GetChildren() ?? [])
+        {
+            ResetAutomationChildren(child);
+        }
     }
 
     public void Save()

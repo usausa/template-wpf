@@ -18,6 +18,8 @@
     "xmlns:d",
     "xmlns:mc",
 
+    "xmlns:logging",
+
     "xmlns:s",
     "xmlns:navigation",
 
@@ -141,6 +143,7 @@
     "Text",
     "Content",
     "Glyph",
+    "PlaceholderText",
     "ImageSource",
 
     "FontFamily, FontSize, FontWeight, FontStyle",
@@ -186,7 +189,6 @@
     "ReservedWidth",
     "MoveCommand",
 
-    "PlaceholderText",
     "QueryIcon",
     "NoResultsText",
     "QuerySubmittedCommand",
